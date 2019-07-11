@@ -1,10 +1,10 @@
 /* global describe, it, expect */
 
-const {Tokenizer} = require('./HTMLTokenizer');
+const {createTokenizer} = require('./HTMLTokenizer');
 
 describe('HTML Tokenizer', () => {
 	it('should handle tags and text', () => {
-		const t = new Tokenizer('<html>\n<body>Hello</body>\n</html>');
+		const t = createTokenizer('<html>\n<body>Hello</body>\n</html>');
 		expect(t.nextToken()).toEqual({
 			type: 'opentagname',
 			contents: 'html',
@@ -18,7 +18,7 @@ describe('HTML Tokenizer', () => {
 			contents: '',
 			start: -1,
 			end: 6,
-			startPos: null,
+			startPos: undefined,
 			endPos: {line: 0, ch: 6}
 		});
 		expect(t.nextToken()).toEqual({
@@ -42,7 +42,7 @@ describe('HTML Tokenizer', () => {
 			contents: '',
 			start: -1,
 			end: 13,
-			startPos: null,
+			startPos: undefined,
 			endPos: {line: 1, ch: 6}
 		});
 		expect(t.nextToken()).toEqual({
@@ -80,7 +80,7 @@ describe('HTML Tokenizer', () => {
 	});
 
 	it('should handle attributes', () => {
-		const t = new Tokenizer(
+		const t = createTokenizer(
 			'<div class=\'foo bar\' style="baz: quux" checked></div>'
 		);
 		expect(t.nextToken()).toEqual({
@@ -136,7 +136,7 @@ describe('HTML Tokenizer', () => {
 			contents: '',
 			start: -1,
 			end: 47,
-			startPos: null,
+			startPos: undefined,
 			endPos: {line: 0, ch: 47}
 		});
 		expect(t.nextToken()).toEqual({
@@ -147,11 +147,11 @@ describe('HTML Tokenizer', () => {
 			startPos: {line: 0, ch: 49},
 			endPos: {line: 0, ch: 52}
 		});
-		expect(t.nextToken()).toEqual(null);
+		expect(t.nextToken()).toEqual(undefined);
 	});
 
 	it('should handle various newline cases', () => {
-		const t = new Tokenizer(
+		const t = createTokenizer(
 			'<div \n    class=\'foo\'\n    checked>\n    some text\n    with a newline\n    <br/>\n<!--multiline\ncomment-->\n</div>'
 		);
 		expect(t.nextToken()).toEqual({
@@ -191,7 +191,7 @@ describe('HTML Tokenizer', () => {
 			contents: '',
 			start: -1,
 			end: 34,
-			startPos: null,
+			startPos: undefined,
 			endPos: {line: 2, ch: 12}
 		});
 		expect(t.nextToken()).toEqual({
@@ -215,7 +215,7 @@ describe('HTML Tokenizer', () => {
 			contents: '',
 			start: -1,
 			end: 77,
-			startPos: null,
+			startPos: undefined,
 			endPos: {line: 5, ch: 9}
 		});
 		expect(t.nextToken()).toEqual({
@@ -253,7 +253,7 @@ describe('HTML Tokenizer', () => {
 	});
 
 	it('should notify of explicit shorttags like <br/>', () => {
-		const t = new Tokenizer('<p>hello<br/></p>');
+		const t = createTokenizer('<p>hello<br/></p>');
 		expect(t.nextToken()).toEqual({
 			type: 'opentagname',
 			contents: 'p',
@@ -267,7 +267,7 @@ describe('HTML Tokenizer', () => {
 			contents: '',
 			start: -1,
 			end: 3,
-			startPos: null,
+			startPos: undefined,
 			endPos: {line: 0, ch: 3}
 		});
 		expect(t.nextToken()).toEqual({
@@ -291,7 +291,7 @@ describe('HTML Tokenizer', () => {
 			contents: '',
 			start: -1,
 			end: 13,
-			startPos: null,
+			startPos: undefined,
 			endPos: {line: 0, ch: 13}
 		});
 		expect(t.nextToken()).toEqual({
@@ -305,7 +305,7 @@ describe('HTML Tokenizer', () => {
 	});
 
 	it('should parse a comment', () => {
-		const t = new Tokenizer('<!--very important-->');
+		const t = createTokenizer('<!--very important-->');
 		expect(t.nextToken()).toEqual({
 			type: 'comment',
 			contents: 'very important',
@@ -322,7 +322,7 @@ describe('HTML Tokenizer', () => {
 				isError = true;
 			}
 
-			const t = new Tokenizer(text);
+			const t = createTokenizer(text);
 			let token = t.nextToken();
 			while (token) {
 				if (token.type === 'error') {

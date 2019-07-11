@@ -1,3 +1,4 @@
+/* eslint-disable no-negated-condition */
 /* eslint-disable complexity */
 /* Unittests: HTML Tokenizer */
 
@@ -60,6 +61,29 @@ const AFTER_STYLE_2 = i++; // Y
 const AFTER_STYLE_3 = i++; // L
 const AFTER_STYLE_4 = i++; // E
 
+/** @typedef {{line: number, ch: number}} Position */
+
+/**
+ * @typedef {{type:string
+	contents:string
+	start:number,
+	end: number,
+	startPos: Position | undefined
+	endPos: Position | undefined
+}} Token
+ */
+
+/** @typedef {{ state : number,
+								buffer : string,
+								sectionStart : number,
+								sectionStartPos : Position | undefined,
+								index : number,
+								indexPos : Position|undefined,
+								special : number, // 1 for script, 2 for style
+								token : Token | undefined,
+								nextToken : Token | undefined
+							}} Context */
+
 /**
  * @private
  * @param {string} c the character to test
@@ -70,7 +94,6 @@ function isWhitespace(c) {
 }
 
 /**
- * @private
  * @param {string} char the character to test
  * @return {boolean} true if char is legal in an HTML tag name
  */
@@ -81,7 +104,6 @@ function isLegalInTagName(char) {
 }
 
 /**
- * @private
  * @param {string} c the character to test
  * @return {boolean} true if c is legal in an HTML attribute name
  */
@@ -90,7 +112,6 @@ function isLegalInAttributeName(c) {
 }
 
 /**
- * @private
  * @param {string} c the character to test
  * @return {boolean} true if c is legal in an unquoted attribute value
  */
@@ -98,30 +119,21 @@ function isLegalInUnquotedAttributeValue(c) {
 	return c !== '<' && c !== '=';
 }
 
-function _clonePos(pos, offset) {
-	return pos ? {line: pos.line, ch: pos.ch + (offset || 0)} : null;
-}
-
 /**
- * A simple HTML tokenizer. See the description of nextToken() for usage details.
- * @constructor
- * @param {string} text The HTML document to tokenize.
+ *
+ * @param {Position|undefined} pos
+ * @param {number|undefined} offset
  */
-function Tokenizer(text) {
-	this._state = TEXT;
-	this._buffer = text;
-	this._sectionStart = 0;
-	this._sectionStartPos = {line: 0, ch: 0};
-	this._index = 0;
-	this._indexPos = {line: 0, ch: 0};
-	this._special = 0; // 1 for script, 2 for style
-	this._token = null;
-	this._nextToken = null;
+function clonePos(pos = undefined, offset = undefined) {
+	return pos ? {line: pos.line, ch: pos.ch + (offset || 0)} : undefined;
 }
 
 /**
  * Returns the next token in the HTML document, or null if we're at the end of the document.
- * @return {?{type: string, contents: string, start: number, end: number}} token The next token, with the following fields:
+ * @return {{type: string, contents: string, start: number, end: number}|undefined} token The next token, with the following fields:
+ *
+ *
+ *
  *    type: The type of token, one of:
  *          "error" - invalid syntax was found, tokenization aborted. Calling nextToken() again will produce undefined results.
  *          "text" - contents contains the text
@@ -140,650 +152,701 @@ function Tokenizer(text) {
  *    start: the start index of the token contents within the text, or -1 for "opentagend" and "selfclosingtag"
  *    end: the end index of the token contents within the text, or the position of the boundary for "opentagend" and "selfclosingtag"
  */
-Tokenizer.prototype.nextToken = function () {
-	this._token = null;
 
-	if (this._nextToken) {
-		const result = this._nextToken;
-		this._nextToken = null;
+/**
+ *
+ * @param {Context} context
+ */
+function nextToken(context) {
+	context.token = undefined;
+
+	if (context.nextToken) {
+		const result = context.nextToken;
+		context.nextToken = undefined;
 		return result;
 	}
 
-	while (this._index < this._buffer.length && !this._token) {
-		const c = this._buffer.charAt(this._index);
-		if (this._state === TEXT) {
+	while (context.index < context.buffer.length && !context.token) {
+		const c = context.buffer.charAt(context.index);
+		if (context.state === TEXT) {
 			if (c === '<') {
-				this._emitTokenIfNonempty('text');
-				this._state = BEFORE_TAG_NAME;
-				this._startSection();
+				emitTokenIfNonempty(context, 'text');
+				context.state = BEFORE_TAG_NAME;
+				startSection(context);
 			}
-		} else if (this._state === BEFORE_TAG_NAME) {
+		} else if (context.state === BEFORE_TAG_NAME) {
 			if (c === '/') {
-				this._state = BEFORE_CLOSING_TAG_NAME;
-			} else if (c === '>' || this._special > 0) {
-				this._state = TEXT;
+				context.state = BEFORE_CLOSING_TAG_NAME;
+			} else if (c === '>' || context.special > 0) {
+				context.state = TEXT;
 			} else if (c === '!') {
-				this._state = BEFORE_DECLARATION;
-				this._startSection(1);
+				context.state = BEFORE_DECLARATION;
+				startSection(context, 1);
 			} else if (c === '?') {
-				this._state = IN_PROCESSING_INSTRUCTION;
-				this._startSection(1);
+				context.state = IN_PROCESSING_INSTRUCTION;
+				startSection(context, 1);
 			} else if (c === 's' || c === 'S') {
-				this._state = BEFORE_SPECIAL;
-				this._startSection();
+				context.state = BEFORE_SPECIAL;
+				startSection(context);
 			} else if (!isLegalInTagName(c)) {
-				this._emitSpecialToken('error');
+				emitSpecialToken(context, 'error');
 				break;
 			} else if (!isWhitespace(c)) {
-				this._state = IN_TAG_NAME;
-				this._startSection();
+				context.state = IN_TAG_NAME;
+				startSection(context);
 			}
-		} else if (this._state === IN_TAG_NAME) {
+		} else if (context.state === IN_TAG_NAME) {
 			if (c === '/') {
-				this._emitToken('opentagname');
-				this._emitSpecialToken(
+				emitToken(context, 'opentagname');
+				emitSpecialToken(
+					context,
 					'selfclosingtag',
-					this._index + 2,
-					_clonePos(this._indexPos, 2)
+					context.index + 2,
+					clonePos(context.indexPos, 2)
 				);
-				this._state = AFTER_SELFCLOSE_SLASH;
+				context.state = AFTER_SELFCLOSE_SLASH;
 			} else if (c === '>') {
-				this._emitToken('opentagname');
-				this._emitSpecialToken(
+				emitToken(context, 'opentagname');
+				emitSpecialToken(
+					context,
 					'opentagend',
-					this._index + 1,
-					_clonePos(this._indexPos, 1)
+					context.index + 1,
+					clonePos(context.indexPos, 1)
 				);
-				this._state = TEXT;
-				this._startSection(1);
+				context.state = TEXT;
+				startSection(context, 1);
 			} else if (isWhitespace(c)) {
-				this._emitToken('opentagname');
-				this._state = BEFORE_ATTRIBUTE_NAME;
+				emitToken(context, 'opentagname');
+				context.state = BEFORE_ATTRIBUTE_NAME;
 			} else if (!isLegalInTagName(c)) {
-				this._emitSpecialToken('error');
+				emitSpecialToken(context, 'error');
 				break;
 			}
-		} else if (this._state === BEFORE_CLOSING_TAG_NAME) {
+		} else if (context.state === BEFORE_CLOSING_TAG_NAME) {
 			if (c === '>') {
-				this._state = TEXT;
-			} else if (this._special > 0) {
+				context.state = TEXT;
+			} else if (context.special > 0) {
 				if (c === 's' || c === 'S') {
-					this._state = BEFORE_SPECIAL_END;
+					context.state = BEFORE_SPECIAL_END;
 				} else {
-					this._state = TEXT;
+					context.state = TEXT;
 					continue;
 				}
 			} else if (!isLegalInTagName(c)) {
-				this._emitSpecialToken('error');
+				emitSpecialToken(context, 'error');
 				break;
 			} else if (!isWhitespace(c)) {
-				this._state = IN_CLOSING_TAG_NAME;
-				this._startSection();
+				context.state = IN_CLOSING_TAG_NAME;
+				startSection(context);
 			}
-		} else if (this._state === IN_CLOSING_TAG_NAME) {
+		} else if (context.state === IN_CLOSING_TAG_NAME) {
 			if (c === '>') {
-				this._emitToken('closetag');
-				this._state = TEXT;
-				this._startSection(1);
-				this._special = 0;
+				emitToken(context, 'closetag');
+				context.state = TEXT;
+				startSection(context, 1);
+				context.special = 0;
 			} else if (isWhitespace(c)) {
-				this._emitToken('closetag');
-				this._state = AFTER_CLOSING_TAG_NAME;
-				this._special = 0;
+				emitToken(context, 'closetag');
+				context.state = AFTER_CLOSING_TAG_NAME;
+				context.special = 0;
 			} else if (!isLegalInTagName(c)) {
-				this._emitSpecialToken('error');
+				emitSpecialToken(context, 'error');
 				break;
 			}
-		} else if (this._state === AFTER_CLOSING_TAG_NAME) {
+		} else if (context.state === AFTER_CLOSING_TAG_NAME) {
 			if (c === '>') {
-				this._state = TEXT;
-				this._startSection(1);
+				context.state = TEXT;
+				startSection(context, 1);
 			} else if (!isWhitespace(c)) {
 				// There must be only whitespace in the closing tag after the name until the ">".
-				this._emitSpecialToken('error');
+				emitSpecialToken(context, 'error');
 				break;
 			}
-		} else if (this._state === AFTER_SELFCLOSE_SLASH) {
+		} else if (context.state === AFTER_SELFCLOSE_SLASH) {
 			// Nothing (even whitespace) can come between the / and > of a self-close.
 			if (c === '>') {
-				this._state = TEXT;
-				this._startSection(1);
+				context.state = TEXT;
+				startSection(context, 1);
 			} else {
-				this._emitSpecialToken('error');
+				emitSpecialToken(context, 'error');
 				break;
 			}
 
 			/*
 			 *	Attributes
 			 */
-		} else if (this._state === BEFORE_ATTRIBUTE_NAME) {
+		} else if (context.state === BEFORE_ATTRIBUTE_NAME) {
 			if (c === '>') {
-				this._state = TEXT;
-				this._emitSpecialToken(
+				context.state = TEXT;
+				emitSpecialToken(
+					context,
 					'opentagend',
-					this._index + 1,
-					_clonePos(this._indexPos, 1)
+					context.index + 1,
+					clonePos(context.indexPos, 1)
 				);
-				this._startSection(1);
+				startSection(context, 1);
 			} else if (c === '/') {
-				this._emitSpecialToken(
+				emitSpecialToken(
+					context,
 					'selfclosingtag',
-					this._index + 2,
-					_clonePos(this._indexPos, 2)
+					context.index + 2,
+					clonePos(context.indexPos, 2)
 				);
-				this._state = AFTER_SELFCLOSE_SLASH;
+				context.state = AFTER_SELFCLOSE_SLASH;
 			} else if (!isLegalInAttributeName(c)) {
-				this._emitSpecialToken('error');
+				emitSpecialToken(context, 'error');
 				break;
 			} else if (!isWhitespace(c)) {
-				this._state = IN_ATTRIBUTE_NAME;
-				this._startSection();
+				context.state = IN_ATTRIBUTE_NAME;
+				startSection(context);
 			}
-		} else if (this._state === IN_ATTRIBUTE_NAME) {
+		} else if (context.state === IN_ATTRIBUTE_NAME) {
 			if (c === '=') {
-				this._emitTokenIfNonempty('attribname');
-				this._state = BEFORE_ATTRIBUTE_VALUE;
+				emitTokenIfNonempty(context, 'attribname');
+				context.state = BEFORE_ATTRIBUTE_VALUE;
 			} else if (isWhitespace(c)) {
-				this._emitTokenIfNonempty('attribname');
-				this._state = AFTER_ATTRIBUTE_NAME;
+				emitTokenIfNonempty(context, 'attribname');
+				context.state = AFTER_ATTRIBUTE_NAME;
 			} else if (c === '/' || c === '>') {
-				this._emitTokenIfNonempty('attribname');
-				this._state = BEFORE_ATTRIBUTE_NAME;
+				emitTokenIfNonempty(context, 'attribname');
+				context.state = BEFORE_ATTRIBUTE_NAME;
 				continue;
 			} else if (!isLegalInAttributeName(c)) {
-				this._emitSpecialToken('error');
+				emitSpecialToken(context, 'error');
 				break;
 			}
-		} else if (this._state === AFTER_ATTRIBUTE_NAME) {
+		} else if (context.state === AFTER_ATTRIBUTE_NAME) {
 			if (c === '=') {
-				this._state = BEFORE_ATTRIBUTE_VALUE;
+				context.state = BEFORE_ATTRIBUTE_VALUE;
 			} else if (c === '/' || c === '>') {
-				this._state = BEFORE_ATTRIBUTE_NAME;
+				context.state = BEFORE_ATTRIBUTE_NAME;
 				continue;
 			} else if (!isLegalInAttributeName(c)) {
-				this._emitSpecialToken('error');
+				emitSpecialToken(context, 'error');
 				break;
 			} else if (!isWhitespace(c)) {
-				this._state = IN_ATTRIBUTE_NAME;
-				this._startSection();
+				context.state = IN_ATTRIBUTE_NAME;
+				startSection(context);
 			}
-		} else if (this._state === BEFORE_ATTRIBUTE_VALUE) {
+		} else if (context.state === BEFORE_ATTRIBUTE_VALUE) {
 			if (c === '"') {
-				this._state = IN_ATTRIBUTE_VALUE_DOUBLE_QUOTES;
-				this._startSection(1);
+				context.state = IN_ATTRIBUTE_VALUE_DOUBLE_QUOTES;
+				startSection(context, 1);
 			} else if (c === '\'') {
-				this._state = IN_ATTRIBUTE_VALUE_SINGLE_QUOTES;
-				this._startSection(1);
+				context.state = IN_ATTRIBUTE_VALUE_SINGLE_QUOTES;
+				startSection(context, 1);
 			} else if (!isLegalInUnquotedAttributeValue(c)) {
-				this._emitSpecialToken('error');
+				emitSpecialToken(context, 'error');
 				break;
 			} else if (!isWhitespace(c)) {
-				this._state = IN_ATTRIBUTE_VALUE_NO_QUOTES;
-				this._startSection();
+				context.state = IN_ATTRIBUTE_VALUE_NO_QUOTES;
+				startSection(context);
 			}
-		} else if (this._state === IN_ATTRIBUTE_VALUE_DOUBLE_QUOTES) {
+		} else if (context.state === IN_ATTRIBUTE_VALUE_DOUBLE_QUOTES) {
 			if (c === '"') {
-				this._emitToken('attribvalue');
-				this._state = AFTER_QUOTED_ATTRIBUTE_VALUE;
+				emitToken(context, 'attribvalue');
+				context.state = AFTER_QUOTED_ATTRIBUTE_VALUE;
 			}
-		} else if (this._state === IN_ATTRIBUTE_VALUE_SINGLE_QUOTES) {
+		} else if (context.state === IN_ATTRIBUTE_VALUE_SINGLE_QUOTES) {
 			if (c === '\'') {
-				this._state = AFTER_QUOTED_ATTRIBUTE_VALUE;
-				this._emitToken('attribvalue');
+				context.state = AFTER_QUOTED_ATTRIBUTE_VALUE;
+				emitToken(context, 'attribvalue');
 			}
-		} else if (this._state === IN_ATTRIBUTE_VALUE_NO_QUOTES) {
+		} else if (context.state === IN_ATTRIBUTE_VALUE_NO_QUOTES) {
 			if (c === '>') {
-				this._emitToken('attribvalue');
-				this._emitSpecialToken(
+				emitToken(context, 'attribvalue');
+				emitSpecialToken(
+					context,
 					'opentagend',
-					this._index + 1,
-					_clonePos(this._indexPos, 1)
+					context.index + 1,
+					clonePos(context.indexPos, 1)
 				);
-				this._state = TEXT;
-				this._startSection(1);
+				context.state = TEXT;
+				startSection(context, 1);
 			} else if (isWhitespace(c)) {
-				this._emitToken('attribvalue');
-				this._state = BEFORE_ATTRIBUTE_NAME;
+				emitToken(context, 'attribvalue');
+				context.state = BEFORE_ATTRIBUTE_NAME;
 			} else if (!isLegalInUnquotedAttributeValue(c)) {
-				this._emitSpecialToken('error');
+				emitSpecialToken(context, 'error');
 				break;
 			}
-		} else if (this._state === AFTER_QUOTED_ATTRIBUTE_VALUE) {
+		} else if (context.state === AFTER_QUOTED_ATTRIBUTE_VALUE) {
 			// There must be at least one whitespace between the end of a quoted
 			// attribute value and the next attribute, if any.
 			if (c === '>') {
-				this._state = TEXT;
-				this._emitSpecialToken(
+				context.state = TEXT;
+				emitSpecialToken(
+					context,
 					'opentagend',
-					this._index + 1,
-					_clonePos(this._indexPos, 1)
+					context.index + 1,
+					clonePos(context.indexPos, 1)
 				);
-				this._startSection(1);
+				startSection(context, 1);
 			} else if (c === '/') {
-				this._emitSpecialToken(
+				emitSpecialToken(
+					context,
 					'selfclosingtag',
-					this._index + 2,
-					_clonePos(this._indexPos, 2)
+					context.index + 2,
+					clonePos(context.indexPos, 2)
 				);
-				this._state = AFTER_SELFCLOSE_SLASH;
+				context.state = AFTER_SELFCLOSE_SLASH;
 			} else if (isWhitespace(c)) {
-				this._state = BEFORE_ATTRIBUTE_NAME;
+				context.state = BEFORE_ATTRIBUTE_NAME;
 			} else {
-				this._emitSpecialToken('error');
+				emitSpecialToken(context, 'error');
 				break;
 			}
 
 			/*
 			 *	Declarations
 			 */
-		} else if (this._state === BEFORE_DECLARATION) {
+		} else if (context.state === BEFORE_DECLARATION) {
 			if (c === '[') {
-				this._state = BEFORE_CDATA_1;
+				context.state = BEFORE_CDATA_1;
 			} else if (c === '-') {
-				this._state = BEFORE_COMMENT;
+				context.state = BEFORE_COMMENT;
 			} else {
-				this._state = IN_DECLARATION;
+				context.state = IN_DECLARATION;
 			}
-		} else if (this._state === IN_DECLARATION) {
+		} else if (context.state === IN_DECLARATION) {
 			if (c === '>') {
-				this._emitToken('declaration');
-				this._state = TEXT;
-				this._startSection(1);
+				emitToken(context, 'declaration');
+				context.state = TEXT;
+				startSection(context, 1);
 			}
 
 			/*
 			 *	Processing instructions
 			 */
-		} else if (this._state === IN_PROCESSING_INSTRUCTION) {
+		} else if (context.state === IN_PROCESSING_INSTRUCTION) {
 			if (c === '>') {
-				this._emitToken('processinginstruction');
-				this._state = TEXT;
-				this._startSection(1);
+				emitToken(context, 'processinginstruction');
+				context.state = TEXT;
+				startSection(context, 1);
 			}
 
 			/*
 			 *	Comments
 			 */
-		} else if (this._state === BEFORE_COMMENT) {
+		} else if (context.state === BEFORE_COMMENT) {
 			if (c === '-') {
-				this._state = IN_COMMENT;
-				this._startSection(1);
+				context.state = IN_COMMENT;
+				startSection(context, 1);
 			} else {
-				this._state = IN_DECLARATION;
+				context.state = IN_DECLARATION;
 			}
-		} else if (this._state === IN_COMMENT) {
+		} else if (context.state === IN_COMMENT) {
 			if (c === '-') {
-				this._state = AFTER_COMMENT_1;
+				context.state = AFTER_COMMENT_1;
 			}
-		} else if (this._state === AFTER_COMMENT_1) {
+		} else if (context.state === AFTER_COMMENT_1) {
 			if (c === '-') {
-				this._state = AFTER_COMMENT_2;
+				context.state = AFTER_COMMENT_2;
 			} else {
-				this._state = IN_COMMENT;
+				context.state = IN_COMMENT;
 			}
-		} else if (this._state === AFTER_COMMENT_2) {
+		} else if (context.state === AFTER_COMMENT_2) {
 			if (c === '>') {
 				// Remove 2 trailing chars
 				// It should be okay to just decrement the char position by 2 because we know neither of the previous
 				// characters is a newline.
-				this._emitToken(
+				emitToken(
+					context,
 					'comment',
-					this._index - 2,
-					_clonePos(this._indexPos, -2)
+					context.index - 2,
+					clonePos(context.indexPos, -2)
 				);
-				this._state = TEXT;
-				this._startSection(1);
+				context.state = TEXT;
+				startSection(context, 1);
 			} else if (c !== '-') {
-				this._state = IN_COMMENT;
+				context.state = IN_COMMENT;
 			}
 			// Else: stay in AFTER_COMMENT_2 (`--->`)
 
 			/*
 			 *	cdata
 			 */
-		} else if (this._state === BEFORE_CDATA_1) {
+		} else if (context.state === BEFORE_CDATA_1) {
 			if (c === 'C') {
-				this._state = BEFORE_CDATA_2;
+				context.state = BEFORE_CDATA_2;
 			} else {
-				this._state = IN_DECLARATION;
+				context.state = IN_DECLARATION;
 			}
-		} else if (this._state === BEFORE_CDATA_2) {
+		} else if (context.state === BEFORE_CDATA_2) {
 			if (c === 'D') {
-				this._state = BEFORE_CDATA_3;
+				context.state = BEFORE_CDATA_3;
 			} else {
-				this._state = IN_DECLARATION;
+				context.state = IN_DECLARATION;
 			}
-		} else if (this._state === BEFORE_CDATA_3) {
+		} else if (context.state === BEFORE_CDATA_3) {
 			if (c === 'A') {
-				this._state = BEFORE_CDATA_4;
+				context.state = BEFORE_CDATA_4;
 			} else {
-				this._state = IN_DECLARATION;
+				context.state = IN_DECLARATION;
 			}
-		} else if (this._state === BEFORE_CDATA_4) {
+		} else if (context.state === BEFORE_CDATA_4) {
 			if (c === 'T') {
-				this._state = BEFORE_CDATA_5;
+				context.state = BEFORE_CDATA_5;
 			} else {
-				this._state = IN_DECLARATION;
+				context.state = IN_DECLARATION;
 			}
-		} else if (this._state === BEFORE_CDATA_5) {
+		} else if (context.state === BEFORE_CDATA_5) {
 			if (c === 'A') {
-				this._state = BEFORE_CDATA_6;
+				context.state = BEFORE_CDATA_6;
 			} else {
-				this._state = IN_DECLARATION;
+				context.state = IN_DECLARATION;
 			}
-		} else if (this._state === BEFORE_CDATA_6) {
+		} else if (context.state === BEFORE_CDATA_6) {
 			if (c === '[') {
-				this._state = IN_CDATA;
-				this._startSection(1);
+				context.state = IN_CDATA;
+				startSection(context, 1);
 			} else {
-				this._state = IN_DECLARATION;
+				context.state = IN_DECLARATION;
 			}
-		} else if (this._state === IN_CDATA) {
+		} else if (context.state === IN_CDATA) {
 			if (c === ']') {
-				this._state = AFTER_CDATA_1;
+				context.state = AFTER_CDATA_1;
 			}
-		} else if (this._state === AFTER_CDATA_1) {
+		} else if (context.state === AFTER_CDATA_1) {
 			if (c === ']') {
-				this._state = AFTER_CDATA_2;
+				context.state = AFTER_CDATA_2;
 			} else {
-				this._state = IN_CDATA;
+				context.state = IN_CDATA;
 			}
-		} else if (this._state === AFTER_CDATA_2) {
+		} else if (context.state === AFTER_CDATA_2) {
 			if (c === '>') {
 				// Remove 2 trailing chars
 				// It should be okay to just decrement the char position by 2 because we know neither of the previous
 				// characters is a newline.
-				this._emitToken('cdata', this._index - 2, _clonePos(this._indexPos, -2));
-				this._state = TEXT;
-				this._startSection(1);
+				emitToken(
+					context,
+					'cdata',
+					context.index - 2,
+					clonePos(context.indexPos, -2)
+				);
+				context.state = TEXT;
+				startSection(context, 1);
 			} else if (c !== ']') {
-				this._state = IN_CDATA;
+				context.state = IN_CDATA;
 			}
 			// Else: stay in AFTER_CDATA_2 (`]]]>`)
 
 			/*
 			 * special tags
 			 */
-		} else if (this._state === BEFORE_SPECIAL) {
+		} else if (context.state === BEFORE_SPECIAL) {
 			if (c === 'c' || c === 'C') {
-				this._state = BEFORE_SCRIPT_1;
+				context.state = BEFORE_SCRIPT_1;
 			} else if (c === 't' || c === 'T') {
-				this._state = BEFORE_STYLE_1;
+				context.state = BEFORE_STYLE_1;
 			} else {
-				this._state = IN_TAG_NAME;
+				context.state = IN_TAG_NAME;
 				continue; // Consume the token again
 			}
-		} else if (this._state === BEFORE_SPECIAL_END) {
-			if (this._special === 1 && (c === 'c' || c === 'C')) {
-				this._state = AFTER_SCRIPT_1;
-			} else if (this._special === 2 && (c === 't' || c === 'T')) {
-				this._state = AFTER_STYLE_1;
+		} else if (context.state === BEFORE_SPECIAL_END) {
+			if (context.special === 1 && (c === 'c' || c === 'C')) {
+				context.state = AFTER_SCRIPT_1;
+			} else if (context.special === 2 && (c === 't' || c === 'T')) {
+				context.state = AFTER_STYLE_1;
 			} else {
-				this._state = TEXT;
+				context.state = TEXT;
 			}
 
 			/*
 			 * Script
 			 */
-		} else if (this._state === BEFORE_SCRIPT_1) {
+		} else if (context.state === BEFORE_SCRIPT_1) {
 			if (c === 'r' || c === 'R') {
-				this._state = BEFORE_SCRIPT_2;
+				context.state = BEFORE_SCRIPT_2;
 			} else {
-				this._state = IN_TAG_NAME;
+				context.state = IN_TAG_NAME;
 				continue; // Consume the token again
 			}
-		} else if (this._state === BEFORE_SCRIPT_2) {
+		} else if (context.state === BEFORE_SCRIPT_2) {
 			if (c === 'i' || c === 'I') {
-				this._state = BEFORE_SCRIPT_3;
+				context.state = BEFORE_SCRIPT_3;
 			} else {
-				this._state = IN_TAG_NAME;
+				context.state = IN_TAG_NAME;
 				continue; // Consume the token again
 			}
-		} else if (this._state === BEFORE_SCRIPT_3) {
+		} else if (context.state === BEFORE_SCRIPT_3) {
 			if (c === 'p' || c === 'P') {
-				this._state = BEFORE_SCRIPT_4;
+				context.state = BEFORE_SCRIPT_4;
 			} else {
-				this._state = IN_TAG_NAME;
+				context.state = IN_TAG_NAME;
 				continue; // Consume the token again
 			}
-		} else if (this._state === BEFORE_SCRIPT_4) {
+		} else if (context.state === BEFORE_SCRIPT_4) {
 			if (c === 't' || c === 'T') {
-				this._state = BEFORE_SCRIPT_5;
+				context.state = BEFORE_SCRIPT_5;
 			} else {
-				this._state = IN_TAG_NAME;
+				context.state = IN_TAG_NAME;
 				continue; // Consume the token again
 			}
-		} else if (this._state === BEFORE_SCRIPT_5) {
+		} else if (context.state === BEFORE_SCRIPT_5) {
 			if (c === '/' || c === '>' || isWhitespace(c)) {
-				this._special = 1;
+				context.special = 1;
 			}
 
-			this._state = IN_TAG_NAME;
+			context.state = IN_TAG_NAME;
 			continue; // Consume the token again
-		} else if (this._state === AFTER_SCRIPT_1) {
+		} else if (context.state === AFTER_SCRIPT_1) {
 			if (c === 'r' || c === 'R') {
-				this._state = AFTER_SCRIPT_2;
+				context.state = AFTER_SCRIPT_2;
 			} else {
-				this._state = TEXT;
+				context.state = TEXT;
 			}
-		} else if (this._state === AFTER_SCRIPT_2) {
+		} else if (context.state === AFTER_SCRIPT_2) {
 			if (c === 'i' || c === 'I') {
-				this._state = AFTER_SCRIPT_3;
+				context.state = AFTER_SCRIPT_3;
 			} else {
-				this._state = TEXT;
+				context.state = TEXT;
 			}
-		} else if (this._state === AFTER_SCRIPT_3) {
+		} else if (context.state === AFTER_SCRIPT_3) {
 			if (c === 'p' || c === 'P') {
-				this._state = AFTER_SCRIPT_4;
+				context.state = AFTER_SCRIPT_4;
 			} else {
-				this._state = TEXT;
+				context.state = TEXT;
 			}
-		} else if (this._state === AFTER_SCRIPT_4) {
+		} else if (context.state === AFTER_SCRIPT_4) {
 			if (c === 't' || c === 'T') {
-				this._state = AFTER_SCRIPT_5;
+				context.state = AFTER_SCRIPT_5;
 			} else {
-				this._state = TEXT;
+				context.state = TEXT;
 			}
-		} else if (this._state === AFTER_SCRIPT_5) {
+		} else if (context.state === AFTER_SCRIPT_5) {
 			if (c === '>' || isWhitespace(c)) {
-				this._state = IN_CLOSING_TAG_NAME;
-				this._startSection(-6);
+				context.state = IN_CLOSING_TAG_NAME;
+				startSection(context, -6);
 				continue; // Reconsume the token
 			} else {
-				this._state = TEXT;
+				context.state = TEXT;
 			}
 
 			/*
 			 * Style
 			 */
-		} else if (this._state === BEFORE_STYLE_1) {
+		} else if (context.state === BEFORE_STYLE_1) {
 			if (c === 'y' || c === 'Y') {
-				this._state = BEFORE_STYLE_2;
+				context.state = BEFORE_STYLE_2;
 			} else {
-				this._state = IN_TAG_NAME;
+				context.state = IN_TAG_NAME;
 				continue; // Consume the token again
 			}
-		} else if (this._state === BEFORE_STYLE_2) {
+		} else if (context.state === BEFORE_STYLE_2) {
 			if (c === 'l' || c === 'L') {
-				this._state = BEFORE_STYLE_3;
+				context.state = BEFORE_STYLE_3;
 			} else {
-				this._state = IN_TAG_NAME;
+				context.state = IN_TAG_NAME;
 				continue; // Consume the token again
 			}
-		} else if (this._state === BEFORE_STYLE_3) {
+		} else if (context.state === BEFORE_STYLE_3) {
 			if (c === 'e' || c === 'E') {
-				this._state = BEFORE_STYLE_4;
+				context.state = BEFORE_STYLE_4;
 			} else {
-				this._state = IN_TAG_NAME;
+				context.state = IN_TAG_NAME;
 				continue; // Consume the token again
 			}
-		} else if (this._state === BEFORE_STYLE_4) {
+		} else if (context.state === BEFORE_STYLE_4) {
 			if (c === '/' || c === '>' || isWhitespace(c)) {
-				this._special = 2;
+				context.special = 2;
 			}
 
-			this._state = IN_TAG_NAME;
+			context.state = IN_TAG_NAME;
 			continue; // Consume the token again
-		} else if (this._state === AFTER_STYLE_1) {
+		} else if (context.state === AFTER_STYLE_1) {
 			if (c === 'y' || c === 'Y') {
-				this._state = AFTER_STYLE_2;
+				context.state = AFTER_STYLE_2;
 			} else {
-				this._state = TEXT;
+				context.state = TEXT;
 			}
-		} else if (this._state === AFTER_STYLE_2) {
+		} else if (context.state === AFTER_STYLE_2) {
 			if (c === 'l' || c === 'L') {
-				this._state = AFTER_STYLE_3;
+				context.state = AFTER_STYLE_3;
 			} else {
-				this._state = TEXT;
+				context.state = TEXT;
 			}
-		} else if (this._state === AFTER_STYLE_3) {
+		} else if (context.state === AFTER_STYLE_3) {
 			if (c === 'e' || c === 'E') {
-				this._state = AFTER_STYLE_4;
+				context.state = AFTER_STYLE_4;
 			} else {
-				this._state = TEXT;
+				context.state = TEXT;
 			}
-		} else if (this._state === AFTER_STYLE_4) {
+		} else if (context.state === AFTER_STYLE_4) {
 			if (c === '>' || isWhitespace(c)) {
-				this._state = IN_CLOSING_TAG_NAME;
-				this._startSection(-5);
+				context.state = IN_CLOSING_TAG_NAME;
+				startSection(context, -5);
 				continue; // Reconsume the token
 			} else {
-				this._state = TEXT;
+				context.state = TEXT;
 			}
 		} else {
 			console.error('HTMLTokenizer: Encountered unknown state');
-			this._emitSpecialToken('error');
+			emitSpecialToken(context, 'error');
 			break;
 		}
 
 		if (c === '\n') {
-			this._indexPos.line++;
-			this._indexPos.ch = 0;
+			// @ts-ignore
+			context.indexPos.line++;
+			// @ts-ignore
+			context.indexPos.ch = 0;
 		} else {
-			this._indexPos.ch++;
+			// @ts-ignore
+			context.indexPos.ch++;
 		}
 
-		this._index++;
+		context.index++;
 	}
 
-	if (!this._token) {
-		if (this._state !== TEXT) {
+	if (!context.token) {
+		if (context.state !== TEXT) {
 			// We hit EOF in the middle of processing something else.
-			this._emitSpecialToken('error');
+			emitSpecialToken(context, 'error');
 		} else {
-			this._emitTokenIfNonempty('text');
-			this._startSection();
+			emitTokenIfNonempty(context, 'text');
+			startSection(context);
 		}
 	}
 
-	return this._token;
-};
-
-function startSection(context, offset = 0) {
-	offset = offset || 0;
-	context._sectionStart = context._index + offset;
-	// Normally it wouldn't be safe to assume that we can just add the offset to the
-	// character position, because there might be a newline, which would require us to
-	// move to the next line. However, in all the cases where this is called, we are
-	// adjusting for characters that we know are not newlines.
-	context._sectionStartPos = _clonePos(context._indexPos, offset);
+	return context.token;
 }
 
-Tokenizer.prototype._startSection = function (offset) {
+/**
+ *
+ * @param {Context} context
+ * @param {number} offset
+ */
+function startSection(context, offset = 0) {
 	offset = offset || 0;
-	this._sectionStart = this._index + offset;
-
+	context.sectionStart = context.index + offset;
 	// Normally it wouldn't be safe to assume that we can just add the offset to the
 	// character position, because there might be a newline, which would require us to
 	// move to the next line. However, in all the cases where this is called, we are
 	// adjusting for characters that we know are not newlines.
-	this._sectionStartPos = _clonePos(this._indexPos, offset);
-};
+	context.sectionStartPos = clonePos(context.indexPos, offset);
+}
 
 /**
  * @private
  * Extract the portion of the buffer since _sectionStart and set it to be the next token we return
  * from `nextToken()`. If there's already a _token, we stuff it in _nextToken instead.
+ * @param {Context} context
  * @param {string} type The token's type (see documentation for `nextToken()`)
- * @param {number} index If specified, the index to use as the end of the token; uses this._index if not specified
+ * @param {number|undefined} index If specified, the index to use as the end of the token; uses this._index if not specified
+ * @param {Position|undefined} indexPos If specified, the index to use as the end of the token; uses this._index if not specified
  */
-Tokenizer.prototype._setToken = function (type, index, indexPos) {
-	if (index === undefined) {
-		index = this._index;
-	}
-
-	if (indexPos === undefined) {
-		indexPos = this._indexPos;
-	}
-
+function setToken(
+	context,
+	type,
+	index = context.index,
+	indexPos = context.indexPos
+) {
 	const token = {
 		type,
 		contents:
-			this._sectionStart === -1 ?
+			context.sectionStart === -1 ?
 				'' :
-				this._buffer.substring(this._sectionStart, index),
-		start: this._sectionStart,
+				context.buffer.substring(context.sectionStart, index),
+		start: context.sectionStart,
 		end: index,
-		startPos: _clonePos(this._sectionStartPos),
-		endPos: _clonePos(indexPos)
+		startPos: clonePos(context.sectionStartPos),
+		endPos: clonePos(indexPos)
 	};
-	if (this._token) {
-		// Queue this token to be emitted next. In theory it would be more general to have
+	if (context.token) {
+		// Queue context token to be emitted next. In theory it would be more general to have
 		// an arbitrary-length queue, but currently we only ever emit at most two tokens in a
 		// single pass through the tokenization loop.
-		if (this._nextToken) {
+		if (context.nextToken) {
 			console.error(
 				'HTMLTokenizer: Tried to emit more than two tokens in a single call'
 			);
 		}
 
-		this._nextToken = token;
+		context.nextToken = token;
 	} else {
-		this._token = token;
+		context.token = token;
 	}
-};
+}
 
 /**
  * @private
  * Sets the token to be returned from `nextToken()` and resets the section start to an invalid value.
  * this._sectionStart should be set to a valid value before the next call to one of the `_emit` methods.
+ * @param {Context} context
  * @param {string} type The token's type (see documentation for `nextToken()`)
- * @param {number} index If specified, the index to use as the end of the token; uses this._index if not specified
+ * @param {number|undefined} index If specified, the index to use as the end of the token; uses this._index if not specified
+ * @param {Position|undefined} indexPos If specified, the index to use as the end of the token; uses this._index if not specified
  */
-Tokenizer.prototype._emitToken = function (type, index, indexPos) {
-	this._setToken(type, index, indexPos);
-	this._sectionStart = -1;
-	this._sectionStartPos = null;
-};
+function emitToken(context, type, index = undefined, indexPos = undefined) {
+	setToken(context, type, index, indexPos);
+	context.sectionStart = -1;
+	context.sectionStartPos = undefined;
+}
 
 /**
  * @private
  * Like `_emitToken()`, but used for special tokens that don't have real content (like opentagend and selfclosingtag).
+ * @param {Context} context
  * @param {string} type The token's type (see documentation for `nextToken()`)
- * @param {number} index If specified, the index to use as the end of the token; uses this._index if not specified
+ * @param {number|undefined} index If specified, the index to use as the end of the token; uses this._index if not specified
+ * @param {Position|undefined} indexPos If specified, the index to use as the end of the token; uses this._index if not specified
  */
-Tokenizer.prototype._emitSpecialToken = function (type, index, indexPos) {
+function emitSpecialToken(
+	context,
+	type,
+	index = undefined,
+	indexPos = undefined
+) {
 	// Force the section start to be -1, since these tokens don't have meaningful content--they're
 	// just marking particular boundaries we care about (end of an open tag or a self-closing tag).
-	this._sectionStart = -1;
-	this._sectionStartPos = null;
-	this._emitToken(type, index, indexPos);
-};
+	context.sectionStart = -1;
+	context.sectionStartPos = undefined;
+	emitToken(context, type, index, indexPos);
+}
 
 /**
  * @private
  * Like `_emitToken()`, but only emits a token if there is actually content in it. Note that this still
  * resets this._sectionStart to an invalid value even if there is no content, so a new section must be
  * started before the next `_emit`.
+ * @param {Context} context
  * @param {string} type The token's type (see documentation for `nextToken()`)
  */
-Tokenizer.prototype._emitTokenIfNonempty = function (type) {
-	if (this._index > this._sectionStart) {
-		this._setToken(type);
+function emitTokenIfNonempty(context, type) {
+	if (context.index > context.sectionStart) {
+		setToken(context, type);
 	}
 
-	this._sectionStart = -1;
-	this._sectionStartPos = null;
-};
+	context.sectionStart = -1;
+	context.sectionStartPos = undefined;
+}
 
-exports.Tokenizer = Tokenizer;
+/**
+ * A simple HTML tokenizer. See the description of nextToken() for usage details.
+ * @param {string} text The HTML document to tokenize.
+ */
+function createTokenizer(text) {
+	/**
+	 * @type {Context}
+	 */
+	const context = {
+		state: TEXT,
+		buffer: text,
+		sectionStart: 0,
+		sectionStartPos: {line: 0, ch: 0},
+		index: 0,
+		indexPos: {line: 0, ch: 0},
+		special: 0, // 1 for script, 2 for style
+		token: undefined,
+		nextToken: undefined
+	};
+
+	return {
+		nextToken() {
+			return nextToken(context);
+		}
+	};
+}
+
+exports.createTokenizer = createTokenizer;
