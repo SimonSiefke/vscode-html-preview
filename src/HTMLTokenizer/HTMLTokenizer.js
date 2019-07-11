@@ -1,3 +1,4 @@
+/// <reference path="../types.d.ts" />
 /* eslint-disable no-negated-condition */
 /* eslint-disable complexity */
 /* Unittests: HTML Tokenizer */
@@ -60,29 +61,6 @@ const AFTER_STYLE_1 = i++; // T
 const AFTER_STYLE_2 = i++; // Y
 const AFTER_STYLE_3 = i++; // L
 const AFTER_STYLE_4 = i++; // E
-
-/** @typedef {{line: number, ch: number}} Position */
-
-/**
- * @typedef {{type:string
-	contents:string
-	start:number,
-	end: number,
-	startPos: Position | undefined
-	endPos: Position | undefined
-}} Token
- */
-
-/** @typedef {{ state : number,
-								buffer : string,
-								sectionStart : number,
-								sectionStartPos : Position | undefined,
-								index : number,
-								indexPos : Position|undefined,
-								special : number, // 1 for script, 2 for style
-								token : Token | undefined,
-								nextToken : Token | undefined
-							}} Context */
 
 /**
  * @private

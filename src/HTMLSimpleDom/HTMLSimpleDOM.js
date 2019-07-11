@@ -213,7 +213,7 @@ function getTextNodeID(textNode) {
  *
  * Adds two {line, ch}-style positions, returning a new pos.
  */
-function _addPos(pos1, pos2) {
+function addPos(pos1, pos2) {
 	return {
 		line: pos1.line + pos2.line,
 		ch: pos2.line === 0 ? pos1.ch + pos2.ch : pos2.ch,
@@ -226,7 +226,12 @@ function _addPos(pos1, pos2) {
  * Offsets the character offset of the given {line, ch} pos by the given amount and returns a new
  * pos. Not for general purpose use as it does not account for line boundaries.
  */
-function _offsetPos(pos, offset) {
+/**
+ *
+ * @param {Position} pos
+ * @param {number} offset
+ */
+function offsetPos(pos, offset) {
 	return {line: pos.line, ch: pos.ch + offset}
 }
 
@@ -255,8 +260,8 @@ Builder.prototype._logError = function(token) {
 	const startPos = token ? token.startPos || token.endPos : this.startOffsetPos
 	const endPos = token ? token.endPos : this.startOffsetPos
 
-	error.startPos = _addPos(this.startOffsetPos, startPos)
-	error.endPos = _addPos(this.startOffsetPos, endPos)
+	error.startPos = addPos(this.startOffsetPos, startPos)
+	error.endPos = addPos(this.startOffsetPos, endPos)
 
 	if (!this.errors) {
 		this.errors = []
@@ -295,7 +300,7 @@ Builder.prototype.build = function(strict, markCache = {}) {
 		lastClosedTag.update()
 
 		lastClosedTag.end = self.startOffset + endIndex
-		lastClosedTag.endPos = _addPos(self.startOffsetPos, endPos)
+		lastClosedTag.endPos = addPos(self.startOffsetPos, endPos)
 	}
 
 	while ((token = this.t.nextToken()) !== undefined) {
@@ -327,7 +332,7 @@ Builder.prototype.build = function(strict, markCache = {}) {
 					// Close the previous tag at the start of this tag.
 					// Adjust backwards for the < before the tag name.
 					// @ts-ignore
-					closeTag(token.start - 1, _offsetPos(token.startPos, -1))
+					closeTag(token.start - 1, offsetPos(token.startPos, -1))
 				}
 			}
 
@@ -338,7 +343,7 @@ Builder.prototype.build = function(strict, markCache = {}) {
 				parent: stack.length ? stack[stack.length - 1] : null,
 				start: this.startOffset + token.start - 1,
 				// @ts-ignore
-				startPos: _addPos(this.startOffsetPos, _offsetPos(token.startPos, -1)), // Ok because we know the previous char was a "<"
+				startPos: addPos(this.startOffsetPos, offsetPos(token.startPos, -1)), // Ok because we know the previous char was a "<"
 			})
 			newTag.tagID = this.getID(newTag, markCache)
 
@@ -387,7 +392,7 @@ Builder.prototype.build = function(strict, markCache = {}) {
 					this.currentTag.openEnd = this.currentTag.end =
 						this.startOffset + token.end
 					// @ts-ignore
-					this.currentTag.endPos = _addPos(this.startOffsetPos, token.endPos)
+					this.currentTag.endPos = addPos(this.startOffsetPos, token.endPos)
 					lastClosedTag = this.currentTag
 					this.currentTag.updateAttributeSignature()
 					this.currentTag = null
@@ -426,10 +431,10 @@ Builder.prototype.build = function(strict, markCache = {}) {
 						// the tagname).
 						if (stack.length === i + 1) {
 							// @ts-ignore
-							closeTag(token.end + 1, _offsetPos(token.endPos, 1))
+							closeTag(token.end + 1, offsetPos(token.endPos, 1))
 						} else {
 							// @ts-ignore
-							closeTag(token.start - 2, _offsetPos(token.startPos, -2))
+							closeTag(token.start - 2, offsetPos(token.startPos, -2))
 						}
 					} while (stack.length > i)
 				} else {
@@ -600,6 +605,6 @@ exports.SimpleNode = SimpleNode
 
 // Private API
 exports._dumpDOM = _dumpDOM
-exports._offsetPos = _offsetPos
+exports._offsetPos = offsetPos
 exports._getTextNodeID = getTextNodeID
 exports._seed = seed

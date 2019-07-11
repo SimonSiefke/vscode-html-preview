@@ -317,11 +317,12 @@ describe('HTML Tokenizer', () => {
 	});
 
 	describe('error cases', () => {
-		function expectError(text, isError) {
-			if (isError === undefined) {
-				isError = true;
-			}
-
+		/**
+		 *
+		 * @param {string} text
+		 * @param {boolean|undefined} isError
+		 */
+		function expectError(text, isError = true) {
 			const t = createTokenizer(text);
 			let token = t.nextToken();
 			while (token) {

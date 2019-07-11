@@ -1,11 +1,13 @@
 {
   "compilerOptions": {
+    "lib": ["esnext"],
     "target": "esnext",
     "module": "commonjs",
     "strict": true,
     "esModuleInterop": true,
     "checkJs": true,
     "allowJs": true,
-    "noEmit": true
+    "noEmit": true,
+    "types": ["jest", "node"]
   }
 }
