@@ -49,7 +49,7 @@ function _build(text, startOffset, startOffsetPos, strict, expectedErrors) {
 	const {errors} = builder;
 
 	if (expectedErrors) {
-		expect(root).toBeNull();
+		expect(root).toBe(null);
 	} else {
 		expect(root).toBeTruthy();
 	}
@@ -99,7 +99,7 @@ describe('HTML SimpleDOM', () => {
 			// expect(result.children[0].children[0].content).toBe('hello');
 		});
 
-		it('should return null for an unclosed non-void/non-implied-close tag', () => {
+		it('should return undefined for an unclosed non-void/non-implied-close tag', () => {
 			const errors = [
 				{
 					token: {
@@ -143,7 +143,7 @@ describe('HTML SimpleDOM', () => {
 			);
 		});
 
-		it('should return null for an extra close tag', () => {
+		it('should return undefined for an extra close tag', () => {
 			const errors = [
 				{
 					token: {
@@ -162,10 +162,10 @@ describe('HTML SimpleDOM', () => {
 			build('<p>this has an unopened bold</b> tag</p>', true, errors);
 		});
 
-		it('should return null if there are unclosed tags at the end of the document', () => {
+		it('should return undefined if there are unclosed tags at the end of the document', () => {
 			const errors = [
 				{
-					token: null,
+					token: undefined,
 					startPos: {line: 0, ch: 0},
 					endPos: {line: 0, ch: 0}
 				}
@@ -174,7 +174,7 @@ describe('HTML SimpleDOM', () => {
 			build('<div>this has <b>multiple unclosed tags', true, errors);
 		});
 
-		it('should return null if there is a tokenization failure', () => {
+		it('should return undefined if there is a tokenization failure', () => {
 			const errors = [
 				{
 					token: {
@@ -182,7 +182,7 @@ describe('HTML SimpleDOM', () => {
 						contents: '',
 						start: -1,
 						end: 4,
-						startPos: null,
+						startPos: undefined,
 						endPos: {line: 0, ch: 4}
 					},
 					startPos: {line: 0, ch: 4},

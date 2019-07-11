@@ -6,7 +6,7 @@
 /* eslint-disable complexity */
 /* eslint-disable  */
 
-const {Tokenizer} = require('../HTMLTokenizer/HTMLTokenizer')
+const {createTokenizer} = require('../HTMLTokenizer/HTMLTokenizer')
 const MurmurHash3 = require('../murmurhash3_gc')
 
 const seed = Math.floor(Math.random() * 65535)
@@ -244,7 +244,7 @@ function _offsetPos(pos, offset) {
 function Builder(text, startOffset = 0, startOffsetPos = {line: 0, ch: 0}) {
 	this.stack = []
 	this.text = text
-	this.t = new Tokenizer(text)
+	this.t = createTokenizer(text)
 	this.currentTag = null
 	this.startOffset = startOffset || 0
 	this.startOffsetPos = startOffsetPos || {line: 0, ch: 0}
@@ -298,7 +298,7 @@ Builder.prototype.build = function(strict, markCache = {}) {
 		lastClosedTag.endPos = _addPos(self.startOffsetPos, endPos)
 	}
 
-	while ((token = this.t.nextToken()) !== null) {
+	while ((token = this.t.nextToken()) !== undefined) {
 		// LastTextNode is used to glue text nodes together
 		// If the last node we saw was text but this one is not, then we're done gluing.
 		// If this node is a comment, we might still encounter more text.
