@@ -1,3 +1,4 @@
+/// <reference path="../types.d.ts" />
 /* eslint-disable no-var */
 /* eslint-disable no-lonely-if */
 /* eslint-disable no-multi-assign */
@@ -212,6 +213,13 @@ function getTextNodeID(textNode) {
  * @private
  *
  * Adds two {line, ch}-style positions, returning a new pos.
+ *
+ */
+
+/**
+ *
+ * @param {Position} pos1
+ * @param {Position} pos2
  */
 function addPos(pos1, pos2) {
 	return {
