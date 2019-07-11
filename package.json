@@ -1,0 +1,28 @@
+{
+  "name": "live-html-edit",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/jest": "^24.0.15",
+    "eslint": "^6.0.1",
+    "eslint-config-xo": "^0.26.0",
+    "jest": "^24.8.0",
+    "prettier": "^1.18.2",
+    "prettier-config-bitworkers": "^1.5.1"
+  },
+  "eslintConfig": {
+    "extends": [
+      "xo/esnext"
+    ]
+  }
+}
