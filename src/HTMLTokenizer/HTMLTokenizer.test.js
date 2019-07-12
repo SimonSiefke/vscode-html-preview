@@ -1,6 +1,7 @@
 /* global describe, it, expect */
 
-const {createTokenizer} = require('./HTMLTokenizer');
+import {createTokenizer} from './HTMLTokenizer';
+
 describe('HTML Tokenizer', () => {
 	it('should handle tags and text', () => {
 		const t = createTokenizer('<html>\n<body>Hello</body>\n</html>');

@@ -1,4 +1,9 @@
-/// <reference path="../types.d.ts" />
+/// <reference path="../types.ts" />
+
+/** @typedef {import('./HTMLTokenizer.types').Context} Context */
+/** @typedef {import('../types').Token} Token */
+/** @typedef {import('../types').Position} Position */
+
 /* eslint-disable no-negated-condition */
 /* eslint-disable complexity */
 /* Unittests: HTML Tokenizer */
@@ -134,6 +139,7 @@ function clonePos(pos = undefined, offset = undefined) {
 /**
  *
  * @param {Context} context
+ * @return {Token|undefined}
  */
 function nextToken(context) {
 	context.token = undefined;
@@ -804,7 +810,7 @@ function emitTokenIfNonempty(context, type) {
  * A simple HTML tokenizer. See the description of nextToken() for usage details.
  * @param {string} text The HTML document to tokenize.
  */
-function createTokenizer(text) {
+export function createTokenizer(text) {
 	/**
 	 * @type {Context}
 	 */
@@ -821,10 +827,11 @@ function createTokenizer(text) {
 	};
 
 	return {
+		/**
+		 * @return {Token|undefined}
+		 */
 		nextToken() {
 			return nextToken(context);
 		}
 	};
 }
-
-exports.createTokenizer = createTokenizer;
