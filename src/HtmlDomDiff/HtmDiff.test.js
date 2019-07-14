@@ -11,10 +11,6 @@ function run(testCases) {
 	for (const testCase of testCases) {
 		const previousDom = build(testCase.previousDom).dom;
 		const nextDom = build(testCase.nextDom).dom;
-		if (nextDom) {
-			nextDom.tagId = 1;
-		}
-
 		const diffs = domdiff(previousDom, nextDom);
 		expect(diffs).toEqual(testCase.expectedEdits);
 	}

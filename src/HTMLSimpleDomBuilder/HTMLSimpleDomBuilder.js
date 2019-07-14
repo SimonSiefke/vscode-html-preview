@@ -1,3 +1,4 @@
+// @ts-nocheck
 /// <reference path="../types.ts" />
 
 const {createTokenizer} = require('../HTMLTokenizer/HTMLTokenizer');

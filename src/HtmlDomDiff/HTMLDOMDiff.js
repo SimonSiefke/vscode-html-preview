@@ -1,3 +1,4 @@
+// @ts-nocheck
 /* eslint-disable valid-jsdoc */
 /* eslint-disable complexity */
 import {isElement, isText} from '../HTMLSimpleDom/HTMLSimpleDOM';
@@ -97,19 +98,19 @@ const generateChildEdits = function (
 	 * list. This function sets the `beforeID` on any pending edits and adds
 	 * them to the main list.
 	 *
-	 * If this item is not being deleted, then it will be used as the `afterID`
+	 * If this item is not being deleted, then it will be used as the `afterId`
 	 * for text edits that follow.
 	 *
 	 * @param {number} beforeID ID to set on the pending edits
 	 * @param {boolean} isBeingDeleted true if the given item is being deleted. If so,
-	 *     we can't use it as the `afterID` for future edits--whatever previous item
-	 *     was set as the `textAfterID` is still okay.
+	 *     we can't use it as the `afterId` for future edits--whatever previous item
+	 *     was set as the `textAfterId` is still okay.
 	 */
-	const finalizeNewEdits = function (beforeID, isBeingDeleted) {
+	const finalizeNewEdits = function (beforeId, isBeingDeleted) {
 		newEdits.forEach(edit => {
 			// ElementDeletes don't need any positioning information
 			if (edit.type !== 'elementDelete') {
-				edit.beforeID = beforeID;
+				edit.beforeID = beforeId;
 			}
 		});
 		edits.push.apply(edits, newEdits);
@@ -121,7 +122,7 @@ const generateChildEdits = function (
 		// this node will no longer be in the tree by the time we get
 		// to any future edit that needs an afterID.
 		if (!isBeingDeleted) {
-			textAfterId = beforeID;
+			textAfterId = beforeId;
 		}
 	};
 
@@ -498,7 +499,7 @@ const generateChildEdits = function (
 		) {
 			edit.lastChild = true;
 			delete edit.firstChild;
-			delete edit.afterID;
+			delete edit.afterId;
 		}
 	});
 	edits.push.apply(edits, newEdits);

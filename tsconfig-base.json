@@ -1,0 +1,34 @@
+{
+  "compilerOptions": {
+    "pretty": true,
+    "lib": ["esnext"],
+    "target": "esnext",
+    "module": "commonjs",
+    // "rootDir": ".",
+
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
+    "composite": true,
+    "noEmitOnError": true,
+
+    "strictNullChecks": true,
+    // "noImplicitAny": true,
+    // "noImplicitThis": true,
+    // "strictPropertyInitialization": true,
+    // "noUnusedLocals": true,
+    // "noUnusedParameters": true,
+
+    "skipLibCheck": true,
+
+    "alwaysStrict": true,
+    "preserveConstEnums": true,
+    "allowJs": true,
+    "checkJs": true,
+    // "newLine": "lf",
+
+    "types": ["node", "jest"],
+    "moduleResolution": "node",
+    "resolveJsonModule": true
+  }
+}

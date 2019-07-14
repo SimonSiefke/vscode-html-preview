@@ -1,3 +1,4 @@
+// @ts-nocheck
 /// <reference path="../types.ts" />
 
 /** @typedef {import('./HTMLTokenizer.types').Context} Context */

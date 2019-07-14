@@ -1,3 +1,4 @@
+// @ts-nocheck
 /// <reference path="../types.ts" />
 
 import {hash} from '../hash';
