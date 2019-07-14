@@ -1,8 +1,7 @@
 /* eslint-disable valid-jsdoc */
 /* eslint-disable complexity */
+import {isElement, isText} from '../HTMLSimpleDom/HTMLSimpleDOM';
 /**
- * @private
- *
  * Determines the changes made to attributes and generates edits for those changes.
  *
  * @param {SimpleNode} oldNode node from old tree
@@ -11,7 +10,7 @@
  */
 function generateAttributeEdits(oldNode, newNode) {
 	// Shallow copy the old attributes object so that we can modify it
-	const oldAttributes = $.extend({}, oldNode.attributes);
+	const oldAttributes = {...oldNode.attributes};
 	const newAttributes = newNode.attributes;
 	const edits = [];
 
@@ -22,7 +21,7 @@ function generateAttributeEdits(oldNode, newNode) {
 				'attrAdd';
 			edits.push({
 				type,
-				tagID: oldNode.tagID,
+				tagId: oldNode.tagId,
 				attribute: attributeName,
 				value: newAttributes[attributeName]
 			});
@@ -34,7 +33,7 @@ function generateAttributeEdits(oldNode, newNode) {
 	Object.keys(oldAttributes).forEach(attributeName => {
 		edits.push({
 			type: 'attrDelete',
-			tagID: oldNode.tagID,
+			tagId: oldNode.tagId,
 			attribute: attributeName
 		});
 	});
@@ -43,19 +42,17 @@ function generateAttributeEdits(oldNode, newNode) {
 }
 
 /**
- * @private
  *
  * Retrieve the parent tag ID of a SimpleDOM node.
  *
- * @param {object} node SimpleDOM node for which to look up parent ID
- * @return {number} ID or null if there is no parent
+ * @param {import('../HTMLSimpleDom/HTMLSimpleDom.types').SimpleNode} node SimpleDOM node for which to look up parent ID
+ * @return {number|string} ID or undefined if there is no parent
  */
-function getParentID(node) {
-	return node.parent && node.parent.tagID;
+function getParentId(node) {
+	return node.parent && node.parent.tagId;
 }
 
 /**
- * @private
  *
  * When the main loop (see below) determines that something has changed with
  * an element's immediate children, it calls this function to create edit
@@ -63,7 +60,7 @@ function getParentID(node) {
  *
  * This adds to the edit list in place and does not return anything.
  *
- * @param {?Object} oldParent SimpleDOM node for the previous state of this element, null/undefined if the element is new
+ * @param {?Object} oldParent SimpleDOM node for the previous state of this element, undefined if the element is new
  * @param {Object} newParent SimpleDOM node for the current state of the element
  */
 const generateChildEdits = function (
@@ -72,8 +69,6 @@ const generateChildEdits = function (
 	newParent,
 	newNodeMap
 ) {
-	/* jslint continue: true */
-
 	let newIndex = 0;
 	let oldIndex = 0;
 	const newChildren = newParent.children;
@@ -82,7 +77,7 @@ const generateChildEdits = function (
 	let oldChild;
 	let newEdits = [];
 	let newEdit;
-	let textAfterID;
+	let textAfterId;
 	const edits = [];
 	const moves = [];
 	const newElements = [];
@@ -126,7 +121,7 @@ const generateChildEdits = function (
 		// this node will no longer be in the tree by the time we get
 		// to any future edit that needs an afterID.
 		if (!isBeingDeleted) {
-			textAfterID = beforeID;
+			textAfterId = beforeID;
 		}
 	};
 
@@ -141,12 +136,12 @@ const generateChildEdits = function (
 	 * @return {boolean} true if an elementInsert was created
 	 */
 	const addElementInsert = function () {
-		if (!oldNodeMap[newChild.tagID]) {
+		if (!oldNodeMap[newChild.tagId]) {
 			newEdit = {
 				type: 'elementInsert',
 				tag: newChild.tag,
-				tagID: newChild.tagID,
-				parentID: newChild.parent.tagID,
+				tagId: newChild.tagId,
+				parentId: newChild.parent.tagId,
 				attributes: newChild.attributes
 			};
 
@@ -158,7 +153,7 @@ const generateChildEdits = function (
 
 			// A textInsert edit that follows this elementInsert should use
 			// this element's ID.
-			textAfterID = newChild.tagID;
+			textAfterId = newChild.tagId;
 
 			// New element means we need to move on to compare the next
 			// of the current tree with the one from the old tree that we
@@ -181,14 +176,14 @@ const generateChildEdits = function (
 	 * @return {boolean} true if elementDelete was generated
 	 */
 	const addElementDelete = function () {
-		if (!newNodeMap[oldChild.tagID]) {
+		if (!newNodeMap[oldChild.tagId]) {
 			// We can finalize existing edits relative to this node *before* it's
 			// deleted.
-			finalizeNewEdits(oldChild.tagID, true);
+			finalizeNewEdits(oldChild.tagId, true);
 
 			newEdit = {
 				type: 'elementDelete',
-				tagID: oldChild.tagID
+				tagId: oldChild.tagId
 			};
 			newEdits.push(newEdit);
 
@@ -209,13 +204,13 @@ const generateChildEdits = function (
 		newEdit = {
 			type: 'textInsert',
 			content: newChild.content,
-			parentID: newChild.parent.tagID
+			parentId: newChild.parent.tagId
 		};
 
 		// Text changes will generally have afterID and beforeID, but we make
 		// special note if it's the first child.
-		if (textAfterID) {
-			newEdit.afterID = textAfterID;
+		if (textAfterId) {
+			newEdit.afterId = textAfterId;
 		} else {
 			newEdit.firstChild = true;
 		}
@@ -229,14 +224,14 @@ const generateChildEdits = function (
 	/**
 	 * Finds the previous child of the new tree.
 	 *
-	 * @return {?Object} previous child or null if there wasn't one
+	 * @return {?Object} previous child or undefined if there wasn't one
 	 */
 	const prevNode = function () {
 		if (newIndex > 0) {
 			return newParent.children[newIndex - 1];
 		}
 
-		return null;
+		return undefined;
 	};
 
 	/**
@@ -272,13 +267,13 @@ const generateChildEdits = function (
 		if (
 			previousEdit &&
 			previousEdit.type === 'textReplace' &&
-			previousEdit.afterID === textAfterID
+			previousEdit.afterId === textAfterId
 		) {
 			oldIndex++;
 			return;
 		}
 
-		newEdit.parentID = oldChild.parent.tagID;
+		newEdit.parentId = oldChild.parent.tagId;
 
 		// If there was only one child previously, we just pass along
 		// textDelete/textReplace with the parentID and the browser will
@@ -286,8 +281,8 @@ const generateChildEdits = function (
 		if (oldChild.parent.children.length === 1) {
 			newEdits.push(newEdit);
 		} else {
-			if (textAfterID) {
-				newEdit.afterID = textAfterID;
+			if (textAfterId) {
+				newEdit.afterId = textAfterId;
 			}
 
 			newEdits.push(newEdit);
@@ -312,17 +307,17 @@ const generateChildEdits = function (
 		// of insert. The check that we're doing here is looking up the current
 		// child's ID in the *old* map and seeing if this child used to have a
 		// different parent.
-		const possiblyMovedElement = oldNodeMap[newChild.tagID];
+		const possiblyMovedElement = oldNodeMap[newChild.tagId];
 		if (
 			possiblyMovedElement &&
-			newParent.tagID !== getParentID(possiblyMovedElement)
+			newParent.tagId !== getParentId(possiblyMovedElement)
 		) {
 			newEdit = {
 				type: 'elementMove',
-				tagID: newChild.tagID,
-				parentID: newChild.parent.tagID
+				tagId: newChild.tagId,
+				parentId: newChild.parent.tagId
 			};
-			moves.push(newEdit.tagID);
+			moves.push(newEdit.tagId);
 			newEdits.push(newEdit);
 
 			// This element in the new tree was a move to this spot, so we can move
@@ -341,12 +336,12 @@ const generateChildEdits = function (
 	 * @return {boolean} true if the element has moved
 	 */
 	const hasMoved = function (oldChild) {
-		const oldChildInNewTree = newNodeMap[oldChild.tagID];
+		const oldChildInNewTree = newNodeMap[oldChild.tagId];
 
 		return (
 			oldChild.children &&
 			oldChildInNewTree &&
-			getParentID(oldChild) !== getParentID(oldChildInNewTree)
+			getParentId(oldChild) !== getParentId(oldChildInNewTree)
 		);
 	};
 
@@ -369,8 +364,8 @@ const generateChildEdits = function (
 			continue;
 		}
 
-		if (newChild.isElement() || oldChild.isElement()) {
-			if (newChild.isElement() && oldChild.isText()) {
+		if (isElement(newChild) || isElement(oldChild)) {
+			if (isElement(newChild) && isText(oldChild)) {
 				addTextDelete();
 
 				// If this element is new, add it and move to the next child
@@ -378,7 +373,7 @@ const generateChildEdits = function (
 				// current element with the next old element on the next pass
 				// through the loop.
 				addElementInsert();
-			} else if (oldChild.isElement() && newChild.isText()) {
+			} else if (isElement(oldChild) && isText(newChild)) {
 				// If the old child has *not* been deleted, we assume that we've
 				// inserted some text and will still encounter the old node
 				if (!addElementDelete()) {
@@ -386,7 +381,7 @@ const generateChildEdits = function (
 				}
 
 				// Both children are elements
-			} else if (newChild.tagID !== oldChild.tagID) {
+			} else if (newChild.tagId !== oldChild.tagId) {
 				// First, check to see if we're deleting an element.
 				// If we are, get rid of that element and restart our comparison
 				// logic with the same element from the new tree and the next one
@@ -408,7 +403,7 @@ const generateChildEdits = function (
 			} else {
 				// Since this element hasn't moved, it is a suitable "beforeID"
 				// for the edits we've logged.
-				finalizeNewEdits(oldChild.tagID, false);
+				finalizeNewEdits(oldChild.tagId, false);
 				newIndex++;
 				oldIndex++;
 			}
@@ -419,10 +414,10 @@ const generateChildEdits = function (
 				newEdit = {
 					type: 'textReplace',
 					content: newChild.content,
-					parentID: newChild.parent.tagID
+					parentId: newChild.parent.tagId
 				};
-				if (textAfterID) {
-					newEdit.afterID = textAfterID;
+				if (textAfterId) {
+					newEdit.afterId = textAfterId;
 				}
 
 				newEdits.push(newEdit);
@@ -451,7 +446,7 @@ const generateChildEdits = function (
 			oldIndex++;
 
 			// Is this an element? if so, delete it
-		} else if (oldChild.isElement()) {
+		} else if (isElement(oldChild)) {
 			if (!addElementDelete()) {
 				console.error(
 					'HTML Instrumentation: failed to add elementDelete for remaining element in the original DOM. This should not happen.',
@@ -473,7 +468,7 @@ const generateChildEdits = function (
 		newChild = newChildren[newIndex];
 
 		// Is this an element?
-		if (newChild.isElement()) {
+		if (isElement(newChild)) {
 			// Look to see if the element has moved here.
 			if (!addElementMove()) {
 				// Not a move, so we insert this element.
@@ -534,7 +529,7 @@ const generateChildEdits = function (
  * @param {Object} newNode SimpleDOM node with the new content
  * @return {Array.{Object}} list of edit operations
  */
-function domdiff(oldNode, newNode) {
+export function domdiff(oldNode, newNode) {
 	const queue = [];
 	const edits = [];
 	const moves = [];
@@ -550,7 +545,7 @@ function domdiff(oldNode, newNode) {
 	 * creates the elementInsert edit.
 	 */
 	const queuePush = function (node) {
-		if (node.children && oldNodeMap[node.tagID]) {
+		if (node.children && oldNodeMap[node.tagId]) {
 			queue.push(node);
 		}
 	};
@@ -571,7 +566,7 @@ function domdiff(oldNode, newNode) {
 
 	do {
 		newElement = queue.pop();
-		oldElement = oldNodeMap[newElement.tagID];
+		oldElement = oldNodeMap[newElement.tagId];
 
 		// Do we need to compare elements?
 		if (oldElement) {
@@ -605,8 +600,8 @@ function domdiff(oldNode, newNode) {
 				edits.push({
 					type: 'elementInsert',
 					tag: newElement.tag,
-					tagID: newElement.tagID,
-					parentID: null,
+					tagId: newElement.tagId,
+					parentId: undefined,
 					attributes: newElement.attributes
 				});
 			}
@@ -621,7 +616,7 @@ function domdiff(oldNode, newNode) {
 	if (moves.length > 0) {
 		edits.unshift({
 			type: 'rememberNodes',
-			tagIDs: moves
+			tagIds: moves
 		});
 	}
 
@@ -629,4 +624,3 @@ function domdiff(oldNode, newNode) {
 }
 
 // Public API
-exports.domdiff = domdiff;

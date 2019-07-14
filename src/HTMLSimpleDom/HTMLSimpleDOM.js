@@ -1,5 +1,7 @@
 /// <reference path="../types.ts" />
 
+import {hash} from '../hash';
+
 /** @typedef {import('./HTMLSimpleDom.types').SimpleNode} Context */
 
 /* eslint-disable no-var */
@@ -11,16 +13,13 @@
 /* eslint-disable  */
 
 const {createTokenizer} = require('../HTMLTokenizer/HTMLTokenizer')
-const MurmurHash3 = require('../murmurhash3_gc')
-
-const seed = Math.floor(Math.random() * 65535)
 
 /**
  *
  * A SimpleNode represents one node in a SimpleDOM tree. Each node can have
  * any set of properties on it, though there are a couple of assumptions made.
  * Elements will have `children` and `attributes` properties. Text nodes will have a `content`
- * property. All Elements will have a `tagID` and text nodes *can* have one.
+ * property. All Elements will have a `tagId` and text nodes *can* have one.
  *
  * @param {Object} properties the properties provided will be set on the new object.
  */
@@ -46,9 +45,7 @@ function createSimpleNode(properties) {
  * @param {Context} context
  */
 export function update(context) {
-	// console.log('update', context)
 	if (isElement(context)) {
-		// console.log('if')
 		let i
 		let subtreeHashes = ''
 		let childHashes = ''
@@ -67,23 +64,10 @@ export function update(context) {
 			}
 		}
 
-		context.childSignature = MurmurHash3.hashString(
-			childHashes,
-			childHashes.length,
-			seed
-		)
-		context.subtreeSignature = MurmurHash3.hashString(
-			subtreeHashes,
-			subtreeHashes.length,
-			seed
-		)
+		context.childSignature = hash(childHashes)
+		context.subtreeSignature = hash(subtreeHashes)
 	} else {
-		// console.log('else')
-		context.textSignature = MurmurHash3.hashString(
-			context.content,
-			context.content.length,
-			seed
-		)
+		context.textSignature = hash(context.content)
 	}
 }
 
@@ -93,11 +77,7 @@ export function update(context) {
  */
 export function updateAttributeSignature(context) {
 	const attributeString = JSON.stringify(context.attributes)
-	context.attributeSignature = MurmurHash3.hashString(
-		attributeString,
-		attributeString.length,
-		seed
-	)
+	context.attributeSignature = hash(attributeString)
 }
 
 /**
@@ -117,9 +97,9 @@ export function isElement(context) {
  * @param {Context} context
  * @return {boolean} true if it is text
  */
-// exports.isElement = function isText(context) {
-// 	return !context.children
-// }
+export function isText(context) {
+	return !context.children
+}
 
 // exports.SimpleNode = createSimpleNode
 

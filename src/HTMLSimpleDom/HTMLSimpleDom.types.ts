@@ -12,7 +12,7 @@ export interface SimpleNode {
 	attributeSignature?: string
 	parent: SimpleNode | undefined
 	startPos?: Position | undefined
-	tagId?: number | string
+	tagId: number | string
 	tag?: string
 	start?: number | undefined
 	end?: number

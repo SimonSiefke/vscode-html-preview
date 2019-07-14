@@ -97,7 +97,7 @@ const voidElements = {
 	wbr: true,
 }
 
-let tagID = 1
+let tagId = 1
 
 /**
  *  Adds two {line, ch}-style positions, returning a new pos.
@@ -177,10 +177,9 @@ function logError(context, token) {
 function getTextNodeID(textNode) {
 	const childIndex = textNode.parent.children.indexOf(textNode)
 	if (childIndex === 0) {
-		return textNode.parent.tagID + '.0'
+		return textNode.parent.tagId + '.0'
 	}
-
-	return textNode.parent.children[childIndex - 1].tagID + 't'
+	return textNode.parent.children[childIndex - 1].tagId + 't'
 }
 
 /**
@@ -214,6 +213,7 @@ export function build(text, {startOffset, startOffsetPos, strict = true} = {}) {
 	let lastClosedTag
 	let lastTextNode
 	let attributeName = null
+	let tagId = 1
 	/**
 	 * @type {{[key:string]:any}}
 	 */
@@ -282,13 +282,13 @@ export function build(text, {startOffset, startOffsetPos, strict = true} = {}) {
 				start: context.startOffset + token.start - 1,
 				startPos: addPos(context.startOffsetPos, offsetPos(token.startPos, -1)), // Ok because we know the previous char was a "<"
 			}
-			newTag.tagId = getId()
+			newTag.tagId = tagId++
 
 			// During undo in particular, it's possible that tag IDs may be reused and
 			// the marks in the document may be misleading. If a tag ID has been reused,
 			// we apply a new tag ID to ensure that our edits come out correctly.
 			if (nodeMap[newTag.tagId]) {
-				newTag.tagId = getId()
+				newTag.tagId = tagId++
 			}
 
 			nodeMap[newTag.tagId] = newTag
@@ -463,11 +463,11 @@ export function build(text, {startOffset, startOffsetPos, strict = true} = {}) {
 }
 
 /**
- * Returns the best tag ID for the new tag object given.
- * and returns a unique ID.
+ * Returns the best tag Id for the new tag object given.
+ * and returns a unique Id.
  *
- * @return {number} unique tag ID
+ * @return {number} unique tag id
  */
 function getId() {
-	return tagID++
+	return tagId++
 }

@@ -18,105 +18,103 @@
  *  See http://github.com/whitequark/murmurhash3-js for future updates to this file.
  */
 
-var MurmurHash3 = {
-  mul32: function(m, n) {
-    var nlo = n & 0xffff
-    var nhi = n - nlo
-    return (((nhi * m) | 0) + ((nlo * m) | 0)) | 0
-  },
+export const MurmurHash3 = {
+	mul32(m, n) {
+		const nlo = n & 0xffff;
+		const nhi = n - nlo;
+		return (((nhi * m) | 0) + ((nlo * m) | 0)) | 0;
+	},
 
-  hashBytes: function(data, len, seed) {
-    var c1 = 0xcc9e2d51,
-      c2 = 0x1b873593
+	hashBytes(data, len, seed) {
+		const c1 = 0xcc9e2d51;
+		const c2 = 0x1b873593;
 
-    var h1 = seed
-    var roundedEnd = len & ~0x3
+		let h1 = seed;
+		const roundedEnd = len & ~0x3;
 
-    for (var i = 0; i < roundedEnd; i += 4) {
-      var k1 =
-        (data.charCodeAt(i) & 0xff) |
-        ((data.charCodeAt(i + 1) & 0xff) << 8) |
-        ((data.charCodeAt(i + 2) & 0xff) << 16) |
-        ((data.charCodeAt(i + 3) & 0xff) << 24)
+		for (let i = 0; i < roundedEnd; i += 4) {
+			var k1 =
+				(data.charCodeAt(i) & 0xff) |
+				((data.charCodeAt(i + 1) & 0xff) << 8) |
+				((data.charCodeAt(i + 2) & 0xff) << 16) |
+				((data.charCodeAt(i + 3) & 0xff) << 24);
 
-      k1 = this.mul32(k1, c1)
-      k1 = ((k1 & 0x1ffff) << 15) | (k1 >>> 17) // ROTL32(k1,15);
-      k1 = this.mul32(k1, c2)
+			k1 = this.mul32(k1, c1);
+			k1 = ((k1 & 0x1ffff) << 15) | (k1 >>> 17); // ROTL32(k1,15);
+			k1 = this.mul32(k1, c2);
 
-      h1 ^= k1
-      h1 = ((h1 & 0x7ffff) << 13) | (h1 >>> 19) // ROTL32(h1,13);
-      h1 = (h1 * 5 + 0xe6546b64) | 0
-    }
+			h1 ^= k1;
+			h1 = ((h1 & 0x7ffff) << 13) | (h1 >>> 19); // ROTL32(h1,13);
+			h1 = (h1 * 5 + 0xe6546b64) | 0;
+		}
 
-    k1 = 0
+		k1 = 0;
 
-    switch (len % 4) {
-      case 3:
-        k1 = (data.charCodeAt(roundedEnd + 2) & 0xff) << 16
-      // fallthrough
-      case 2:
-        k1 |= (data.charCodeAt(roundedEnd + 1) & 0xff) << 8
-      // fallthrough
-      case 1:
-        k1 |= data.charCodeAt(roundedEnd) & 0xff
-        k1 = this.mul32(k1, c1)
-        k1 = ((k1 & 0x1ffff) << 15) | (k1 >>> 17) // ROTL32(k1,15);
-        k1 = this.mul32(k1, c2)
-        h1 ^= k1
-    }
+		switch (len % 4) {
+			case 3:
+				k1 = (data.charCodeAt(roundedEnd + 2) & 0xff) << 16;
+			// Fallthrough
+			case 2:
+				k1 |= (data.charCodeAt(roundedEnd + 1) & 0xff) << 8;
+			// Fallthrough
+			case 1:
+				k1 |= data.charCodeAt(roundedEnd) & 0xff;
+				k1 = this.mul32(k1, c1);
+				k1 = ((k1 & 0x1ffff) << 15) | (k1 >>> 17); // ROTL32(k1,15);
+				k1 = this.mul32(k1, c2);
+				h1 ^= k1;
+		}
 
-    // finalization
-    h1 ^= len
+		// Finalization
+		h1 ^= len;
 
-    // fmix(h1);
-    h1 ^= h1 >>> 16
-    h1 = this.mul32(h1, 0x85ebca6b)
-    h1 ^= h1 >>> 13
-    h1 = this.mul32(h1, 0xc2b2ae35)
-    h1 ^= h1 >>> 16
+		// Fmix(h1);
+		h1 ^= h1 >>> 16;
+		h1 = this.mul32(h1, 0x85ebca6b);
+		h1 ^= h1 >>> 13;
+		h1 = this.mul32(h1, 0xc2b2ae35);
+		h1 ^= h1 >>> 16;
 
-    return h1
-  },
+		return h1;
+	},
 
-  hashString: function(data, len, seed) {
-    var c1 = 0xcc9e2d51,
-      c2 = 0x1b873593
+	hashString(data, len, seed) {
+		const c1 = 0xcc9e2d51;
+		const c2 = 0x1b873593;
 
-    var h1 = seed
-    var roundedEnd = len & ~0x1
+		let h1 = seed;
+		const roundedEnd = len & ~0x1;
 
-    for (var i = 0; i < roundedEnd; i += 2) {
-      var k1 = data.charCodeAt(i) | (data.charCodeAt(i + 1) << 16)
+		for (let i = 0; i < roundedEnd; i += 2) {
+			var k1 = data.charCodeAt(i) | (data.charCodeAt(i + 1) << 16);
 
-      k1 = this.mul32(k1, c1)
-      k1 = ((k1 & 0x1ffff) << 15) | (k1 >>> 17) // ROTL32(k1,15);
-      k1 = this.mul32(k1, c2)
+			k1 = this.mul32(k1, c1);
+			k1 = ((k1 & 0x1ffff) << 15) | (k1 >>> 17); // ROTL32(k1,15);
+			k1 = this.mul32(k1, c2);
 
-      h1 ^= k1
-      h1 = ((h1 & 0x7ffff) << 13) | (h1 >>> 19) // ROTL32(h1,13);
-      h1 = (h1 * 5 + 0xe6546b64) | 0
-    }
+			h1 ^= k1;
+			h1 = ((h1 & 0x7ffff) << 13) | (h1 >>> 19); // ROTL32(h1,13);
+			h1 = (h1 * 5 + 0xe6546b64) | 0;
+		}
 
-    if (len % 2 == 1) {
-      k1 = data.charCodeAt(roundedEnd)
-      k1 = this.mul32(k1, c1)
-      k1 = ((k1 & 0x1ffff) << 15) | (k1 >>> 17) // ROTL32(k1,15);
-      k1 = this.mul32(k1, c2)
-      h1 ^= k1
-    }
+		if (len % 2 == 1) {
+			k1 = data.charCodeAt(roundedEnd);
+			k1 = this.mul32(k1, c1);
+			k1 = ((k1 & 0x1ffff) << 15) | (k1 >>> 17); // ROTL32(k1,15);
+			k1 = this.mul32(k1, c2);
+			h1 ^= k1;
+		}
 
-    // finalization
-    h1 ^= len << 1
+		// Finalization
+		h1 ^= len << 1;
 
-    // fmix(h1);
-    h1 ^= h1 >>> 16
-    h1 = this.mul32(h1, 0x85ebca6b)
-    h1 ^= h1 >>> 13
-    h1 = this.mul32(h1, 0xc2b2ae35)
-    h1 ^= h1 >>> 16
+		// Fmix(h1);
+		h1 ^= h1 >>> 16;
+		h1 = this.mul32(h1, 0x85ebca6b);
+		h1 ^= h1 >>> 13;
+		h1 = this.mul32(h1, 0xc2b2ae35);
+		h1 ^= h1 >>> 16;
 
-    return h1
-  },
-}
-
-module.exports = MurmurHash3
+		return h1;
+	}
+};
