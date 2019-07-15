@@ -105,5 +105,19 @@
       "runner": "node"
     },
     "testFramework": "jest"
+  },
+  "release": {
+    "verifyConditions": [
+      "semantic-release-vsce"
+    ],
+    "prepare": [
+      {
+        "path": "semantic-release-vsce",
+        "packageVsix": "extension.vsix"
+      }
+    ],
+    "publish": [
+      "semantic-release-vsce"
+    ]
   }
 }
