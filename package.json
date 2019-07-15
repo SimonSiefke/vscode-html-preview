@@ -119,5 +119,10 @@
     "publish": [
       "semantic-release-vsce"
     ]
+  },
+  "renovate": {
+    "extends": [
+      "bitworkers"
+    ]
   }
 }
