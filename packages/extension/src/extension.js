@@ -17,12 +17,18 @@ export function activate() {
 			previousText
 		)}<script>const ws = new WebSocket('ws://localhost:3001')
 		ws.onmessage = ({ data }) => {
-			const message = JSON.parse(data)
-			if(message[0].payload[0].type==='textReplace'){
-				const {type, content, parentId} = message[0].payload[0]
+			const messages = JSON.parse(data)
+			for(const message of messages){
+			if(message.payload.type==='textReplace'){
+				const {type, content, parentId} = message.payload
 				const $el = document.querySelector(\`[data-brackets-id="\${parentId}"]\`)
 				$el.innerText = content
+			} else{
+				console.log('else')
+				// window.location.reload(true)
 			}
+		}
+
 		}</script>`);
 	});
 	httpServer.listen(3000, () => {
@@ -48,12 +54,10 @@ export function activate() {
 			// @ts-ignore
 			const diff = domdiff(build(previousText).dom, build(newText).dom);
 			webSocketServer.broadcast(
-				[
-					{
-						command: 'update',
-						payload: diff
-					}
-				],
+				diff.map(dif => ({
+					command: dif.type,
+					payload: dif
+				})),
 				{}
 			);
 			console.log('after');

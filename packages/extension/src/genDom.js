@@ -6,6 +6,8 @@ export function genDom(orig) {
 	let lastIndex = 0;
 	// @ts-ignore
 	const {dom} = build(orig);
+
+	dom;
 	// Walk through the dom nodes and insert the 'data-brackets-id' attribute at the
 	// end of the open tag
 	function walk(node) {
@@ -30,3 +32,8 @@ export function genDom(orig) {
 }
 
 // GenDom('<h1>hello world</h1>'); // ?
+
+genDom(`<h1>dkkkkkkkkkdkdddddd</h1>
+<div>de</div>
+<p></p>
+`); // ?
