@@ -3,7 +3,6 @@
 # Html Preview for VSCode
 
 <!-- TODO demo gif -->
-<!-- ![demo](./demo_images/demo.gif) -->
 
 ## Usage
 

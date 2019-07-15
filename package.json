@@ -5,10 +5,14 @@
   "description": "Preview for Html files",
   "version": "1.0.0",
   "publisher": "SimonSiefke",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SimonSiefke/vscode-html-preview.git"
+  },
   "license": "MIT",
   "main": "packages/extension/dist/packages/extension/src/extension.js",
   "engines": {
-    "vscode": "^1.22.0"
+    "vscode": "^1.36.0"
   },
   "scripts": {
     "dev": "cd packages/extension && tsc -b --watch"
@@ -36,6 +40,8 @@
     "jest": "^24.8.0",
     "prettier": "^1.18.2",
     "prettier-config-bitworkers": "^1.5.1",
+    "semantic-release": "^15.13.18",
+    "semantic-release-vsce": "^2.2.8",
     "ts-jest": "^24.0.2",
     "typescript": "^3.5.3"
   },
