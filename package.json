@@ -77,5 +77,14 @@
   ],
   "dependencies": {
     "ws": "^7.1.0"
+  },
+  "jest": {
+    "preset": "ts-jest/presets/js-with-ts",
+    "testEnvironment": "node",
+    "globals": {
+      "ts-jest": {
+        "diagnostics": false
+      }
+    }
   }
 }
