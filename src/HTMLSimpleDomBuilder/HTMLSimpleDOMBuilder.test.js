@@ -211,10 +211,10 @@ test('should build simple DOM', () => {
 	// expect(meta.childSignature).toEqual(jasmine.any(Number));
 });
 
-test.only('multiline html', () => {
-	const dom = build(`<h1>dkkkkkkkkkdkdddddd</h1>
-	<div>de</div>
-	<p></p>
-	`, false);
-	dom
-});
+// Test.only('multiline html', () => {
+// 	const dom = build(`<h1>dkkkkkkkkkdkdddddd</h1>
+// 	<div>de</div>
+// 	<p></p>
+// 	`, false);
+// 	dom
+// });
