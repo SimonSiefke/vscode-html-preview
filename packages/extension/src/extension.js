@@ -19,14 +19,28 @@ export function activate() {
 		ws.onmessage = ({ data }) => {
 			const messages = JSON.parse(data)
 			for(const message of messages){
-			if(message.payload.type==='textReplace'){
-				const {type, content, parentId} = message.payload
-				const $el = document.querySelector(\`[data-brackets-id="\${parentId}"]\`)
-				$el.innerText = content
-			} else{
-				console.log('else')
-				// window.location.reload(true)
-			}
+				const {payload} = message
+				const {parentId} = payload
+				if(message.payload.type==='textReplace'){
+					const {type, content} = payload
+					const $el = document.querySelector(\`[data-brackets-id="\${parentId}"]\`)
+					$el.innerText = content
+				} else if (payload.type==='attrAdd' || payload.type==='attrChange'){
+					const {tagId} = payload
+					const $el = document.querySelector(\`[data-brackets-id="\${tagId}"]\`)
+					$el.setAttribute(payload.attribute, payload.value||'')
+				} else if (payload.type==='attrDelete'){
+					const {tagId} = payload
+					const $el = document.querySelector(\`[data-brackets-id="\${tagId}"]\`)
+					$el.removeAttribute(payload.attribute)
+				}
+
+				else{
+					console.log(JSON.stringify(message))
+					// console.log(message.payload.type)
+					// console.log('else')
+					// window.location.reload(true)
+				}
 		}
 
 		}</script>`);
