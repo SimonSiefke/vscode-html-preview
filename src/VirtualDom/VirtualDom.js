@@ -3,70 +3,19 @@
 
 const {createTokenizer} = require('../HTMLTokenizer/HTMLTokenizer');
 const {
-	updateSignature,
+	updateSignature: update,
 	updateAttributeSignature
 } = require('../HTMLSimpleDom/HTMLSimpleDOM');
 
 /** @typedef {import('./HTMLSimpleDomBuilder.types').Context} Context */
 /** @typedef {import('../types').Position} Position */
 /** @typedef {import('./HTMLSimpleDomBuilder.types').Error} Error */
-/** @typedef {import('./HTMLSimpleDom.types').SimpleNode} SimpleNode */
+/** @typedef {import('../HTMLSimpleDomBuilder/HTMLSimpleDom.types').SimpleNode} SimpleNode */
 
 /* eslint-disable max-depth */
 /* eslint-disable no-multi-assign */
 /* eslint-disable complexity */
 /* eslint-disable  */
-
-/**
- * A list of tags whose start causes any of a given set of immediate parent
- * tags to close. This mostly comes from the HTML5 spec section on omitted close tags:
- * http://www.w3.org/html/wg/drafts/html/master/syntax.html#optional-tags
- * This doesn't handle general content model violations.
- * @type {object}
- */
-const openImpliesClose = {
-	li: {li: true},
-	dt: {dd: true, dt: true},
-	dd: {dd: true, dt: true},
-	address: {p: true},
-	article: {p: true},
-	aside: {p: true},
-	blockquote: {p: true},
-	dir: {p: true},
-	div: {p: true},
-	dl: {p: true},
-	fieldset: {p: true},
-	footer: {p: true},
-	form: {p: true},
-	h1: {p: true},
-	h2: {p: true},
-	h3: {p: true},
-	h4: {p: true},
-	h5: {p: true},
-	h6: {p: true},
-	header: {p: true},
-	hgroup: {p: true},
-	hr: {p: true},
-	main: {p: true},
-	menu: {p: true},
-	nav: {p: true},
-	ol: {p: true},
-	p: {p: true},
-	pre: {p: true},
-	section: {p: true},
-	table: {p: true},
-	ul: {p: true},
-	rt: {rp: true, rt: true},
-	rp: {rp: true, rt: true},
-	optgroup: {optgroup: true, option: true},
-	option: {option: true},
-	tbody: {thead: true, tbody: true, tfoot: true},
-	tfoot: {tbody: true},
-	tr: {tr: true, th: true, td: true},
-	th: {th: true, td: true},
-	td: {thead: true, th: true, td: true},
-	body: {head: true, link: true, script: true},
-}
 
 /**
  * A list of tags that are self-closing (do not contain other elements).
@@ -209,12 +158,6 @@ export function build(text, {startOffset, startOffsetPos, strict = true} = {}) {
 	 */
 	const nodeMap = {}
 
-	// Start timers for building full and partial DOMs.
-	// Appropriate timer is used, and the other is discarded.
-	// const timerBuildFull = 'HTMLInstr. Build DOM Full'
-	// const timerBuildPart = 'HTMLInstr. Build DOM Partial'
-	// PerfUtils.markStart([timerBuildFull, timerBuildPart]);
-
 	/**
 	 *
 	 * @param {number} endIndex
@@ -223,7 +166,7 @@ export function build(text, {startOffset, startOffsetPos, strict = true} = {}) {
 	function closeTag(endIndex, endPos) {
 		lastClosedTag = stack[stack.length - 1]
 		stack.pop()
-		updateSignature(lastClosedTag)
+		update(lastClosedTag)
 		lastClosedTag.end = context.startOffset + endIndex
 		lastClosedTag.endPos = addPos(context.startOffsetPos, endPos)
 	}
@@ -248,7 +191,6 @@ export function build(text, {startOffset, startOffsetPos, strict = true} = {}) {
 
 		if (token.type === 'opentagname') {
 			const newTagName = token.contents.toLowerCase()
-
 			if (openImpliesClose.hasOwnProperty(newTagName)) {
 				const closable = openImpliesClose[newTagName]
 				while (
@@ -290,7 +232,7 @@ export function build(text, {startOffset, startOffsetPos, strict = true} = {}) {
 
 			if (voidElements.hasOwnProperty(newTag.tag)) {
 				// This is a self-closing element.
-				updateSignature(newTag)
+				update(newTag)
 			} else {
 				stack.push(newTag)
 			}
@@ -407,7 +349,7 @@ export function build(text, {startOffset, startOffsetPos, strict = true} = {}) {
 					lastTextNode = newNode
 				}
 
-				updateSignature(newNode)
+				update(newNode)
 			}
 		}
 	}

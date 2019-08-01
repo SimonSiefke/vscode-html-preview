@@ -13,7 +13,7 @@ export function createWebSocketServer() {
 	/**
 	 * @type {{[key:string]:any}}
 	 */
-	const lastCommands = {};
+	// const lastCommands = {};
 	return {
 		get port() {
 			return webSocketServer.options.port;
@@ -24,9 +24,9 @@ export function createWebSocketServer() {
 		 * @param {*} param1
 		 */
 		broadcast(message, {skip} = {}) {
-			for (const {command, payload} of message) {
-				lastCommands[command] = payload;
-			}
+			// For (const {command, payload} of message) {
+			// lastCommands[command] = payload;
+			// }
 
 			const stringifiedMessage = JSON.stringify(message);
 			for (const client of webSocketServer.clients) {
@@ -38,16 +38,15 @@ export function createWebSocketServer() {
 		start(port = 3000) {
 			webSocketServer = new WebSocket.Server({port});
 			webSocketServer.on('connection', websocket => {
-				const stringifiedMessage = JSON.stringify(
-					Object.entries(lastCommands).map(([key, value]) => ({
-						command: key,
-						payload: value
-					}))
-				);
-				if (stringifiedMessage) {
-					websocket.send(stringifiedMessage);
-				}
-
+				// Const stringifiedMessage = JSON.stringify(
+				// 	Object.entries(lastCommands).map(([key, value]) => ({
+				// 		command: key,
+				// 		payload: value
+				// 	}))
+				// );
+				// if (stringifiedMessage) {
+				// 	websocket.send(stringifiedMessage);
+				// }
 				// Websocket.on('message', message => {
 				// EventEmitter.emit('message', message, websocket);
 				// });

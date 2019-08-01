@@ -1,0 +1,19 @@
+previousDom:
+<h1>|<p>ok</p></h1>
+
+insert:
+hello
+
+nextDom:
+<h1>hello<p>ok</p></h1>
+
+expectedEdits:
+[
+  {
+     command: elementInsert
+     payload: {
+       nodeType: TextNode
+       text: hello
+     }
+  }
+]

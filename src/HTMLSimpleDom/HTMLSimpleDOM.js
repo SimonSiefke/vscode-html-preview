@@ -3,7 +3,7 @@
 
 import {hash} from '../hash';
 
-/** @typedef {import('./HTMLSimpleDom.types').SimpleNode} Context */
+/** @typedef {import('../HTMLSimpleDomBuilder/HTMLSimpleDom.types').SimpleNode} Context */
 
 /* eslint-disable no-var */
 /* eslint-disable no-lonely-if */
@@ -43,16 +43,16 @@ function createSimpleNode(properties) {
  * * child node attributes
  * * text content of a text node
  * * child node text
- * @param {Context} context
+ * @param {Context} node
  */
-export function update(context) {
-	if (isElement(context)) {
+export function updateSignature(node) {
+	if (isElement(node)) {
 		let i
 		let subtreeHashes = ''
 		let childHashes = ''
 		let child
-		for (i = 0; i < context.children.length; i++) {
-			child = context.children[i]
+		for (i = 0; i < node.children.length; i++) {
+			child = node.children[i]
 			if (isElement(child)) {
 				childHashes += String(child.tagId)
 				subtreeHashes +=
@@ -65,10 +65,10 @@ export function update(context) {
 			}
 		}
 
-		context.childSignature = hash(childHashes)
-		context.subtreeSignature = hash(subtreeHashes)
+		node.childSignature = hash(childHashes)
+		node.subtreeSignature = hash(subtreeHashes)
 	} else {
-		context.textSignature = hash(context.content)
+		node.textSignature = hash(node.content)
 	}
 }
 

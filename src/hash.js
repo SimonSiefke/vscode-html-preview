@@ -1,6 +1,6 @@
 import {MurmurHash3} from './murmurhash3_gc';
 
-const seed = Math.floor(Math.random() * 65535);
+const seed = 48434; // Random int between 0 and 65535
 
 /**
  * Hashes a string.

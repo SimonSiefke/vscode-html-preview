@@ -46,7 +46,7 @@ function generateAttributeEdits(oldNode, newNode) {
  *
  * Retrieve the parent tag ID of a SimpleDOM node.
  *
- * @param {import('../HTMLSimpleDom/HTMLSimpleDom.types').SimpleNode} node SimpleDOM node for which to look up parent ID
+ * @param {import('../HTMLSimpleDomBuilder/HTMLSimpleDom.types').SimpleNode} node SimpleDOM node for which to look up parent ID
  * @return {number|string} ID or undefined if there is no parent
  */
 function getParentId(node) {

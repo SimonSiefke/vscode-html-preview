@@ -8,12 +8,12 @@ import {build} from '../HTMLSimpleDomBuilder/HTMLSimpleDomBuilder';
 
 // domdiff(oldNode1, newNode1); // ?
 
-const oldNode1 = build(
-	'<meta name="description" content="An interactive getting started guide for Brackets.">'
-).dom; // ?
-const newNode1 = build(
-	'<meta name="description" content="An interactive, awesome getting started guide for Brackets.">'
-).dom; // ?
+const testCase = {
+	previousDom: '<div><h1>x</h1></div>',
+	nextDom: '<div><p>y</p><h1>x</h1></div>'
+};
+const oldNode1 = build(testCase.previousDom).dom; // ?
+const newNode1 = build(testCase.nextDom).dom; // ?
 
 newNode1.tagId = 1;
 

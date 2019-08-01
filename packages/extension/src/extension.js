@@ -1,10 +1,13 @@
 import * as vscode from 'vscode';
 import {createWebSocketServer} from './WebSocketServer/createWebSocketServer';
 import * as http from 'http';
-import {domdiff} from '../../../src/HtmlDomDiff/HTMLDOMDiff';
 
 import {build} from '../../../src/HTMLSimpleDomBuilder/HTMLSimpleDomBuilder';
 import {genDom} from './genDom';
+import * as fs from 'fs';
+import * as path from 'path';
+import {domdiff} from '../../../src/VirtualDom/diff';
+import {parseHtml} from '../../../src/VirtualDom/parse';
 
 export function activate() {
 	let previousText =
@@ -12,38 +15,34 @@ export function activate() {
 			vscode.window.activeTextEditor.document.getText()) ||
 		'';
 	const webSocketServer = createWebSocketServer();
+	const indexJs = fs.readFileSync(
+		path.join(__dirname, '../../client/src/index.js')
+	);
 	const httpServer = http.createServer((req, res) => {
-		res.end(`${genDom(
-			previousText
-		)}<script>const ws = new WebSocket('ws://localhost:3001')
-		ws.onmessage = ({ data }) => {
-			const messages = JSON.parse(data)
-			for(const message of messages){
-				const {payload} = message
-				const {parentId} = payload
-				if(message.payload.type==='textReplace'){
-					const {type, content} = payload
-					const $el = document.querySelector(\`[data-brackets-id="\${parentId}"]\`)
-					$el.innerText = content
-				} else if (payload.type==='attrAdd' || payload.type==='attrChange'){
-					const {tagId} = payload
-					const $el = document.querySelector(\`[data-brackets-id="\${tagId}"]\`)
-					$el.setAttribute(payload.attribute, payload.value||'')
-				} else if (payload.type==='attrDelete'){
-					const {tagId} = payload
-					const $el = document.querySelector(\`[data-brackets-id="\${tagId}"]\`)
-					$el.removeAttribute(payload.attribute)
-				}
+		if (req.url === '/') {
+			let dom = genDom(previousText);
+			const bodyIndex = dom.lastIndexOf('</body');
+			const $virtualDom = `<script id="virtual-dom">${JSON.stringify(
+				parseHtml(dom)
+			)}</script>`;
+			const $script = '<script src="index.js"></script>';
+			if (bodyIndex) {
+				dom =
+					dom.slice(0, bodyIndex) +
+					$virtualDom +
+					'\n' +
+					$script +
+					dom.slice(bodyIndex);
+			} else {
+				dom += $virtualDom + '\n' + $script;
+			}
 
-				else{
-					console.log(JSON.stringify(message))
-					// console.log(message.payload.type)
-					// console.log('else')
-					// window.location.reload(true)
-				}
+			res.end(dom);
+		} else if (req.url === '/index.js') {
+			res.writeHead(200, {'Content-Type': 'text/javascript'});
+			res.write(indexJs);
+			res.end();
 		}
-
-		}</script>`);
 	});
 	httpServer.listen(3000, () => {
 		console.log('listening');
@@ -59,23 +58,16 @@ export function activate() {
 			return;
 		}
 
-		console.log('change');
 		const newText = event.document.getText();
 		try {
 			// @ts-ignore
-			console.log(build(previousText).dom);
+			// console.log(build(previousText).dom);
 			// Console.log(build(previousText));
 			// @ts-ignore
-			const diff = domdiff(build(previousText).dom, build(newText).dom);
-			webSocketServer.broadcast(
-				diff.map(dif => ({
-					command: dif.type,
-					payload: dif
-				})),
-				{}
-			);
-			console.log('after');
-			console.log(diff);
+			// const diff = domdiff(build(previousText).dom, build(newText).dom);
+
+			const diffs = domdiff(parseHtml(previousText), parseHtml(newText));
+			webSocketServer.broadcast(diffs, {});
 			previousText = newText;
 		} catch (error) {
 			console.error(error);

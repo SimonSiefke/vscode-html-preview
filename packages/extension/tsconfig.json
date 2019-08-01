@@ -2,8 +2,12 @@
   "extends": "../../tsconfig-noncomposite-base",
   "compilerOptions": {
     "outDir": "dist",
-    // "rootDir": "src",
     "esModuleInterop": true
   },
-  "include": ["src"]
+  "include": [
+    "src",
+    "../client/tsconfig.json",
+    "../client/src/NodeOperations.js",
+    "../client/src/index.js"
+  ]
 }
