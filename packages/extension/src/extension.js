@@ -1,3 +1,4 @@
+/* eslint-disable no-negated-condition */
 import * as vscode from 'vscode';
 import {createWebSocketServer} from './WebSocketServer/createWebSocketServer';
 import * as http from 'http';
@@ -7,7 +8,7 @@ import {genDom} from './genDom';
 import * as fs from 'fs';
 import * as path from 'path';
 import {domdiff} from '../../../src/VirtualDom/diff';
-import {parseHtml} from '../../../src/VirtualDom/parse';
+import {createParser} from '../../../src/VirtualDom/parse';
 
 export function activate() {
 	let previousText =
@@ -18,30 +19,39 @@ export function activate() {
 	const indexJs = fs.readFileSync(
 		path.join(__dirname, '../../client/src/index.js')
 	);
-	const httpServer = http.createServer((req, res) => {
-		if (req.url === '/') {
-			let dom = genDom(previousText);
-			const bodyIndex = dom.lastIndexOf('</body');
-			const $virtualDom = `<script id="virtual-dom">${JSON.stringify(
-				parseHtml(dom)
-			)}</script>`;
-			const $script = '<script src="index.js"></script>';
-			if (bodyIndex) {
-				dom =
-					dom.slice(0, bodyIndex) +
-					$virtualDom +
-					'\n' +
-					$script +
-					dom.slice(bodyIndex);
-			} else {
-				dom += $virtualDom + '\n' + $script;
-			}
+	const parser = createParser();
+	let previousDom = parser.parse(previousText);
 
-			res.end(dom);
-		} else if (req.url === '/index.js') {
-			res.writeHead(200, {'Content-Type': 'text/javascript'});
-			res.write(indexJs);
-			res.end();
+	const httpServer = http.createServer((req, res) => {
+		try {
+			if (req.url === '/') {
+				let dom = genDom(previousText);
+				const bodyIndex = dom.lastIndexOf('</body');
+				previousDom = parser.parse(previousText);
+				const $virtualDom = `<script id="virtual-dom">${JSON.stringify(
+					previousDom
+				)}</script>`;
+				const $script = '<script src="index.js"></script>';
+				if (bodyIndex !== -1) {
+					dom =
+						dom.slice(0, bodyIndex) +
+						'\n' +
+						$virtualDom +
+						'\n' +
+						$script +
+						dom.slice(bodyIndex);
+				} else {
+					dom += '\n' + $virtualDom + '\n' + $script;
+				}
+
+				res.end(dom);
+			} else if (req.url === '/index.js') {
+				res.writeHead(200, {'Content-Type': 'text/javascript'});
+				res.write(indexJs);
+				res.end();
+			}
+		} catch (error) {
+			console.error(error);
 		}
 	});
 	httpServer.listen(3000, () => {
@@ -49,26 +59,50 @@ export function activate() {
 	});
 	webSocketServer.start(3001);
 	vscode.workspace.onDidChangeTextDocument(event => {
+		if (event.contentChanges.length === 0) {
+			return;
+		}
+
 		if (!previousText) {
 			previousText = event.document.getText();
 			return;
 		}
 
-		if (event.contentChanges.length === 0) {
-			return;
-		}
-
 		const newText = event.document.getText();
 		try {
-			// @ts-ignore
-			// console.log(build(previousText).dom);
-			// Console.log(build(previousText));
-			// @ts-ignore
-			// const diff = domdiff(build(previousText).dom, build(newText).dom);
-
-			const diffs = domdiff(parseHtml(previousText), parseHtml(newText));
-			webSocketServer.broadcast(diffs, {});
-			previousText = newText;
+			if (event.contentChanges.length === 1) {
+				const change = event.contentChanges[0];
+				const oldNodeMap = parser.nodeMap;
+				console.log(change);
+				const nextDom = parser.edit(newText, [
+					{
+						rangeOffset: change.rangeOffset,
+						rangeLength: change.rangeLength,
+						text: change.text
+					}
+				]);
+				const newNodeMap = parser.nodeMap;
+				console.log(oldNodeMap);
+				console.log(newNodeMap);
+				const diffs = domdiff(previousDom, nextDom, {oldNodeMap, newNodeMap});
+				previousDom = nextDom;
+				webSocketServer.broadcast(diffs, {});
+				previousText = newText;
+				console.log('yes');
+				console.log(diffs);
+			} else {
+				console.log(event.contentChanges);
+				console.log('sorry no diffs');
+				webSocketServer.broadcast(
+					[
+						{
+							command: 'error',
+							payload: 'too many changes'
+						}
+					],
+					{}
+				);
+			}
 		} catch (error) {
 			console.error(error);
 		}

@@ -11,13 +11,16 @@ export function genDom(orig) {
 
 	// Walk through the dom nodes and insert the 'data-brackets-id' attribute at the
 	// end of the open tag
+	let prefixSum = 0;
 	function walk(node) {
-		node.type; // ?
+		prefixSum += node.start;
 		if (node.type === 'ElementNode') {
 			const attrText = ` data-id="${node.id}"`;
+			lastIndex;
+			prefixSum;
 
 			// Insert the attribute as the first attribute in the tag.
-			const insertIndex = node.start + node.tag.length + 1;
+			const insertIndex = prefixSum + node.tag.length + 1;
 			gen += orig.substr(lastIndex, insertIndex - lastIndex) + attrText;
 			lastIndex = insertIndex;
 		}
@@ -33,8 +36,39 @@ export function genDom(orig) {
 	return gen;
 }
 
-genDom('<h1 class="">hello world</h1>'); // ?
-// parseHTML('<h1 class="">hello world</h1>'); // ?
+// GenDom(`<html>
+
+// <h1>
+//   <p>ok</p>
+// </h1>
+
+// </html>`); // ?
+
+// GenDom('<h1 class="">hello world</h1>'); // ?
+// genDom(`<head>
+// <meta charset="utf-8" />
+// </head>
+
+// <body>
+// <p>ok</p>
+// <p>ok</p>
+// <p>ok</p>
+// <h1>helldo wsssssdddddd</h1>
+// <h1>helldo wsssssdddddd</h1>
+// <h1>helldo wsssssdddddd</h1>
+// <h1>helldo wsssssdddddd</h1>
+// <h1>helldo wsssssdddddd</h1>
+// <h1>helldo wsssssdddddd</h1>
+// <h1>helldo wsssssdddddd</h1>
+// <h1>helldo wsssssdddddddd</h1>
+// <h1>helldo wsssssdddddd</h1>
+// <h1>helldo gwdsssssdddddd</h1>
+// <h1>helldo wsssssdddddd</h1>
+// <h1>helldo wsssssdddddd</h1>
+// <h1>helldo wsssssdddddd</h1>
+// <h1>helldo wwwssdssssddddddp</h1>
+// </body>`); // ?
+// ParseHTML('<h1 class="">hello world</h1>'); // ?
 
 // genDom(`<h1>dkkkkkkkkkdkdddddd</h1>
 // <div>de</div>

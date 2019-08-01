@@ -1,3 +1,4 @@
+/* eslint-disable no-alert */
 // @ts-nocheck
 
 const ws = new WebSocket('ws://localhost:3001');
@@ -35,11 +36,21 @@ walk(virtualDom, node => {
 	}
 
 	const $node = document.querySelector(`[data-id='${node.id}']`);
-	$node.removeAttribute('data-id');
+	if (!$node) {
+		console.log(node);
+		console.log(node.id, $node);
+	}
+
+	// $node.removeAttribute('data-id');
 	nodeMap[node.id] = $node;
 	for (let i = 0; i < node.children.length; i++) {
 		const child = node.children[i];
 		if (child.type === 'TextNode') {
+			if (node.tag === 'html') {
+				// TODO handle whitespace in html nodes / implicitly inserted nodes
+				continue;
+			}
+
 			const $child = document.createTextNode(child.text);
 			$node.replaceChild($child, $node.childNodes[i]);
 			nodeMap[child.id] = $child;
@@ -55,9 +66,17 @@ walk(virtualDom, node => {
 
 ws.onmessage = ({data}) => {
 	const messages = JSON.parse(data);
+	console.log(JSON.stringify(messages, null, 2));
 	for (const message of messages) {
 		const {command, payload} = message;
+		if (command === 'error') {
+			alert('error' + payload);
+			continue;
+		}
+
 		if (command === 'textReplace') {
+			console.log(nodeMap);
+			console.log(payload.id);
 			const $node = nodeMap[payload.id];
 			$node.data = payload.text;
 			continue;

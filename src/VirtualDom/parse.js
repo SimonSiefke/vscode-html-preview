@@ -8,7 +8,7 @@ import {createScanner} from './scanner';
 import {hash} from '../hash';
 
 /**
- * @return{import('./types').ElementNode}
+ * @return{any}
  */
 function createElementNode() {
 	return {
@@ -44,7 +44,6 @@ function createTextNode(text) {
 
 function createIdGenerator() {
 	let id = 1;
-	id;
 	return () => id++;
 }
 
@@ -84,7 +83,7 @@ function parse(
 	 */
 	let endTagName;
 	/**
-	 * @type{string|undefined}
+	 * @type{string|null}
 	 */
 	let pendingAttribute;
 	let token = scanner.scan();
@@ -96,8 +95,9 @@ function parse(
 		} else {
 			id = nextId();
 			prefixSums[scanner.getTokenOffset()] = id;
-			nodeMap[id] = node;
 		}
+
+		nodeMap[id] = node;
 
 		node.id = id;
 		node.start = scanner.getTokenOffset() - prefixSum;
@@ -167,7 +167,7 @@ function parse(
 					attributes = {};
 				}
 
-				attributes[pendingAttribute] = undefined; // Support valueless attributes such as 'checked'
+				attributes[pendingAttribute] = null; // Support valueless attributes such as 'checked'
 				break;
 			}
 
@@ -208,9 +208,20 @@ function parse(
 	return htmlDocument.children;
 }
 
-const parseHtml = (html, ...args) => {
+const i = 0;
+
+/**
+ *
+ * @param {string} html
+ * @param {{nextId:function,nodeMap:object,prefixSums:object}} param1
+ */
+export const parseHtml = (
+	html,
+	{nextId = createIdGenerator(), nodeMap = {}, prefixSums = {}} = {}
+) => {
 	// Let id = 1;
-	const result = parse(html, ...args);
+
+	const result = parse(html, {nextId, nodeMap, prefixSums});
 	const withoutParent = walk(result, dom => {
 		delete dom.parent;
 		delete dom.closed;
@@ -270,6 +281,7 @@ function walk(dom, fn, childrenFirst = false) {
  */
 function updateSignature(node) {
 	if (node.type === 'ElementNode') {
+		node.attributes; // ?
 		node.attributeSignature = hash(
 			JSON.stringify(node.attributes, (key, value) =>
 				value === undefined ? null : value
@@ -312,23 +324,39 @@ export function createParser() {
 		get nodeMap() {
 			return nodeMap;
 		},
+		/**
+		 *
+		 * @param {string} textWithEdits
+		 * @param {Array<{rangeLength:Number, rangeOffset:number, text:string}>} edits
+		 */
 		edit(textWithEdits, edits) {
 			const edit = edits[0];
-			const {insertText} = edit;
-			const {offset} = edit;
+			const {rangeOffset, rangeLength, text} = edit;
 			for (const prefixSum in prefixSums) {
-				if (prefixSum >= offset) {
-					const id = prefixSums[prefixSum];
-					delete prefixSums[prefixSum];
-					prefixSums[parseInt(prefixSum, 10) + insertText.length] = id;
+				if (prefixSum < rangeOffset) {
+					continue;
 				}
+
+				if (prefixSum < rangeOffset + rangeLength) {
+					delete prefixSums[prefixSum];
+					continue;
+				}
+
+				const id = prefixSums[prefixSum];
+				delete prefixSums[prefixSum];
+				prefixSums[parseInt(prefixSum, 10) + text.length - rangeLength] = id;
 			}
 
-			return parseHtml(textWithEdits, {
+			const newNodeMap = {...nodeMap}; // ?
+
+			const result = parseHtml(textWithEdits, {
 				prefixSums,
 				nextId,
-				nodeMap
+				nodeMap: newNodeMap
 			});
+			newNodeMap;
+			nodeMap = newNodeMap; // ?
+			return result;
 		}
 	};
 }
@@ -338,7 +366,8 @@ const pretty = node => {
 		return {
 			tag: node.tag,
 			children: node.children.map(pretty),
-			id: node.id
+			id: node.id,
+			attributes: node.attributes
 		};
 	}
 
@@ -350,44 +379,27 @@ const pretty = node => {
 };
 
 Array.prototype.pretty = function () {
-	return JSON.stringify(this.map(pretty), null, 2);
+	return JSON.stringify(
+		this.map(pretty),
+		(k, v) => {
+			return v === undefined ? null : v;
+		},
+		2
+	);
 };
 
 const testCase = {
-	previousDom: '<h1><p>ok</p></h1>',
-	nextDom: '<h1>hello<p>ok</p></h1>'
+	previousDom: '<h1 >hello world</h1>',
+	nextDom: '<h1 class>hello world</h1>'
 };
 
 const parser = createParser();
-// Parser.parse(testCase.previousDom).pretty(); // ?
-// parser.nodeMap; // ?
-// parser.edit(testCase.nextDom, [{offset: 4, insertText: 'hello'}]).pretty(); // ?
-
-// parser.nodeMap; // ?
 
 const parsedH1 = parser.parse(testCase.previousDom);
+// Parser.parse(testCase.nextDom).pretty()//?
 const parsedH2 = parser.edit(testCase.nextDom, [
-	{offset: 4, insertText: 'hello'}
+	{rangeOffset: 4, text: 'class', rangeLength: 0}
 ]);
-parsedH2;
-const nodeMap2 = parser.nodeMap;
+const nodeMap2 = parser.nodeMap; // ?
 parsedH1.pretty(); // ?
 parsedH2.pretty(); // ?
-// JSON.stringify(result, null, 2); // ?
-
-// JSON.stringify(walk(withId, updateSignature), null, 2); // ?
-
-// JSON.stringify(parseHTML('<h1><p>hello</p><p>world</p></h1>'), null, 2); // ?
-// ParseHTML(`<head>
-// <meta charset="utf-8" />
-// </head>
-
-// <body>
-// <h1>hello wsssssdddddd</h1>
-// <h1>hello wsssssdddddd</h1>
-// <h1>hello wsssssddddddd</h1>
-// <h1>hello wsssssdddddd</h1>
-// <h1>hello w </h1>
-// <h1>hello wsssssdddddd</h1>
-// <!-- <button>hello</button> -->
-// </body>`); // ?

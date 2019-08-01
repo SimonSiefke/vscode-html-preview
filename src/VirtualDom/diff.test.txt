@@ -1,8 +1,17 @@
-previousDom:
-<h1>|<p>ok</p></h1>
+name:
+basic text insertion
 
-insert:
-hello
+previousDom:
+<h1><p>ok</p></h1>
+
+edits:
+[
+  {
+    rangeOffset: 4
+    rangeLength: 0
+    text: hello
+  }
+]
 
 nextDom:
 <h1>hello<p>ok</p></h1>
@@ -14,6 +23,548 @@ expectedEdits:
      payload: {
        nodeType: TextNode
        text: hello
+     }
+  }
+]
+
+name:
+basic element insertion
+
+previousDom:
+<h1><p>ok</p></h1>
+
+edits:
+[
+  {
+    rangeOffset: 4
+    rangeLength: 0
+    text: <p>ok</p>
+  }
+]
+
+nextDom:
+<h1><p>ok</p><p>ok</p></h1>
+
+expectedEdits:
+[
+  {
+     command: elementInsert
+     payload: {
+       nodeType: ElementNode
+       tag: p
+     }
+  }
+  {
+    command: elementInsert
+    payload:{
+      nodeType: TextNode
+      text: ok
+    }
+  }
+]
+
+//previousDom:
+//<head>
+//  <meta charset="utf-8" />
+//</head>
+//
+//<body>
+//  <p>dddddddddddd</p>
+//</body>
+//
+//edits:
+//[
+//  {
+//    rangeOffset: 74
+//    rangeLength: 0
+//    text: "\n<p>dddddddddddd</p>"
+//  }
+//]
+//
+//nextDom:
+//<head>
+//  <meta charset="utf-8" />
+//</head>
+//
+//<body>
+//  <p>dddddddddddd</p>
+//  <p>dddddddddddd</p>
+//</body>
+//
+//expectedEdits:
+//[
+//  {
+//     command: elementInsert
+//     payload: {
+//       nodeType: TextNode
+//       text: "\n  "
+//     }
+//  }
+//  {
+//    command: elementInsert
+//    payload:{
+//      nodeType: ElementNode
+//      tag: p
+//    }
+//  }
+//  {
+//    command: elementInsert
+//    payload:{
+//      nodeType: TextNode
+//      text: dddddddddddd
+//    }
+//  }
+//  {
+//    command: elementInsert
+//    payload:{
+//      nodeType: TextNode
+//      text: "\n"
+//    }
+//  }
+//]
+
+name:
+basic text replace
+
+previousDom:
+<h1>a</h1>
+
+edits:
+[
+  {
+    rangeOffset: 4
+    rangeLength: 1
+    text: b
+  }
+]
+
+nextDom:
+<h1>b</h1>
+
+expectedEdits:
+[
+  {
+     command: textReplace
+     payload: {
+       text: "b"
+     }
+  }
+]
+
+name:
+basic text addition
+
+previousDom:
+<h1>aaa</h1>
+
+edits:
+[
+  {
+    rangeOffset: 7
+    rangeLength: 0
+    text: bbb
+  }
+]
+
+nextDom:
+<h1>aaabbb</h1>
+
+expectedEdits:
+[
+  {
+     command: textReplace
+     payload: {
+       text: aaabbb
+     }
+  }
+]
+
+name:
+element addition at the end
+
+previousDom:
+<h1>a</h1>
+
+edits:
+[
+  {
+    rangeOffset: 10
+    rangeLength: 0
+    text: <h1>b</h1>
+  }
+]
+
+nextDom:
+<h1>a</h1><h1>b</h1>
+
+expectedEdits:
+[
+  {
+     command: elementInsert
+     payload: {
+       nodeType: ElementNode
+       tag: h1
+     }
+  }
+  {
+    command: elementInsert
+    payload: {
+      nodeType: TextNode
+      text: b
+    }
+  }
+]
+
+name:
+element addition at the start
+
+previousDom:
+<h1>a</h1>
+
+edits:
+[
+  {
+    rangeOffset: 0
+    rangeLength: 0
+    text: <h1>b</h1>
+  }
+]
+
+nextDom:
+<h1>b</h1><h1>a</h1>
+
+expectedEdits:
+[
+  {
+     command: elementInsert
+     payload: {
+       nodeType: ElementNode
+       tag: h1
+     }
+  }
+  {
+    command: elementInsert
+    payload: {
+      nodeType: TextNode
+      text: b
+    }
+  }
+]
+
+name:
+element addition in the middle
+
+previousDom:
+<h1>a</h1><h1>c</h1>
+
+edits:
+[
+  {
+    rangeOffset: 7
+    rangeLength: 0
+    text: <h1>b</h1>
+  }
+]
+
+nextDom:
+<h1>a</h1><h1>b</h1><h1>c</h1>
+
+expectedEdits:
+[
+  {
+     command: elementInsert
+     payload: {
+       nodeType: ElementNode
+       tag: h1
+     }
+  }
+  {
+    command: elementInsert
+    payload: {
+      nodeType: TextNode
+      text: b
+    }
+  }
+]
+
+name:
+text insertion in nested html
+
+previousDom:
+<div>
+  <img src="https://source.unsplash.com/random" alt="random image">
+  <p>nested <strong>text</strong></p>
+</div>
+
+edits:
+[
+  {
+    rangeOffset: 109
+    rangeLength: 0
+    text: !!!
+  }
+]
+
+nextDom:
+<div>
+  <img src="https://source.unsplash.com/random" alt="random image">
+  <p>nested <strong>text</strong>!!!</p>
+</div>
+
+expectedEdits:
+[
+  {
+     command: elementInsert
+     payload: {
+       nodeType: TextNode
+       text: !!!
+     }
+  }
+]
+
+name:
+whitespace insertion at start tag
+
+previousDom:
+<h1>hello world</h1>
+
+edits:
+[
+  {
+    rangeOffset: 3
+    rangeLength: 0
+    text: " "
+  }
+]
+
+nextDom:
+<h1 >hello world</h1>
+
+expectedEdits:
+[]
+
+name:
+insertion of attribute with value
+
+previousDom:
+<h1 >hello world</h1>
+
+edits:
+[
+  {
+    rangeOffset: 3
+    rangeLength: 0
+    text: 'class="big"'
+  }
+]
+
+nextDom:
+<h1 class="big">hello world</h1>
+
+expectedEdits:
+[
+  {
+     command: attributeAdd
+     payload: {
+       attribute: class
+       value: '"big"'
+     }
+  }
+]
+
+name:
+insertion of attribute without value
+
+previousDom:
+<h1 >hello world</h1>
+
+edits:
+[
+  {
+    rangeOffset: 4
+    rangeLength: 0
+    text: class
+  }
+]
+
+nextDom:
+<h1 class>hello world</h1>
+
+expectedEdits:
+[
+  {
+     command: attributeAdd
+     payload: {
+       attribute: class
+       value: null
+     }
+  }
+]
+
+name:
+insertion of multiple elements and text nodes
+
+previousDom:
+<form>
+  First name:<br>
+  <input type="text" name="firstName"><br>
+</form>
+
+edits:
+[
+  {
+    rangeOffset: 69
+    rangeLength: 0
+    text: 'Last name:<br>\n  <input type="text" name="lastName"><br>'
+  }
+]
+
+nextDom:
+<form>
+  First name:<br>
+  <input type="text" name="firstName"><br>
+  Last name:<br>
+  <input type="text" name="lastName"><br>
+</form>
+
+expectedEdits:
+[
+  {
+     command: textReplace
+     payload: {
+       text: "\n  Last name:"
+     }
+  }
+  {
+    command: elementInsert,
+    payload: {
+      nodeType: ElementNode
+      tag: br
+    }
+  }
+  {
+    command: elementInsert,
+    payload: {
+      nodeType: TextNode
+      text: "\n  "
+    }
+  }
+  {
+    command: elementInsert,
+    payload: {
+      nodeType: ElementNode
+      tag: input
+      attributes: {
+        name: '"lastName"'
+        type: '"text"'
+      }
+    }
+  }
+  {
+    command: elementInsert,
+    payload: {
+      nodeType: ElementNode
+      tag: br
+    }
+  }
+  {
+    command: elementInsert,
+    payload: {
+      nodeType: TextNode
+      text: "\n"
+    }
+  }
+]
+
+name:
+attribute name change
+
+previousDom:
+<h1 c>hello world</h1>
+
+edits:
+[
+  {
+    rangeOffset: 4
+    rangeLength: 0
+    text: lass
+  }
+]
+
+nextDom:
+<h1 class>hello world</h1>
+
+expectedEdits:
+[
+  {
+     command: attributeAdd
+     payload: {
+       attribute: class
+       value: null
+     }
+  }
+  {
+     command: attributeDelete
+     payload: {
+       attribute: c
+     }
+  }
+]
+
+name:
+attribute value insertion at end
+
+previousDom:
+<h1 class="big">hello world</h1>
+
+edits:
+[
+  {
+    rangeOffset: 14
+    rangeLength: 0
+    text: ger
+  }
+]
+
+nextDom:
+<h1 class="bigger">hello world</h1>
+
+expectedEdits:
+[
+  {
+     command: attributeChange
+     payload: {
+       attribute: class
+       value: '"bigger"'
+     }
+  }
+]
+
+name:
+attribute value replacement
+
+previousDom:
+<h1 class="big">hello world</h1>
+
+edits:
+[
+  {
+    rangeOffset: 11
+    rangeLength: 3
+    text: small
+  }
+]
+
+nextDom:
+<h1 class="small">hello world</h1>
+
+expectedEdits:
+[
+  {
+     command: attributeChange
+     payload: {
+       attribute: class
+       value: '"small"'
      }
   }
 ]

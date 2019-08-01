@@ -280,4 +280,4 @@ test('mixed diffs', () => {
 	run(testCases);
 });
 
-test('incremental diff', () => {
+test('incremental diff', () => {});

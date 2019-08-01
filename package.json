@@ -15,7 +15,9 @@
     "vscode": "^1.36.0"
   },
   "scripts": {
-    "dev": "cd packages/extension && tsc -b --watch"
+    "dev": "cd packages/extension && tsc -b --watch",
+    "generate:diffTests": "babel-node --presets latest-node src/VirtualDom/generateDiffTestCases.js",
+    "generate:watch:diffTests": "nodemon --watch src/VirtualDom/diff.test.txt --exec npm run generate:diffTests"
   },
   "categories": [
     "Other"
@@ -30,7 +32,10 @@
     "onLanguage:html"
   ],
   "devDependencies": {
+    "@babel/core": "^7.5.5",
+    "@babel/node": "^7.5.5",
     "@types/jest": "^24.0.15",
+    "@types/json5": "0.0.30",
     "@types/node": "^12.6.3",
     "@types/vscode": "^1.36.0",
     "@types/ws": "^6.0.1",
@@ -72,9 +77,17 @@
   "eslintIgnore": [
     "*.ts",
     "*.html",
-    "*.md"
+    "*.md",
+    "*.generated.test.js"
   ],
   "dependencies": {
+    "@types/relaxed-json": "^1.0.0",
+    "babel-preset-latest-node": "^3.2.1",
+    "json5": "^2.1.0",
+    "jsonc-parser": "^2.1.0",
+    "jsonschema": "^1.2.4",
+    "really-relaxed-json": "^0.2.24",
+    "relaxed-json": "^1.0.3",
     "ws": "^7.1.0"
   },
   "jest": {

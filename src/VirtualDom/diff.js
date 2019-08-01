@@ -14,10 +14,16 @@ import {createParser} from './parse';
 function attributeEdits(oldNode, newNode) {
 	const oldAttributes = {...oldNode.attributes};
 	const newAttributes = newNode.attributes;
+	oldAttributes;
+	newAttributes;
 	const edits = [];
 
 	for (const attributeName of Object.keys(newAttributes)) {
-		if (oldAttributes[attributeName] !== newAttributes[attributeName]) {
+		if (
+			Object.prototype.hasOwnProperty.call(oldAttributes, attributeName) !==
+				Object.prototype.hasOwnProperty.call(newAttributes, attributeName) ||
+			oldAttributes[attributeName] !== newAttributes[attributeName]
+		) {
 			const type = Object.prototype.hasOwnProperty.call(
 				oldAttributes,
 				attributeName
@@ -632,6 +638,10 @@ export function domdiff(
 				edits = [...edits, ...elementInsert(newNode, parentId, newIndex)];
 				newIndex++;
 			} else {
+				oldNodeMap;
+				newNodeMap;
+				oldNode;
+				newNode;
 				throw new Error('cannot determine diff');
 			}
 			// Const newAttributeSignature = newNode.attributeSignature
@@ -726,7 +736,8 @@ const pretty = node => {
 		return {
 			tag: node.tag,
 			children: node.children.map(pretty),
-			id: node.id
+			id: node.id,
+			attributes: node.attributes
 		};
 	}
 
@@ -738,24 +749,28 @@ const pretty = node => {
 };
 
 Array.prototype.pretty = function () {
-	return JSON.stringify(this.map(pretty), null, 2);
+	return JSON.stringify(
+		this.map(pretty),
+		(k, v) => {
+			return v === undefined ? null : v;
+		},
+		2
+	);
 };
 
 const testCase = {
-	previousDom: '<h1><p>ok</p></h1>',
-	nextDom: '<h1>hello<p>ok</p></h1>'
+	previousDom: '<h1 >hello world</h1>',
+	nextDom: '<h1 class>hello world</h1>'
 };
 
 const parser = createParser();
 
 const parsedH1 = parser.parse(testCase.previousDom);
-const oldNodeMap = parser.nodeMap;
+const oldNodeMap = parser.nodeMap; // ?
 const parsedH2 = parser.edit(testCase.nextDom, [
-	{offset: 4, insertText: 'hello'}
+	{rangeOffset: 4, text: 'class', rangeLength: 0}
 ]);
-const newNodeMap = parser.nodeMap;
-parsedH2;
-const nodeMap2 = parser.nodeMap;
+const newNodeMap = parser.nodeMap; // ?
 parsedH1.pretty(); // ?
 parsedH2.pretty(); // ?
 domdiff(parsedH1, parsedH2, {
