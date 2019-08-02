@@ -28,7 +28,18 @@ function walk(dom, fn, childrenFirst = false) {
 	return dom;
 }
 
-const nodeMap = {};
+const nodeMap = {
+	0: document.documentElement
+};
+
+for (let i = 0; i < virtualDom.length; i++) {
+	const rootNode = virtualDom[i];
+	if (rootNode.type === 'TextNode') {
+		nodeMap[rootNode.id] = document.body.childNodes[i];
+	}
+}
+
+console.log(virtualDom);
 
 walk(virtualDom, node => {
 	if (node.type !== 'ElementNode') {
@@ -47,6 +58,7 @@ walk(virtualDom, node => {
 		const child = node.children[i];
 		if (child.type === 'TextNode') {
 			if (node.tag === 'html') {
+				console.log('continue');
 				// TODO handle whitespace in html nodes / implicitly inserted nodes
 				continue;
 			}
@@ -64,6 +76,8 @@ walk(virtualDom, node => {
 	}
 });
 
+console.log(nodeMap);
+
 ws.onmessage = ({data}) => {
 	const messages = JSON.parse(data);
 	console.log(JSON.stringify(messages, null, 2));
@@ -75,9 +89,11 @@ ws.onmessage = ({data}) => {
 		}
 
 		if (command === 'textReplace') {
-			console.log(nodeMap);
-			console.log(payload.id);
 			const $node = nodeMap[payload.id];
+			if ($node === undefined) {
+				debugger;
+			}
+
 			$node.data = payload.text;
 			continue;
 		}
@@ -124,6 +140,10 @@ ws.onmessage = ({data}) => {
 
 			nodeMap[payload.id] = $node;
 			const $parent = nodeMap[payload.parentId];
+			if (!$parent) {
+				debugger;
+			}
+
 			const $referenceNode = $parent.childNodes[payload.index];
 			$parent.insertBefore($node, $referenceNode);
 		}

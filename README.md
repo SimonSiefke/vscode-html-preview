@@ -37,3 +37,5 @@ right terminal:
 ```sh
 npm run generate:watch:diffTests
 ```
+
+<!-- TODO bug: type <h1>a</h1>, select a , type b, $node is undefined -->

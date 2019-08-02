@@ -8,6 +8,10 @@ const diffTest = fs.readFileSync(path.join(__dirname, 'diff.test.txt'), 'utf-8')
 
 const lines = diffTest.split('\n');
 
+if (lines[lines.length - 1] !== '') {
+	throw new Error('file must end with a new line');
+}
+
 let currentTest = {};
 const tests = [];
 

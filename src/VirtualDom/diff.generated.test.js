@@ -469,3 +469,85 @@ test(`attribute value replacement`, () => {
   ]
   expect(adjustEdits(edits)).toEqual(adjustExpectedEdits(expectedEdits))
 })
+
+test(`replace text with element`, () => {
+  const parser = createParser()
+  const previousDom = parser.parse(`h1`)
+  const oldNodeMap = parser.nodeMap
+  const nextDom = parser.edit(`<h1></h1>`, [
+    {
+      "rangeOffset": 0,
+      "rangeLength": 2,
+      "text": "<h1></h1>"
+    }
+  ])
+  const newNodeMap = parser.nodeMap
+  const edits = domdiff(previousDom, nextDom, {oldNodeMap, newNodeMap})
+  const expectedEdits = [
+    {
+      "command": "elementDelete",
+      "payload": {}
+    },
+    {
+      "command": "elementInsert",
+      "payload": {
+        "nodeType": "ElementNode",
+        "tag": "h1"
+      }
+    }
+  ]
+  expect(adjustEdits(edits)).toEqual(adjustExpectedEdits(expectedEdits))
+})
+
+test(`basic replace text`, () => {
+  const parser = createParser()
+  const previousDom = parser.parse(`<h1>a</h1>`)
+  const oldNodeMap = parser.nodeMap
+  const nextDom = parser.edit(`<h1>b</h1>`, [
+    {
+      "rangeOffset": 4,
+      "rangeLength": 1,
+      "text": "b"
+    }
+  ])
+  const newNodeMap = parser.nodeMap
+  const edits = domdiff(previousDom, nextDom, {oldNodeMap, newNodeMap})
+  const expectedEdits = [
+    {
+      "command": "textReplace",
+      "payload": {
+        "text": "b"
+      }
+    }
+  ]
+  expect(adjustEdits(edits)).toEqual(adjustExpectedEdits(expectedEdits))
+})
+
+test(`replace element with text`, () => {
+  const parser = createParser()
+  const previousDom = parser.parse(`<h1>hello world</h1>`)
+  const oldNodeMap = parser.nodeMap
+  const nextDom = parser.edit(`hello world`, [
+    {
+      "rangeOffset": 0,
+      "rangeLength": 20,
+      "text": "hello world"
+    }
+  ])
+  const newNodeMap = parser.nodeMap
+  const edits = domdiff(previousDom, nextDom, {oldNodeMap, newNodeMap})
+  const expectedEdits = [
+    {
+      "command": "elementInsert",
+      "payload": {
+        "nodeType": "TextNode",
+        "text": "hello world"
+      }
+    },
+    {
+      "command": "elementDelete",
+      "payload": {}
+    }
+  ]
+  expect(adjustEdits(edits)).toEqual(adjustExpectedEdits(expectedEdits))
+})

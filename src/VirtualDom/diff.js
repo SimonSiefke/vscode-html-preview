@@ -759,8 +759,8 @@ Array.prototype.pretty = function () {
 };
 
 const testCase = {
-	previousDom: '<h1 >hello world</h1>',
-	nextDom: '<h1 class>hello world</h1>'
+	previousDom: '<h1>a</h1>',
+	nextDom: '<h1>b</h1>'
 };
 
 const parser = createParser();
@@ -768,7 +768,7 @@ const parser = createParser();
 const parsedH1 = parser.parse(testCase.previousDom);
 const oldNodeMap = parser.nodeMap; // ?
 const parsedH2 = parser.edit(testCase.nextDom, [
-	{rangeOffset: 4, text: 'class', rangeLength: 0}
+	{rangeOffset: 4, text: 'b', rangeLength: 1}
 ]);
 const newNodeMap = parser.nodeMap; // ?
 parsedH1.pretty(); // ?

@@ -568,3 +568,99 @@ expectedEdits:
      }
   }
 ]
+
+name:
+replace text with element
+
+previousDom:
+h1
+
+edits:
+[
+  {
+    rangeOffset: 0
+    rangeLength: 2
+    text: <h1></h1>
+  }
+]
+
+nextDom:
+<h1></h1>
+
+expectedEdits:
+[
+   {
+     command: elementDelete
+     payload: {
+
+     }
+  }
+  {
+     command: elementInsert
+     payload: {
+       nodeType: ElementNode
+       tag: h1
+     }
+  }
+]
+
+name:
+basic replace text
+
+previousDom:
+<h1>a</h1>
+
+edits:
+[
+  {
+    rangeOffset: 4
+    rangeLength: 1
+    text: b
+  }
+]
+
+nextDom:
+<h1>b</h1>
+
+expectedEdits:
+[
+   {
+     command: textReplace
+     payload: {
+       text: b
+     }
+  }
+]
+
+name:
+replace element with text
+
+previousDom:
+<h1>hello world</h1>
+
+edits:
+[
+  {
+    rangeOffset: 0
+    rangeLength: 20
+    text: "hello world"
+  }
+]
+
+nextDom:
+hello world
+
+expectedEdits:
+[
+   {
+     command: elementInsert
+     payload: {
+       nodeType: TextNode
+       text: "hello world"
+     }
+  }
+  {
+    command: elementDelete
+    payload: {}
+  }
+]

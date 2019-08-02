@@ -47,6 +47,8 @@ function createIdGenerator() {
 	return () => id++;
 }
 
+let d = 0;
+
 /**
  *
  * @param {string} text
@@ -66,7 +68,7 @@ function parse(
 			'img',
 			'meta'
 		],
-		prefixSums = [],
+		prefixSums = {},
 		nextId = createIdGenerator(),
 		nodeMap = {}
 	} = {}
@@ -88,13 +90,49 @@ function parse(
 	let pendingAttribute;
 	let token = scanner.scan();
 
+	d++;
+	let id;
+	if (d === 1) {
+		prefixSums;
+	} else {
+		prefixSums;
+	}
+
 	const addNode = node => {
-		let id;
+		if (d === 1) {
+			scanner.getTokenOffset(); // ?
+			id;
+			node;
+			prefixSums;
+		} else {
+			prefixSums;
+			scanner.getTokenOffset(); // ?
+			id;
+			node;
+		}
+
 		if (prefixSums[scanner.getTokenOffset()]) {
 			id = prefixSums[scanner.getTokenOffset()];
 		} else {
 			id = nextId();
+			prefixSums;
 			prefixSums[scanner.getTokenOffset()] = id;
+			prefixSums;
+			if (d === 2) {
+				id;
+			}
+		}
+
+		if (d === 1) {
+			scanner.getTokenOffset(); // ?
+			id;
+			node;
+			prefixSums;
+		} else {
+			prefixSums;
+			scanner.getTokenOffset(); // ?
+			id;
+			node;
 		}
 
 		nodeMap[id] = node;
@@ -219,6 +257,7 @@ export const parseHtml = (
 	html,
 	{nextId = createIdGenerator(), nodeMap = {}, prefixSums = {}} = {}
 ) => {
+	prefixSums;
 	// Let id = 1;
 
 	const result = parse(html, {nextId, nodeMap, prefixSums});
@@ -333,11 +372,15 @@ export function createParser() {
 			const edit = edits[0];
 			const {rangeOffset, rangeLength, text} = edit;
 			for (const prefixSum in prefixSums) {
+				// TODO something is wrong here
 				if (prefixSum < rangeOffset) {
 					continue;
 				}
 
 				if (prefixSum < rangeOffset + rangeLength) {
+					prefixSum;
+					rangeOffset;
+					rangeLength;
 					delete prefixSums[prefixSum];
 					continue;
 				}
@@ -389,17 +432,17 @@ Array.prototype.pretty = function () {
 };
 
 const testCase = {
-	previousDom: '<h1 >hello world</h1>',
-	nextDom: '<h1 class>hello world</h1>'
+	previousDom: '<h1>a</h1>',
+	nextDom: '<h1>b</h1>'
 };
 
 const parser = createParser();
 
 const parsedH1 = parser.parse(testCase.previousDom);
-// Parser.parse(testCase.nextDom).pretty()//?
+const oldNodeMap = parser.nodeMap; // ?
 const parsedH2 = parser.edit(testCase.nextDom, [
-	{rangeOffset: 4, text: 'class', rangeLength: 0}
+	{rangeOffset: 4, text: 'b', rangeLength: 1}
 ]);
-const nodeMap2 = parser.nodeMap; // ?
+const newNodeMap = parser.nodeMap; // ?
 parsedH1.pretty(); // ?
 parsedH2.pretty(); // ?

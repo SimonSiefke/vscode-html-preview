@@ -25,6 +25,7 @@ export function activate() {
 	const httpServer = http.createServer((req, res) => {
 		try {
 			if (req.url === '/') {
+				res.writeHead(200, {'Content-Type': 'text/html'});
 				let dom = genDom(previousText);
 				const bodyIndex = dom.lastIndexOf('</body');
 				previousDom = parser.parse(previousText);
@@ -32,19 +33,15 @@ export function activate() {
 					previousDom
 				)}</script>`;
 				const $script = '<script src="index.js"></script>';
+				const $inner = '\n' + $virtualDom + '\n' + $script;
 				if (bodyIndex !== -1) {
-					dom =
-						dom.slice(0, bodyIndex) +
-						'\n' +
-						$virtualDom +
-						'\n' +
-						$script +
-						dom.slice(bodyIndex);
+					dom = dom.slice(0, bodyIndex) + $inner + dom.slice(bodyIndex);
 				} else {
-					dom += '\n' + $virtualDom + '\n' + $script;
+					dom += $inner;
 				}
 
-				res.end(dom);
+				res.write(dom);
+				res.end();
 			} else if (req.url === '/index.js') {
 				res.writeHead(200, {'Content-Type': 'text/javascript'});
 				res.write(indexJs);
