@@ -1,3 +1,4 @@
+/* eslint-disable complexity */
 /* eslint-disable no-alert */
 // @ts-nocheck
 
@@ -29,7 +30,7 @@ function walk(dom, fn, childrenFirst = false) {
 }
 
 const nodeMap = {
-	0: document.documentElement
+	0: document.body
 };
 
 for (let i = 0; i < virtualDom.length; i++) {
@@ -78,6 +79,21 @@ walk(virtualDom, node => {
 
 console.log(nodeMap);
 
+function fixAttributeValue(value) {
+	if (value === null) {
+		return '';
+	}
+
+	if (
+		(value && (value.startsWith('\'') && value.endsWith('\''))) ||
+		(value.startsWith('"') && value.endsWith('"'))
+	) {
+		return value.slice(1, -1);
+	}
+
+	return value;
+}
+
 ws.onmessage = ({data}) => {
 	const messages = JSON.parse(data);
 	console.log(JSON.stringify(messages, null, 2));
@@ -100,7 +116,7 @@ ws.onmessage = ({data}) => {
 
 		if (command === 'attributeAdd' || command === 'attributeChange') {
 			const $node = nodeMap[payload.id];
-			$node.setAttribute(payload.attribute, payload.value || '');
+			$node.setAttribute(payload.attribute, fixAttributeValue(payload.value));
 			continue;
 		}
 
@@ -112,6 +128,10 @@ ws.onmessage = ({data}) => {
 
 		if (command === 'elementDelete') {
 			const $node = nodeMap[payload.id];
+			if (!$node) {
+				debugger;
+			}
+
 			if ($node.remove) {
 				$node.remove();
 			} else if ($node.parentNode && $node.parentNode.removeChild) {
@@ -128,7 +148,10 @@ ws.onmessage = ({data}) => {
 			if (payload.nodeType === 'ElementNode') {
 				$node = document.createElement(payload.tag);
 				for (const attributeName of Object.keys(payload.attributes)) {
-					$node.setAttribute(attributeName, payload.attributes[attributeName]);
+					$node.setAttribute(
+						attributeName,
+						fixAttributeValue(payload.attributes[attributeName])
+					);
 				}
 			} else if (payload.nodeType === 'TextNode') {
 				$node = document.createTextNode(payload.text);
@@ -144,8 +167,12 @@ ws.onmessage = ({data}) => {
 				debugger;
 			}
 
-			const $referenceNode = $parent.childNodes[payload.index];
-			$parent.insertBefore($node, $referenceNode);
+			if (payload.index === -1) {
+				$parent.prepend($node);
+			} else {
+				const $referenceNode = $parent.childNodes[payload.index];
+				$parent.insertBefore($node, $referenceNode);
+			}
 		}
 
 		console.log(JSON.stringify(message));

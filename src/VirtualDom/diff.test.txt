@@ -605,10 +605,38 @@ expectedEdits:
 ]
 
 name:
-basic replace text
+basic replace text #1
 
 previousDom:
 <h1>a</h1>
+
+edits:
+[
+  {
+    rangeOffset: 4
+    rangeLength: 1
+    text: b
+  }
+]
+
+nextDom:
+<h1>b</h1>
+
+expectedEdits:
+[
+   {
+     command: textReplace
+     payload: {
+       text: b
+     }
+  }
+]
+
+name:
+basic replace text #2
+
+previousDom:
+<h1>aa</h1>
 
 edits:
 [
@@ -662,5 +690,117 @@ expectedEdits:
   {
     command: elementDelete
     payload: {}
+  }
+]
+
+name:
+replace text inside element with attributes
+
+previousDom:
+<h1 style="background:orange">a</h1>
+
+edits:
+[
+  {
+    rangeOffset: 30
+    rangeLength: 1
+    text: b
+  }
+]
+
+nextDom:
+<h1 style="background:orange">b</h1>
+
+expectedEdits:
+[
+   {
+     command: textReplace
+     payload: {
+       text: b
+     }
+  }
+]
+
+name:
+replace element with text
+
+previousDom:
+<h1>hello world</h1>
+
+edits:
+[
+  {
+    rangeOffset: 0
+    rangeLength: 20
+    text: "hello world"
+  }
+]
+
+nextDom:
+hello world
+
+expectedEdits:
+[
+   {
+     command: elementInsert
+     payload: {
+       nodeType: TextNode
+       text: "hello world"
+     }
+  }
+  {
+    command: elementDelete
+    payload: {}
+  }
+]
+
+name:
+replace text after element node
+
+previousDom:
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  <h1>hello world</h1>
+</body>
+</html>
+
+edits:
+[
+  {
+    rangeOffset: 257
+    rangeLength: 0
+    text: "\n  "
+  }
+]
+
+nextDom:
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  <h1>hello world</h1>
+  
+</body>
+</html>
+
+expectedEdits:
+[
+   {
+     command: textReplace
+     payload: {
+       text: "\n  \n"
+     }
   }
 ]

@@ -8,6 +8,7 @@
     "checkJs": true,
     "allowJs": true,
     "noEmit": true,
+    "incremental": false,
     "types": ["jest", "node"]
   }
 }

@@ -21,6 +21,7 @@ export function activate() {
 	);
 	const parser = createParser();
 	let previousDom = parser.parse(previousText);
+	console.log(previousDom);
 
 	const httpServer = http.createServer((req, res) => {
 		try {
@@ -32,7 +33,7 @@ export function activate() {
 				const $virtualDom = `<script id="virtual-dom">${JSON.stringify(
 					previousDom
 				)}</script>`;
-				const $script = '<script src="index.js"></script>';
+				const $script = '<script defer src="index.js"></script>';
 				const $inner = '\n' + $virtualDom + '\n' + $script;
 				if (bodyIndex !== -1) {
 					dom = dom.slice(0, bodyIndex) + $inner + dom.slice(bodyIndex);
@@ -56,6 +57,8 @@ export function activate() {
 	});
 	webSocketServer.start(3001);
 	vscode.workspace.onDidChangeTextDocument(event => {
+		// Console.log(event);
+		// return;
 		if (event.contentChanges.length === 0) {
 			return;
 		}
@@ -66,26 +69,47 @@ export function activate() {
 		}
 
 		const newText = event.document.getText();
+
+		// 		Const testCase = {
+		// 			previousDom: `<!DOCTYPE html>
+		// <html lang="en">
+		// <head>
+		//   <meta charset="UTF-8">
+		//   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+		//   <meta http-equiv="X-UA-Compatible" content="ie=edge">
+		//   <title>Document</title>
+		// </head>
+		// <body>
+		//   <h1>hello world</h1>
+		// </body>
+		// </html>`,
+		// 			nextDom: `<!DOCTYPE html>
+		// <html lang="en">
+		// <head>
+		//   <meta charset="UTF-8">
+		//   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+		//   <meta http-equiv="X-UA-Compatible" content="ie=edge">
+		//   <title>Document</title>
+		// </head>
+		// <body>
+		//   <h1>hello world</h1>
+
+		// </body>
+		// </html>`
+		// 		};
+
+		// PreviousDom = parser.parse(testCase.previousDom);
+		// console.log(previousDom);
 		try {
 			if (event.contentChanges.length === 1) {
 				const change = event.contentChanges[0];
 				const oldNodeMap = parser.nodeMap;
-				console.log(change);
-				const nextDom = parser.edit(newText, [
-					{
-						rangeOffset: change.rangeOffset,
-						rangeLength: change.rangeLength,
-						text: change.text
-					}
-				]);
+				const nextDom = parser.edit(newText, [change]);
 				const newNodeMap = parser.nodeMap;
-				console.log(oldNodeMap);
-				console.log(newNodeMap);
 				const diffs = domdiff(previousDom, nextDom, {oldNodeMap, newNodeMap});
 				previousDom = nextDom;
 				webSocketServer.broadcast(diffs, {});
 				previousText = newText;
-				console.log('yes');
 				console.log(diffs);
 			} else {
 				console.log(event.contentChanges);

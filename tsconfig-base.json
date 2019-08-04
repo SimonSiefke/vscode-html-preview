@@ -29,6 +29,7 @@
 
     "types": ["node", "jest"],
     "moduleResolution": "node",
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "incremental": false
   }
 }
