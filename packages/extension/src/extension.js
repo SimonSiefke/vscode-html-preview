@@ -103,10 +103,12 @@ export function activate() {
 		try {
 			if (event.contentChanges.length === 1) {
 				const change = event.contentChanges[0];
+				console.log(change);
 				const oldNodeMap = parser.nodeMap;
 				const nextDom = parser.edit(newText, [change]);
 				const newNodeMap = parser.nodeMap;
 				const diffs = domdiff(previousDom, nextDom, {oldNodeMap, newNodeMap});
+				console.log(nextDom.pretty());
 				previousDom = nextDom;
 				webSocketServer.broadcast(diffs, {});
 				previousText = newText;

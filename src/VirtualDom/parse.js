@@ -1,3 +1,5 @@
+/* eslint-disable no-label-var */
+/* eslint-disable no-labels */
 /* eslint-disable guard-for-in */
 /* eslint-disable valid-jsdoc */
 /* eslint-disable max-depth */
@@ -113,20 +115,42 @@ function parse(
 		}
 
 		if (scanner.getTokenOffset() > 250 && d === 2) {
-			console.log(prefixSums);
+			// Console.log(prefixSums);
 			scanner.getTokenOffset(); // ?
 			scanner.getTokenText(); // ?
 		}
 
-		if (prefixSums[scanner.getTokenOffset()]) {
+		nextId: if (prefixSums[scanner.getTokenOffset()]) {
 			id = prefixSums[scanner.getTokenOffset()];
 		} else {
+			if (node.type === 'TextNode') {
+				// Merge text nodes
+				// e.g. <h1>|world</h1>, insert hello, text node will be merged with world text node
+				// <h1>|<p>world</p></h1>, insert hello, text node will not be merged with <p>world</p>
+				for (
+					let i = scanner.getTokenOffset();
+					i < scanner.getTokenOffset() + scanner.getTokenText().length;
+					i++
+				) {
+					if (prefixSums[i]) {
+						const nextNode = nodeMap[prefixSums[i]]; // ?
+						if (nextNode && nextNode.type === 'TextNode') {
+							id = parseInt(prefixSums[i], 10);
+							delete prefixSums[i];
+							prefixSums[scanner.getTokenOffset()] = id;
+							break nextId;
+						}
+					} // ?
+				}
+			}
+
 			id = nextId();
 			prefixSums;
 			prefixSums[scanner.getTokenOffset()] = id;
 			prefixSums;
 			if (d === 2) {
 				id;
+				scanner.getTokenText().length; // ?
 				scanner.getTokenOffset(); // ?
 			}
 		}
@@ -401,29 +425,19 @@ export function createParser() {
 					continue;
 				} else {
 					// Is after
-					prefixSum === rangeOffset; // ?
-					prefixSum;
-					rangeOffset;
-					rangeLength;
 					const id = prefixSums[prefixSum];
-					id;
-					text === '\n  '; // ?
 					delete prefixSums[prefixSum];
-					prefixSum + text.length - rangeLength; // ?
 					prefixSums[prefixSum + text.length - rangeLength] = id;
 				}
 			}
 
-			console.log(prefixSums);
-
 			const newNodeMap = {...nodeMap}; // ?
-
 			const result = parseHtml(textWithEdits, {
 				prefixSums,
 				nextId,
 				nodeMap: newNodeMap
 			});
-			newNodeMap;
+			// Console.log(prefixSums);
 			nodeMap = newNodeMap; // ?
 			return result;
 		}
