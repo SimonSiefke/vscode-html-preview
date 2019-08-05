@@ -170,7 +170,7 @@ ws.onmessage = ({data}) => {
 			if (payload.index === -1) {
 				$parent.prepend($node);
 			} else {
-				const $referenceNode = $parent.childNodes[payload.index];
+				const $referenceNode = $parent.childNodes[payload.index + 1];
 				$parent.insertBefore($node, $referenceNode);
 			}
 		}
