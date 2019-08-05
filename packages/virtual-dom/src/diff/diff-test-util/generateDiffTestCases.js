@@ -1,10 +1,12 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import {toJson} from 'really-relaxed-json';
-import * as assert from 'assert';
 import {validate} from 'jsonschema';
 
-const diffTest = fs.readFileSync(path.join(__dirname, 'diff.test.txt'), 'utf-8');
+const diffTest = fs.readFileSync(
+	path.join(__dirname, '../diff.test.txt'),
+	'utf-8'
+);
 
 const lines = diffTest.split('\n');
 
@@ -180,8 +182,8 @@ const jestCases = tests.map(test => {
 });
 
 const importCode = [
-	'import {createParser} from \'./parse\'',
-	'import {domdiff} from \'./diff.js\''
+	'import { domdiff } from \'../diff\'',
+	'import { createParser } from \'../../parse/parse\''
 ].join('\n');
 const functionCode = [
 	`function adjustEdits(edits){
@@ -206,6 +208,6 @@ const jestCasesCode = jestCases.join('\n\n'); // ?
 
 const code = `${importCode}\n\n${functionCode}\n\n${jestCasesCode}`;
 
-fs.writeFileSync(path.join(__dirname, 'diff.generated.test.js'), code);
+fs.writeFileSync(path.join(__dirname, 'diff.generated.test.ts'), code);
 
 console.log('generated diff tests ✔️');

@@ -3,7 +3,7 @@ import * as vscode from 'vscode';
 import {createWebSocketServer} from './WebSocketServer/createWebSocketServer';
 import * as http from 'http';
 
-import {genDom} from '../extension/src/genDom';
+import {genDom} from '../../packages/extension/src/genDom';
 import * as fs from 'fs';
 import * as path from 'path';
 import {domdiff} from './src/VirtualDom/diff';

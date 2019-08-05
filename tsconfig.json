@@ -3,7 +3,7 @@
   "include": [],
   "references": [
     { "path": "./packages/extension" },
-    { "path": "./packages/injected-code" }
+    { "path": "./packages/injected-code" },
     { "path": "./packages/virtual-dom" }
   ]
 }

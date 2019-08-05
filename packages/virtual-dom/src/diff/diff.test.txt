@@ -1,4 +1,90 @@
 name:
+attribute delete #1
+
+previousDom:
+<h1 class></h1>
+
+edits:
+[
+  {
+    rangeOffset: 4
+    rangeLength: 5
+    text: ""
+  }
+]
+
+nextDom:
+<h1></h1>
+
+expectedEdits:
+[
+  {
+     command: attributeDelete
+     payload: {
+       attribute: class
+     }
+  }
+]
+
+name:
+attribute change #1
+
+previousDom:
+<h1 class></h1>
+
+edits:
+[
+  {
+    rangeOffset: 9
+    rangeLength: 0
+    text: "green"
+  }
+]
+
+nextDom:
+<h1 class="green"></h1>
+
+expectedEdits:
+[
+  {
+    command: attributeChange
+    payload: {
+      attribute: class
+      value: '"green"'
+    }
+  }
+]
+
+name:
+attribute change #2
+
+previousDom:
+<h1 class="gre"></h1>
+
+edits:
+[
+  {
+    rangeOffset: 14
+    rangeLength: 0
+    text: "en"
+  }
+]
+
+nextDom:
+<h1 class="green"></h1>
+
+expectedEdits:
+[
+  {
+    command: attributeChange
+    payload: {
+      attribute: class
+      value: '"green"'
+    }
+  }
+]
+
+name:
 basic text insertion
 
 previousDom:
@@ -2362,7 +2448,7 @@ expectedEdits:
 ]
 
 name:
-000 - delete text between text and text
+delete 000 - delete text between text and text
 
 previousDom:
 abc
@@ -2390,7 +2476,7 @@ expectedEdits:
 ]
 
 name:
-001 - delete text between text and element
+delete 001 - delete text between text and element
 
 previousDom:
 ab<h1>c</h1>
@@ -2418,7 +2504,7 @@ expectedEdits:
 ]
 
 name:
-002 - delete text between text and comment
+delete 002 - delete text between text and comment
 
 previousDom:
 ab<!--c-->
@@ -2446,7 +2532,7 @@ expectedEdits:
 ]
 
 //name:
-//010 - delete text between element and text
+//delete 010 - delete text between element and text
 //
 //previousDom:
 //<h1>a</h1>b<!--c-->
@@ -2472,7 +2558,7 @@ expectedEdits:
 //]
 //
 name:
-011 - delete text between element and element
+delete 011 - delete text between element and element
 
 previousDom:
 <h1>a</h1>b<h1>c</h1>
@@ -2498,7 +2584,7 @@ expectedEdits:
 ]
 
 //name:
-//012 - delete text between element and comment
+//delete 012 - delete text between element and comment
 //
 //previousDom:
 //<h1>a</h1>b<!--c-->
@@ -2524,7 +2610,7 @@ expectedEdits:
 //]
 
 name:
-020 - delete text between comment and text
+delete 020 - delete text between comment and text
 
 previousDom:
 <!--a-->bc
@@ -2552,7 +2638,7 @@ expectedEdits:
 ]
 
 name:
-021 - delete text between comment and element
+delete 021 - delete text between comment and element
 
 previousDom:
 <!--a-->b<h1>c</h1>
@@ -2578,7 +2664,7 @@ expectedEdits:
 ]
 
 //name:
-//022 - delete text between comment and comment
+//delete 022 - delete text between comment and comment
 //
 //previousDom:
 //<!--a-->b<!--c-->
@@ -2604,7 +2690,7 @@ expectedEdits:
 //]
 //
 name:
-100 - delete element between text and text
+delete 100 - delete element between text and text
 
 previousDom:
 a<h1>b</h1>c
@@ -2640,7 +2726,7 @@ expectedEdits:
 ]
 
 name:
-101 - delete element between text and element
+delete 101 - delete element between text and element
 
 previousDom:
 a<h1>b</h1><h1>c</h1>
@@ -2666,7 +2752,7 @@ expectedEdits:
 ]
 
 name:
-102 - delete element between text and comment
+delete 102 - delete element between text and comment
 
 previousDom:
 a<h1>b</h1><!--c-->
@@ -2692,7 +2778,7 @@ expectedEdits:
 ]
 
 name:
-110 - delete element between element and text
+delete 110 - delete element between element and text
 
 previousDom:
 <h1>a</h1><h1>b</h1>c
@@ -2718,7 +2804,7 @@ expectedEdits:
 ]
 
 name:
-111 - delete element between element and element
+delete 111 - delete element between element and element
 
 previousDom:
 <h1>a</h1><h1>b</h1><h1>c</h1>
@@ -2744,7 +2830,7 @@ expectedEdits:
 ]
 
 name:
-112 - delete element between element and comment
+delete 112 - delete element between element and comment
 
 previousDom:
 <h1>a</h1><h1>b</h1><!--c-->
@@ -2770,7 +2856,7 @@ expectedEdits:
 ]
 
 name:
-120 - delete element between comment and text
+delete 120 - delete element between comment and text
 
 previousDom:
 <!--a--><h1>b</h1>c
@@ -2796,7 +2882,7 @@ expectedEdits:
 ]
 
 name:
-121 - delete element between comment and element
+delete 121 - delete element between comment and element
 
 previousDom:
 <!--a--><h1>b</h1><h1>c</h1>
@@ -2822,7 +2908,7 @@ expectedEdits:
 ]
 
 name:
-122 - delete element between comment and comment
+delete 122 - delete element between comment and comment
 
 previousDom:
 <!--a--><h1>b</h1><!--c-->
@@ -2848,7 +2934,7 @@ expectedEdits:
 ]
 
 name:
-200 - delete comment between text and text
+delete 200 - delete comment between text and text
 
 previousDom:
 a<!--b-->c
@@ -2884,7 +2970,7 @@ expectedEdits:
 ]
 
 name:
-201 - delete comment between text and element
+delete 201 - delete comment between text and element
 
 previousDom:
 a<!--b--><h1>c</h1>
@@ -2910,7 +2996,7 @@ expectedEdits:
 ]
 
 //name:
-//202 - delete comment between text and comment
+//delete 202 - delete comment between text and comment
 //
 //previousDom:
 //a<!--b--><!--c-->
@@ -2937,7 +3023,7 @@ expectedEdits:
 //
 
 //name:
-//210 - delete comment between element and text
+//delete 210 - delete comment between element and text
 //
 //previousDom:
 //<h1>a</h1><!--b-->c
@@ -2963,7 +3049,7 @@ expectedEdits:
 //]
 //
 name:
-211 - delete comment between element and element
+delete 211 - delete comment between element and element
 
 previousDom:
 <h1>a</h1><!--b--><h1>c</h1>
@@ -2989,7 +3075,7 @@ expectedEdits:
 ]
 
 //name:
-//212 - delete comment between element and comment
+//delete 212 - delete comment between element and comment
 //
 //previousDom:
 //<h1>a</h1><!--b--><!--c-->
@@ -3015,7 +3101,7 @@ expectedEdits:
 //]
 //
 //name:
-//220 - delete comment between comment and text
+//delete 220 - delete comment between comment and text
 //
 //previousDom:
 //<!--a--><!--b-->c
@@ -3041,7 +3127,7 @@ expectedEdits:
 //]
 
 name:
-221 - delete comment between comment and element
+delete 221 - delete comment between comment and element
 
 previousDom:
 <!--a--><!--b--><h1>c</h1>
@@ -3067,7 +3153,7 @@ expectedEdits:
 ]
 
 //name:
-//222 - delete comment between comment and comment
+//delete 222 - delete comment between comment and comment
 //
 //previousDom:
 //<!--a--><!--b--><!--c-->
@@ -3093,7 +3179,7 @@ expectedEdits:
 //]
 
 name:
-000 - insert text between text and text
+insert 000 - insert text between text and text
 
 previousDom:
 ac
@@ -3121,7 +3207,7 @@ expectedEdits:
 ]
 
 name:
-001 - insert text between text and element
+insert 001 - insert text between text and element
 
 previousDom:
 a<h1>c</h1>
@@ -3149,7 +3235,7 @@ expectedEdits:
 ]
 
 name:
-002 - insert text between text and comment
+insert 002 - insert text between text and comment
 
 previousDom:
 a<!--c-->
@@ -3206,7 +3292,7 @@ expectedEdits:
 //]
 
 name:
-011 - insert text between element and element
+insert 011 - insert text between element and element
 
 previousDom:
 <h1>a</h1><h1>c</h1>
@@ -3264,7 +3350,7 @@ expectedEdits:
 //]
 
 name:
-020 - insert text between comment and text
+insert 020 - insert text between comment and text
 
 previousDom:
 <!--a-->c
@@ -3350,7 +3436,7 @@ expectedEdits:
 //]
 //
 name:
-100 - insert element between text and text
+insert 100 - insert element between text and text
 
 previousDom:
 ac
@@ -3399,7 +3485,7 @@ expectedEdits:
 ]
 
 name:
-101 - insert element between text and element
+insert 101 - insert element between text and element
 
 previousDom:
 a<h1>c</h1>
@@ -3435,7 +3521,7 @@ expectedEdits:
 ]
 
 name:
-102 - insert element between text and comment
+insert 102 - insert element between text and comment
 
 previousDom:
 a<!--c-->
@@ -3471,7 +3557,7 @@ expectedEdits:
 ]
 
 name:
-110 - insert element between element and text
+insert 110 - insert element between element and text
 
 previousDom:
 <h1>a</h1>c
@@ -3507,7 +3593,7 @@ expectedEdits:
 ]
 
 name:
-111 - insert element between element and element
+insert 111 - insert element between element and element
 
 previousDom:
 <h1>a</h1><h1>c</h1>
@@ -3543,7 +3629,7 @@ expectedEdits:
 ]
 
 name:
-112 - insert element between element and comment
+insert 112 - insert element between element and comment
 
 previousDom:
 <h1>a</h1><!--c-->
@@ -3615,7 +3701,7 @@ expectedEdits:
 //]
 
 name:
-121 - insert element between comment and element
+insert 121 - insert element between comment and element
 
 previousDom:
 <!--a--><h1>c</h1>
@@ -3651,7 +3737,7 @@ expectedEdits:
 ]
 
 name:
-122 - insert element between comment and comment
+insert 122 - insert element between comment and comment
 
 previousDom:
 <!--a--><!--c-->
@@ -3687,7 +3773,7 @@ expectedEdits:
 ]
 
 name:
-200 - insert comment between text and text
+insert 200 - insert comment between text and text
 
 previousDom:
 ac
@@ -3729,7 +3815,7 @@ expectedEdits:
 ]
 
 name:
-201 - insert comment between text and element
+insert 201 - insert comment between text and element
 
 previousDom:
 a<h1>c</h1>
@@ -3817,7 +3903,7 @@ expectedEdits:
 //]
 
 name:
-211 - insert comment between element and element
+insert 211 - insert comment between element and element
 
 previousDom:
 <h1>a</h1><h1>c</h1>
@@ -3846,7 +3932,7 @@ expectedEdits:
 ]
 
 //name:
-//212 - insert comment between element and comment
+//insert 212 - insert comment between element and comment
 //
 //previousDom:
 //<h1>a</h1><!--c-->
@@ -3875,7 +3961,7 @@ expectedEdits:
 //]
 
 //name:
-//220 - insert comment between comment and text
+//insert 220 - insert comment between comment and text
 //
 //previousDom:
 //<!--a-->c
@@ -3904,7 +3990,7 @@ expectedEdits:
 //]
 //
 name:
-221 - insert comment between comment and element
+insert 221 - insert comment between comment and element
 
 previousDom:
 <!--a--><h1>c</h1>

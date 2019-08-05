@@ -1,5 +1,5 @@
-import {createParser} from '../parse/parse'
-import {domdiff} from './diff.js'
+import { domdiff } from '../diff'
+import { createParser } from '../../parse/parse'
 
 function adjustEdits(edits){
   for(const edit of edits){
@@ -18,6 +18,80 @@ function adjustExpectedEdits(expectedEdits){
   }
   return expectedEdits
 }
+
+test(`attribute delete #1`, () => {
+  const parser = createParser()
+  const previousDom = parser.parse(`<h1 class></h1>`)
+  const oldNodeMap = parser.nodeMap
+  const nextDom = parser.edit(`<h1></h1>`, [
+    {
+      "rangeOffset": 4,
+      "rangeLength": 5,
+      "text": ""
+    }
+  ])
+  const newNodeMap = parser.nodeMap
+  const edits = domdiff(previousDom, nextDom, {oldNodeMap, newNodeMap})
+  const expectedEdits = [
+    {
+      "command": "attributeDelete",
+      "payload": {
+        "attribute": "class"
+      }
+    }
+  ]
+  expect(adjustEdits(edits)).toEqual(adjustExpectedEdits(expectedEdits))
+})
+
+test(`attribute change #1`, () => {
+  const parser = createParser()
+  const previousDom = parser.parse(`<h1 class></h1>`)
+  const oldNodeMap = parser.nodeMap
+  const nextDom = parser.edit(`<h1 class="green"></h1>`, [
+    {
+      "rangeOffset": 9,
+      "rangeLength": 0,
+      "text": "green"
+    }
+  ])
+  const newNodeMap = parser.nodeMap
+  const edits = domdiff(previousDom, nextDom, {oldNodeMap, newNodeMap})
+  const expectedEdits = [
+    {
+      "command": "attributeChange",
+      "payload": {
+        "attribute": "class",
+        "value": "\"green\""
+      }
+    }
+  ]
+  expect(adjustEdits(edits)).toEqual(adjustExpectedEdits(expectedEdits))
+})
+
+test(`attribute change #2`, () => {
+  const parser = createParser()
+  const previousDom = parser.parse(`<h1 class="gre"></h1>`)
+  const oldNodeMap = parser.nodeMap
+  const nextDom = parser.edit(`<h1 class="green"></h1>`, [
+    {
+      "rangeOffset": 14,
+      "rangeLength": 0,
+      "text": "en"
+    }
+  ])
+  const newNodeMap = parser.nodeMap
+  const edits = domdiff(previousDom, nextDom, {oldNodeMap, newNodeMap})
+  const expectedEdits = [
+    {
+      "command": "attributeChange",
+      "payload": {
+        "attribute": "class",
+        "value": "\"green\""
+      }
+    }
+  ]
+  expect(adjustEdits(edits)).toEqual(adjustExpectedEdits(expectedEdits))
+})
 
 test(`basic text insertion`, () => {
   const parser = createParser()
@@ -1717,7 +1791,7 @@ test(`delete element after text`, () => {
   expect(adjustEdits(edits)).toEqual(adjustExpectedEdits(expectedEdits))
 })
 
-test(`000 - delete text between text and text`, () => {
+test(`delete 000 - delete text between text and text`, () => {
   const parser = createParser()
   const previousDom = parser.parse(`abc`)
   const oldNodeMap = parser.nodeMap
@@ -1741,7 +1815,7 @@ test(`000 - delete text between text and text`, () => {
   expect(adjustEdits(edits)).toEqual(adjustExpectedEdits(expectedEdits))
 })
 
-test(`001 - delete text between text and element`, () => {
+test(`delete 001 - delete text between text and element`, () => {
   const parser = createParser()
   const previousDom = parser.parse(`ab<h1>c</h1>`)
   const oldNodeMap = parser.nodeMap
@@ -1765,7 +1839,7 @@ test(`001 - delete text between text and element`, () => {
   expect(adjustEdits(edits)).toEqual(adjustExpectedEdits(expectedEdits))
 })
 
-test(`002 - delete text between text and comment`, () => {
+test(`delete 002 - delete text between text and comment`, () => {
   const parser = createParser()
   const previousDom = parser.parse(`ab<!--c-->`)
   const oldNodeMap = parser.nodeMap
@@ -1789,7 +1863,7 @@ test(`002 - delete text between text and comment`, () => {
   expect(adjustEdits(edits)).toEqual(adjustExpectedEdits(expectedEdits))
 })
 
-test(`011 - delete text between element and element`, () => {
+test(`delete 011 - delete text between element and element`, () => {
   const parser = createParser()
   const previousDom = parser.parse(`<h1>a</h1>b<h1>c</h1>`)
   const oldNodeMap = parser.nodeMap
@@ -1811,7 +1885,7 @@ test(`011 - delete text between element and element`, () => {
   expect(adjustEdits(edits)).toEqual(adjustExpectedEdits(expectedEdits))
 })
 
-test(`020 - delete text between comment and text`, () => {
+test(`delete 020 - delete text between comment and text`, () => {
   const parser = createParser()
   const previousDom = parser.parse(`<!--a-->bc`)
   const oldNodeMap = parser.nodeMap
@@ -1835,7 +1909,7 @@ test(`020 - delete text between comment and text`, () => {
   expect(adjustEdits(edits)).toEqual(adjustExpectedEdits(expectedEdits))
 })
 
-test(`021 - delete text between comment and element`, () => {
+test(`delete 021 - delete text between comment and element`, () => {
   const parser = createParser()
   const previousDom = parser.parse(`<!--a-->b<h1>c</h1>`)
   const oldNodeMap = parser.nodeMap
@@ -1857,7 +1931,7 @@ test(`021 - delete text between comment and element`, () => {
   expect(adjustEdits(edits)).toEqual(adjustExpectedEdits(expectedEdits))
 })
 
-test(`100 - delete element between text and text`, () => {
+test(`delete 100 - delete element between text and text`, () => {
   const parser = createParser()
   const previousDom = parser.parse(`a<h1>b</h1>c`)
   const oldNodeMap = parser.nodeMap
@@ -1889,7 +1963,7 @@ test(`100 - delete element between text and text`, () => {
   expect(adjustEdits(edits)).toEqual(adjustExpectedEdits(expectedEdits))
 })
 
-test(`101 - delete element between text and element`, () => {
+test(`delete 101 - delete element between text and element`, () => {
   const parser = createParser()
   const previousDom = parser.parse(`a<h1>b</h1><h1>c</h1>`)
   const oldNodeMap = parser.nodeMap
@@ -1911,7 +1985,7 @@ test(`101 - delete element between text and element`, () => {
   expect(adjustEdits(edits)).toEqual(adjustExpectedEdits(expectedEdits))
 })
 
-test(`102 - delete element between text and comment`, () => {
+test(`delete 102 - delete element between text and comment`, () => {
   const parser = createParser()
   const previousDom = parser.parse(`a<h1>b</h1><!--c-->`)
   const oldNodeMap = parser.nodeMap
@@ -1933,7 +2007,7 @@ test(`102 - delete element between text and comment`, () => {
   expect(adjustEdits(edits)).toEqual(adjustExpectedEdits(expectedEdits))
 })
 
-test(`110 - delete element between element and text`, () => {
+test(`delete 110 - delete element between element and text`, () => {
   const parser = createParser()
   const previousDom = parser.parse(`<h1>a</h1><h1>b</h1>c`)
   const oldNodeMap = parser.nodeMap
@@ -1955,7 +2029,7 @@ test(`110 - delete element between element and text`, () => {
   expect(adjustEdits(edits)).toEqual(adjustExpectedEdits(expectedEdits))
 })
 
-test(`111 - delete element between element and element`, () => {
+test(`delete 111 - delete element between element and element`, () => {
   const parser = createParser()
   const previousDom = parser.parse(`<h1>a</h1><h1>b</h1><h1>c</h1>`)
   const oldNodeMap = parser.nodeMap
@@ -1977,7 +2051,7 @@ test(`111 - delete element between element and element`, () => {
   expect(adjustEdits(edits)).toEqual(adjustExpectedEdits(expectedEdits))
 })
 
-test(`112 - delete element between element and comment`, () => {
+test(`delete 112 - delete element between element and comment`, () => {
   const parser = createParser()
   const previousDom = parser.parse(`<h1>a</h1><h1>b</h1><!--c-->`)
   const oldNodeMap = parser.nodeMap
@@ -1999,7 +2073,7 @@ test(`112 - delete element between element and comment`, () => {
   expect(adjustEdits(edits)).toEqual(adjustExpectedEdits(expectedEdits))
 })
 
-test(`120 - delete element between comment and text`, () => {
+test(`delete 120 - delete element between comment and text`, () => {
   const parser = createParser()
   const previousDom = parser.parse(`<!--a--><h1>b</h1>c`)
   const oldNodeMap = parser.nodeMap
@@ -2021,7 +2095,7 @@ test(`120 - delete element between comment and text`, () => {
   expect(adjustEdits(edits)).toEqual(adjustExpectedEdits(expectedEdits))
 })
 
-test(`121 - delete element between comment and element`, () => {
+test(`delete 121 - delete element between comment and element`, () => {
   const parser = createParser()
   const previousDom = parser.parse(`<!--a--><h1>b</h1><h1>c</h1>`)
   const oldNodeMap = parser.nodeMap
@@ -2043,7 +2117,7 @@ test(`121 - delete element between comment and element`, () => {
   expect(adjustEdits(edits)).toEqual(adjustExpectedEdits(expectedEdits))
 })
 
-test(`122 - delete element between comment and comment`, () => {
+test(`delete 122 - delete element between comment and comment`, () => {
   const parser = createParser()
   const previousDom = parser.parse(`<!--a--><h1>b</h1><!--c-->`)
   const oldNodeMap = parser.nodeMap
@@ -2065,7 +2139,7 @@ test(`122 - delete element between comment and comment`, () => {
   expect(adjustEdits(edits)).toEqual(adjustExpectedEdits(expectedEdits))
 })
 
-test(`200 - delete comment between text and text`, () => {
+test(`delete 200 - delete comment between text and text`, () => {
   const parser = createParser()
   const previousDom = parser.parse(`a<!--b-->c`)
   const oldNodeMap = parser.nodeMap
@@ -2097,7 +2171,7 @@ test(`200 - delete comment between text and text`, () => {
   expect(adjustEdits(edits)).toEqual(adjustExpectedEdits(expectedEdits))
 })
 
-test(`201 - delete comment between text and element`, () => {
+test(`delete 201 - delete comment between text and element`, () => {
   const parser = createParser()
   const previousDom = parser.parse(`a<!--b--><h1>c</h1>`)
   const oldNodeMap = parser.nodeMap
@@ -2119,7 +2193,7 @@ test(`201 - delete comment between text and element`, () => {
   expect(adjustEdits(edits)).toEqual(adjustExpectedEdits(expectedEdits))
 })
 
-test(`211 - delete comment between element and element`, () => {
+test(`delete 211 - delete comment between element and element`, () => {
   const parser = createParser()
   const previousDom = parser.parse(`<h1>a</h1><!--b--><h1>c</h1>`)
   const oldNodeMap = parser.nodeMap
@@ -2141,7 +2215,7 @@ test(`211 - delete comment between element and element`, () => {
   expect(adjustEdits(edits)).toEqual(adjustExpectedEdits(expectedEdits))
 })
 
-test(`221 - delete comment between comment and element`, () => {
+test(`delete 221 - delete comment between comment and element`, () => {
   const parser = createParser()
   const previousDom = parser.parse(`<!--a--><!--b--><h1>c</h1>`)
   const oldNodeMap = parser.nodeMap
@@ -2163,7 +2237,7 @@ test(`221 - delete comment between comment and element`, () => {
   expect(adjustEdits(edits)).toEqual(adjustExpectedEdits(expectedEdits))
 })
 
-test(`000 - insert text between text and text`, () => {
+test(`insert 000 - insert text between text and text`, () => {
   const parser = createParser()
   const previousDom = parser.parse(`ac`)
   const oldNodeMap = parser.nodeMap
@@ -2187,7 +2261,7 @@ test(`000 - insert text between text and text`, () => {
   expect(adjustEdits(edits)).toEqual(adjustExpectedEdits(expectedEdits))
 })
 
-test(`001 - insert text between text and element`, () => {
+test(`insert 001 - insert text between text and element`, () => {
   const parser = createParser()
   const previousDom = parser.parse(`a<h1>c</h1>`)
   const oldNodeMap = parser.nodeMap
@@ -2211,7 +2285,7 @@ test(`001 - insert text between text and element`, () => {
   expect(adjustEdits(edits)).toEqual(adjustExpectedEdits(expectedEdits))
 })
 
-test(`002 - insert text between text and comment`, () => {
+test(`insert 002 - insert text between text and comment`, () => {
   const parser = createParser()
   const previousDom = parser.parse(`a<!--c-->`)
   const oldNodeMap = parser.nodeMap
@@ -2235,7 +2309,7 @@ test(`002 - insert text between text and comment`, () => {
   expect(adjustEdits(edits)).toEqual(adjustExpectedEdits(expectedEdits))
 })
 
-test(`011 - insert text between element and element`, () => {
+test(`insert 011 - insert text between element and element`, () => {
   const parser = createParser()
   const previousDom = parser.parse(`<h1>a</h1><h1>c</h1>`)
   const oldNodeMap = parser.nodeMap
@@ -2260,7 +2334,7 @@ test(`011 - insert text between element and element`, () => {
   expect(adjustEdits(edits)).toEqual(adjustExpectedEdits(expectedEdits))
 })
 
-test(`020 - insert text between comment and text`, () => {
+test(`insert 020 - insert text between comment and text`, () => {
   const parser = createParser()
   const previousDom = parser.parse(`<!--a-->c`)
   const oldNodeMap = parser.nodeMap
@@ -2284,7 +2358,7 @@ test(`020 - insert text between comment and text`, () => {
   expect(adjustEdits(edits)).toEqual(adjustExpectedEdits(expectedEdits))
 })
 
-test(`100 - insert element between text and text`, () => {
+test(`insert 100 - insert element between text and text`, () => {
   const parser = createParser()
   const previousDom = parser.parse(`ac`)
   const oldNodeMap = parser.nodeMap
@@ -2329,7 +2403,7 @@ test(`100 - insert element between text and text`, () => {
   expect(adjustEdits(edits)).toEqual(adjustExpectedEdits(expectedEdits))
 })
 
-test(`101 - insert element between text and element`, () => {
+test(`insert 101 - insert element between text and element`, () => {
   const parser = createParser()
   const previousDom = parser.parse(`a<h1>c</h1>`)
   const oldNodeMap = parser.nodeMap
@@ -2361,7 +2435,7 @@ test(`101 - insert element between text and element`, () => {
   expect(adjustEdits(edits)).toEqual(adjustExpectedEdits(expectedEdits))
 })
 
-test(`102 - insert element between text and comment`, () => {
+test(`insert 102 - insert element between text and comment`, () => {
   const parser = createParser()
   const previousDom = parser.parse(`a<!--c-->`)
   const oldNodeMap = parser.nodeMap
@@ -2393,7 +2467,7 @@ test(`102 - insert element between text and comment`, () => {
   expect(adjustEdits(edits)).toEqual(adjustExpectedEdits(expectedEdits))
 })
 
-test(`110 - insert element between element and text`, () => {
+test(`insert 110 - insert element between element and text`, () => {
   const parser = createParser()
   const previousDom = parser.parse(`<h1>a</h1>c`)
   const oldNodeMap = parser.nodeMap
@@ -2425,7 +2499,7 @@ test(`110 - insert element between element and text`, () => {
   expect(adjustEdits(edits)).toEqual(adjustExpectedEdits(expectedEdits))
 })
 
-test(`111 - insert element between element and element`, () => {
+test(`insert 111 - insert element between element and element`, () => {
   const parser = createParser()
   const previousDom = parser.parse(`<h1>a</h1><h1>c</h1>`)
   const oldNodeMap = parser.nodeMap
@@ -2457,7 +2531,7 @@ test(`111 - insert element between element and element`, () => {
   expect(adjustEdits(edits)).toEqual(adjustExpectedEdits(expectedEdits))
 })
 
-test(`112 - insert element between element and comment`, () => {
+test(`insert 112 - insert element between element and comment`, () => {
   const parser = createParser()
   const previousDom = parser.parse(`<h1>a</h1><!--c-->`)
   const oldNodeMap = parser.nodeMap
@@ -2489,7 +2563,7 @@ test(`112 - insert element between element and comment`, () => {
   expect(adjustEdits(edits)).toEqual(adjustExpectedEdits(expectedEdits))
 })
 
-test(`121 - insert element between comment and element`, () => {
+test(`insert 121 - insert element between comment and element`, () => {
   const parser = createParser()
   const previousDom = parser.parse(`<!--a--><h1>c</h1>`)
   const oldNodeMap = parser.nodeMap
@@ -2521,7 +2595,7 @@ test(`121 - insert element between comment and element`, () => {
   expect(adjustEdits(edits)).toEqual(adjustExpectedEdits(expectedEdits))
 })
 
-test(`122 - insert element between comment and comment`, () => {
+test(`insert 122 - insert element between comment and comment`, () => {
   const parser = createParser()
   const previousDom = parser.parse(`<!--a--><!--c-->`)
   const oldNodeMap = parser.nodeMap
@@ -2553,7 +2627,7 @@ test(`122 - insert element between comment and comment`, () => {
   expect(adjustEdits(edits)).toEqual(adjustExpectedEdits(expectedEdits))
 })
 
-test(`200 - insert comment between text and text`, () => {
+test(`insert 200 - insert comment between text and text`, () => {
   const parser = createParser()
   const previousDom = parser.parse(`ac`)
   const oldNodeMap = parser.nodeMap
@@ -2591,7 +2665,7 @@ test(`200 - insert comment between text and text`, () => {
   expect(adjustEdits(edits)).toEqual(adjustExpectedEdits(expectedEdits))
 })
 
-test(`201 - insert comment between text and element`, () => {
+test(`insert 201 - insert comment between text and element`, () => {
   const parser = createParser()
   const previousDom = parser.parse(`a<h1>c</h1>`)
   const oldNodeMap = parser.nodeMap
@@ -2616,7 +2690,7 @@ test(`201 - insert comment between text and element`, () => {
   expect(adjustEdits(edits)).toEqual(adjustExpectedEdits(expectedEdits))
 })
 
-test(`211 - insert comment between element and element`, () => {
+test(`insert 211 - insert comment between element and element`, () => {
   const parser = createParser()
   const previousDom = parser.parse(`<h1>a</h1><h1>c</h1>`)
   const oldNodeMap = parser.nodeMap
@@ -2641,7 +2715,7 @@ test(`211 - insert comment between element and element`, () => {
   expect(adjustEdits(edits)).toEqual(adjustExpectedEdits(expectedEdits))
 })
 
-test(`221 - insert comment between comment and element`, () => {
+test(`insert 221 - insert comment between comment and element`, () => {
   const parser = createParser()
   const previousDom = parser.parse(`<!--a--><h1>c</h1>`)
   const oldNodeMap = parser.nodeMap

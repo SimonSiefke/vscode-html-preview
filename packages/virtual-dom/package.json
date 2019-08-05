@@ -1,5 +1,9 @@
 {
   "name": "virtual-dom",
   "version": "0.0.0-development",
-  "main": "dist/virtualDomMain.js"
+  "main": "dist/virtualDomMain.js",
+  "scripts": {
+    "generate:diffTests": "babel-node --presets latest-node src/diff/diff-test-util/generateDiffTestCases.js",
+    "generate:watch:diffTests": "nodemon --watch src/diff/diff.test.txt --exec npm run generate:diffTests"
+  }
 }
