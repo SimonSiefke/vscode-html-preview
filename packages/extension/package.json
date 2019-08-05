@@ -30,6 +30,11 @@
     "onLanguage:html"
   ],
   "dependencies": {
-    "virtual-dom": "^0.0.0-development"
+    "virtual-dom": "^0.0.0-development",
+    "ws": "^7.1.0"
+  },
+  "devDependencies": {
+    "@types/ws": "^6.0.1",
+    "@types/vscode": "^1.36.0"
   }
 }

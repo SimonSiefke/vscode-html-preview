@@ -3,7 +3,8 @@
   "compilerOptions": {
     "outDir": "dist",
     "rootDir": "src",
-    "strictNullChecks": false
+    "strictNullChecks": false,
+    "types": ["node"]
   },
   "include": ["src"],
   "references": [
