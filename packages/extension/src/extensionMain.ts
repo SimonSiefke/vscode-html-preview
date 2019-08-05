@@ -9,9 +9,7 @@ import {diff, createParser} from 'virtual-dom';
 
 export function activate() {
 	let previousText =
-		(vscode.window.activeTextEditor &&
-			vscode.window.activeTextEditor.document.getText()) ||
-		'';
+		(vscode.window.activeTextEditor && vscode.window.activeTextEditor.document.getText()) || '';
 	const webSocketServer = createWebSocketServer();
 	const indexJs = fs.readFileSync(
 		path.join(__dirname, '../../injected-code/dist/injectedCodeMain.js')
@@ -27,9 +25,7 @@ export function activate() {
 				let dom = genDom(previousText);
 				const bodyIndex = dom.lastIndexOf('</body');
 				previousDom = parser.parse(previousText);
-				const $virtualDom = `<script id="virtual-dom">${JSON.stringify(
-					previousDom
-				)}</script>`;
+				const $virtualDom = `<script id="virtual-dom">${JSON.stringify(previousDom)}</script>`;
 				const $script = '<script defer src="index.js"></script>';
 				const $inner = '\n' + $virtualDom + '\n' + $script;
 				if (bodyIndex !== -1) {
@@ -54,8 +50,10 @@ export function activate() {
 	});
 	webSocketServer.start(3001);
 	vscode.workspace.onDidChangeTextDocument(event => {
-		// Console.log(event);
-		// return;
+		if (event.document.languageId !== 'html') {
+			return;
+		}
+
 		if (event.contentChanges.length === 0) {
 			return;
 		}
