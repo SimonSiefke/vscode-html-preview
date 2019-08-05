@@ -5,7 +5,9 @@
 const path = require('path');
 const _ = require('lodash');
 
-module.exports = function withDefaults(/** @type WebpackConfig & {context:string} */ extConfig) {
+module.exports = function withDefaults(
+	/** @type WebpackConfig & {context:string} */ extConfig
+) {
 	/** @type WebpackConfig */
 	const defaultConfig = {
 		mode: 'production', // this leaves the source code as close as possible to the original (when packaging we set this to 'production')
@@ -38,7 +40,9 @@ module.exports = function withDefaults(/** @type WebpackConfig & {context:string
 			]
 		},
 		externals: {
-			vscode: 'commonjs vscode' // ignored because it doesn't exist
+			vscode: 'commonjs vscode', // ignored because it doesn't exist
+			bufferutil: 'commonjs bufferutil', // optional dependency of ws
+			'utf-8-validate': 'commonjs utf-8-validate' // optional dependency of ws
 		},
 		output: {
 			// all output goes into `dist`.
