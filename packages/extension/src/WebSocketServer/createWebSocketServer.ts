@@ -59,7 +59,6 @@ export function createWebSocketServer(): WebSocketServer {
 			});
 		},
 		stop() {
-			// EventEmitter.removeAllListeners();
 			webSocketServer.close();
 		}
 	};
