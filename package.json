@@ -6,7 +6,8 @@
     "package": "npm run clean && webpack --mode production --config ./webpack/extension.webpack.config.js && webpack --mode production --config ./webpack/injected-code.webpack.config.js&& node scripts/package.js",
     "postinstall": "lerna bootstrap && tsc -b",
     "generate:diffTests": "cd packages/virtual-dom && npm run generate:diffTests",
-    "generate:watch:diffTests": "cd packages/virtual-dom && npm run generate:watch:diffTests"
+    "generate:watch:diffTests": "cd packages/virtual-dom && npm run generate:watch:diffTests",
+    "test": "jest"
   },
   "devDependencies": {
     "@babel/core": "^7.5.5",
