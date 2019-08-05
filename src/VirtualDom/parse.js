@@ -72,7 +72,8 @@ function parse(
 		],
 		prefixSums = {},
 		nextId = createIdGenerator(),
-		nodeMap = {}
+		nodeMap = {},
+		newNodeMap = {}
 	} = {}
 ) {
 	const scanner = createScanner(text);
@@ -101,24 +102,24 @@ function parse(
 	}
 
 	const addNode = node => {
-		if (d === 1 && scanner.getTokenOffset() > 250) {
-			scanner.getTokenOffset(); // ?
-			id;
-			node;
-			prefixSums;
-		} else if (d === 2 && scanner.getTokenOffset() > 250) {
-			node;
-			prefixSums;
-			scanner.getTokenOffset(); // ?
-			id;
-			node;
-		}
+		// If (d === 1 && scanner.getTokenOffset() > 250) {
+		// 	scanner.getTokenOffset(); // ?
+		// 	id;
+		// 	node;
+		// 	prefixSums;
+		// } else if (d === 2 && scanner.getTokenOffset() > 250) {
+		// 	node;
+		// 	prefixSums;
+		// 	scanner.getTokenOffset(); // ?
+		// 	id;
+		// 	node;
+		// }
 
-		if (scanner.getTokenOffset() > 250 && d === 2) {
-			// Console.log(prefixSums);
-			scanner.getTokenOffset(); // ?
-			scanner.getTokenText(); // ?
-		}
+		// if (scanner.getTokenOffset() > 250 && d === 2) {
+		// 	// Console.log(prefixSums);
+		// 	scanner.getTokenOffset(); // ?
+		// 	scanner.getTokenText(); // ?
+		// }
 
 		nextId: if (prefixSums[scanner.getTokenOffset()]) {
 			id = prefixSums[scanner.getTokenOffset()];
@@ -145,9 +146,9 @@ function parse(
 			}
 
 			id = nextId();
-			prefixSums;
+			// PrefixSums;
 			prefixSums[scanner.getTokenOffset()] = id;
-			prefixSums;
+			// PrefixSums;
 			if (d === 2) {
 				id;
 				scanner.getTokenText().length; // ?
@@ -167,7 +168,7 @@ function parse(
 			node;
 		}
 
-		nodeMap[id] = node;
+		newNodeMap[id] = node;
 
 		node.id = id;
 		node.start = scanner.getTokenOffset() - prefixSum;
@@ -287,12 +288,17 @@ const i = 0;
  */
 export const parseHtml = (
 	html,
-	{nextId = createIdGenerator(), nodeMap = {}, prefixSums = {}} = {}
+	{
+		nextId = createIdGenerator(),
+		nodeMap = {},
+		prefixSums = {},
+		newNodeMap = {}
+	} = {}
 ) => {
 	prefixSums;
 	// Let id = 1;
 
-	const result = parse(html, {nextId, nodeMap, prefixSums});
+	const result = parse(html, {nextId, nodeMap, prefixSums, newNodeMap});
 	const withoutParent = walk(result, dom => {
 		delete dom.parent;
 		delete dom.closed;
@@ -388,7 +394,12 @@ export function createParser() {
 			prefixSums = {};
 			nodeMap = {};
 			nextId = createIdGenerator();
-			const result = parseHtml(text, {prefixSums, nextId, nodeMap});
+			const result = parseHtml(text, {
+				prefixSums,
+				nextId,
+				nodeMap,
+				newNodeMap: nodeMap
+			});
 			walk(result, node => {
 				nodeMap[node.id] = node;
 			});
@@ -421,6 +432,7 @@ export function createParser() {
 					prefixSum < rangeOffset + rangeLength
 				) {
 					// Is in middle
+					// delete nodeMap[prefixSums[prefixSum]]; // TODO
 					delete prefixSums[prefixSum];
 					continue;
 				} else {
@@ -431,14 +443,14 @@ export function createParser() {
 				}
 			}
 
-			const newNodeMap = {...nodeMap}; // ?
+			const newNodeMap = {};
 			const result = parseHtml(textWithEdits, {
 				prefixSums,
 				nextId,
-				nodeMap: newNodeMap
+				nodeMap,
+				newNodeMap
 			});
-			// Console.log(prefixSums);
-			nodeMap = newNodeMap; // ?
+			nodeMap = newNodeMap;
 			return result;
 		}
 	};
@@ -508,48 +520,48 @@ Array.prototype.pretty = function () {
 // parsedH1.pretty(); // ?
 // parsedH2.pretty(); // ?
 
-const testCase = {
-	previousDom: `<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Document</title>
-</head>
-<body>
-  <h1>hello world</h1>
-</body>
-</html>`,
-	nextDom: `<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Document</title>
-</head>
-<body>
-  <h1>hello world</h1>
-  
-</body>
-</html>`
-};
+// const testCase = {
+// 	previousDom: `<!DOCTYPE html>
+// <html lang="en">
+// <head>
+//   <meta charset="UTF-8">
+//   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+//   <meta http-equiv="X-UA-Compatible" content="ie=edge">
+//   <title>Document</title>
+// </head>
+// <body>
+//   <h1>hello world</h1>
+// </body>
+// </html>`,
+// 	nextDom: `<!DOCTYPE html>
+// <html lang="en">
+// <head>
+//   <meta charset="UTF-8">
+//   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+//   <meta http-equiv="X-UA-Compatible" content="ie=edge">
+//   <title>Document</title>
+// </head>
+// <body>
+//   <h1>hello world</h1>
 
-const parser = createParser();
+// </body>
+// </html>`
+// };
 
-const parsedH1 = parser.parse(testCase.previousDom);
-const oldNodeMap = parser.nodeMap; // ?
-const parsedH2 = parser.edit(testCase.nextDom, [
-	{
-		rangeOffset: 257,
-		rangeLength: 0,
-		text: '\n  '
-	}
-]);
-const newNodeMap = parser.nodeMap; // ?
-parsedH1.pretty(); // ?
-parsedH2.pretty(); // ?
+// const parser = createParser();
+
+// const parsedH1 = parser.parse(testCase.previousDom);
+// const oldNodeMap = parser.nodeMap; // ?
+// const parsedH2 = parser.edit(testCase.nextDom, [
+// 	{
+// 		rangeOffset: 257,
+// 		rangeLength: 0,
+// 		text: '\n  '
+// 	}
+// ]);
+// const newNodeMap = parser.nodeMap; // ?
+// parsedH1.pretty(); // ?
+// parsedH2.pretty(); // ?
 
 // parseHTML(testCase.nextDom).pretty(); // ?
 
@@ -572,3 +584,24 @@ parsedH2.pretty(); // ?
 // const newNodeMap = parser.nodeMap; // ?
 // parsedH1.pretty(); // ?
 // parsedH2.pretty(); // ?
+
+const testCase = {
+	previousDom: `<h1>hello</h1>
+<button>button</button>`,
+	nextDom: '<button>button</button>'
+};
+
+const parser = createParser();
+
+const parsedH1 = parser.parse(testCase.previousDom);
+const oldNodeMap = parser.nodeMap; // ?
+const parsedH2 = parser.edit(testCase.nextDom, [
+	{
+		rangeOffset: 0,
+		rangeLength: 15,
+		text: ''
+	}
+]);
+const newNodeMap = parser.nodeMap; // ?
+parsedH1.pretty(); // ?
+parsedH2.pretty(); // ?

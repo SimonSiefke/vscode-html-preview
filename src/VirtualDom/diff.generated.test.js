@@ -723,6 +723,10 @@ test(`delete first element node`, () => {
     {
       "command": "elementDelete",
       "payload": {}
+    },
+    {
+      "command": "elementDelete",
+      "payload": {}
     }
   ]
   expect(adjustEdits(edits)).toEqual(adjustExpectedEdits(expectedEdits))

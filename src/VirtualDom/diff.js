@@ -631,17 +631,28 @@ export function domdiff(
 						})
 					];
 				}
+
+				oldIndex++;
+				newIndex++;
+				continue;
 			} else if (!newNodeMap[oldNode.id]) {
+				oldNode;
 				edits = [...edits, elementDelete(oldNode)];
 				oldIndex++;
+				continue;
 			} else if (!oldNodeMap[newNode.id]) {
 				edits = [...edits, ...elementInsert(newNode, parentId, newIndex)];
 				newIndex++;
 			} else {
-				oldNodeMap;
 				newNodeMap;
-				oldNode;
 				newNode;
+				oldNode;
+				// Edits = [...edits, ...elementInsert(newNode, parentId, newIndex)];
+				// newIndex++;
+				// OldNodeMap;
+				// newNodeMap;
+				// oldNode;
+				// newNode;
 				throw new Error('cannot determine diff');
 			}
 			// Const newAttributeSignature = newNode.attributeSignature
@@ -657,17 +668,37 @@ export function domdiff(
 
 			oldIndex++;
 			newIndex++;
-			continue;
 		}
 
 		if (newNode.type === 'ElementNode' && oldNode.type !== 'ElementNode') {
-			edits = [
-				...edits,
-				elementDelete(oldNode),
-				...elementInsert(newNode, parentId, newIndex - 1)
-			];
-			oldIndex++;
-			newIndex++;
+			if (!newNodeMap[oldNode.id]) {
+				edits = [...edits, elementDelete(oldNode)];
+				oldIndex++;
+				continue;
+			} else if (!oldNodeMap[newNode.id]) {
+				edits = [...edits, ...elementInsert(newNode, parentId, newIndex)];
+				newIndex++;
+			} else {
+				edits = [
+					...edits,
+					elementDelete(oldNode),
+					...elementInsert(newNode, parentId, newIndex)
+				];
+				oldIndex++;
+				newIndex++;
+				// Throw new Error('cannot determine diff');
+			}
+
+			// If()
+			// oldNode;
+			// newNode;
+			// edits = [
+			// 	...edits,
+			// 	elementDelete(oldNode),
+			// 	...elementInsert(newNode, parentId, newIndex - 1)
+			// ];
+			// oldIndex++;
+			// newIndex++;
 			continue;
 		}
 
@@ -705,9 +736,11 @@ export function domdiff(
 			continue;
 		}
 
+		oldNode;
+		newNode;
 		oldIndex++;
 		newIndex++;
-		continue;
+		// Continue;
 	}
 
 	/**
@@ -715,6 +748,8 @@ export function domdiff(
 	 */
 	while (oldIndex < oldNodes.length) {
 		const oldNode = oldNodes[oldIndex];
+		oldNode; // ?
+		oldIndex;
 		oldIndex++;
 		edits = [...edits, elementDelete(oldNode)];
 	}
@@ -758,32 +793,42 @@ Array.prototype.pretty = function () {
 	);
 };
 
+// Const testCase = {
+// 	previousDom: `<h1>hello</h1>
+// <button>button</button>`,
+// 	nextDom: '<button>button</button>'
+// };
+
+// const parser = createParser();
+
+// const parsedH1 = parser.parse(testCase.previousDom);
+// const oldNodeMap = parser.nodeMap; // ?
+// const parsedH2 = parser.edit(testCase.nextDom, [
+// 	{
+// 		rangeOffset: 0,
+// 		rangeLength: 15,
+// 		text: ''
+// 	}
+// ]);
+// const newNodeMap = parser.nodeMap; // ?
+// parsedH1.pretty(); // ?
+// parsedH2.pretty(); // ?
+// domdiff(parsedH1, parsedH2, {
+// 	oldNodeMap,
+// 	newNodeMap
+// }); // ?
+
 const testCase = {
-	previousDom: `<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Document</title>
-</head>
-<body>
-  <h1>hello world</h1>
-</body>
-</html>`,
-	nextDom: `<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Document</title>
-</head>
-<body>
-  <h1>hello world</h1>
-  
-</body>
-</html>`
+	previousDom: `<form>
+  First name:<br>
+  <input type="text" name="firstName"><br>
+</form>`,
+	nextDom: `<form>
+  First name:<br>
+  <input type="text" name="firstName"><br>
+  Last name:<br>
+  <input type="text" name="lastName"><br>
+</form>`
 };
 
 const parser = createParser();
@@ -792,9 +837,9 @@ const parsedH1 = parser.parse(testCase.previousDom);
 const oldNodeMap = parser.nodeMap; // ?
 const parsedH2 = parser.edit(testCase.nextDom, [
 	{
-		rangeOffset: 257,
+		rangeOffset: 69,
 		rangeLength: 0,
-		text: '\n  '
+		text: 'Last name:<br>\n  <input type="text" name="lastName"><br>'
 	}
 ]);
 const newNodeMap = parser.nodeMap; // ?
