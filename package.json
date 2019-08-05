@@ -4,7 +4,8 @@
     "generate:diffTests": "babel-node --presets latest-node src/VirtualDom/generateDiffTestCases.js",
     "generate:watch:diffTests": "nodemon --watch src/VirtualDom/diff.test.txt --exec npm run generate:diffTests",
     "clean": "rimraf dist",
-    "package": "npm run clean && webpack --mode production --config ./webpack/extension.webpack.config.js && node scripts/package.js"
+    "package": "npm run clean && webpack --mode production --config ./webpack/extension.webpack.config.js && node scripts/package.js",
+    "postinstall": "lerna bootstrap && tsc -b"
   },
   "devDependencies": {
     "@babel/core": "^7.5.5",
