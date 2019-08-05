@@ -15,6 +15,6 @@ jobs:
   include:
     - stage: release
       script:
-        # - npm run package
-        # - cd dist
+        - npm run package
+        - cd dist
         - npx semantic-release
