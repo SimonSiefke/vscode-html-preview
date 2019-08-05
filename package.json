@@ -1,4 +1,5 @@
 {
+  "name": "vscode-html-preview",
   "scripts": {
     "dev": "tsc -b -w",
     "generate:diffTests": "babel-node --presets latest-node src/VirtualDom/generateDiffTestCases.js",
