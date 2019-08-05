@@ -10,7 +10,7 @@ Open a html file and then open your browser on http://localhost:3000
 
 ## Features
 
-- Live editing of html files (currently only works with Text Nodes)
+- Live editing of html files (currently there are still some bugs)
 
 ## Commands
 
