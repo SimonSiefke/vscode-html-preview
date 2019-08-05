@@ -926,3 +926,3037 @@ expectedEdits:
      payload: {}
   }
 ]
+
+name:
+delete element before element
+
+previousDom:
+<h1>a</h1><h1>b</h1>
+
+edits:
+[
+  {
+    rangeOffset: 0
+    rangeLength: 10
+    text: ""
+  }
+]
+
+nextDom:
+<h1>b</h1>
+
+expectedEdits:
+[
+  {
+     command: elementDelete
+     payload: {}
+  }
+]
+
+name:
+delete element between elements
+
+previousDom:
+<h1>a</h1><h1>b</h1><h1>c</h1>
+
+edits:
+[
+  {
+    rangeOffset: 10
+    rangeLength: 10
+    text: ""
+  }
+]
+
+nextDom:
+<h1>a</h1><h1>c</h1>
+
+expectedEdits:
+[
+  {
+     command: elementDelete
+     payload: {}
+  }
+]
+
+//name:
+//delete element after elements
+//
+//previousDom:
+//<h1>a</h1><h1>b</h1>
+//
+//edits:
+//[
+//  {
+//    rangeOffset: 10
+//    rangeLength: 10
+//    text: ""
+//  }
+//]
+//
+//nextDom:
+//<h1>b</h1>
+//
+//expectedEdits:
+//[
+//  {
+//     command: elementDelete
+//     payload: {}
+//  }
+//]
+//
+
+name:
+delete text before text
+
+previousDom:
+ab
+
+edits:
+[
+  {
+    rangeOffset: 0
+    rangeLength: 1
+    text: ""
+  }
+]
+
+nextDom:
+b
+
+expectedEdits:
+[
+  {
+     command: textReplace
+     payload: {
+       text: b
+     }
+  }
+]
+
+name:
+delete text after text
+
+previousDom:
+ab
+
+edits:
+[
+  {
+    rangeOffset: 1
+    rangeLength: 1
+    text: ""
+  }
+]
+
+nextDom:
+a
+
+expectedEdits:
+[
+  {
+     command: textReplace
+     payload: {
+       text: a
+     }
+  }
+]
+
+//name:
+//delete comment before comment
+//
+//previousDom:
+//<!--a--><!--b-->
+//
+//edits:
+//[
+//  {
+//    rangeOffset: 0
+//    rangeLength: 8
+//    text: ""
+//  }
+//]
+//
+//nextDom:
+//<!--b-->
+//
+//expectedEdits:
+//[
+//  {
+//     command: elementDelete
+//     payload: {}
+//  }
+//]
+//
+name:
+basic text insertion
+
+previousDom:
+<h1><p>ok</p></h1>
+
+edits:
+[
+  {
+    rangeOffset: 4
+    rangeLength: 0
+    text: hello
+  }
+]
+
+nextDom:
+<h1>hello<p>ok</p></h1>
+
+expectedEdits:
+[
+  {
+     command: elementInsert
+     payload: {
+       nodeType: TextNode
+       text: hello
+     }
+  }
+]
+
+name:
+basic element insertion
+
+previousDom:
+<h1><p>ok</p></h1>
+
+edits:
+[
+  {
+    rangeOffset: 4
+    rangeLength: 0
+    text: <p>ok</p>
+  }
+]
+
+nextDom:
+<h1><p>ok</p><p>ok</p></h1>
+
+expectedEdits:
+[
+  {
+     command: elementInsert
+     payload: {
+       nodeType: ElementNode
+       tag: p
+     }
+  }
+  {
+    command: elementInsert
+    payload:{
+      nodeType: TextNode
+      text: ok
+    }
+  }
+]
+
+//previousDom:
+//<head>
+//  <meta charset="utf-8" />
+//</head>
+//
+//<body>
+//  <p>dddddddddddd</p>
+//</body>
+//
+//edits:
+//[
+//  {
+//    rangeOffset: 74
+//    rangeLength: 0
+//    text: "\n<p>dddddddddddd</p>"
+//  }
+//]
+//
+//nextDom:
+//<head>
+//  <meta charset="utf-8" />
+//</head>
+//
+//<body>
+//  <p>dddddddddddd</p>
+//  <p>dddddddddddd</p>
+//</body>
+//
+//expectedEdits:
+//[
+//  {
+//     command: elementInsert
+//     payload: {
+//       nodeType: TextNode
+//       text: "\n  "
+//     }
+//  }
+//  {
+//    command: elementInsert
+//    payload:{
+//      nodeType: ElementNode
+//      tag: p
+//    }
+//  }
+//  {
+//    command: elementInsert
+//    payload:{
+//      nodeType: TextNode
+//      text: dddddddddddd
+//    }
+//  }
+//  {
+//    command: elementInsert
+//    payload:{
+//      nodeType: TextNode
+//      text: "\n"
+//    }
+//  }
+//]
+
+name:
+basic text replace
+
+previousDom:
+<h1>a</h1>
+
+edits:
+[
+  {
+    rangeOffset: 4
+    rangeLength: 1
+    text: b
+  }
+]
+
+nextDom:
+<h1>b</h1>
+
+expectedEdits:
+[
+  {
+     command: textReplace
+     payload: {
+       text: "b"
+     }
+  }
+]
+
+name:
+basic text addition
+
+previousDom:
+<h1>aaa</h1>
+
+edits:
+[
+  {
+    rangeOffset: 7
+    rangeLength: 0
+    text: bbb
+  }
+]
+
+nextDom:
+<h1>aaabbb</h1>
+
+expectedEdits:
+[
+  {
+     command: textReplace
+     payload: {
+       text: aaabbb
+     }
+  }
+]
+
+name:
+element addition at the end
+
+previousDom:
+<h1>a</h1>
+
+edits:
+[
+  {
+    rangeOffset: 10
+    rangeLength: 0
+    text: <h1>b</h1>
+  }
+]
+
+nextDom:
+<h1>a</h1><h1>b</h1>
+
+expectedEdits:
+[
+  {
+     command: elementInsert
+     payload: {
+       nodeType: ElementNode
+       tag: h1
+     }
+  }
+  {
+    command: elementInsert
+    payload: {
+      nodeType: TextNode
+      text: b
+    }
+  }
+]
+
+name:
+element addition at the start
+
+previousDom:
+<h1>a</h1>
+
+edits:
+[
+  {
+    rangeOffset: 0
+    rangeLength: 0
+    text: <h1>b</h1>
+  }
+]
+
+nextDom:
+<h1>b</h1><h1>a</h1>
+
+expectedEdits:
+[
+  {
+     command: elementInsert
+     payload: {
+       nodeType: ElementNode
+       tag: h1
+     }
+  }
+  {
+    command: elementInsert
+    payload: {
+      nodeType: TextNode
+      text: b
+    }
+  }
+]
+
+name:
+element addition in the middle
+
+previousDom:
+<h1>a</h1><h1>c</h1>
+
+edits:
+[
+  {
+    rangeOffset: 7
+    rangeLength: 0
+    text: <h1>b</h1>
+  }
+]
+
+nextDom:
+<h1>a</h1><h1>b</h1><h1>c</h1>
+
+expectedEdits:
+[
+  {
+     command: elementInsert
+     payload: {
+       nodeType: ElementNode
+       tag: h1
+     }
+  }
+  {
+    command: elementInsert
+    payload: {
+      nodeType: TextNode
+      text: b
+    }
+  }
+]
+
+name:
+text insertion in nested html
+
+previousDom:
+<div>
+  <img src="https://source.unsplash.com/random" alt="random image">
+  <p>nested <strong>text</strong></p>
+</div>
+
+edits:
+[
+  {
+    rangeOffset: 109
+    rangeLength: 0
+    text: !!!
+  }
+]
+
+nextDom:
+<div>
+  <img src="https://source.unsplash.com/random" alt="random image">
+  <p>nested <strong>text</strong>!!!</p>
+</div>
+
+expectedEdits:
+[
+  {
+     command: elementInsert
+     payload: {
+       nodeType: TextNode
+       text: !!!
+     }
+  }
+]
+
+name:
+whitespace insertion at start tag
+
+previousDom:
+<h1>hello world</h1>
+
+edits:
+[
+  {
+    rangeOffset: 3
+    rangeLength: 0
+    text: " "
+  }
+]
+
+nextDom:
+<h1 >hello world</h1>
+
+expectedEdits:
+[]
+
+name:
+insertion of attribute with value
+
+previousDom:
+<h1 >hello world</h1>
+
+edits:
+[
+  {
+    rangeOffset: 3
+    rangeLength: 0
+    text: 'class="big"'
+  }
+]
+
+nextDom:
+<h1 class="big">hello world</h1>
+
+expectedEdits:
+[
+  {
+     command: attributeAdd
+     payload: {
+       attribute: class
+       value: '"big"'
+     }
+  }
+]
+
+name:
+insertion of attribute without value
+
+previousDom:
+<h1 >hello world</h1>
+
+edits:
+[
+  {
+    rangeOffset: 4
+    rangeLength: 0
+    text: class
+  }
+]
+
+nextDom:
+<h1 class>hello world</h1>
+
+expectedEdits:
+[
+  {
+     command: attributeAdd
+     payload: {
+       attribute: class
+       value: null
+     }
+  }
+]
+
+name:
+insertion of multiple elements and text nodes
+
+previousDom:
+<form>
+  First name:<br>
+  <input type="text" name="firstName"><br>
+</form>
+
+edits:
+[
+  {
+    rangeOffset: 69
+    rangeLength: 0
+    text: 'Last name:<br>\n  <input type="text" name="lastName"><br>'
+  }
+]
+
+nextDom:
+<form>
+  First name:<br>
+  <input type="text" name="firstName"><br>
+  Last name:<br>
+  <input type="text" name="lastName"><br>
+</form>
+
+expectedEdits:
+[
+  {
+     command: textReplace
+     payload: {
+       text: "\n  Last name:"
+     }
+  }
+  {
+    command: elementInsert,
+    payload: {
+      nodeType: ElementNode
+      tag: br
+    }
+  }
+  {
+    command: elementInsert,
+    payload: {
+      nodeType: TextNode
+      text: "\n  "
+    }
+  }
+  {
+    command: elementInsert,
+    payload: {
+      nodeType: ElementNode
+      tag: input
+      attributes: {
+        name: '"lastName"'
+        type: '"text"'
+      }
+    }
+  }
+  {
+    command: elementInsert,
+    payload: {
+      nodeType: ElementNode
+      tag: br
+    }
+  }
+  {
+    command: elementInsert,
+    payload: {
+      nodeType: TextNode
+      text: "\n"
+    }
+  }
+]
+
+name:
+attribute name change
+
+previousDom:
+<h1 c>hello world</h1>
+
+edits:
+[
+  {
+    rangeOffset: 4
+    rangeLength: 0
+    text: lass
+  }
+]
+
+nextDom:
+<h1 class>hello world</h1>
+
+expectedEdits:
+[
+  {
+     command: attributeAdd
+     payload: {
+       attribute: class
+       value: null
+     }
+  }
+  {
+     command: attributeDelete
+     payload: {
+       attribute: c
+     }
+  }
+]
+
+name:
+attribute value insertion at end
+
+previousDom:
+<h1 class="big">hello world</h1>
+
+edits:
+[
+  {
+    rangeOffset: 14
+    rangeLength: 0
+    text: ger
+  }
+]
+
+nextDom:
+<h1 class="bigger">hello world</h1>
+
+expectedEdits:
+[
+  {
+     command: attributeChange
+     payload: {
+       attribute: class
+       value: '"bigger"'
+     }
+  }
+]
+
+name:
+attribute value replacement
+
+previousDom:
+<h1 class="big">hello world</h1>
+
+edits:
+[
+  {
+    rangeOffset: 11
+    rangeLength: 3
+    text: small
+  }
+]
+
+nextDom:
+<h1 class="small">hello world</h1>
+
+expectedEdits:
+[
+  {
+     command: attributeChange
+     payload: {
+       attribute: class
+       value: '"small"'
+     }
+  }
+]
+
+name:
+replace text with element
+
+previousDom:
+h1
+
+edits:
+[
+  {
+    rangeOffset: 0
+    rangeLength: 2
+    text: <h1></h1>
+  }
+]
+
+nextDom:
+<h1></h1>
+
+expectedEdits:
+[
+   {
+     command: elementDelete
+     payload: {
+
+     }
+  }
+  {
+     command: elementInsert
+     payload: {
+       nodeType: ElementNode
+       tag: h1
+     }
+  }
+]
+
+name:
+basic replace text #1
+
+previousDom:
+<h1>a</h1>
+
+edits:
+[
+  {
+    rangeOffset: 4
+    rangeLength: 1
+    text: b
+  }
+]
+
+nextDom:
+<h1>b</h1>
+
+expectedEdits:
+[
+   {
+     command: textReplace
+     payload: {
+       text: b
+     }
+  }
+]
+
+name:
+basic replace text #2
+
+previousDom:
+<h1>aa</h1>
+
+edits:
+[
+  {
+    rangeOffset: 4
+    rangeLength: 1
+    text: b
+  }
+]
+
+nextDom:
+<h1>b</h1>
+
+expectedEdits:
+[
+   {
+     command: textReplace
+     payload: {
+       text: b
+     }
+  }
+]
+
+name:
+replace element with text
+
+previousDom:
+<h1>hello world</h1>
+
+edits:
+[
+  {
+    rangeOffset: 0
+    rangeLength: 20
+    text: "hello world"
+  }
+]
+
+nextDom:
+hello world
+
+expectedEdits:
+[
+   {
+     command: elementInsert
+     payload: {
+       nodeType: TextNode
+       text: "hello world"
+     }
+  }
+  {
+    command: elementDelete
+    payload: {}
+  }
+]
+
+name:
+replace text inside element with attributes
+
+previousDom:
+<h1 style="background:orange">a</h1>
+
+edits:
+[
+  {
+    rangeOffset: 30
+    rangeLength: 1
+    text: b
+  }
+]
+
+nextDom:
+<h1 style="background:orange">b</h1>
+
+expectedEdits:
+[
+   {
+     command: textReplace
+     payload: {
+       text: b
+     }
+  }
+]
+
+name:
+replace element with text
+
+previousDom:
+<h1>hello world</h1>
+
+edits:
+[
+  {
+    rangeOffset: 0
+    rangeLength: 20
+    text: "hello world"
+  }
+]
+
+nextDom:
+hello world
+
+expectedEdits:
+[
+   {
+     command: elementInsert
+     payload: {
+       nodeType: TextNode
+       text: "hello world"
+     }
+  }
+  {
+    command: elementDelete
+    payload: {}
+  }
+]
+
+name:
+replace text after element node
+
+previousDom:
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  <h1>hello world</h1>
+</body>
+</html>
+
+edits:
+[
+  {
+    rangeOffset: 257
+    rangeLength: 0
+    text: "\n  "
+  }
+]
+
+nextDom:
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  <h1>hello world</h1>
+  
+</body>
+</html>
+
+expectedEdits:
+[
+   {
+     command: textReplace
+     payload: {
+       text: "\n  \n"
+     }
+  }
+]
+//
+//name:
+//replace text after element node and insert element
+//
+//previousDom:
+//<!DOCTYPE html>
+//<html lang="en">
+//<head>
+//  <meta charset="UTF-8">
+//  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+//  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+//  <title>Document</title>
+//</head>
+//<body>
+//  <h1>hello</h1>
+//  <button></button>
+//</body>
+//</html>
+//
+//edits:
+//[
+//  {
+//    rangeOffset: 251
+//    rangeLength: 0
+//    text: "\n  "
+//  }
+//  {
+//    rangeOffset: 254
+//    rangeLength: 0
+//    text: "<button></button>"
+//  }
+//]
+//
+//nextDom:
+//<!DOCTYPE html>
+//<html lang="en">
+//<head>
+//  <meta charset="UTF-8">
+//  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+//  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+//  <title>Document</title>
+//</head>
+//<body>
+//  <h1>hello world</h1>
+//  <button></button>
+//</body>
+//</html>
+//
+//expectedEdits:
+//[
+//   {
+//     command: textReplace
+//     payload: {
+//       text: "\n  \n"
+//     }
+//  }
+//]
+//
+
+name:
+replace element with text
+
+previousDom:
+<h1>hello world</h1>
+
+edits:
+[
+  {
+    rangeOffset: 0
+    rangeLength: 20
+    text: "hello world"
+  }
+]
+
+nextDom:
+hello world
+
+expectedEdits:
+[
+   {
+     command: elementInsert
+     payload: {
+       nodeType: TextNode
+       text: "hello world"
+     }
+  }
+  {
+    command: elementDelete
+    payload: {}
+  }
+]
+
+name:
+delete first element node
+
+previousDom:
+<h1>hello</h1>
+<button>button</button>
+
+edits:
+[
+  {
+    rangeOffset: 0
+    rangeLength: 15
+    text: ""
+  }
+]
+
+nextDom:
+<button>button</button>
+
+expectedEdits:
+[
+  {
+     command: elementDelete
+     payload: {}
+  }
+  {
+     command: elementDelete
+     payload: {}
+  }
+]
+
+name:
+delete element before element
+
+previousDom:
+<h1>a</h1><h1>b</h1>
+
+edits:
+[
+  {
+    rangeOffset: 0
+    rangeLength: 10
+    text: ""
+  }
+]
+
+nextDom:
+<h1>b</h1>
+
+expectedEdits:
+[
+  {
+     command: elementDelete
+     payload: {}
+  }
+]
+
+//name:
+//delete element after elements
+//
+//previousDom:
+//<h1>a</h1><h1>b</h1>
+//
+//edits:
+//[
+//  {
+//    rangeOffset: 10
+//    rangeLength: 10
+//    text: ""
+//  }
+//]
+//
+//nextDom:
+//<h1>b</h1>
+//
+//expectedEdits:
+//[
+//  {
+//     command: elementDelete
+//     payload: {}
+//  }
+//]
+//
+
+name:
+delete text before text
+
+previousDom:
+ab
+
+edits:
+[
+  {
+    rangeOffset: 0
+    rangeLength: 1
+    text: ""
+  }
+]
+
+nextDom:
+b
+
+expectedEdits:
+[
+  {
+     command: textReplace
+     payload: {
+       text: b
+     }
+  }
+]
+
+name:
+delete text after text
+
+previousDom:
+ab
+
+edits:
+[
+  {
+    rangeOffset: 1
+    rangeLength: 1
+    text: ""
+  }
+]
+
+nextDom:
+a
+
+expectedEdits:
+[
+  {
+     command: textReplace
+     payload: {
+       text: a
+     }
+  }
+]
+
+//name:
+//delete comment before comment
+//
+//previousDom:
+//<!--a--><!--b-->
+//
+//edits:
+//[
+//  {
+//    rangeOffset: 0
+//    rangeLength: 8
+//    text: ""
+//  }
+//]
+//
+//nextDom:
+//<!--b-->
+//
+//expectedEdits:
+//[
+//  {
+//     command: elementDelete
+//     payload: {}
+//  }
+//]
+//
+//
+//name:
+//delete comment between comments
+//
+//previousDom:
+//<!--a--><!--b--><!--c-->
+//
+//edits:
+//[
+//  {
+//    rangeOffset: 8
+//    rangeLength: 8
+//    text: ""
+//  }
+//]
+//
+//nextDom:
+//<!--a--><!--c-->
+//
+//expectedEdits:
+//[
+//  {
+//     command: elementDelete
+//     payload: {}
+//  }
+//]
+//
+//name:
+//delete comment after comment
+//
+//previousDom:
+//<!--a--><!--b-->
+//
+//edits:
+//[
+//  {
+//    rangeOffset: 8
+//    rangeLength: 8
+//    text: ""
+//  }
+//]
+//
+//nextDom:
+//<!--a-->
+//
+//expectedEdits:
+//[
+//  {
+//     command: elementDelete
+//     payload: {}
+//  }
+//]
+
+name:
+delete text before element
+
+previousDom:
+a<h1>b</h1>
+
+edits:
+[
+  {
+    rangeOffset: 0
+    rangeLength: 1
+    text: ""
+  }
+]
+
+nextDom:
+<h1>b</h1>
+
+expectedEdits:
+[
+  {
+     command: elementDelete
+     payload: {}
+  }
+]
+
+name:
+delete text between elements
+
+previousDom:
+<h1>a</h1>b<h1>c</h1>
+
+edits:
+[
+  {
+    rangeOffset: 10
+    rangeLength: 1
+    text: ""
+  }
+]
+
+nextDom:
+<h1>a</h1><h1>c</h1>
+
+expectedEdits:
+[
+  {
+     command: elementDelete
+     payload: {}
+  }
+]
+
+name:
+delete text after element
+
+previousDom:
+<h1>a</h1>b
+
+edits:
+[
+  {
+    rangeOffset: 10
+    rangeLength: 1
+    text: ""
+  }
+]
+
+nextDom:
+<h1>a</h1>
+
+expectedEdits:
+[
+  {
+     command: elementDelete
+     payload: {}
+  }
+]
+
+name:
+delete element before text
+
+previousDom:
+<h1>a</h1>b
+
+edits:
+[
+  {
+    rangeOffset: 0
+    rangeLength: 10
+    text: ""
+  }
+]
+
+nextDom:
+b
+
+expectedEdits:
+[
+  {
+     command: elementDelete
+     payload: {}
+  }
+]
+
+//name:
+//delete element between text
+//
+//previousDom:
+//a<h1>b</h1>c
+//
+//edits:
+//[
+//  {
+//    rangeOffset: 1
+//    rangeLength: 10
+//    text: ""
+//  }
+//]
+//
+//nextDom:
+//ac
+//
+//expectedEdits:
+//[
+//  {
+//     command: elementDelete
+//     payload: {}
+//  }
+//]
+//
+name:
+delete element after text
+
+previousDom:
+a<h1>b</h1>
+
+edits:
+[
+  {
+    rangeOffset: 1
+    rangeLength: 10
+    text: ""
+  }
+]
+
+nextDom:
+a
+
+expectedEdits:
+[
+  {
+     command: elementDelete
+     payload: {}
+  }
+]
+
+name:
+000 - delete text between text and text
+
+previousDom:
+abc
+
+edits:
+[
+  {
+    rangeOffset: 1
+    rangeLength: 1
+    text: ""
+  }
+]
+
+nextDom:
+ac
+
+expectedEdits:
+[
+  {
+     command: textReplace
+     payload: {
+       text: ac
+     }
+  }
+]
+
+name:
+001 - delete text between text and element
+
+previousDom:
+ab<h1>c</h1>
+
+edits:
+[
+  {
+    rangeOffset: 1
+    rangeLength: 1
+    text: ""
+  }
+]
+
+nextDom:
+a<h1>c</h1>
+
+expectedEdits:
+[
+  {
+     command: textReplace
+     payload: {
+       text: a
+     }
+  }
+]
+
+name:
+002 - delete text between text and comment
+
+previousDom:
+ab<!--c-->
+
+edits:
+[
+  {
+    rangeOffset: 1
+    rangeLength: 1
+    text: ""
+  }
+]
+
+nextDom:
+a<!--c-->
+
+expectedEdits:
+[
+  {
+     command: textReplace
+     payload: {
+       text: a
+     }
+  }
+]
+
+//name:
+//010 - delete text between element and text
+//
+//previousDom:
+//<h1>a</h1>b<!--c-->
+//
+//edits:
+//[
+//  {
+//    rangeOffset: 10
+//    rangeLength: 1
+//    text: ""
+//  }
+//]
+//
+//nextDom:
+//<h1>a</h1><!--c-->
+//
+//expectedEdits:
+//[
+//  {
+//     command: elementDelete
+//     payload: {}
+//  }
+//]
+//
+name:
+011 - delete text between element and element
+
+previousDom:
+<h1>a</h1>b<h1>c</h1>
+
+edits:
+[
+  {
+    rangeOffset: 10
+    rangeLength: 1
+    text: ""
+  }
+]
+
+nextDom:
+<h1>a</h1><h1>c</h1>
+
+expectedEdits:
+[
+  {
+     command: elementDelete
+     payload: {}
+  }
+]
+
+//name:
+//012 - delete text between element and comment
+//
+//previousDom:
+//<h1>a</h1>b<!--c-->
+//
+//edits:
+//[
+//  {
+//    rangeOffset: 10
+//    rangeLength: 1
+//    text: ""
+//  }
+//]
+//
+//nextDom:
+//<h1>a</h1><!--c-->
+//
+//expectedEdits:
+//[
+//  {
+//     command: elementDelete
+//     payload: {}
+//  }
+//]
+
+name:
+020 - delete text between comment and text
+
+previousDom:
+<!--a-->bc
+
+edits:
+[
+  {
+    rangeOffset: 8
+    rangeLength: 1
+    text: ""
+  }
+]
+
+nextDom:
+<!--a-->c
+
+expectedEdits:
+[
+  {
+     command: textReplace
+     payload: {
+       text: c
+     }
+  }
+]
+
+name:
+021 - delete text between comment and element
+
+previousDom:
+<!--a-->b<h1>c</h1>
+
+edits:
+[
+  {
+    rangeOffset: 8
+    rangeLength: 1
+    text: ""
+  }
+]
+
+nextDom:
+<!--a--><h1>c</h1>
+
+expectedEdits:
+[
+  {
+     command: elementDelete
+     payload: {}
+  }
+]
+
+//name:
+//022 - delete text between comment and comment
+//
+//previousDom:
+//<!--a-->b<!--c-->
+//
+//edits:
+//[
+//  {
+//    rangeOffset: 8
+//    rangeLength: 1
+//    text: ""
+//  }
+//]
+//
+//nextDom:
+//<!--a--><!--c-->
+//
+//expectedEdits:
+//[
+//  {
+//     command: elementDelete
+//     payload: {}
+//  }
+//]
+//
+name:
+100 - delete element between text and text
+
+previousDom:
+a<h1>b</h1>c
+
+edits:
+[
+  {
+    rangeOffset: 1
+    rangeLength: 10
+    text: ""
+  }
+]
+
+nextDom:
+ac
+
+expectedEdits:
+[
+  {
+    command: textReplace
+    payload: {
+      text: ac
+    }
+  }
+  {
+     command: elementDelete
+     payload: {}
+  }
+  {
+     command: elementDelete
+     payload: {}
+  }
+]
+
+name:
+101 - delete element between text and element
+
+previousDom:
+a<h1>b</h1><h1>c</h1>
+
+edits:
+[
+  {
+    rangeOffset: 1
+    rangeLength: 10
+    text: ""
+  }
+]
+
+nextDom:
+a<h1>c</h1>
+
+expectedEdits:
+[
+  {
+    command: elementDelete
+    payload: {}
+  }
+]
+
+name:
+102 - delete element between text and comment
+
+previousDom:
+a<h1>b</h1><!--c-->
+
+edits:
+[
+  {
+    rangeOffset: 1
+    rangeLength: 10
+    text: ""
+  }
+]
+
+nextDom:
+a<!--c-->
+
+expectedEdits:
+[
+  {
+    command: elementDelete
+    payload: {}
+  }
+]
+
+name:
+110 - delete element between element and text
+
+previousDom:
+<h1>a</h1><h1>b</h1>c
+
+edits:
+[
+  {
+    rangeOffset: 10
+    rangeLength: 10
+    text: ""
+  }
+]
+
+nextDom:
+<h1>a</h1>c
+
+expectedEdits:
+[
+  {
+    command: elementDelete
+    payload: {}
+  }
+]
+
+name:
+111 - delete element between element and element
+
+previousDom:
+<h1>a</h1><h1>b</h1><h1>c</h1>
+
+edits:
+[
+  {
+    rangeOffset: 10
+    rangeLength: 10
+    text: ""
+  }
+]
+
+nextDom:
+<h1>a</h1><h1>c</h1>
+
+expectedEdits:
+[
+  {
+    command: elementDelete
+    payload: {}
+  }
+]
+
+name:
+112 - delete element between element and comment
+
+previousDom:
+<h1>a</h1><h1>b</h1><!--c-->
+
+edits:
+[
+  {
+    rangeOffset: 10
+    rangeLength: 10
+    text: ""
+  }
+]
+
+nextDom:
+<h1>a</h1><!--c-->
+
+expectedEdits:
+[
+  {
+    command: elementDelete
+    payload: {}
+  }
+]
+
+name:
+120 - delete element between comment and text
+
+previousDom:
+<!--a--><h1>b</h1>c
+
+edits:
+[
+  {
+    rangeOffset: 8
+    rangeLength: 10
+    text: ""
+  }
+]
+
+nextDom:
+<!--a-->c
+
+expectedEdits:
+[
+  {
+    command: elementDelete
+    payload: {}
+  }
+]
+
+name:
+121 - delete element between comment and element
+
+previousDom:
+<!--a--><h1>b</h1><h1>c</h1>
+
+edits:
+[
+  {
+    rangeOffset: 8
+    rangeLength: 10
+    text: ""
+  }
+]
+
+nextDom:
+<!--a--><h1>c</h1>
+
+expectedEdits:
+[
+  {
+    command: elementDelete
+    payload: {}
+  }
+]
+
+name:
+122 - delete element between comment and comment
+
+previousDom:
+<!--a--><h1>b</h1><!--c-->
+
+edits:
+[
+  {
+    rangeOffset: 8
+    rangeLength: 10
+    text: ""
+  }
+]
+
+nextDom:
+<!--a--><!--c-->
+
+expectedEdits:
+[
+  {
+    command: elementDelete
+    payload: {}
+  }
+]
+
+name:
+200 - delete comment between text and text
+
+previousDom:
+a<!--b-->c
+
+edits:
+[
+  {
+    rangeOffset: 1
+    rangeLength: 8
+    text: ""
+  }
+]
+
+nextDom:
+ac
+
+expectedEdits:
+[
+  {
+    command: textReplace
+    payload: {
+      text: ac
+    }
+  }
+  {
+    command: elementDelete
+    payload: {}
+  }
+  {
+    command: elementDelete
+    payload: {}
+  }
+]
+
+name:
+201 - delete comment between text and element
+
+previousDom:
+a<!--b--><h1>c</h1>
+
+edits:
+[
+  {
+    rangeOffset: 1
+    rangeLength: 8
+    text: ""
+  }
+]
+
+nextDom:
+a<h1>c</h1>
+
+expectedEdits:
+[
+  {
+    command: elementDelete
+    payload: {}
+  }
+]
+
+//name:
+//202 - delete comment between text and comment
+//
+//previousDom:
+//a<!--b--><!--c-->
+//
+//edits:
+//[
+//  {
+//    rangeOffset: 1
+//    rangeLength: 8
+//    text: ""
+//  }
+//]
+//
+//nextDom:
+//a<!--c-->
+//
+//expectedEdits:
+//[
+//  {
+//    command: elementDelete
+//    payload: {}
+//  }
+//]
+//
+
+//name:
+//210 - delete comment between element and text
+//
+//previousDom:
+//<h1>a</h1><!--b-->c
+//
+//edits:
+//[
+//  {
+//    rangeOffset: 10
+//    rangeLength: 8
+//    text: ""
+//  }
+//]
+//
+//nextDom:
+//<h1>a</h1>c
+//
+//expectedEdits:
+//[
+//  {
+//    command: elementDelete
+//    payload: {}
+//  }
+//]
+//
+name:
+211 - delete comment between element and element
+
+previousDom:
+<h1>a</h1><!--b--><h1>c</h1>
+
+edits:
+[
+  {
+    rangeOffset: 10
+    rangeLength: 8
+    text: ""
+  }
+]
+
+nextDom:
+<h1>a</h1><h1>c</h1>
+
+expectedEdits:
+[
+  {
+    command: elementDelete
+    payload: {}
+  }
+]
+
+//name:
+//212 - delete comment between element and comment
+//
+//previousDom:
+//<h1>a</h1><!--b--><!--c-->
+//
+//edits:
+//[
+//  {
+//    rangeOffset: 10
+//    rangeLength: 8
+//    text: ""
+//  }
+//]
+//
+//nextDom:
+//<h1>a</h1><!--c-->
+//
+//expectedEdits:
+//[
+//  {
+//    command: elementDelete
+//    payload: {}
+//  }
+//]
+//
+//name:
+//220 - delete comment between comment and text
+//
+//previousDom:
+//<!--a--><!--b-->c
+//
+//edits:
+//[
+//  {
+//    rangeOffset: 8
+//    rangeLength: 8
+//    text: ""
+//  }
+//]
+//
+//nextDom:
+//<!--a-->c
+//
+//expectedEdits:
+//[
+//  {
+//    command: elementDelete
+//    payload: {}
+//  }
+//]
+
+name:
+221 - delete comment between comment and element
+
+previousDom:
+<!--a--><!--b--><h1>c</h1>
+
+edits:
+[
+  {
+    rangeOffset: 8
+    rangeLength: 8
+    text: ""
+  }
+]
+
+nextDom:
+<!--a--><h1>c</h1>
+
+expectedEdits:
+[
+  {
+    command: elementDelete
+    payload: {}
+  }
+]
+
+//name:
+//222 - delete comment between comment and comment
+//
+//previousDom:
+//<!--a--><!--b--><!--c-->
+//
+//edits:
+//[
+//  {
+//    rangeOffset: 8
+//    rangeLength: 8
+//    text: ""
+//  }
+//]
+//
+//nextDom:
+//<!--a--><!--c-->
+//
+//expectedEdits:
+//[
+//  {
+//    command: elementDelete
+//    payload: {}
+//  }
+//]
+
+name:
+000 - insert text between text and text
+
+previousDom:
+ac
+
+edits:
+[
+  {
+    rangeOffset: 1
+    rangeLength: 0
+    text: b
+  }
+]
+
+nextDom:
+abc
+
+expectedEdits:
+[
+  {
+     command: textReplace
+     payload: {
+       text: abc
+     }
+  }
+]
+
+name:
+001 - insert text between text and element
+
+previousDom:
+a<h1>c</h1>
+
+edits:
+[
+  {
+    rangeOffset: 1
+    rangeLength: 0
+    text: b
+  }
+]
+
+nextDom:
+ab<h1>c</h1>
+
+expectedEdits:
+[
+  {
+     command: textReplace
+     payload: {
+       text: ab
+     }
+  }
+]
+
+name:
+002 - insert text between text and comment
+
+previousDom:
+a<!--c-->
+
+edits:
+[
+  {
+    rangeOffset: 1
+    rangeLength: 0
+    text: b
+  }
+]
+
+nextDom:
+ab<!--c-->
+
+expectedEdits:
+[
+  {
+     command: textReplace
+     payload: {
+       text: ab
+     }
+  }
+]
+
+//name:
+//010 - insert text between element and text
+//
+//previousDom:
+//<h1>a</h1><!--c-->
+//
+//edits:
+//[
+//  {
+//    rangeOffset: 10
+//    rangeLength: 0
+//    text: "b"
+//  }
+//]
+//
+//nextDom:
+//<h1>a</h1>b<!--c-->
+//
+//expectedEdits:
+//[
+//  {
+//     command: elementInsert
+//     payload: {
+//       nodeType: TextNode
+//       text: b
+//     }
+//  }
+//]
+
+name:
+011 - insert text between element and element
+
+previousDom:
+<h1>a</h1><h1>c</h1>
+
+edits:
+[
+  {
+    rangeOffset: 10
+    rangeLength: 0
+    text: b
+  }
+]
+
+nextDom:
+<h1>a</h1>b<h1>c</h1>
+
+expectedEdits:
+[
+  {
+     command: elementInsert
+     payload: {
+       nodeType: TextNode
+       text: b
+     }
+  }
+]
+
+//name:
+//012 - insert text between element and comment
+//
+//previousDom:
+//<h1>a</h1><!--c-->
+//
+//edits:
+//[
+//  {
+//    rangeOffset: 10
+//    rangeLength: 0
+//    text: b
+//  }
+//]
+//
+//nextDom:
+//<h1>a</h1>b<!--c-->
+//
+//expectedEdits:
+//[
+//  {
+//     command: elementInsert
+//     payload: {
+//       nodeType: TextNode
+//       text: b
+//    }
+//  }
+//]
+
+name:
+020 - insert text between comment and text
+
+previousDom:
+<!--a-->c
+
+edits:
+[
+  {
+    rangeOffset: 8
+    rangeLength: 0
+    text: b
+  }
+]
+
+nextDom:
+<!--a-->bc
+
+expectedEdits:
+[
+  {
+     command: textReplace
+     payload: {
+       text: bc
+     }
+  }
+]
+
+//name:
+//021 - insert text between comment and element
+//
+//previousDom:
+//<!--a-->b<h1>c</h1>
+//
+//edits:
+//[
+//  {
+//    rangeOffset: 8
+//    rangeLength: 0
+//    text: b
+//  }
+//]
+//
+//nextDom:
+//<!--a-->b<h1>c</h1>
+//
+//expectedEdits:
+//[
+//  {
+//     command: elementInsert
+//     payload: {
+//       nodeType: TextNode
+//       text: b
+//     }
+//  }
+//]
+
+//name:
+//022 - insert text between comment and comment
+//
+//previousDom:
+//<!--a--><!--c-->
+//
+//edits:
+//[
+//  {
+//    rangeOffset: 8
+//    rangeLength: 0
+//    text: b
+//  }
+//]
+//
+//nextDom:
+//<!--a-->b<!--c-->
+//
+//expectedEdits:
+//[
+//  {
+//     command: elementInsert
+//     payload: {
+//       nodeType:TextNode
+//       text:b
+//     }
+//  }
+//]
+//
+name:
+100 - insert element between text and text
+
+previousDom:
+ac
+
+edits:
+[
+  {
+    rangeOffset: 1
+    rangeLength: 0
+    text: <h1>b</h1>
+  }
+]
+
+nextDom:
+a<h1>b</h1>c
+
+expectedEdits:
+[
+  {
+    command: textReplace
+    payload: {
+      text: a
+    }
+  }
+  {
+    command: elementInsert
+    payload: {
+      nodeType: ElementNode
+      tag: h1
+    }
+  }
+  {
+    command: elementInsert
+    payload: {
+      nodeType: TextNode
+      text: b
+    }
+  }
+  {
+    command: elementInsert
+    payload: {
+      nodeType: TextNode
+      text: c
+    }
+  }
+]
+
+name:
+101 - insert element between text and element
+
+previousDom:
+a<h1>c</h1>
+
+edits:
+[
+  {
+    rangeOffset: 1
+    rangeLength: 0
+    text: <h1>b</h1>
+  }
+]
+
+nextDom:
+a<h1>b</h1><h1>c</h1>
+
+expectedEdits:
+[
+  {
+    command: elementInsert
+    payload: {
+      nodeType: ElementNode
+      tag: h1
+    }
+  }
+  {
+    command: elementInsert
+    payload: {
+      nodeType: TextNode
+      text: b
+    }
+  }
+]
+
+name:
+102 - insert element between text and comment
+
+previousDom:
+a<!--c-->
+
+edits:
+[
+  {
+    rangeOffset: 1
+    rangeLength: 0
+    text: <h1>b</h1>
+  }
+]
+
+nextDom:
+a<h1>b</h1><!--c-->
+
+expectedEdits:
+[
+  {
+    command: elementInsert
+    payload: {
+      nodeType: ElementNode
+      tag: h1
+    }
+  }
+  {
+    command: elementInsert
+    payload: {
+      nodeType: TextNode
+      text: b
+    }
+  }
+]
+
+name:
+110 - insert element between element and text
+
+previousDom:
+<h1>a</h1>c
+
+edits:
+[
+  {
+    rangeOffset: 10
+    rangeLength: 0
+    text: <h1>b</h1>
+  }
+]
+
+nextDom:
+<h1>a</h1><h1>b</h1>c
+
+expectedEdits:
+[
+  {
+    command: elementInsert
+    payload: {
+      nodeType: ElementNode
+      tag: h1
+    }
+  }
+  {
+    command: elementInsert
+    payload: {
+      nodeType: TextNode
+      text: b
+    }
+  }
+]
+
+name:
+111 - insert element between element and element
+
+previousDom:
+<h1>a</h1><h1>c</h1>
+
+edits:
+[
+  {
+    rangeOffset: 10
+    rangeLength: 0
+    text: <h1>b</h1>
+  }
+]
+
+nextDom:
+<h1>a</h1><h1>b</h1><h1>c</h1>
+
+expectedEdits:
+[
+  {
+    command: elementInsert
+    payload: {
+      nodeType: ElementNode
+      tag: h1
+    }
+  }
+  {
+    command: elementInsert
+    payload: {
+      nodeType: TextNode
+      text: b
+    }
+  }
+]
+
+name:
+112 - insert element between element and comment
+
+previousDom:
+<h1>a</h1><!--c-->
+
+edits:
+[
+  {
+    rangeOffset: 10
+    rangeLength: 0
+    text: <h1>b</h1>
+  }
+]
+
+nextDom:
+<h1>a</h1><h1>b</h1><!--c-->
+
+expectedEdits:
+[
+  {
+    command: elementInsert
+    payload: {
+      nodeType: ElementNode
+      tag: h1
+    }
+  }
+  {
+    command: elementInsert
+    payload: {
+      nodeType: TextNode
+      text: b
+    }
+  }
+]
+
+//name:
+//120 - insert element between comment and text
+//
+//previousDom:
+//<!--a-->c
+//
+//edits:
+//[
+//  {
+//    rangeOffset: 8
+//    rangeLength: 10
+//    text: <h1>b</h1>
+//  }
+//]
+//
+//nextDom:
+//<!--a--><h1>b</h1>c
+//
+//expectedEdits:
+//[
+//  {
+//    command: elementInsert
+//    payload: {
+//      nodeType: ElementNode
+//      tag: h1
+//    }
+//  }
+//  {
+//    command: elementInsert
+//    payload: {
+//      nodeType: TextNode
+//      text: b
+//    }
+//  }
+//]
+
+name:
+121 - insert element between comment and element
+
+previousDom:
+<!--a--><h1>c</h1>
+
+edits:
+[
+  {
+    rangeOffset: 8
+    rangeLength: 0
+    text: <h1>b</h1>
+  }
+]
+
+nextDom:
+<!--a--><h1>b</h1><h1>c</h1>
+
+expectedEdits:
+[
+  {
+    command: elementInsert
+    payload: {
+      nodeType: ElementNode
+      tag: h1
+    }
+  }
+  {
+    command: elementInsert
+    payload: {
+      nodeType: TextNode
+      text: b
+    }
+  }
+]
+
+name:
+122 - insert element between comment and comment
+
+previousDom:
+<!--a--><!--c-->
+
+edits:
+[
+  {
+    rangeOffset: 8
+    rangeLength: 0
+    text: <h1>b</h1>
+  }
+]
+
+nextDom:
+<!--a--><h1>b</h1><!--c-->
+
+expectedEdits:
+[
+  {
+    command: elementInsert
+    payload: {
+      nodeType: ElementNode
+      tag: h1
+    }
+  }
+  {
+    command: elementInsert
+    payload: {
+      nodeType: TextNode
+      text: b
+    }
+  }
+]
+
+name:
+200 - insert comment between text and text
+
+previousDom:
+ac
+
+edits:
+[
+  {
+    rangeOffset: 1
+    rangeLength: 0
+    text: <!--b-->
+  }
+]
+
+nextDom:
+a<!--b-->c
+
+expectedEdits:
+[
+  {
+    command: textReplace
+    payload: {
+      text: a
+    }
+  }
+  {
+    command: elementInsert
+    payload: {
+      nodeType: CommentNode
+      text: b
+    }
+  }
+  {
+    command: elementInsert
+    payload: {
+      nodeType: TextNode
+      text: c
+    }
+  }
+]
+
+name:
+201 - insert comment between text and element
+
+previousDom:
+a<h1>c</h1>
+
+edits:
+[
+  {
+    rangeOffset: 1
+    rangeLength: 0
+    text: <!--b-->
+  }
+]
+
+nextDom:
+a<!--b--><h1>c</h1>
+
+expectedEdits:
+[
+  {
+    command: elementInsert
+    payload: {
+      nodeType: CommentNode
+      text: b
+    }
+  }
+]
+
+//name:
+//202 - insert comment between text and comment
+//
+//previousDom:
+//a<!--c-->
+//
+//edits:
+//[
+//  {
+//    rangeOffset: 1
+//    rangeLength: 0
+//    text: <!--b-->
+//  }
+//]
+//
+//nextDom:
+//a<!--b--><!--c-->
+//
+//expectedEdits:
+//[
+//  {
+//    command: elementInsert
+//    payload: {
+//      nodeType: CommentNode
+//      text: b
+//    }
+//  }
+//]
+
+
+//name:
+//210 - insert comment between element and text
+//
+//previousDom:
+//<h1>a</h1>c
+//
+//edits:
+//[
+//  {
+//    rangeOffset: 10
+//    rangeLength: 0
+//    text: <!--b-->
+//  }
+//]
+//
+//nextDom:
+//<h1>a</h1><!--b-->c
+//
+//expectedEdits:
+//[
+//  {
+//    command: elementInsert
+//    payload: {
+//      nodeType: CommentNode
+//      text: b
+//    }
+//  }
+//]
+
+name:
+211 - insert comment between element and element
+
+previousDom:
+<h1>a</h1><h1>c</h1>
+
+edits:
+[
+  {
+    rangeOffset: 10
+    rangeLength: 0
+    text: <!--b-->
+  }
+]
+
+nextDom:
+<h1>a</h1><!--b--><h1>c</h1>
+
+expectedEdits:
+[
+  {
+    command: elementInsert
+    payload: {
+      nodeType: CommentNode
+      text: b
+    }
+  }
+]
+
+//name:
+//212 - insert comment between element and comment
+//
+//previousDom:
+//<h1>a</h1><!--c-->
+//
+//edits:
+//[
+//  {
+//    rangeOffset: 10
+//    rangeLength: 0
+//    text: <!--b-->
+//  }
+//]
+//
+//nextDom:
+//<h1>a</h1><!--b--><!--c-->
+//
+//expectedEdits:
+//[
+//   {
+//    command: elementInsert
+//    payload: {
+//      nodeType: CommentNode
+//      text: b
+//    }
+//  }
+//]
+
+//name:
+//220 - insert comment between comment and text
+//
+//previousDom:
+//<!--a-->c
+//
+//edits:
+//[
+//  {
+//    rangeOffset: 8
+//    rangeLength: 0
+//    text: <!--b-->
+//  }
+//]
+//
+//nextDom:
+//<!--a--><!--b-->c
+//
+//expectedEdits:
+//[
+//  {
+//    command: elementInsert
+//    payload: {
+//      nodeType: CommentNode
+//      text: b
+//    }
+//  }
+//]
+//
+name:
+221 - insert comment between comment and element
+
+previousDom:
+<!--a--><h1>c</h1>
+
+edits:
+[
+  {
+    rangeOffset: 8
+    rangeLength: 0
+    text: <!--b-->
+  }
+]
+
+nextDom:
+<!--a--><!--b--><h1>c</h1>
+
+expectedEdits:
+[
+  {
+    command: elementInsert
+    payload: {
+      nodeType: CommentNode
+      text: b
+    }
+  }
+]
+
+//name:
+//222 - insert comment between comment and comment
+//
+//previousDom:
+//<!--a--><!--c-->
+//
+//edits:
+//[
+//  {
+//    rangeOffset: 8
+//    rangeLength: 0
+//    text: <!--b-->
+//  }
+//]
+//
+//nextDom:
+//<!--a--><!--b--><!--c-->
+//
+//expectedEdits:
+//[
+//  {
+//    command: elementInsert
+//    payload: {
+//      nodeType: CommentNode
+//      text: b
+//    }
+//  }
+//]
