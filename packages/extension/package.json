@@ -1,0 +1,35 @@
+{
+  "preview": true,
+  "name": "html-preview",
+  "displayName": "Html Preview",
+  "description": "Preview for Html files",
+  "version": "1.0.0",
+  "publisher": "SimonSiefke",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SimonSiefke/vscode-html-preview.git"
+  },
+  "scripts": {
+    "dev": "cd ../../ && npm run dev"
+  },
+  "license": "MIT",
+  "main": "dist/extensionMain.js",
+  "engines": {
+    "vscode": "^1.36.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "keywords": [
+    "html preview",
+    "html",
+    "preview",
+    "live"
+  ],
+  "activationEvents": [
+    "onLanguage:html"
+  ],
+  "dependencies": {
+    "virtual-dom": "^0.0.0-development"
+  }
+}

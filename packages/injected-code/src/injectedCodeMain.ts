@@ -1,13 +1,10 @@
-/* eslint-disable complexity */
-/* eslint-disable no-alert */
-// @ts-nocheck
-
 const ws = new WebSocket('ws://localhost:3001');
 function getElementById(id) {
 	return document.querySelector(`[data-brackets-id="${id}"]`);
 }
 
-const virtualDom = JSON.parse(document.getElementById('virtual-dom').innerText);
+const $virtualDom = document.getElementById('virtual-dom') as HTMLScriptElement;
+const virtualDom = JSON.parse($virtualDom.innerText);
 
 function walk(dom, fn, childrenFirst = false) {
 	if (Array.isArray(dom)) {
@@ -47,7 +44,7 @@ walk(virtualDom, node => {
 		return;
 	}
 
-	const $node = document.querySelector(`[data-id='${node.id}']`);
+	const $node = document.querySelector(`[data-id='${node.id}']`) as HTMLElement;
 	if (!$node) {
 		console.log(node);
 		console.log(node.id, $node);

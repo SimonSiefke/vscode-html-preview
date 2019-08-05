@@ -1,58 +1,45 @@
 {
-  "preview": true,
-  "name": "html-preview",
-  "displayName": "Html Preview",
-  "description": "Preview for Html files",
-  "version": "1.0.0",
-  "publisher": "SimonSiefke",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/SimonSiefke/vscode-html-preview.git"
-  },
-  "license": "MIT",
-  "main": "packages/extension/dist/packages/extension/src/extension.js",
-  "engines": {
-    "vscode": "^1.36.0"
-  },
   "scripts": {
-    "dev": "cd packages/extension && tsc -b --watch",
+    "dev": "tsc -b -w",
     "generate:diffTests": "babel-node --presets latest-node src/VirtualDom/generateDiffTestCases.js",
-    "generate:watch:diffTests": "nodemon --watch src/VirtualDom/diff.test.txt --exec npm run generate:diffTests"
+    "generate:watch:diffTests": "nodemon --watch src/VirtualDom/diff.test.txt --exec npm run generate:diffTests",
+    "clean": "rimraf dist",
+    "package": "npm run clean && webpack --mode production --config ./webpack/extension.webpack.config.js && node scripts/package.js"
   },
-  "categories": [
-    "Other"
-  ],
-  "keywords": [
-    "html preview",
-    "svg",
-    "preview",
-    "live"
-  ],
-  "activationEvents": [
-    "onLanguage:html"
-  ],
   "devDependencies": {
     "@babel/core": "^7.5.5",
     "@babel/node": "^7.5.5",
     "@types/jest": "^24.0.15",
     "@types/json5": "0.0.30",
+    "@types/lodash": "^4.14.136",
     "@types/node": "^12.6.3",
     "@types/vscode": "^1.36.0",
+    "@types/webpack": "^4.32.1",
     "@types/ws": "^6.0.1",
     "eslint": "^6.0.1",
     "eslint-config-xo": "^0.26.0",
     "eslint-plugin-jest": "^22.8.0",
     "jest": "^24.8.0",
+    "lerna": "^3.14.1",
+    "lodash": "^4.17.15",
+    "merge-options": "^1.0.1",
     "prettier": "^1.18.2",
+    "rimraf": "^2.6.3",
     "semantic-release": "^15.13.18",
     "semantic-release-vsce": "^2.2.8",
     "ts-jest": "^24.0.2",
-    "typescript": "^3.5.3"
+    "ts-loader": "^6.0.4",
+    "typescript": "^3.5.3",
+    "webpack": "^4.39.1",
+    "webpack-cli": "^3.3.6"
   },
   "eslintConfig": {
     "extends": [
       "xo/esnext"
     ],
+    "rules": {
+      "capitalized-comments": "off"
+    },
     "overrides": [
       {
         "files": [

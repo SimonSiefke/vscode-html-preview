@@ -4,7 +4,6 @@
     "lib": ["esnext"],
     "target": "esnext",
     "module": "commonjs",
-    // "rootDir": ".",
 
     "declaration": true,
     "declarationMap": true,
@@ -23,13 +22,9 @@
 
     "alwaysStrict": true,
     "preserveConstEnums": true,
-    "allowJs": true,
-    "checkJs": true,
-    // "newLine": "lf",
 
     "types": ["node", "jest"],
     "moduleResolution": "node",
-    "resolveJsonModule": true,
-    "incremental": false
+    "resolveJsonModule": true
   }
 }

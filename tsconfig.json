@@ -1,14 +1,9 @@
 {
-  "compilerOptions": {
-    "lib": ["esnext"],
-    "target": "esnext",
-    "module": "commonjs",
-    "strict": true,
-    "esModuleInterop": true,
-    "checkJs": true,
-    "allowJs": true,
-    "noEmit": true,
-    "incremental": false,
-    "types": ["jest", "node"]
-  }
+  "files": [],
+  "include": [],
+  "references": [
+    { "path": "./packages/extension" },
+    { "path": "./packages/injected-code" }
+    { "path": "./packages/virtual-dom" }
+  ]
 }
