@@ -5,15 +5,20 @@
   "description": "Preview for Html files",
   "version": "1.0.0",
   "publisher": "SimonSiefke",
+  "license": "MIT",
+  "homepage": "https://github.com/SimonSiefke/vscode-html-preview",
   "repository": {
     "type": "git",
     "url": "https://github.com/SimonSiefke/vscode-html-preview.git"
   },
-  "scripts": {
-    "dev": "cd ../../ && npm run dev"
+  "bugs": {
+    "url": "https://github.com/SimonSiefke/vscode-html-preview/issues"
   },
-  "license": "MIT",
-  "main": "dist/extensionMain.js",
+  "icon": "images/icon.png",
+  "galleryBanner": {
+    "color": "#242b2b",
+    "theme": "dark"
+  },
   "engines": {
     "vscode": "^1.36.0"
   },
@@ -29,6 +34,10 @@
   "activationEvents": [
     "onLanguage:html"
   ],
+  "scripts": {
+    "dev": "cd ../../ && npm run dev"
+  },
+  "main": "dist/extensionMain.js",
   "dependencies": {
     "virtual-dom": "^0.0.0-development",
     "ws": "^7.1.0"
