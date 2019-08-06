@@ -1,5 +1,6 @@
-try {
-	require('http').get('http://localhost:7575');
-} catch (error) {
-	console.log('no reload possible');
-}
+require('http')
+	.get('http://localhost:7575')
+	.on('error', () => {
+		console.log('could not reload extension');
+	})
+	.end();

@@ -13,6 +13,9 @@ export function activate() {
 	const indexJs = fs.readFileSync(
 		path.join(__dirname, '../../injected-code/dist/injectedCodeMain.js')
 	);
+	const measurePerformanceJs = fs.readFileSync(
+		path.join(__dirname, '../../injected-code/dist/measurePerformance.js')
+	);
 	const parser = createParser();
 	let previousDom = parser.parse(previousText);
 	console.log(previousDom);
@@ -25,7 +28,7 @@ export function activate() {
 				const bodyIndex = dom.lastIndexOf('</body');
 				previousDom = parser.parse(previousText);
 				const $virtualDom = `<script id="virtual-dom">${JSON.stringify(previousDom)}</script>`;
-				const $script = '<script defer src="index.js"></script>';
+				const $script = '<script type="module" src="index.js"></script>';
 				const $inner = '\n' + $virtualDom + '\n' + $script;
 				if (bodyIndex !== -1) {
 					dom = dom.slice(0, bodyIndex) + $inner + dom.slice(bodyIndex);
@@ -38,6 +41,13 @@ export function activate() {
 			} else if (req.url === '/index.js') {
 				res.writeHead(200, {'Content-Type': 'text/javascript'});
 				res.write(indexJs);
+				res.end();
+			} else if (req.url === '/measurePerformance') {
+				res.writeHead(200, {'Content-Type': 'text/javascript'});
+				res.write(measurePerformanceJs);
+				res.end();
+			} else {
+				res.statusCode = 404;
 				res.end();
 			}
 		} catch (error) {

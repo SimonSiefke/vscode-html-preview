@@ -1,3 +1,5 @@
+import {measurePerformance} from './measurePerformance';
+
 const ws = new WebSocket('ws://localhost:3001');
 function getElementById(id) {
 	return document.querySelector(`[data-brackets-id="${id}"]`);
@@ -36,8 +38,6 @@ for (let i = 0; i < virtualDom.length; i++) {
 		nodeMap[rootNode.id] = document.body.childNodes[i];
 	}
 }
-
-console.log(virtualDom);
 
 walk(virtualDom, node => {
 	if (node.type !== 'ElementNode') {
@@ -92,7 +92,7 @@ function fixAttributeValue(value) {
 }
 
 ws.onmessage = ({data}) => {
-	const messages = JSON.parse(data);
+	const {messages, id} = JSON.parse(data);
 	console.log(JSON.stringify(messages, null, 2));
 	for (const message of messages) {
 		const {command, payload} = message;
@@ -145,10 +145,7 @@ ws.onmessage = ({data}) => {
 			if (payload.nodeType === 'ElementNode') {
 				$node = document.createElement(payload.tag);
 				for (const attributeName of Object.keys(payload.attributes)) {
-					$node.setAttribute(
-						attributeName,
-						fixAttributeValue(payload.attributes[attributeName])
-					);
+					$node.setAttribute(attributeName, fixAttributeValue(payload.attributes[attributeName]));
 				}
 			} else if (payload.nodeType === 'TextNode') {
 				$node = document.createTextNode(payload.text);
@@ -177,4 +174,13 @@ ws.onmessage = ({data}) => {
 		// console.log('else')
 		// window.location.reload(true)
 	}
+
+	if (messages.length === 1 && messages[0].command === 'error') {
+		return;
+	}
+
+	console.log(messages);
+	ws.send(JSON.stringify({success: true, id}));
 };
+
+// ws.onmessage = measurePerformance(ws.onmessage);
