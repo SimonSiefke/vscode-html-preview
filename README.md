@@ -25,3 +25,7 @@ TODO
 TODO
 
 <!-- TODO bug: type <h1>a</h1>, select a , type b, $node is undefined -->
+
+<!-- TODO use child process for efficiency -->
+
+<!-- autoreload extension: nodemon --watch **/dist/** --exec node scripts/update-extension.js -->

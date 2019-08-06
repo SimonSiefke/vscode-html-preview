@@ -58,17 +58,7 @@ let d = 0;
 function parse(
 	text,
 	{
-		selfClosingTags = [
-			'!DOCTYPE',
-			'!doctype',
-			'input',
-			'br',
-			'base',
-			'link',
-			'hr',
-			'img',
-			'meta'
-		],
+		selfClosingTags = ['!DOCTYPE', '!doctype', 'input', 'br', 'base', 'link', 'hr', 'img', 'meta'],
 		prefixSums = {},
 		nextId = createIdGenerator(),
 		nodeMap = {},
@@ -283,12 +273,7 @@ const i = 0;
  */
 export const parseHtml = (
 	html,
-	{
-		nextId = createIdGenerator(),
-		nodeMap = {},
-		prefixSums = {},
-		newNodeMap = {}
-	} = {}
+	{nextId = createIdGenerator(), nodeMap = {}, prefixSums = {}, newNodeMap = {}} = {}
 ) => {
 	prefixSums;
 	// Let id = 1;
@@ -355,9 +340,7 @@ function updateSignature(node) {
 	if (node.type === 'ElementNode') {
 		node.attributes; // ?
 		node.attributeSignature = hash(
-			JSON.stringify(node.attributes, (key, value) =>
-				value === undefined ? null : value
-			)
+			JSON.stringify(node.attributes, (key, value) => (value === undefined ? null : value))
 		); // ?
 
 		let subtreeSignature = '';
@@ -365,8 +348,7 @@ function updateSignature(node) {
 		for (const child of node.children) {
 			if (child.type === 'ElementNode') {
 				childSignatures += String(child.id);
-				subtreeSignature +=
-					String(child.id) + child.attributeSignature + child.subtreeSignature;
+				subtreeSignature += String(child.id) + child.attributeSignature + child.subtreeSignature;
 			} else {
 				childSignatures += child.textSignature;
 				subtreeSignature += child.textSignature;
@@ -403,12 +385,10 @@ export function createParser() {
 		get nodeMap() {
 			return nodeMap;
 		},
-		/**
-		 *
-		 * @param {string} textWithEdits
-		 * @param {Array<{rangeLength:Number, rangeOffset:number, text:string}>} edits
-		 */
-		edit(textWithEdits, edits) {
+		edit(
+			textWithEdits: string,
+			edits: Array<{rangeLength: number; rangeOffset: number; text: string}>
+		) {
 			const edit = edits[0];
 			const {rangeOffset, rangeLength, text} = edit;
 			for (const rawPrefixSum in prefixSums) {
@@ -422,10 +402,7 @@ export function createParser() {
 					// Is before
 				} else if (prefixSum === rangeOffset && rangeLength > 0) {
 					// Is at edge
-				} else if (
-					prefixSum > rangeOffset &&
-					prefixSum < rangeOffset + rangeLength
-				) {
+				} else if (prefixSum > rangeOffset && prefixSum < rangeOffset + rangeLength) {
 					// Is in middle
 					// delete nodeMap[prefixSums[prefixSum]]; // TODO
 					delete prefixSums[prefixSum];

@@ -1,11 +1,10 @@
 import * as vscode from 'vscode';
-import {createWebSocketServer} from './WebSocketServer/createWebSocketServer';
 import * as http from 'http';
-
-import {genDom} from './genDom';
 import * as fs from 'fs';
 import * as path from 'path';
+import {createWebSocketServer, genDom} from 'html-preview-service';
 import {diff, createParser} from 'virtual-dom';
+import('./autoreload');
 
 export function activate() {
 	let previousText =

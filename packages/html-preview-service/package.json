@@ -1,0 +1,16 @@
+{
+  "name": "html-preview-service",
+  "version": "0.0.0-development",
+  "description": "",
+  "main": "dist/htmlPreviewServiceMain.js",
+  "scripts": {
+    "dev": "tsc --watch"
+  },
+  "dependencies": {
+    "virtual-dom": "^0.0.0-development",
+    "ws": "^7.1.1"
+  },
+  "devDependencies": {
+    "@types/ws": "^6.0.2"
+  }
+}

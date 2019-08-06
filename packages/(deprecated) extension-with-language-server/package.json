@@ -1,6 +1,6 @@
 {
   "preview": true,
-  "name": "html-preview",
+  "name": "html-preview-with-language-server",
   "displayName": "Html Preview",
   "description": "Preview for Html files",
   "version": "1.0.0",
@@ -39,7 +39,6 @@
   },
   "main": "dist/extensionMain.js",
   "dependencies": {
-    "html-preview-service": "^0.0.0-development",
     "vscode-languageclient": "^5.2.1"
   },
   "devDependencies": {
