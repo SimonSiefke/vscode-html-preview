@@ -9,4 +9,4 @@ const server = http
 	})
 	.listen(7575);
 
-vscode.commands.executeCommand('htmlPreview.showPreview');
+vscode.commands.executeCommand('htmlPreview.openPreview');

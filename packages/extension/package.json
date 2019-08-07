@@ -38,7 +38,7 @@
     "commands": [
       {
         "category": "Html Preview",
-        "command": "htmlPreview.showPreview",
+        "command": "htmlPreview.openPreview",
         "title": "Open Preview"
       }
     ]
