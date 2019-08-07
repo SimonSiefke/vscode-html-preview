@@ -23,13 +23,15 @@ export function activate(context: vscode.ExtensionContext) {
 				let previousValue;
 				for (const [key, value] of Object.entries(parser.prefixSums)) {
 					const parsedKey = parseInt(key, 10);
+					// @ts-ignore
+					const isElementNode = parser.nodeMap[value].type === 'ElementNode';
 					// if (parser.nodeMap[parsedKey] && parser.nodeMap[parsedKey].type !== 'ElementNode') {
 					// 	console.log(parser.nodeMap[parsedKey]);
 					// 	// previousValue = value;
 					// 	continue;
 					// }
 
-					if (parsedKey === offset) {
+					if (parsedKey === offset && isElementNode) {
 						webSocketServer.broadcast(
 							[
 								{
@@ -59,7 +61,9 @@ export function activate(context: vscode.ExtensionContext) {
 						break;
 					}
 
-					previousValue = value;
+					if (isElementNode) {
+						previousValue = value;
+					}
 				}
 			});
 

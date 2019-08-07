@@ -363,7 +363,7 @@ function updateSignature(node) {
 }
 
 export function createParser() {
-	let prefixSums = {};
+	let prefixSums: {[key: number]: number} = {};
 	let nodeMap = {};
 	let nextId = createIdGenerator();
 	return {

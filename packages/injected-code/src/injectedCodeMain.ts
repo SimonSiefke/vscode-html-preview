@@ -103,23 +103,28 @@ ws.onmessage = ({data}) => {
 		}
 
 		if (command === 'highlight') {
-			if ($highlightedNode) {
-				$highlightedNode.style.background = 'transparent';
-				clearTimeout(highlightTimeout);
-				$highlightedNode = undefined;
-			} else {
-				console.log('NO HIGHLIGHT');
-			}
-
 			const {id} = payload;
 			const $node = nodeMap[id];
-			$highlightedNode = $node;
-			console.log($highlightedNode);
-			$node.style.background = 'blue';
+			// @debug
+
+			if ($highlightedNode) {
+				if ($node !== $highlightedNode) {
+					$highlightedNode.style.background = 'transparent';
+					$highlightedNode = undefined;
+				}
+
+				clearTimeout(highlightTimeout);
+			}
+
+			if ($highlightedNode !== $node) {
+				$highlightedNode = $node;
+				$node.style.background = 'dodgerblue';
+			}
+
 			highlightTimeout = setTimeout(() => {
-				$node.style.background = 'transparent';
+				$highlightedNode.style.background = 'transparent';
+				$highlightedNode = undefined;
 			}, 1000);
-			console.log($node);
 		}
 
 		if (command === 'textReplace') {
