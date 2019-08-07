@@ -8,6 +8,8 @@ left terminal:
 npx jest --watch
 ```
 
+Use `p` to filter for diff tests.
+
 right terminal:
 
 ```sh

@@ -6,6 +6,8 @@ left terminal:
 npx jest --watch
 ```
 
+Use `p` to filter for genDom tests.
+
 right terminal:
 
 ```sh
