@@ -25,3 +25,23 @@ TODO
 <!-- TODO implicit head body tbody tags -->
 
 <!-- autoreload extension: nodemon --watch **/dist/** --exec node scripts/update-extension.js -->
+
+<!-- TODO: bug
+input:
+<html>
+
+<head>
+  <title>Document</title>
+  <style></style>
+</head>
+
+<body>
+
+</body>
+
+</html>
+
+
+after <style> type enter enter up tab
+error: prefixSum or nodeMap is invalid because node is not found
+ -->

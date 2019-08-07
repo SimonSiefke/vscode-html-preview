@@ -33,11 +33,14 @@ const nodeMap: {[key: number]: any} = {
 for (let i = 0; i < virtualDom.length; i++) {
 	const rootNode = virtualDom[i];
 	if (rootNode.type === 'TextNode') {
-		nodeMap[rootNode.id] = document.body.childNodes[i];
+		nodeMap[rootNode.id] = document.documentElement.childNodes[i];
+		// @debug
+		if (!nodeMap[rootNode.id] || nodeMap[rootNode.id].nodeType !== Node.TEXT_NODE) {
+			console.error('invalid', nodeMap[rootNode.id]);
+			alert('error, failed to hydrate dom (1)');
+		}
 	}
 }
-
-// console.log(nodeMap);
 
 walk(virtualDom, node => {
 	if (node.type !== 'ElementNode') {
@@ -45,18 +48,21 @@ walk(virtualDom, node => {
 	}
 
 	const $node = document.querySelector(`[data-id='${node.id}']`) as HTMLElement;
-	if (!$node) {
-		console.log(node);
-		console.log(node.id, $node);
+	// @debug
+	if (!$node && node.tag.toLowerCase() !== '!doctype') {
+		console.error(node);
+		console.error(node.id, $node);
+		debugger;
+		alert('error, failed to hydrate dom (2)');
 	}
 
-	// $node.removeAttribute('data-id');
+	// $node.removeAttribute('data-id'); // TODO enable this again later
 	nodeMap[node.id] = $node;
 	for (let i = 0; i < node.children.length; i++) {
 		const child = node.children[i];
 		if (child.type === 'TextNode') {
 			if (node.tag === 'html') {
-				console.log('continue');
+				// TODO what is happening here?
 				// TODO handle whitespace in html nodes / implicitly inserted nodes
 				continue;
 			}
@@ -74,7 +80,7 @@ walk(virtualDom, node => {
 	}
 });
 
-console.log(nodeMap);
+// console.log(nodeMap);
 
 function fixAttributeValue(value) {
 	if (value === null) {
@@ -96,6 +102,7 @@ let highlightTimeout: number;
 
 ws.onmessage = ({data}) => {
 	const {messages, id} = JSON.parse(data);
+	console.clear();
 	console.log(JSON.stringify(messages, null, 2));
 	for (const message of messages) {
 		const {command, payload} = message;
@@ -198,7 +205,7 @@ ws.onmessage = ({data}) => {
 			}
 		}
 
-		console.log(JSON.stringify(message));
+		// console.log(JSON.stringify(message));
 		// Console.log(message.command)
 		// console.log('else')
 		// window.location.reload(true)
@@ -208,7 +215,7 @@ ws.onmessage = ({data}) => {
 		return;
 	}
 
-	console.log(messages);
+	// console.log(messages);
 	ws.send(JSON.stringify({success: true, id, type: 'response'}));
 };
 

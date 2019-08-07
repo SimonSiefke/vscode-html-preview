@@ -4046,3 +4046,49 @@ expectedEdits:
 //    }
 //  }
 //]
+
+//name:
+//test because of bug #1
+//
+//previousDom:
+//<!DOCTYPE html>
+//<html lang="en">
+//
+//<head>
+//  <meta charset="UTF-8">
+//  <meta name="viewport" content="width=device-width, //initial-scale=1.0">
+//  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+//  <title>Document</title>
+//  <style>
+//  
+//  </style>
+//</head>
+//
+//<body>
+//  hello world
+//</body>
+//
+//</html>
+//
+//edits:
+//[
+//  {
+//    rangeOffset: 4
+//    rangeLength: 5
+//    text: ""
+//  }
+//]
+//
+//nextDom:
+//<h1></h1>
+//
+//expectedEdits:
+//[
+//  {
+//     command: attributeDelete
+//     payload: {
+//       attribute: class
+//     }
+//  }
+//]
+//

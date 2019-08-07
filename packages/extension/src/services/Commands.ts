@@ -35,6 +35,19 @@ export function activate(context: vscode.ExtensionContext) {
 						let found;
 						for (const [key, value] of Object.entries(parser.prefixSums)) {
 							const parsedKey = parseInt(key, 10);
+							// @debug
+							if (!parser.nodeMap[value]) {
+								console.log(parser.prefixSums);
+								console.error(`node ${value} doesn\'t exist`);
+								webSocketServer.broadcast(
+									{
+										command: 'error',
+										payload: `node ${value} doesn\'t exist`
+									},
+									{}
+								);
+							}
+
 							// @ts-ignore
 							const isElementNode = parser.nodeMap[value].type === 'ElementNode';
 
@@ -158,12 +171,11 @@ export function activate(context: vscode.ExtensionContext) {
 				webSocketServer.onMessage(message => {
 					if (message.type === 'request' && message.message.command === 'highlight') {
 						const {id} = message.message.payload;
-						console.log('id', message.message.payload.id);
-						console.log(parser.prefixSums);
+						// console.log('id', message.message.payload.id);
+						// console.log(parser.prefixSums);
 						for (const [key, value] of Object.entries(parser.prefixSums)) {
 							if (value === id) {
 								const parsedKey = parseInt(key, 10);
-								console.log(parsedKey);
 								vscode.window.activeTextEditor.selection = new vscode.Selection(
 									vscode.window.activeTextEditor.document!.positionAt(parsedKey),
 									vscode.window.activeTextEditor.document!.positionAt(parsedKey)
@@ -197,7 +209,6 @@ export function activate(context: vscode.ExtensionContext) {
 							const nextDom = parser.edit(newText, [change]);
 							const newNodeMap = parser.nodeMap;
 							const diffs = diff(previousDom, nextDom, {oldNodeMap, newNodeMap});
-							console.log(nextDom.pretty());
 							previousDom = nextDom;
 							webSocketServer.broadcast(diffs, {});
 							previousText = newText;
