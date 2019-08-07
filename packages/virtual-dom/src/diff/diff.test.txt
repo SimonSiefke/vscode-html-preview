@@ -3989,34 +3989,34 @@ expectedEdits:
 //  }
 //]
 //
-name:
-insert 221 - insert comment between comment and element
-
-previousDom:
-<!--a--><h1>c</h1>
-
-edits:
-[
-  {
-    rangeOffset: 8
-    rangeLength: 0
-    text: <!--b-->
-  }
-]
-
-nextDom:
-<!--a--><!--b--><h1>c</h1>
-
-expectedEdits:
-[
-  {
-    command: elementInsert
-    payload: {
-      nodeType: CommentNode
-      text: b
-    }
-  }
-]
+//name:
+//insert 221 - insert comment between comment and element
+//
+//previousDom:
+//<!--a--><h1>c</h1>
+//
+//edits:
+//[
+//  {
+//    rangeOffset: 8
+//    rangeLength: 0
+//    text: <!--b-->
+//  }
+//]
+//
+//nextDom:
+//<!--a--><!--b--><h1>c</h1>
+//
+//expectedEdits:
+//[
+//  {
+//    command: elementInsert
+//    payload: {
+//      nodeType: CommentNode
+//      text: b
+//    }
+//  }
+//]
 
 //name:
 //222 - insert comment between comment and comment
@@ -4051,21 +4051,16 @@ expectedEdits:
 //test because of bug #1
 //
 //previousDom:
-//<!DOCTYPE html>
-//<html lang="en">
+//<html>
 //
 //<head>
-//  <meta charset="UTF-8">
-//  <meta name="viewport" content="width=device-width, //initial-scale=1.0">
-//  <meta http-equiv="X-UA-Compatible" content="ie=edge">
 //  <title>Document</title>
 //  <style>
-//  
-//  </style>
+//    </style>
 //</head>
 //
 //<body>
-//  hello world
+//
 //</body>
 //
 //</html>
@@ -4073,22 +4068,33 @@ expectedEdits:
 //edits:
 //[
 //  {
-//    rangeOffset: 4
-//    rangeLength: 5
-//    text: ""
+//    rangeOffset: 53
+//    rangeLength: 0
+//    text: "  "
 //  }
 //]
 //
 //nextDom:
-//<h1></h1>
+//<html>
 //
+//<head>
+//  <title>Document</title>
+//  <style>
+//    </style>
+//</head>
+//
+//<body>
+//
+//</body>
+//
+//</html>
+
 //expectedEdits:
 //[
 //  {
-//     command: attributeDelete
+//     command: textReplace
 //     payload: {
-//       attribute: class
+//       text: "\n    "
 //     }
 //  }
 //]
-//
