@@ -8,13 +8,69 @@ import {createWebSocketServer, genDom} from 'html-preview-service';
 const packagesRoot = path.join(__dirname, '../../../');
 
 export function activate(context: vscode.ExtensionContext) {
+	// setInterval(() => {
+
+	// }, 1000);
 	context.subscriptions.push(
 		vscode.commands.registerCommand('htmlPreview.showPreview', () => {
+			vscode.window.onDidChangeTextEditorSelection(event => {
+				if (event.selections.length !== 1) {
+					return;
+				}
+
+				const selection = event.selections[0];
+				const offset = vscode.window.activeTextEditor.document.offsetAt(selection.active);
+				let previousValue;
+				for (const [key, value] of Object.entries(parser.prefixSums)) {
+					const parsedKey = parseInt(key, 10);
+					// if (parser.nodeMap[parsedKey] && parser.nodeMap[parsedKey].type !== 'ElementNode') {
+					// 	console.log(parser.nodeMap[parsedKey]);
+					// 	// previousValue = value;
+					// 	continue;
+					// }
+
+					if (parsedKey === offset) {
+						webSocketServer.broadcast(
+							[
+								{
+									command: 'highlight',
+									payload: {
+										id: value
+									}
+								}
+							],
+							{}
+						);
+						break;
+					}
+
+					if (parsedKey > offset) {
+						webSocketServer.broadcast(
+							[
+								{
+									command: 'highlight',
+									payload: {
+										id: previousValue
+									}
+								}
+							],
+							{}
+						);
+						break;
+					}
+
+					previousValue = value;
+				}
+			});
+
 			let previousText =
 				(vscode.window.activeTextEditor && vscode.window.activeTextEditor.document.getText()) || '';
 			const webSocketServer = createWebSocketServer();
 			const indexJs = fs.readFileSync(
 				path.join(packagesRoot, 'injected-code/dist/injectedCodeMain.js')
+			);
+			const indexJsMap = fs.readFileSync(
+				path.join(packagesRoot, 'injected-code/dist/injectedCodeMain.js.map')
 			);
 			const parser = createParser();
 			let previousDom = parser.parse(previousText);
@@ -42,6 +98,10 @@ export function activate(context: vscode.ExtensionContext) {
 						res.writeHead(200, {'Content-Type': 'text/javascript'});
 						res.write(indexJs);
 						res.end();
+					} else if (req.url === '/injectedCodeMain.js.map') {
+						// res.writeHead(200, {'Content-Type': 'text/javascript'});
+						res.write(indexJsMap);
+						res.end();
 					} else {
 						res.statusCode = 404;
 						res.end();
@@ -54,6 +114,24 @@ export function activate(context: vscode.ExtensionContext) {
 				console.log('listening');
 			});
 			webSocketServer.start(3001);
+			webSocketServer.onMessage(message => {
+				if (message.type === 'request' && message.message.command === 'highlight') {
+					const {id} = message.message.payload;
+					console.log('id', message.message.payload.id);
+					console.log(parser.prefixSums);
+					for (const [key, value] of Object.entries(parser.prefixSums)) {
+						if (value === id) {
+							const parsedKey = parseInt(key, 10);
+							console.log(parsedKey);
+							vscode.window.activeTextEditor.selection = new vscode.Selection(
+								vscode.window.activeTextEditor.document!.positionAt(parsedKey),
+								vscode.window.activeTextEditor.document!.positionAt(parsedKey)
+							);
+						}
+					}
+				}
+				// if(message.type!=='response'){}
+			});
 			vscode.workspace.onDidChangeTextDocument(event => {
 				if (event.document.languageId !== 'html') {
 					return;

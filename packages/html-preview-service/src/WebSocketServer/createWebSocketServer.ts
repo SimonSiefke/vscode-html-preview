@@ -17,6 +17,8 @@ interface WebSocketServer {
 	 * Stop the websocket server.
 	 */
 	readonly stop: () => void
+
+	readonly onMessage: (message) => void
 }
 
 const nextId = (() => {
@@ -28,6 +30,7 @@ const pendingResults = {};
 
 export function createWebSocketServer(): WebSocketServer {
 	let webSocketServer: WebSocket.Server;
+	const onMessageListeners: Array<(message: any) => void> = [];
 	/**
 	 * @type {{[key:string]:any}}
 	 */
@@ -40,7 +43,7 @@ export function createWebSocketServer(): WebSocketServer {
 			pendingResults[id] = {
 				start: process.hrtime()
 			};
-			const stringifiedMessage = JSON.stringify({messages, id});
+			const stringifiedMessage = JSON.stringify({messages, id, type: 'request'});
 			for (const client of webSocketServer.clients) {
 				if (skip !== client && client.readyState === WebSocket.OPEN) {
 					client.send(stringifiedMessage);
@@ -50,21 +53,26 @@ export function createWebSocketServer(): WebSocketServer {
 		start(port = 3000) {
 			webSocketServer = new WebSocket.Server({port});
 			webSocketServer.on('connection', websocket => {
-				websocket.onmessage = ({data}) => {
-					const {id} = JSON.parse(data.toString());
-					const {start} = pendingResults[id];
-					const end = Math.round(process.hrtime(start)[1] / 1000000);
-					if (end > 15) {
-						// this.broadcast([
-						// 	{command: 'error', payload: ` - performance violation: handler took ${end}ms`}
-						// ]);
-					}
+				websocket.on('message', data => {
+					const message = JSON.parse(data.toString());
+					onMessageListeners.forEach(fn => fn(message));
+					// const {id} = JSON.parse(data.toString());
+					// const {start} = pendingResults[id];
+					// const end = Math.round(process.hrtime(start)[1] / 1000000);
+					// if (end > 15) {
+					// this.broadcast([
+					// 	{command: 'error', payload: ` - performance violation: handler took ${end}ms`}
+					// ]);
+					// }
 
-					console.log(end);
+					// console.log(end);
 					// console.log(end / 1000000);
 					// console.log(id);
-				};
+				});
 			});
+		},
+		onMessage: fn => {
+			onMessageListeners.push(fn);
 		},
 		stop() {
 			webSocketServer.close();

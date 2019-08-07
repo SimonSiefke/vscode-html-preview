@@ -382,6 +382,9 @@ export function createParser() {
 			});
 			return result;
 		},
+		get prefixSums() {
+			return prefixSums;
+		},
 		get nodeMap() {
 			return nodeMap;
 		},

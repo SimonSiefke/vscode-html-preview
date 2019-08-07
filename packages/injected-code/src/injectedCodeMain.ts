@@ -89,6 +89,9 @@ function fixAttributeValue(value) {
 	return value;
 }
 
+let $highlightedNode;
+let highlightTimeout;
+
 ws.onmessage = ({data}) => {
 	const {messages, id} = JSON.parse(data);
 	console.log(JSON.stringify(messages, null, 2));
@@ -97,6 +100,26 @@ ws.onmessage = ({data}) => {
 		if (command === 'error') {
 			alert('error' + payload);
 			continue;
+		}
+
+		if (command === 'highlight') {
+			if ($highlightedNode) {
+				$highlightedNode.style.background = 'transparent';
+				clearTimeout(highlightTimeout);
+				$highlightedNode = undefined;
+			} else {
+				console.log('NO HIGHLIGHT');
+			}
+
+			const {id} = payload;
+			const $node = nodeMap[id];
+			$highlightedNode = $node;
+			console.log($highlightedNode);
+			$node.style.background = 'blue';
+			highlightTimeout = setTimeout(() => {
+				$node.style.background = 'transparent';
+			}, 1000);
+			console.log($node);
 		}
 
 		if (command === 'textReplace') {
@@ -178,7 +201,31 @@ ws.onmessage = ({data}) => {
 	}
 
 	console.log(messages);
-	ws.send(JSON.stringify({success: true, id}));
+	ws.send(JSON.stringify({success: true, id, type: 'response'}));
 };
 
-// ws.onmessage = measurePerformance(ws.onmessage);
+const nextId = (() => {
+	let id = 0;
+	return () => id++;
+})();
+
+window.addEventListener('click', event => {
+	// @ts-ignore
+	const id = parseInt((event.target as HTMLElement).dataset.id, 10);
+	if (!id) {
+		console.error('no id for', event.target);
+		return;
+	}
+
+	const message = {
+		type: 'request',
+		id: nextId(),
+		message: {
+			command: 'highlight',
+			payload: {
+				id
+			}
+		}
+	};
+	ws.send(JSON.stringify(message));
+});
