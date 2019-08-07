@@ -21,43 +21,20 @@ export function activate(context: vscode.ExtensionContext) {
 				const selection = event.selections[0];
 				const offset = vscode.window.activeTextEditor.document.offsetAt(selection.active);
 				let previousValue;
+				let found;
 				for (const [key, value] of Object.entries(parser.prefixSums)) {
 					const parsedKey = parseInt(key, 10);
 					// @ts-ignore
 					const isElementNode = parser.nodeMap[value].type === 'ElementNode';
-					// if (parser.nodeMap[parsedKey] && parser.nodeMap[parsedKey].type !== 'ElementNode') {
-					// 	console.log(parser.nodeMap[parsedKey]);
-					// 	// previousValue = value;
-					// 	continue;
-					// }
 
 					if (parsedKey === offset && isElementNode) {
-						webSocketServer.broadcast(
-							[
-								{
-									command: 'highlight',
-									payload: {
-										id: value
-									}
-								}
-							],
-							{}
-						);
+						found = value;
+
 						break;
 					}
 
 					if (parsedKey > offset) {
-						webSocketServer.broadcast(
-							[
-								{
-									command: 'highlight',
-									payload: {
-										id: previousValue
-									}
-								}
-							],
-							{}
-						);
+						found = previousValue;
 						break;
 					}
 
@@ -65,6 +42,26 @@ export function activate(context: vscode.ExtensionContext) {
 						previousValue = value;
 					}
 				}
+
+				if (!found) {
+					found = previousValue;
+				}
+
+				if (!found) {
+					return;
+				}
+
+				webSocketServer.broadcast(
+					[
+						{
+							command: 'highlight',
+							payload: {
+								id: found
+							}
+						}
+					],
+					{}
+				);
 			});
 
 			let previousText =
