@@ -26,7 +26,7 @@ function walk(dom, fn, childrenFirst = false) {
 	return dom;
 }
 
-const nodeMap = {
+const nodeMap: {[key: number]: any} = {
 	0: document.body
 };
 
@@ -89,8 +89,8 @@ function fixAttributeValue(value) {
 	return value;
 }
 
-let $highlightedNode;
-let highlightTimeout;
+let $highlightedNode: HTMLElement | undefined;
+let highlightTimeout: number;
 
 ws.onmessage = ({data}) => {
 	const {messages, id} = JSON.parse(data);
@@ -118,11 +118,12 @@ ws.onmessage = ({data}) => {
 
 			if ($highlightedNode !== $node) {
 				$highlightedNode = $node;
+				$highlightedNode!.scrollIntoView();
 				$node.style.background = 'dodgerblue';
 			}
 
 			highlightTimeout = setTimeout(() => {
-				$highlightedNode.style.background = 'transparent';
+				$highlightedNode!.style.background = 'transparent';
 				$highlightedNode = undefined;
 			}, 1000);
 		}

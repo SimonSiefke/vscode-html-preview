@@ -11,6 +11,7 @@ export function activate(context: vscode.ExtensionContext) {
 	// setInterval(() => {
 
 	// }, 1000);
+	let highlightedId: number;
 	context.subscriptions.push(
 		vscode.commands.registerCommand('htmlPreview.showPreview', () => {
 			vscode.window.onDidChangeTextEditorSelection(event => {
@@ -50,6 +51,12 @@ export function activate(context: vscode.ExtensionContext) {
 				if (!found) {
 					return;
 				}
+
+				if (highlightedId === found) {
+					return;
+				}
+
+				highlightedId = found;
 
 				webSocketServer.broadcast(
 					[
