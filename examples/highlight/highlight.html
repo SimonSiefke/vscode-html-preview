@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+  </head>
+  <body>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      button {
+        all: unset;
+        padding: 0;
+        margin: 10px;
+        padding: 10px 20px 30px 40px;
+        outline: none;
+        border: none;
+        transform: rotate(10deg);
+      }
+
+      button::-moz-focus-inner {
+        border: 0;
+      }
+
+      /* firefox */
+      highlight-dom-element {
+        --color-padding: #a398dd;
+        --color-margin: yellow;
+        --color-content: rgba(93, 162, 252, 0.452);
+      }
+      /* chrome */
+      /* see https://github.com/ChromeDevTools/devtools-frontend/blob/51d3d758c57dc51d1864b3003de1fdda82963623/front_end/common/Color.js#L874 */
+      highlight-dom-element {
+        --color-padding: rgba(147, 196, 125, 0.55);
+        --color-margin: rgba(246, 178, 107, 0.66);
+        --color-content: rgba(111, 168, 220, 0.66);
+      }
+
+      /* highlight-dom-element {
+        --color-padding: transparent;
+        --color-margin: transparent;
+        --color-content: transparent;
+      } */
+
+      button {
+        animation: fly 1s linear infinite;
+      }
+
+      @keyframes fly {
+        from {
+          transform: rotate(0);
+        }
+        to {
+          transform: rotate(360deg);
+        }
+      }
+    </style>
+    <button>hello</button>
+    <button>world</button>
+    <script src="./dist/bundle.js"></script>
+  </body>
+</html>
