@@ -11,7 +11,7 @@ export function genDom(orig) {
 	let prefixSum = 0;
 	function walk(node) {
 		prefixSum += node.start;
-		if (node.type === 'ElementNode') {
+		if (node.type === 'ElementNode' && node.tag.toLowerCase() !== '!doctype') {
 			const attrText = ` data-id="${node.id}"`;
 			lastIndex;
 			prefixSum;

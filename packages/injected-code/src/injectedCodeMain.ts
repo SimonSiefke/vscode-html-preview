@@ -37,6 +37,8 @@ for (let i = 0; i < virtualDom.length; i++) {
 	}
 }
 
+// console.log(nodeMap);
+
 walk(virtualDom, node => {
 	if (node.type !== 'ElementNode') {
 		return;

@@ -1,0 +1,26 @@
+name:
+0000 - without doctype, without html, without head, without body
+
+input: 
+<h1></h1>
+
+expectedOutput:
+<h1 data-id="1"></h1>
+
+name:
+0001 - without doctype, without html, without head, with body
+
+input: 
+<body>hello</body>
+
+expectedOutput:
+<body data-id="1">hello</body>
+
+name:
+0010 - without doctype, without html, with head, without body
+
+input: 
+<head><link rel="stylesheet" href="index.css"></head>
+
+expectedOutput:
+<head data-id="1"><link data-id="2" rel="stylesheet" href="index.css"></head>
