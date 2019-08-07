@@ -5,9 +5,7 @@
 const path = require('path');
 const _ = require('lodash');
 
-module.exports = function withDefaults(
-	/** @type WebpackConfig & {context:string} */ extConfig
-) {
+module.exports = function withDefaults(/** @type WebpackConfig & {context:string} */ extConfig) {
 	/** @type WebpackConfig */
 	const defaultConfig = {
 		mode: 'production', // this leaves the source code as close as possible to the original (when packaging we set this to 'production')
@@ -18,6 +16,9 @@ module.exports = function withDefaults(
 		resolve: {
 			mainFields: ['module', 'main'],
 			extensions: ['.ts', '.js'] // support ts-files and js-files
+		},
+		optimization: {
+			minimize: false
 		},
 		module: {
 			rules: [

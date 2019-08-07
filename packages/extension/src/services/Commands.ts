@@ -5,7 +5,10 @@ import * as fs from 'fs';
 import * as path from 'path';
 import {createWebSocketServer, genDom} from 'html-preview-service';
 
-const packagesRoot = path.join(__dirname, '../../../');
+const packagesRoot =
+	process.env.NODE_ENV === 'production' ?
+		path.join(__dirname, '../../') :
+		path.join(__dirname, '../../../');
 
 const wrapError = fn => {
 	try {
