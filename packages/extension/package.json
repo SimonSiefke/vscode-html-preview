@@ -34,6 +34,15 @@
   "activationEvents": [
     "onLanguage:html"
   ],
+  "contributes": {
+    "commands": [
+      {
+        "category": "Html Preview",
+        "command": "htmlPreview.showPreview",
+        "title": "Open Preview"
+      }
+    ]
+  },
   "scripts": {
     "dev": "cd ../../ && npm run dev"
   },

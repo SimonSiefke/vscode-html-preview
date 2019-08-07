@@ -8,3 +8,5 @@ const server = http
 		vscode.commands.executeCommand('workbench.action.reloadWindow');
 	})
 	.listen(7575);
+
+vscode.commands.executeCommand('htmlPreview.showPreview');

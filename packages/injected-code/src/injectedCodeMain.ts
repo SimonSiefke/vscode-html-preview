@@ -1,5 +1,3 @@
-import {measurePerformance} from './measurePerformance';
-
 const ws = new WebSocket('ws://localhost:3001');
 function getElementById(id) {
 	return document.querySelector(`[data-brackets-id="${id}"]`);
