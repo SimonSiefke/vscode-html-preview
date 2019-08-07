@@ -49,6 +49,7 @@
   "main": "dist/extensionMain.js",
   "dependencies": {
     "html-preview-service": "^0.0.0-development",
+    "virtual-dom": "^0.0.0-development",
     "vscode-languageclient": "^5.2.1"
   },
   "devDependencies": {
