@@ -45,3 +45,5 @@ input:
 after <style> type enter enter up tab
 error: prefixSum or nodeMap is invalid because node is not found
  -->
+
+<!-- TODO support insertion of element via javascript, preview insertions can be done by referencing beforeid and afterid -->
