@@ -130,10 +130,23 @@ export function activate(context: vscode.ExtensionContext) {
 						console.error(error);
 					}
 				});
+				httpServer.on('error', error => {
+					console.error(error);
+				});
 				httpServer.listen(3000, () => {
 					console.log('listening');
 				});
+				context.subscriptions.push({
+					dispose() {
+						httpServer.close();
+					}
+				});
 				webSocketServer.start(3001);
+				context.subscriptions.push({
+					dispose() {
+						webSocketServer.stop();
+					}
+				});
 				webSocketServer.onMessage(message => {
 					if (message.type === 'request' && message.message.command === 'highlight') {
 						const {id} = message.message.payload;
