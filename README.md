@@ -11,12 +11,11 @@ Open a html file and then open your browser on http://localhost:3000
 ## Features
 
 - Live editing of html files (currently there are still some bugs)
+- Highlighting of html elements inside the browser
 
 ## Commands
 
-<!-- TODO commands -->
-
-TODO
+- Html Preview: Open Preview
 
 ## Settings
 
