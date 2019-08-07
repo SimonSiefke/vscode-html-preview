@@ -128,10 +128,12 @@ export function activate(context: vscode.ExtensionContext) {
 						}
 					} catch (error) {
 						console.error(error);
+						vscode.window.showErrorMessage(error);
 					}
 				});
 				httpServer.on('error', error => {
 					console.error(error);
+					vscode.window.showErrorMessage(error.message);
 				});
 				httpServer.listen(3000, () => {
 					console.log('listening');
@@ -141,7 +143,13 @@ export function activate(context: vscode.ExtensionContext) {
 						httpServer.close();
 					}
 				});
-				webSocketServer.start(3001);
+				try {
+					webSocketServer.start(3001);
+				} catch (error) {
+					console.error(error);
+					vscode.window.showErrorMessage(error);
+				}
+
 				context.subscriptions.push({
 					dispose() {
 						webSocketServer.stop();
