@@ -5,8 +5,8 @@
 /* eslint-disable max-depth */
 /* eslint-disable no-case-declarations */
 /* eslint-disable complexity */
-import {createScanner} from './scanner';
-import {hash} from '../hash/hash';
+import {createScanner} from './scanner'
+import {hash} from '../hash/hash'
 
 /**
  * @return{any}
@@ -16,8 +16,8 @@ function createElementNode() {
 		attributes: {},
 		children: [],
 		type: 'ElementNode',
-		parent: undefined
-	};
+		parent: undefined,
+	}
 }
 
 /**
@@ -27,8 +27,8 @@ function createCommentNode() {
 	return {
 		text: '',
 		type: 'CommentNode',
-		parent: undefined
-	};
+		parent: undefined,
+	}
 }
 
 /**
@@ -39,16 +39,16 @@ function createTextNode(text) {
 	return {
 		type: 'TextNode',
 		text,
-		parent: undefined
-	};
+		parent: undefined,
+	}
 }
 
 function createIdGenerator() {
-	let id = 1;
-	return () => id++;
+	let id = 1
+	return () => id++
 }
 
-let d = 0;
+let d = 0
 
 /**
  *
@@ -62,23 +62,23 @@ function parse(
 		prefixSums = {},
 		nextId = createIdGenerator(),
 		nodeMap = {},
-		newNodeMap = {}
+		newNodeMap = {},
 	} = {}
 ) {
-	const scanner = createScanner(text);
-	const htmlDocument = createElementNode();
-	let curr: any = htmlDocument;
-	let prefixSum = 0;
-	let endTagName: string | undefined;
-	let pendingAttribute: string | undefined;
-	let token = scanner.scan();
+	const scanner = createScanner(text)
+	const htmlDocument = createElementNode()
+	let curr: any = htmlDocument
+	let prefixSum = 0
+	let endTagName: string | undefined
+	let pendingAttribute: string | undefined
+	let token = scanner.scan()
 
-	d++;
-	let id;
+	d++
+	let id
 	if (d === 1) {
-		prefixSums;
+		prefixSums
 	} else {
-		prefixSums;
+		prefixSums
 	}
 
 	const addNode = node => {
@@ -102,7 +102,7 @@ function parse(
 		// }
 
 		nextId: if (prefixSums[scanner.getTokenOffset()]) {
-			id = prefixSums[scanner.getTokenOffset()];
+			id = prefixSums[scanner.getTokenOffset()]
 		} else {
 			if (node.type === 'TextNode') {
 				// Merge text nodes
@@ -114,157 +114,157 @@ function parse(
 					i++
 				) {
 					if (prefixSums[i]) {
-						const nextNode = nodeMap[prefixSums[i]]; // ?
+						const nextNode = nodeMap[prefixSums[i]] // ?
 						if (nextNode && nextNode.type === 'TextNode') {
-							id = parseInt(prefixSums[i], 10);
-							delete prefixSums[i];
-							prefixSums[scanner.getTokenOffset()] = id;
-							break nextId;
+							id = parseInt(prefixSums[i], 10)
+							delete prefixSums[i]
+							prefixSums[scanner.getTokenOffset()] = id
+							break nextId
 						}
 					} // ?
 				}
 			}
 
-			id = nextId();
+			id = nextId()
 			// PrefixSums;
-			prefixSums[scanner.getTokenOffset()] = id;
+			prefixSums[scanner.getTokenOffset()] = id
 			// PrefixSums;
 			if (d === 2) {
-				id;
-				scanner.getTokenText().length; // ?
-				scanner.getTokenOffset(); // ?
+				id
+				scanner.getTokenText().length // ?
+				scanner.getTokenOffset() // ?
 			}
 		}
 
 		if (d === 1) {
-			scanner.getTokenOffset(); // ?
-			id;
-			node;
-			prefixSums;
+			scanner.getTokenOffset() // ?
+			id
+			node
+			prefixSums
 		} else {
-			prefixSums;
-			scanner.getTokenOffset(); // ?
-			id;
-			node;
+			prefixSums
+			scanner.getTokenOffset() // ?
+			id
+			node
 		}
 
-		newNodeMap[id] = node;
+		newNodeMap[id] = node
 
-		node.id = id;
-		node.start = scanner.getTokenOffset() - prefixSum;
-		prefixSum = scanner.getTokenOffset();
-		node.parent = curr;
-		curr.children.push(node);
-		curr = node;
-	};
+		node.id = id
+		node.start = scanner.getTokenOffset() - prefixSum
+		prefixSum = scanner.getTokenOffset()
+		node.parent = curr
+		curr.children.push(node)
+		curr = node
+	}
 
 	while (token !== 'eos') {
 		switch (token) {
 			case 'content':
-				addNode(createTextNode(scanner.getTokenText()));
-				curr = curr.parent;
-				break;
+				addNode(createTextNode(scanner.getTokenText()))
+				curr = curr.parent
+				break
 			case 'start-tag-open':
-				addNode(createElementNode());
-				break;
+				addNode(createElementNode())
+				break
 			case 'start-tag':
-				curr.tag = scanner.getTokenText();
-				break;
+				curr.tag = scanner.getTokenText()
+				break
 			case 'start-tag-close':
 				if (curr.tag && selfClosingTags.includes(curr.tag) && curr.parent) {
-					curr.closed = true;
-					curr = curr.parent;
+					curr.closed = true
+					curr = curr.parent
 				}
 
-				break;
+				break
 			case 'start-tag-self-close':
 				if (curr.parent) {
-					curr.closed = true;
-					curr = curr.parent;
+					curr.closed = true
+					curr = curr.parent
 				}
 
-				break;
+				break
 			case 'end-tag-open':
-				endTagName = undefined;
-				break;
+				endTagName = undefined
+				break
 			case 'end-tag':
-				endTagName = scanner.getTokenText().toLowerCase();
-				break;
+				endTagName = scanner.getTokenText().toLowerCase()
+				break
 			case 'end-tag-close':
 				if (endTagName) {
-					let node = curr;
+					let node = curr
 					// See if we can find a matching tag
 					while (node.tag !== endTagName && node.parent) {
-						node = node.parent;
+						node = node.parent
 					}
 
 					if (node.parent) {
 						while (curr !== node) {
-							curr.closed = false;
-							curr = curr.parent;
+							curr.closed = false
+							curr = curr.parent
 						}
 
-						curr.closed = true;
-						curr = curr.parent;
+						curr.closed = true
+						curr = curr.parent
 					}
 				}
 
-				break;
+				break
 			case 'attribute-name': {
-				pendingAttribute = scanner.getTokenText();
-				let {attributes} = curr;
+				pendingAttribute = scanner.getTokenText()
+				let {attributes} = curr
 				if (!attributes) {
-					curr.attributes = {};
-					attributes = {};
+					curr.attributes = {}
+					attributes = {}
 				}
 
 				// @ts-ignore
-				attributes[pendingAttribute] = null; // Support valueless attributes such as 'checked'
-				break;
+				attributes[pendingAttribute] = null // Support valueless attributes such as 'checked'
+				break
 			}
 
 			case 'attribute-value': {
-				const value = scanner.getTokenText();
-				const {attributes} = curr;
+				const value = scanner.getTokenText()
+				const {attributes} = curr
 				if (attributes && pendingAttribute) {
-					attributes[pendingAttribute] = value;
-					pendingAttribute = undefined;
+					attributes[pendingAttribute] = value
+					pendingAttribute = undefined
 				}
 
-				break;
+				break
 			}
 
 			case 'start-comment-tag':
-				addNode(createCommentNode());
-				break;
+				addNode(createCommentNode())
+				break
 			case 'comment':
 				// @ts-ignore
-				curr.text = scanner.getTokenText();
-				break;
+				curr.text = scanner.getTokenText()
+				break
 			case 'end-comment-tag':
 				// @ts-ignore
-				curr = curr.parent;
-				break;
+				curr = curr.parent
+				break
 			case 'delimiter-assign':
-				break;
+				break
 			default:
-				throw new Error('invalid state ' + token);
+				throw new Error('invalid state ' + token)
 		}
 
-		token = scanner.scan();
+		token = scanner.scan()
 	}
 
 	while (curr.parent) {
 		// @ts-ignore
-		curr.closed = false;
+		curr.closed = false
 		// @ts-ignore
-		curr = curr.parent;
+		curr = curr.parent
 	}
 
-	return htmlDocument.children;
+	return htmlDocument.children
 }
 
-const i = 0;
+const i = 0
 
 /**
  *
@@ -275,20 +275,20 @@ export const parseHtml = (
 	html,
 	{nextId = createIdGenerator(), nodeMap = {}, prefixSums = {}, newNodeMap = {}} = {}
 ) => {
-	prefixSums;
+	prefixSums
 	// Let id = 1;
 
-	const result = parse(html, {nextId, nodeMap, prefixSums, newNodeMap});
+	const result = parse(html, {nextId, nodeMap, prefixSums, newNodeMap})
 	const withoutParent = walk(result, dom => {
-		delete dom.parent;
-		delete dom.closed;
-	});
+		delete dom.parent
+		delete dom.closed
+	})
 	// Const withId = walk(withoutParent, dom => {
 	// 	dom.id = id++;
 	// }); // ?
-	const withSignature = walk(withoutParent, updateSignature, true);
-	return withSignature;
-};
+	const withSignature = walk(withoutParent, updateSignature, true)
+	return withSignature
+}
 
 // Const result = parse('<h1 class="red"></h1>'); // ?
 
@@ -296,22 +296,22 @@ export const parseHtml = (
 // const id = 0;
 function walk(dom, fn, childrenFirst = false) {
 	if (Array.isArray(dom)) {
-		return dom.map(d => walk(d, fn, childrenFirst));
+		return dom.map(d => walk(d, fn, childrenFirst))
 	}
 
 	if (!childrenFirst) {
-		fn(dom);
+		fn(dom)
 	}
 
 	if (dom.children) {
-		walk(dom.children, fn, childrenFirst);
+		walk(dom.children, fn, childrenFirst)
 	}
 
 	if (childrenFirst) {
-		fn(dom);
+		fn(dom)
 	}
 
-	return dom;
+	return dom
 }
 
 // Const withoutParent = walk(result, dom => {
@@ -338,64 +338,64 @@ function walk(dom, fn, childrenFirst = false) {
  */
 function updateSignature(node) {
 	if (node.type === 'ElementNode') {
-		node.attributes; // ?
+		node.attributes // ?
 		node.attributeSignature = hash(
 			JSON.stringify(node.attributes, (key, value) => (value === undefined ? null : value))
-		); // ?
+		) // ?
 
-		let subtreeSignature = '';
-		let childSignatures = '';
+		let subtreeSignature = ''
+		let childSignatures = ''
 		for (const child of node.children) {
 			if (child.type === 'ElementNode') {
-				childSignatures += String(child.id);
-				subtreeSignature += String(child.id) + child.attributeSignature + child.subtreeSignature;
+				childSignatures += String(child.id)
+				subtreeSignature += String(child.id) + child.attributeSignature + child.subtreeSignature
 			} else {
-				childSignatures += child.textSignature;
-				subtreeSignature += child.textSignature;
+				childSignatures += child.textSignature
+				subtreeSignature += child.textSignature
 			}
 		}
 
-		node.childSignature = hash(childSignatures);
-		node.subtreeSignature = hash(subtreeSignature);
+		node.childSignature = hash(childSignatures)
+		node.subtreeSignature = hash(subtreeSignature)
 	} else if (node.type === 'CommentNode' || node.type === 'TextNode') {
-		node.textSignature = hash(node.text);
+		node.textSignature = hash(node.text)
 	}
 }
 
 export function createParser() {
-	let prefixSums: {[key: number]: number} = {};
-	let nodeMap = {};
-	let nextId = createIdGenerator();
+	let prefixSums: {[key: number]: number} = {}
+	let nodeMap = {}
+	let nextId = createIdGenerator()
 	return {
 		parse(text) {
-			prefixSums = {};
-			nodeMap = {};
-			nextId = createIdGenerator();
+			prefixSums = {}
+			nodeMap = {}
+			nextId = createIdGenerator()
 			const result = parseHtml(text, {
 				prefixSums,
 				nextId,
 				nodeMap,
-				newNodeMap: nodeMap
-			});
+				newNodeMap: nodeMap,
+			})
 			walk(result, node => {
-				nodeMap[node.id] = node;
-			});
-			return result;
+				nodeMap[node.id] = node
+			})
+			return result
 		},
 		get prefixSums() {
-			return prefixSums;
+			return prefixSums
 		},
 		get nodeMap() {
-			return nodeMap;
+			return nodeMap
 		},
 		edit(
 			textWithEdits: string,
 			edits: Array<{rangeLength: number; rangeOffset: number; text: string}>
 		) {
-			const edit = edits[0];
-			const {rangeOffset, rangeLength, text} = edit;
-			for (const rawPrefixSum in prefixSums) {
-				const prefixSum = parseInt(rawPrefixSum, 10);
+			const edit = edits[0]
+			const {rangeOffset, rangeLength, text} = edit
+			for (const rawPrefixSum of Object.keys(prefixSums).reverse()) {
+				const prefixSum = parseInt(rawPrefixSum, 10)
 				// TODO something is wrong here
 				// rangelength > 0 error: enter does not work <h1>a</h1>|\n
 				// rangelength = 0 error: replace not working <h1>||a</h1>
@@ -408,27 +408,27 @@ export function createParser() {
 				} else if (prefixSum > rangeOffset && prefixSum < rangeOffset + rangeLength) {
 					// Is in middle
 					// delete nodeMap[prefixSums[prefixSum]]; // TODO
-					delete prefixSums[prefixSum];
-					continue;
+					delete prefixSums[prefixSum]
+					continue
 				} else {
 					// Is after
-					const id = prefixSums[prefixSum];
-					delete prefixSums[prefixSum];
-					prefixSums[prefixSum + text.length - rangeLength] = id;
+					const id = prefixSums[prefixSum]
+					delete prefixSums[prefixSum]
+					prefixSums[prefixSum + text.length - rangeLength] = id
 				}
 			}
 
-			const newNodeMap = {};
+			const newNodeMap = {}
 			const result = parseHtml(textWithEdits, {
 				prefixSums,
 				nextId,
 				nodeMap,
-				newNodeMap
-			});
-			nodeMap = newNodeMap;
-			return result;
-		}
-	};
+				newNodeMap,
+			})
+			nodeMap = newNodeMap
+			return result
+		},
+	}
 }
 
 const pretty = node => {
@@ -437,27 +437,27 @@ const pretty = node => {
 			tag: node.tag,
 			children: node.children.map(pretty),
 			id: node.id,
-			attributes: node.attributes
-		};
+			attributes: node.attributes,
+		}
 	}
 
 	return {
 		type: node.type,
 		text: node.text,
-		id: node.id
-	};
-};
+		id: node.id,
+	}
+}
 
 // @ts-ignore
-Array.prototype.pretty = function () {
+Array.prototype.pretty = function() {
 	return JSON.stringify(
 		this.map(pretty),
 		(k, v) => {
-			return v === undefined ? null : v;
+			return v === undefined ? null : v
 		},
 		2
-	);
-};
+	)
+}
 
 // Const testCase = {
 // 	previousDom: '<h1>aa</h1>',
@@ -561,23 +561,66 @@ Array.prototype.pretty = function () {
 // parsedH1.pretty(); // ?
 // parsedH2.pretty(); // ?
 
+// const testCase = {
+// 	previousDom: `<h1>hello</h1>
+// <button>button</button>`,
+// 	nextDom: '<button>button</button>'
+// };
+
+// const parser = createParser();
+
+// const parsedH1 = parser.parse(testCase.previousDom);
+// const oldNodeMap = parser.nodeMap; // ?
+// const parsedH2 = parser.edit(testCase.nextDom, [
+// 	{
+// 		rangeOffset: 0,
+// 		rangeLength: 15,
+// 		text: ''
+// 	}
+// ]);
+// const newNodeMap = parser.nodeMap; // ?
+// parsedH1.pretty(); // ?
+// parsedH2.pretty(); // ?
+
 const testCase = {
-	previousDom: `<h1>hello</h1>
-<button>button</button>`,
-	nextDom: '<button>button</button>'
-};
+	previousDom: `<html>
 
-const parser = createParser();
+<head>
+  <title>Document</title>
+  <style>
+    </style>
+</head>
 
-const parsedH1 = parser.parse(testCase.previousDom);
-const oldNodeMap = parser.nodeMap; // ?
+<body>
+
+</body>
+
+</html>`,
+
+	nextDom: `<html>
+
+<head>
+  <title>Document</title>
+  <style>
+    </style>
+</head>
+
+<body>
+
+</body>
+
+</html>`,
+}
+const parser = createParser()
+const parsedH1 = parser.parse(testCase.previousDom)
+const oldNodeMap = parser.nodeMap // ?
 const parsedH2 = parser.edit(testCase.nextDom, [
 	{
-		rangeOffset: 0,
-		rangeLength: 15,
-		text: ''
-	}
-]);
-const newNodeMap = parser.nodeMap; // ?
-parsedH1.pretty(); // ?
-parsedH2.pretty(); // ?
+		rangeOffset: 53,
+		rangeLength: 0,
+		text: '  ',
+	},
+])
+const newNodeMap = parser.nodeMap // ?
+parsedH1.pretty() // ?
+parsedH2.pretty() // ?

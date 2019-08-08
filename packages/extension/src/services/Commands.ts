@@ -39,10 +39,12 @@ function highlight(parser, webSocketServer) {
 					console.log(parser.prefixSums);
 					console.error(`node ${value} doesn\'t exist`);
 					webSocketServer.broadcast(
-						{
-							command: 'error',
-							payload: `node ${value} doesn\'t exist`
-						},
+						[
+							{
+								command: 'error',
+								payload: `highlight error, node ${value} doesn\'t exist`
+							}
+						],
 						{}
 					);
 				}

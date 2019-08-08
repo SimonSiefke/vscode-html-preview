@@ -50,3 +50,5 @@ error: prefixSum or nodeMap is invalid because node is not found
 
 <!-- TODO debug why live preview isn't working on chrome on mobile android -->
 <!-- TODO automatically open browser -->
+
+<!-- TODO live js via chrome devtools api / firefox devtools api similar to lighttable/brackets with chrome -->

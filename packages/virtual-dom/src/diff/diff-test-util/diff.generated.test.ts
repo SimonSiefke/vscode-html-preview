@@ -703,53 +703,6 @@ test(`replace element with text`, () => {
   expect(adjustEdits(edits)).toEqual(adjustExpectedEdits(expectedEdits))
 })
 
-test(`replace text after element node`, () => {
-  const parser = createParser()
-  const previousDom = parser.parse(`<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Document</title>
-</head>
-<body>
-  <h1>hello world</h1>
-</body>
-</html>`)
-  const oldNodeMap = parser.nodeMap
-  const nextDom = parser.edit(`<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Document</title>
-</head>
-<body>
-  <h1>hello world</h1>
-  
-</body>
-</html>`, [
-    {
-      "rangeOffset": 257,
-      "rangeLength": 0,
-      "text": "\n  "
-    }
-  ])
-  const newNodeMap = parser.nodeMap
-  const edits = domdiff(previousDom, nextDom, {oldNodeMap, newNodeMap})
-  const expectedEdits = [
-    {
-      "command": "textReplace",
-      "payload": {
-        "text": "\n  \n"
-      }
-    }
-  ]
-  expect(adjustEdits(edits)).toEqual(adjustExpectedEdits(expectedEdits))
-})
-
 test(`replace element with text`, () => {
   const parser = createParser()
   const previousDom = parser.parse(`<h1>hello world</h1>`)
@@ -1503,53 +1456,6 @@ test(`replace element with text`, () => {
     {
       "command": "elementDelete",
       "payload": {}
-    }
-  ]
-  expect(adjustEdits(edits)).toEqual(adjustExpectedEdits(expectedEdits))
-})
-
-test(`replace text after element node`, () => {
-  const parser = createParser()
-  const previousDom = parser.parse(`<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Document</title>
-</head>
-<body>
-  <h1>hello world</h1>
-</body>
-</html>`)
-  const oldNodeMap = parser.nodeMap
-  const nextDom = parser.edit(`<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Document</title>
-</head>
-<body>
-  <h1>hello world</h1>
-  
-</body>
-</html>`, [
-    {
-      "rangeOffset": 257,
-      "rangeLength": 0,
-      "text": "\n  "
-    }
-  ])
-  const newNodeMap = parser.nodeMap
-  const edits = domdiff(previousDom, nextDom, {oldNodeMap, newNodeMap})
-  const expectedEdits = [
-    {
-      "command": "textReplace",
-      "payload": {
-        "text": "\n  \n"
-      }
     }
   ]
   expect(adjustEdits(edits)).toEqual(adjustExpectedEdits(expectedEdits))
@@ -2709,6 +2615,54 @@ test(`insert 211 - insert comment between element and element`, () => {
       "payload": {
         "nodeType": "CommentNode",
         "text": "b"
+      }
+    }
+  ]
+  expect(adjustEdits(edits)).toEqual(adjustExpectedEdits(expectedEdits))
+})
+
+test(`test because of bug #1`, () => {
+  const parser = createParser()
+  const previousDom = parser.parse(`<html>
+
+<head>
+  <title>Document</title>
+  <style>
+  </style>
+</head>
+
+<body>
+
+</body>
+
+</html>`)
+  const oldNodeMap = parser.nodeMap
+  const nextDom = parser.edit(`<html>
+
+<head>
+  <title>Document</title>
+  <style>
+    </style>
+</head>
+
+<body>
+
+</body>
+
+</html>`, [
+    {
+      "rangeOffset": 53,
+      "rangeLength": 0,
+      "text": "  "
+    }
+  ])
+  const newNodeMap = parser.nodeMap
+  const edits = domdiff(previousDom, nextDom, {oldNodeMap, newNodeMap})
+  const expectedEdits = [
+    {
+      "command": "textReplace",
+      "payload": {
+        "text": "\n    "
       }
     }
   ]

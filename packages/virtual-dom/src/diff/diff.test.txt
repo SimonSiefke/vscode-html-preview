@@ -840,56 +840,56 @@ expectedEdits:
   }
 ]
 
-name:
-replace text after element node
-
-previousDom:
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Document</title>
-</head>
-<body>
-  <h1>hello world</h1>
-</body>
-</html>
-
-edits:
-[
-  {
-    rangeOffset: 257
-    rangeLength: 0
-    text: "\n  "
-  }
-]
-
-nextDom:
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Document</title>
-</head>
-<body>
-  <h1>hello world</h1>
-  
-</body>
-</html>
-
-expectedEdits:
-[
-   {
-     command: textReplace
-     payload: {
-       text: "\n  \n"
-     }
-  }
-]
+//name:
+//replace text after element node
+//
+//previousDom:
+//<!DOCTYPE html>
+//<html lang="en">
+//<head>
+//  <meta charset="UTF-8">
+//  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+//  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+//  <title>Document</title>
+//</head>
+//<body>
+//  <h1>hello world</h1>
+//</body>
+//</html>
+//
+//edits:
+//[
+//  {
+//    rangeOffset: 257
+//    rangeLength: 0
+//    text: "\n  "
+//  }
+//]
+//
+//nextDom:
+//<!DOCTYPE html>
+//<html lang="en">
+//<head>
+//  <meta charset="UTF-8">
+//  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+//  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+//  <title>Document</title>
+//</head>
+//<body>
+//  <h1>hello world</h1>
+//  
+//</body>
+//</html>
+//
+//expectedEdits:
+//[
+//   {
+//     command: textReplace
+//     payload: {
+//       text: "\n  \n"
+//     }
+//  }
+//]
 //
 //name:
 //replace text after element node and insert element
@@ -1930,57 +1930,57 @@ expectedEdits:
   }
 ]
 
-name:
-replace text after element node
-
-previousDom:
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Document</title>
-</head>
-<body>
-  <h1>hello world</h1>
-</body>
-</html>
-
-edits:
-[
-  {
-    rangeOffset: 257
-    rangeLength: 0
-    text: "\n  "
-  }
-]
-
-nextDom:
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Document</title>
-</head>
-<body>
-  <h1>hello world</h1>
-  
-</body>
-</html>
-
-expectedEdits:
-[
-   {
-     command: textReplace
-     payload: {
-       text: "\n  \n"
-     }
-  }
-]
+//name:
+//replace text after element node
 //
+//previousDom:
+//<!DOCTYPE html>
+//<html lang="en">
+//<head>
+//  <meta charset="UTF-8">
+//  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+//  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+//  <title>Document</title>
+//</head>
+//<body>
+//  <h1>hello world</h1>
+//</body>
+//</html>
+//
+//edits:
+//[
+//  {
+//    rangeOffset: 257
+//    rangeLength: 0
+//    text: "\n  "
+//  }
+//]
+//
+//nextDom:
+//<!DOCTYPE html>
+//<html lang="en">
+//<head>
+//  <meta charset="UTF-8">
+//  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+//  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+//  <title>Document</title>
+//</head>
+//<body>
+//  <h1>hello world</h1>
+//
+//</body>
+//</html>
+//
+//expectedEdits:
+//[
+//   {
+//     command: textReplace
+//     payload: {
+//       text: "\n  \n"
+//     }
+//  }
+//]
+////
 //name:
 //replace text after element node and insert element
 //
@@ -4047,8 +4047,60 @@ expectedEdits:
 //  }
 //]
 
+name:
+test because of bug #1
+
+previousDom:
+<html>
+
+<head>
+  <title>Document</title>
+  <style>
+  </style>
+</head>
+
+<body>
+
+</body>
+
+</html>
+
+edits:
+[
+  {
+    rangeOffset: 53
+    rangeLength: 0
+    text: "  "
+  }
+]
+
+nextDom:
+<html>
+
+<head>
+  <title>Document</title>
+  <style>
+    </style>
+</head>
+
+<body>
+
+</body>
+
+</html>
+
+expectedEdits:
+[
+  {
+     command: textReplace
+     payload: {
+       text: "\n    "
+     }
+  }
+]
+
 //name:
-//test because of bug #1
+//test because of bug #2
 //
 //previousDom:
 //<html>
@@ -4056,11 +4108,13 @@ expectedEdits:
 //<head>
 //  <title>Document</title>
 //  <style>
-//    </style>
+//    }
+//  </style>
 //</head>
 //
 //<body>
-//
+//  <h1 style="height:1000px">hello world!!!!!</h1>
+//  <p>hello world!!!</p>
 //</body>
 //
 //</html>
@@ -4068,33 +4122,34 @@ expectedEdits:
 //edits:
 //[
 //  {
-//    rangeOffset: 53
-//    rangeLength: 0
-//    text: "  "
+//    rangeOffset: 51
+//    rangeLength: 6
+//    text: ""
 //  }
 //]
-//
+
 //nextDom:
 //<html>
 //
 //<head>
 //  <title>Document</title>
 //  <style>
-//    </style>
+//  </style>
 //</head>
-//
+
 //<body>
-//
+//  <h1 style="height:1000px">hello world!!!!!</h1>
+//  <p>hello world!!!</p>
 //</body>
 //
 //</html>
-
+//
 //expectedEdits:
 //[
 //  {
 //     command: textReplace
 //     payload: {
-//       text: "\n    "
+//       text: "\n  "
 //     }
 //  }
 //]
