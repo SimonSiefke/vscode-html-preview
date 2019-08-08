@@ -12,6 +12,7 @@ jobs:
     - stage: test
       script:
         - npm test
+        - npm run package
     - stage: release
       script:
         - npm run package

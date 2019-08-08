@@ -3,13 +3,14 @@
   "scripts": {
     "dev": "tsc -b -w",
     "clean": "rimraf dist",
-    "package": "npm run clean && webpack --mode production --config ./webpack/extension.webpack.config.js && webpack --mode production --config ./webpack/injected-code.webpack.config.js&& node scripts/package.js",
+    "package": "npm run clean && webpack --mode production --config ./webpack/extension.webpack.config.js && webpack --mode production --config ./webpack/injected-code.webpack.config.js&& node scripts/package.js && npm run bundlesize",
     "postinstall": "lerna bootstrap && tsc -b",
     "generate:diffTests": "cd packages/virtual-dom && npm run generate:diffTests",
     "generate:watch:diffTests": "cd packages/virtual-dom && npm run generate:watch:diffTests",
     "generate:genDomTests": "cd packages/html-preview-service && npm run generate:genDomTests",
     "generate:watch:genDomTests": "cd packages/html-preview-service && npm run generate:watch:genDomTests",
-    "test": "jest"
+    "test": "jest",
+    "bundlesize": "bundlesize"
   },
   "devDependencies": {
     "@babel/core": "^7.5.5",
@@ -18,6 +19,7 @@
     "@types/lodash": "^4.14.136",
     "@types/webpack": "^4.32.1",
     "babel-preset-latest-node": "^3.2.1",
+    "bundlesize": "^0.18.0",
     "eslint": "^6.0.1",
     "eslint-config-xo": "^0.26.0",
     "eslint-plugin-jest": "^22.8.0",
@@ -117,6 +119,18 @@
       "semantic-release-vsce"
     ]
   },
+  "bundlesize": [
+    {
+      "path": "./dist/packages/extension/dist/extensionMain.js",
+      "maxSize": "160.0 kB",
+      "compression": "none"
+    },
+    {
+      "path": "./dist/packages/injected-code/dist/injectedCodeMain.js",
+      "maxSize": "12.0 kB",
+      "compression": "none"
+    }
+  ],
   "renovate": {
     "extends": [
       "bitworkers"

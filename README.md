@@ -52,3 +52,5 @@ error: prefixSum or nodeMap is invalid because node is not found
 <!-- TODO automatically open browser -->
 
 <!-- TODO live js via chrome devtools api / firefox devtools api similar to lighttable/brackets with chrome -->
+
+<!-- TODO http caching -->

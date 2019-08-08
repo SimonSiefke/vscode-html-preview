@@ -112,9 +112,19 @@ export function activate(context: vscode.ExtensionContext) {
 			const parser = createParser();
 			let previousDom = parser.parse(previousText);
 
+			let send = false;
 			const httpServer = http.createServer((req, res) => {
 				try {
 					if (req.url === '/') {
+						if (!send) {
+							send = true;
+						} else {
+							res.statusCode = 304;
+							console.log('already sent');
+							res.end();
+							return;
+						}
+
 						res.writeHead(200, {'Content-Type': 'text/html'});
 						let dom = genDom(previousText);
 						const bodyIndex = dom.lastIndexOf('</body');
