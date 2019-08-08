@@ -2628,32 +2628,32 @@ expectedEdits:
 ]
 
 
-//name:
-//delete 210 - delete comment between element and text
-//
-//previousDom:
-//<h1>a</h1><!--b-->c
-//
-//edits:
-//[
-//  {
-//    rangeOffset: 10
-//    rangeLength: 8
-//    text: ""
-//  }
-//]
-//
-//nextDom:
-//<h1>a</h1>c
-//
-//expectedEdits:
-//[
-//  {
-//    command: elementDelete
-//    payload: {}
-//  }
-//]
-//
+name:
+delete 210 - delete comment between element and text
+
+previousDom:
+<h1>a</h1><!--b-->c
+
+edits:
+[
+  {
+    rangeOffset: 10
+    rangeLength: 8
+    text: ""
+  }
+]
+
+nextDom:
+<h1>a</h1>c
+
+expectedEdits:
+[
+  {
+    command: elementDelete
+    payload: {}
+  }
+]
+
 name:
 delete 211 - delete comment between element and element
 
@@ -2680,57 +2680,57 @@ expectedEdits:
   }
 ]
 
-//name:
-//delete 212 - delete comment between element and comment
-//
-//previousDom:
-//<h1>a</h1><!--b--><!--c-->
-//
-//edits:
-//[
-//  {
-//    rangeOffset: 10
-//    rangeLength: 8
-//    text: ""
-//  }
-//]
-//
-//nextDom:
-//<h1>a</h1><!--c-->
-//
-//expectedEdits:
-//[
-//  {
-//    command: elementDelete
-//    payload: {}
-//  }
-//]
-//
-//name:
-//delete 220 - delete comment between comment and text
-//
-//previousDom:
-//<!--a--><!--b-->c
-//
-//edits:
-//[
-//  {
-//    rangeOffset: 8
-//    rangeLength: 8
-//    text: ""
-//  }
-//]
-//
-//nextDom:
-//<!--a-->c
-//
-//expectedEdits:
-//[
-//  {
-//    command: elementDelete
-//    payload: {}
-//  }
-//]
+name:
+delete 212 - delete comment between element and comment
+
+previousDom:
+<h1>a</h1><!--b--><!--c-->
+
+edits:
+[
+  {
+    rangeOffset: 10
+    rangeLength: 8
+    text: ""
+  }
+]
+
+nextDom:
+<h1>a</h1><!--c-->
+
+expectedEdits:
+[
+  {
+    command: elementDelete
+    payload: {}
+  }
+]
+
+name:
+delete 220 - delete comment between comment and text
+
+previousDom:
+<!--a--><!--b-->c
+
+edits:
+[
+  {
+    rangeOffset: 8
+    rangeLength: 8
+    text: ""
+  }
+]
+
+nextDom:
+<!--a-->c
+
+expectedEdits:
+[
+  {
+    command: elementDelete
+    payload: {}
+  }
+]
 
 name:
 delete 221 - delete comment between comment and element
@@ -2868,34 +2868,34 @@ expectedEdits:
   }
 ]
 
-//name:
-//010 - insert text between element and text
-//
-//previousDom:
-//<h1>a</h1><!--c-->
-//
-//edits:
-//[
-//  {
-//    rangeOffset: 10
-//    rangeLength: 0
-//    text: "b"
-//  }
-//]
-//
-//nextDom:
-//<h1>a</h1>b<!--c-->
-//
-//expectedEdits:
-//[
-//  {
-//     command: elementInsert
-//     payload: {
-//       nodeType: TextNode
-//       text: b
-//     }
-//  }
-//]
+name:
+010 - insert text between element and text
+
+previousDom:
+<h1>a</h1><!--c-->
+
+edits:
+[
+  {
+    rangeOffset: 10
+    rangeLength: 0
+    text: "b"
+  }
+]
+
+nextDom:
+<h1>a</h1>b<!--c-->
+
+expectedEdits:
+[
+  {
+     command: elementInsert
+     payload: {
+       nodeType: TextNode
+       text: b
+     }
+  }
+]
 
 name:
 insert 011 - insert text between element and element
@@ -2926,34 +2926,34 @@ expectedEdits:
   }
 ]
 
-//name:
-//012 - insert text between element and comment
-//
-//previousDom:
-//<h1>a</h1><!--c-->
-//
-//edits:
-//[
-//  {
-//    rangeOffset: 10
-//    rangeLength: 0
-//    text: b
-//  }
-//]
-//
-//nextDom:
-//<h1>a</h1>b<!--c-->
-//
-//expectedEdits:
-//[
-//  {
-//     command: elementInsert
-//     payload: {
-//       nodeType: TextNode
-//       text: b
-//    }
-//  }
-//]
+name:
+012 - insert text between element and comment
+
+previousDom:
+<h1>a</h1><!--c-->
+
+edits:
+[
+  {
+    rangeOffset: 10
+    rangeLength: 0
+    text: b
+  }
+]
+
+nextDom:
+<h1>a</h1>b<!--c-->
+
+expectedEdits:
+[
+  {
+     command: elementInsert
+     payload: {
+       nodeType: TextNode
+       text: b
+    }
+  }
+]
 
 name:
 insert 020 - insert text between comment and text
@@ -3012,35 +3012,35 @@ expectedEdits:
   }
 ]
 
-//name:
-//022 - insert text between comment and comment
-//
-//previousDom:
-//<!--a--><!--c-->
-//
-//edits:
-//[
-//  {
-//    rangeOffset: 8
-//    rangeLength: 0
-//    text: b
-//  }
-//]
-//
-//nextDom:
-//<!--a-->b<!--c-->
-//
-//expectedEdits:
-//[
-//  {
-//     command: elementInsert
-//     payload: {
-//       nodeType:TextNode
-//       text:b
-//     }
-//  }
-//]
-//
+name:
+022 - insert text between comment and comment
+
+previousDom:
+<!--a--><!--c-->
+
+edits:
+[
+  {
+    rangeOffset: 8
+    rangeLength: 0
+    text: b
+  }
+]
+
+nextDom:
+<!--a-->b<!--c-->
+
+expectedEdits:
+[
+  {
+     command: elementInsert
+     payload: {
+       nodeType:TextNode
+       text:b
+     }
+  }
+]
+
 name:
 insert 100 - insert element between text and text
 
@@ -3479,34 +3479,34 @@ expectedEdits:
 ]
 
 
-//name:
-//210 - insert comment between element and text
-//
-//previousDom:
-//<h1>a</h1>c
-//
-//edits:
-//[
-//  {
-//    rangeOffset: 10
-//    rangeLength: 0
-//    text: <!--b-->
-//  }
-//]
-//
-//nextDom:
-//<h1>a</h1><!--b-->c
-//
-//expectedEdits:
-//[
-//  {
-//    command: elementInsert
-//    payload: {
-//      nodeType: CommentNode
-//      text: b
-//    }
-//  }
-//]
+name:
+210 - insert comment between element and text
+
+previousDom:
+<h1>a</h1>c
+
+edits:
+[
+  {
+    rangeOffset: 10
+    rangeLength: 0
+    text: <!--b-->
+  }
+]
+
+nextDom:
+<h1>a</h1><!--b-->c
+
+expectedEdits:
+[
+  {
+    command: elementInsert
+    payload: {
+      nodeType: CommentNode
+      text: b
+    }
+  }
+]
 
 name:
 insert 211 - insert comment between element and element
@@ -3566,35 +3566,35 @@ expectedEdits:
   }
 ]
 
-//name:
-//insert 220 - insert comment between comment and text
-//
-//previousDom:
-//<!--a-->c
-//
-//edits:
-//[
-//  {
-//    rangeOffset: 8
-//    rangeLength: 0
-//    text: <!--b-->
-//  }
-//]
-//
-//nextDom:
-//<!--a--><!--b-->c
-//
-//expectedEdits:
-//[
-//  {
-//    command: elementInsert
-//    payload: {
-//      nodeType: CommentNode
-//      text: b
-//    }
-//  }
-//]
-//
+name:
+insert 220 - insert comment between comment and text
+
+previousDom:
+<!--a-->c
+
+edits:
+[
+  {
+    rangeOffset: 8
+    rangeLength: 0
+    text: <!--b-->
+  }
+]
+
+nextDom:
+<!--a--><!--b-->c
+
+expectedEdits:
+[
+  {
+    command: elementInsert
+    payload: {
+      nodeType: CommentNode
+      text: b
+    }
+  }
+]
+
 name:
 insert 221 - insert comment between comment and element
 
@@ -3728,7 +3728,7 @@ expectedEdits:
 //edits:
 //[
 //  {
-//    rangeOffset: 51
+//    rangeOffset: 52
 //    rangeLength: 6
 //    text: ""
 //  }
@@ -3742,7 +3742,7 @@ expectedEdits:
 //  <style>
 //  </style>
 //</head>
-
+//
 //<body>
 //  <h1 style="height:1000px">hello world!!!!!</h1>
 //  <p>hello world!!!</p>
@@ -3759,7 +3759,7 @@ expectedEdits:
 //     }
 //  }
 //]
-
+//
 //name:
 //replace element with same length element
 //
@@ -3793,6 +3793,50 @@ expectedEdits:
 //     payload: {
 //       nodeType: ElementNode
 //       tag: h2
+//     }
+//  }
+//  {
+//     command: elementInsert
+//     payload: {
+//       nodeType: TextNode
+//       text: "hello world"
+//     }
+//  }
+//]
+
+//name:
+//replace element with longer length element
+//
+//previousDom:
+//<div>
+//  <h1>hello world</h1>
+//</div>
+//
+//edits:
+//[
+//  {
+//    rangeOffset: 8
+//    rangeLength: 20
+//    text: "<button>hello world</button>"
+//  }
+//]
+//
+//nextDom:
+//<div>
+//  <button>hello world</button>
+//</div>
+//
+//expectedEdits:
+//[
+//  {
+//     command: elementDelete
+//     payload: {}
+//  }
+//  {
+//     command: elementInsert
+//     payload: {
+//       nodeType: ElementNode
+//       tag: button
 //     }
 //  }
 //  {

@@ -254,10 +254,24 @@ export function domdiff(
 		}
 
 		if (newNode.type !== oldNode.type) {
-			edits = [...edits, elementDelete(oldNode), ...elementInsert(newNode, parentId, newIndex - 1)];
-			oldIndex++;
-			newIndex++;
-			continue;
+			if (oldNode.id === newNode.id) {
+				edits = [...edits, textReplace(newNode)];
+				oldIndex++;
+				newIndex++;
+				continue;
+			} else if (!newNodeMap[oldNode.id]) {
+				edits = [...edits, elementDelete(oldNode)];
+				oldIndex++;
+				continue;
+			} else if (!oldNodeMap[newNode.id]) {
+				edits = [...edits, ...elementInsert(newNode, parentId, newIndex)];
+				newIndex++;
+			} else {
+				edits = [...edits, elementDelete(oldNode), ...elementInsert(newNode, parentId, newIndex)];
+				oldIndex++;
+				newIndex++;
+				// Throw new Error('cannot determine diff');
+			}
 		}
 
 		if (

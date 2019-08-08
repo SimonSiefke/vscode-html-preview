@@ -186,6 +186,26 @@ function validateTestCase(testCase) {
 		testCase.name; // ?
 		console.log(expectedNextCode.join('')); // ?
 		console.log(testCase.nextDom); // ?
+		const en = expectedNextCode.join('');
+		for (let n = 0; n < en.length; n++) {
+			if (en[n] !== testCase.nextDom[n]) {
+				console.log('\nindex is', n);
+				console.log(
+					'expected',
+					en
+						.slice(n, n + 10)
+						.replace(/ /g, 'SPACE')
+						.replace(/\n/g, 'NEWLINE'),
+					'\ngot',
+					testCase.nextDom
+						.slice(n, n + 10)
+						.replace(/ /g, 'SPACE')
+						.replace(/\n/g, 'NEWLINE')
+				);
+				break;
+			}
+		}
+
 		throw new Error(
 			`testcase ${f} "${testCase.name}" is invalid, nextdom does not match specified edit`
 		);
