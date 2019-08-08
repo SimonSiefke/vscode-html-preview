@@ -2027,32 +2027,6 @@ expectedEdits:
   }
 ]
 
-//name:
-//delete element between text
-//
-//previousDom:
-//a<h1>b</h1>c
-//
-//edits:
-//[
-//  {
-//    rangeOffset: 1
-//    rangeLength: 10
-//    text: ""
-//  }
-//]
-//
-//nextDom:
-//ac
-//
-//expectedEdits:
-//[
-//  {
-//     command: elementDelete
-//     payload: {}
-//  }
-//]
-//
 name:
 delete element after text
 
