@@ -192,6 +192,12 @@ function validateTestCase(testCase) {
 	}
 }
 
+for (const test of tests) {
+	if (tests.filter(t => t.name === test.name).length > 2) {
+		throw new Error(`test with name "${test.name}" exists twice`);
+	}
+}
+
 const jestCases = tests.map(test => {
 	const {previousDom} = test;
 	validatePreviousDom(previousDom);

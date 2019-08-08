@@ -807,39 +807,6 @@ expectedEdits:
   }
 ]
 
-name:
-replace element with text
-
-previousDom:
-<h1>hello world</h1>
-
-edits:
-[
-  {
-    rangeOffset: 0
-    rangeLength: 20
-    text: "hello world"
-  }
-]
-
-nextDom:
-hello world
-
-expectedEdits:
-[
-   {
-     command: elementInsert
-     payload: {
-       nodeType: TextNode
-       text: "hello world"
-     }
-  }
-  {
-    command: elementDelete
-    payload: {}
-  }
-]
-
 //name:
 //replace text after element node
 //
@@ -949,38 +916,6 @@ expectedEdits:
 //]
 //
 
-name:
-replace element with text
-
-previousDom:
-<h1>hello world</h1>
-
-edits:
-[
-  {
-    rangeOffset: 0
-    rangeLength: 20
-    text: "hello world"
-  }
-]
-
-nextDom:
-hello world
-
-expectedEdits:
-[
-   {
-     command: elementInsert
-     payload: {
-       nodeType: TextNode
-       text: "hello world"
-     }
-  }
-  {
-    command: elementDelete
-    payload: {}
-  }
-]
 
 name:
 delete first element node
@@ -1600,39 +1535,6 @@ expectedEdits:
 ]
 
 name:
-replace element with text
-
-previousDom:
-<h1>hello world</h1>
-
-edits:
-[
-  {
-    rangeOffset: 0
-    rangeLength: 20
-    text: "hello world"
-  }
-]
-
-nextDom:
-hello world
-
-expectedEdits:
-[
-   {
-     command: elementInsert
-     payload: {
-       nodeType: TextNode
-       text: "hello world"
-     }
-  }
-  {
-    command: elementDelete
-    payload: {}
-  }
-]
-
-name:
 replace text inside element with attributes
 
 previousDom:
@@ -1657,39 +1559,6 @@ expectedEdits:
      payload: {
        text: b
      }
-  }
-]
-
-name:
-replace element with text
-
-previousDom:
-<h1>hello world</h1>
-
-edits:
-[
-  {
-    rangeOffset: 0
-    rangeLength: 20
-    text: "hello world"
-  }
-]
-
-nextDom:
-hello world
-
-expectedEdits:
-[
-   {
-     command: elementInsert
-     payload: {
-       nodeType: TextNode
-       text: "hello world"
-     }
-  }
-  {
-    command: elementDelete
-    payload: {}
   }
 ]
 
