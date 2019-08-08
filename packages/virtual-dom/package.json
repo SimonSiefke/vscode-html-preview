@@ -5,5 +5,8 @@
   "scripts": {
     "generate:diffTests": "babel-node --presets latest-node src/diff/diff-test-util/generateDiffTestCases.js",
     "generate:watch:diffTests": "nodemon --watch src/diff/diff.test.txt --exec npm run generate:diffTests"
+  },
+  "devDependencies": {
+    "ts-node": "^8.3.0"
   }
 }

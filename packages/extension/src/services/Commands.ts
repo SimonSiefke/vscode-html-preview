@@ -18,81 +18,82 @@ const wrapError = fn => {
 	}
 };
 
-// function highlight(){
-// 	wrapError(() => {
-// 		vscode.window.onDidChangeTextEditorSelection(event => {
-// 			wrapError(() => {
-// 				return;
-// 				if (event.selections.length !== 1) {
-// 					return;
-// 				}
+let highlightedId;
 
-// 				const selection = event.selections[0];
-// 				const offset = vscode.window.activeTextEditor.document.offsetAt(selection.active);
-// 				let previousValue;
-// 				let found;
-// 				for (const [key, value] of Object.entries(parser.prefixSums)) {
-// 					const parsedKey = parseInt(key, 10);
-// 					// @debug
-// 					if (!parser.nodeMap[value]) {
-// 						console.log(parser.prefixSums);
-// 						console.error(`node ${value} doesn\'t exist`);
-// 						webSocketServer.broadcast(
-// 							{
-// 								command: 'error',
-// 								payload: `node ${value} doesn\'t exist`
-// 							},
-// 							{}
-// 						);
-// 					}
+function highlight(parser, webSocketServer) {
+	vscode.window.onDidChangeTextEditorSelection(event => {
+		wrapError(() => {
+			if (event.selections.length !== 1) {
+				return;
+			}
 
-// 					// @ts-ignore
-// 					const isElementNode = parser.nodeMap[value].type === 'ElementNode';
+			const selection = event.selections[0];
+			const offset = vscode.window.activeTextEditor.document.offsetAt(selection.active);
+			let previousValue;
+			let found;
+			for (const [key, value] of Object.entries(parser.prefixSums)) {
+				const parsedKey = parseInt(key, 10);
+				// @debug
+				// @ts-ignore
+				if (!parser.nodeMap[value]) {
+					console.log(parser.prefixSums);
+					console.error(`node ${value} doesn\'t exist`);
+					webSocketServer.broadcast(
+						{
+							command: 'error',
+							payload: `node ${value} doesn\'t exist`
+						},
+						{}
+					);
+				}
 
-// 					if (parsedKey === offset && isElementNode) {
-// 						found = value;
+				// @ts-ignore
+				const isElementNode = parser.nodeMap[value].type === 'ElementNode';
 
-// 						break;
-// 					}
+				if (parsedKey === offset && isElementNode) {
+					found = value;
 
-// 					if (parsedKey > offset) {
-// 						found = previousValue;
-// 						break;
-// 					}
+					break;
+				}
 
-// 					if (isElementNode) {
-// 						previousValue = value;
-// 					}
-// 				}
+				if (parsedKey > offset) {
+					found = previousValue;
+					break;
+				}
 
-// 				if (!found) {
-// 					found = previousValue;
-// 				}
+				if (isElementNode) {
+					previousValue = value;
+				}
+			}
 
-// 				if (!found) {
-// 					return;
-// 				}
+			if (!found) {
+				found = previousValue;
+			}
 
-// 				if (highlightedId === found) {
-// 					return;
-// 				}
+			if (!found) {
+				return;
+			}
 
-// 				highlightedId = found;
+			if (highlightedId === found) {
+				return;
+			}
 
-// 				webSocketServer.broadcast(
-// 					[
-// 						{
-// 							command: 'highlight',
-// 							payload: {
-// 								id: found
-// 							}
-// 						}
-// 					],
-// 					{}
-// 				);
-// 			});
-// 		});
-// }
+			highlightedId = found;
+
+			webSocketServer.broadcast(
+				[
+					{
+						command: 'highlight',
+						payload: {
+							id: found
+						}
+					}
+				],
+				{}
+			);
+		});
+	});
+}
 
 export function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push(
@@ -185,6 +186,11 @@ export function activate(context: vscode.ExtensionContext) {
 				}
 				// if(message.type!=='response'){}
 			});
+
+			if (vscode.workspace.getConfiguration().get('htmlPreview.highlight')) {
+				highlight(parser, webSocketServer);
+			}
+
 			vscode.workspace.onDidChangeTextDocument(event => {
 				if (event.document.languageId !== 'html') {
 					return;

@@ -7,10 +7,7 @@ import {createParser} from '../parse/parse';
  * @param newNode - node from new tree
  * @return list of edits to mutate attributes from the old node to the new
  */
-function attributeEdits(
-	oldNode: {attributes: any; id: any},
-	newNode: {attributes: any}
-) {
+function attributeEdits(oldNode: {attributes: any; id: any}, newNode: {attributes: any}) {
 	const oldAttributes = {...oldNode.attributes};
 	const newAttributes = newNode.attributes;
 	oldAttributes;
@@ -23,10 +20,7 @@ function attributeEdits(
 				Object.prototype.hasOwnProperty.call(newAttributes, attributeName) ||
 			oldAttributes[attributeName] !== newAttributes[attributeName]
 		) {
-			const type = Object.prototype.hasOwnProperty.call(
-				oldAttributes,
-				attributeName
-			) ?
+			const type = Object.prototype.hasOwnProperty.call(oldAttributes, attributeName) ?
 				'attributeChange' :
 				'attributeAdd';
 			edits.push({
@@ -90,9 +84,7 @@ function elementInsert(
 				}
 			},
 			// @ts-ignore
-			...node.children.flatMap((child: any, index: any) =>
-				elementInsert(child, node.id, index)
-			)
+			...node.children.flatMap((child: any, index: any) => elementInsert(child, node.id, index))
 		];
 	}
 
@@ -228,11 +220,7 @@ export function domdiff(
 				edits = [...edits, ...elementInsert(newNode, parentId, newIndex)];
 				newIndex++;
 			} else {
-				edits = [
-					...edits,
-					elementDelete(oldNode),
-					...elementInsert(newNode, parentId, newIndex)
-				];
+				edits = [...edits, elementDelete(oldNode), ...elementInsert(newNode, parentId, newIndex)];
 				oldIndex++;
 				newIndex++;
 				// Throw new Error('cannot determine diff');
@@ -264,11 +252,7 @@ export function domdiff(
 		}
 
 		if (newNode.type !== oldNode.type) {
-			edits = [
-				...edits,
-				elementDelete(oldNode),
-				...elementInsert(newNode, parentId, newIndex - 1)
-			];
+			edits = [...edits, elementDelete(oldNode), ...elementInsert(newNode, parentId, newIndex - 1)];
 			oldIndex++;
 			newIndex++;
 			continue;
@@ -397,17 +381,64 @@ Array.prototype.pretty = function () {
 // 	newNodeMap
 // }); // ?
 
+// const testCase = {
+// 	previousDom: `<form>
+//   First name:<br>
+//   <input type="text" name="firstName"><br>
+// </form>`,
+// 	nextDom: `<form>
+//   First name:<br>
+//   <input type="text" name="firstName"><br>
+//   Last name:<br>
+//   <input type="text" name="lastName"><br>
+// </form>`
+// };
+
+// const parser = createParser();
+
+// const parsedH1 = parser.parse(testCase.previousDom);
+// const oldNodeMap = parser.nodeMap; // ?
+// const parsedH2 = parser.edit(testCase.nextDom, [
+// 	{
+// 		rangeOffset: 69,
+// 		rangeLength: 0,
+// 		text: 'Last name:<br>\n  <input type="text" name="lastName"><br>'
+// 	}
+// ]);
+// const newNodeMap = parser.nodeMap; // ?
+// parsedH1.pretty(); // ?
+// parsedH2.pretty(); // ?
+// domdiff(parsedH1, parsedH2, {
+// 	oldNodeMap,
+// 	newNodeMap
+// }); // ?
 const testCase = {
-	previousDom: `<form>
-  First name:<br>
-  <input type="text" name="firstName"><br>
-</form>`,
-	nextDom: `<form>
-  First name:<br>
-  <input type="text" name="firstName"><br>
-  Last name:<br>
-  <input type="text" name="lastName"><br>
-</form>`
+	previousDom: `<html>
+
+<head>
+  <title>Document</title>
+  <style>
+    </style>
+</head>
+
+<body>
+
+</body>
+
+</html>`,
+	nextDom: `<html>
+
+<head>
+  <title>Document</title>
+  <style>
+      </style>
+</head>
+
+<body>
+
+</body>
+
+</html>`
 };
 
 const parser = createParser();
@@ -416,9 +447,9 @@ const parsedH1 = parser.parse(testCase.previousDom);
 const oldNodeMap = parser.nodeMap; // ?
 const parsedH2 = parser.edit(testCase.nextDom, [
 	{
-		rangeOffset: 69,
+		rangeOffset: 53,
 		rangeLength: 0,
-		text: 'Last name:<br>\n  <input type="text" name="lastName"><br>'
+		text: '  '
 	}
 ]);
 const newNodeMap = parser.nodeMap; // ?

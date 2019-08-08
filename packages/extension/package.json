@@ -41,7 +41,18 @@
         "command": "htmlPreview.openPreview",
         "title": "Open Preview"
       }
-    ]
+    ],
+    "configuration": {
+      "type": "object",
+      "title": "Html Preview",
+      "properties": {
+        "htmlPreview.highlight": {
+          "type": "boolean",
+          "default": true,
+          "description": "Highlight elements in the browser when they are selected in VSCode"
+        }
+      }
+    }
   },
   "scripts": {
     "dev": "cd ../../ && npm run dev"

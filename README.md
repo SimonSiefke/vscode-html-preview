@@ -47,3 +47,6 @@ error: prefixSum or nodeMap is invalid because node is not found
  -->
 
 <!-- TODO support insertion of element via javascript, preview insertions can be done by referencing beforeid and afterid -->
+
+<!-- TODO debug why live preview isn't working on chrome on mobile android -->
+<!-- TODO automatically open browser -->
