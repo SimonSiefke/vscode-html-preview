@@ -100,6 +100,20 @@ function highlight(parser, webSocketServer) {
 export function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push(
 		vscode.commands.registerCommand('htmlPreview.openPreview', () => {
+			context.subscriptions.push(
+				vscode.window.onDidChangeActiveTextEditor(event => {
+					// event.document.uri.
+					webSocketServer.broadcast(
+						[
+							{
+								command: 'redirect',
+								payload: vscode.workspace.asRelativePath(event.document.uri)
+							}
+						],
+						{}
+					);
+				})
+			);
 			let previousText =
 				(vscode.window.activeTextEditor && vscode.window.activeTextEditor.document.getText()) || '';
 			const webSocketServer = createWebSocketServer();
@@ -112,18 +126,29 @@ export function activate(context: vscode.ExtensionContext) {
 			const parser = createParser();
 			let previousDom = parser.parse(previousText);
 
-			let send = false;
+			const send = false;
 			const httpServer = http.createServer((req, res) => {
 				try {
+					try {
+						const file = fs.readFileSync(
+							path.join(packagesRoot, `injected-code/dist/${req.url}.js`),
+							'utf-8'
+						);
+						res.writeHead(200, {'Content-Type': 'text/javascript'});
+						res.write(file);
+						res.end();
+					} catch (error) {}
+
 					if (req.url === '/') {
-						if (!send) {
-							send = true;
-						} else {
-							res.statusCode = 304;
-							console.log('already sent');
-							res.end();
-							return;
-						}
+						// TODO later: caching and etags
+						// if (!send) {
+						// 	send = true;
+						// } else {
+						// 	res.statusCode = 304;
+						// 	console.log('already sent');
+						// 	res.end();
+						// 	return;
+						// }
 
 						res.writeHead(200, {'Content-Type': 'text/html'});
 						let dom = genDom(previousText);
@@ -145,7 +170,6 @@ export function activate(context: vscode.ExtensionContext) {
 						res.write(indexJs);
 						res.end();
 					} else if (req.url === '/injectedCodeMain.js.map') {
-						// res.writeHead(200, {'Content-Type': 'text/javascript'});
 						res.write(indexJsMap);
 						res.end();
 					} else {

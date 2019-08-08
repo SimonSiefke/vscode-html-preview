@@ -9,5 +9,8 @@
   },
   "devDependencies": {
     "ts-node": "^8.3.0"
+  },
+  "quokka": {
+    "ignoreExternalFileChanges": true
   }
 }

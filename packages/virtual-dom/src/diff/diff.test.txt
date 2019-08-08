@@ -14,7 +14,7 @@ edits:
 ]
 
 nextDom:
-<h1></h1>
+<h1 ></h1>
 
 expectedEdits:
 [
@@ -37,7 +37,7 @@ edits:
   {
     rangeOffset: 9
     rangeLength: 0
-    text: "green"
+    text: '="green"'
   }
 ]
 
@@ -346,7 +346,7 @@ previousDom:
 edits:
 [
   {
-    rangeOffset: 7
+    rangeOffset: 10
     rangeLength: 0
     text: <h1>b</h1>
   }
@@ -385,7 +385,7 @@ previousDom:
 edits:
 [
   {
-    rangeOffset: 109
+    rangeOffset: 107
     rangeLength: 0
     text: !!!
   }
@@ -438,7 +438,7 @@ previousDom:
 edits:
 [
   {
-    rangeOffset: 3
+    rangeOffset: 4
     rangeLength: 0
     text: 'class="big"'
   }
@@ -499,9 +499,9 @@ previousDom:
 edits:
 [
   {
-    rangeOffset: 69
+    rangeOffset: 68
     rangeLength: 0
-    text: 'Last name:<br>\n  <input type="text" name="lastName"><br>'
+    text: '  Last name:<br>\n  <input type="text" name="lastName"><br>\n'
   }
 ]
 
@@ -571,7 +571,7 @@ previousDom:
 edits:
 [
   {
-    rangeOffset: 4
+    rangeOffset: 5
     rangeLength: 0
     text: lass
   }
@@ -728,7 +728,7 @@ edits:
 [
   {
     rangeOffset: 4
-    rangeLength: 1
+    rangeLength: 2
     text: b
   }
 ]
@@ -877,7 +877,7 @@ expectedEdits:
 //</head>
 //<body>
 //  <h1>hello world</h1>
-//  
+//
 //</body>
 //</html>
 //
@@ -1428,77 +1428,6 @@ expectedEdits:
 ]
 
 name:
-element addition in the middle
-
-previousDom:
-<h1>a</h1><h1>c</h1>
-
-edits:
-[
-  {
-    rangeOffset: 7
-    rangeLength: 0
-    text: <h1>b</h1>
-  }
-]
-
-nextDom:
-<h1>a</h1><h1>b</h1><h1>c</h1>
-
-expectedEdits:
-[
-  {
-     command: elementInsert
-     payload: {
-       nodeType: ElementNode
-       tag: h1
-     }
-  }
-  {
-    command: elementInsert
-    payload: {
-      nodeType: TextNode
-      text: b
-    }
-  }
-]
-
-name:
-text insertion in nested html
-
-previousDom:
-<div>
-  <img src="https://source.unsplash.com/random" alt="random image">
-  <p>nested <strong>text</strong></p>
-</div>
-
-edits:
-[
-  {
-    rangeOffset: 109
-    rangeLength: 0
-    text: !!!
-  }
-]
-
-nextDom:
-<div>
-  <img src="https://source.unsplash.com/random" alt="random image">
-  <p>nested <strong>text</strong>!!!</p>
-</div>
-
-expectedEdits:
-[
-  {
-     command: elementInsert
-     payload: {
-       nodeType: TextNode
-       text: !!!
-     }
-  }
-]
-
-name:
 whitespace insertion at start tag
 
 previousDom:
@@ -1528,7 +1457,7 @@ previousDom:
 edits:
 [
   {
-    rangeOffset: 3
+    rangeOffset: 4
     rangeLength: 0
     text: 'class="big"'
   }
@@ -1578,81 +1507,6 @@ expectedEdits:
 ]
 
 name:
-insertion of multiple elements and text nodes
-
-previousDom:
-<form>
-  First name:<br>
-  <input type="text" name="firstName"><br>
-</form>
-
-edits:
-[
-  {
-    rangeOffset: 69
-    rangeLength: 0
-    text: 'Last name:<br>\n  <input type="text" name="lastName"><br>'
-  }
-]
-
-nextDom:
-<form>
-  First name:<br>
-  <input type="text" name="firstName"><br>
-  Last name:<br>
-  <input type="text" name="lastName"><br>
-</form>
-
-expectedEdits:
-[
-  {
-     command: textReplace
-     payload: {
-       text: "\n  Last name:"
-     }
-  }
-  {
-    command: elementInsert,
-    payload: {
-      nodeType: ElementNode
-      tag: br
-    }
-  }
-  {
-    command: elementInsert,
-    payload: {
-      nodeType: TextNode
-      text: "\n  "
-    }
-  }
-  {
-    command: elementInsert,
-    payload: {
-      nodeType: ElementNode
-      tag: input
-      attributes: {
-        name: '"lastName"'
-        type: '"text"'
-      }
-    }
-  }
-  {
-    command: elementInsert,
-    payload: {
-      nodeType: ElementNode
-      tag: br
-    }
-  }
-  {
-    command: elementInsert,
-    payload: {
-      nodeType: TextNode
-      text: "\n"
-    }
-  }
-]
-
-name:
 attribute name change
 
 previousDom:
@@ -1661,7 +1515,7 @@ previousDom:
 edits:
 [
   {
-    rangeOffset: 4
+    rangeOffset: 5
     rangeLength: 0
     text: lass
   }
@@ -1741,97 +1595,6 @@ expectedEdits:
      payload: {
        attribute: class
        value: '"small"'
-     }
-  }
-]
-
-name:
-replace text with element
-
-previousDom:
-h1
-
-edits:
-[
-  {
-    rangeOffset: 0
-    rangeLength: 2
-    text: <h1></h1>
-  }
-]
-
-nextDom:
-<h1></h1>
-
-expectedEdits:
-[
-   {
-     command: elementDelete
-     payload: {
-
-     }
-  }
-  {
-     command: elementInsert
-     payload: {
-       nodeType: ElementNode
-       tag: h1
-     }
-  }
-]
-
-name:
-basic replace text #1
-
-previousDom:
-<h1>a</h1>
-
-edits:
-[
-  {
-    rangeOffset: 4
-    rangeLength: 1
-    text: b
-  }
-]
-
-nextDom:
-<h1>b</h1>
-
-expectedEdits:
-[
-   {
-     command: textReplace
-     payload: {
-       text: b
-     }
-  }
-]
-
-name:
-basic replace text #2
-
-previousDom:
-<h1>aa</h1>
-
-edits:
-[
-  {
-    rangeOffset: 4
-    rangeLength: 1
-    text: b
-  }
-]
-
-nextDom:
-<h1>b</h1>
-
-expectedEdits:
-[
-   {
-     command: textReplace
-     payload: {
-       text: b
      }
   }
 ]

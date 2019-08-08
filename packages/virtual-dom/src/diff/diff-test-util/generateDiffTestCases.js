@@ -3,10 +3,7 @@ import * as path from 'path';
 import {toJson} from 'really-relaxed-json';
 import {validate} from 'jsonschema';
 
-const diffTest = fs.readFileSync(
-	path.join(__dirname, '../diff.test.txt'),
-	'utf-8'
-);
+const diffTest = fs.readFileSync(path.join(__dirname, '../diff.test.txt'), 'utf-8');
 
 const lines = diffTest.split('\n');
 
@@ -24,10 +21,7 @@ function finishBlock() {
 		return;
 	}
 
-	if (
-		(blockType === 'name' || blockType === 'previousDom') &&
-		currentTest.previousDom
-	) {
+	if ((blockType === 'name' || blockType === 'previousDom') && currentTest.previousDom) {
 		tests.push(currentTest);
 		currentTest = {};
 	}
@@ -152,6 +146,52 @@ function validateName(name) {
 	return name === undefined || typeof name === 'string';
 }
 
+let f = 0;
+function validateTestCase(testCase) {
+	f++;
+	if (f !== 45) {
+		// return;
+	}
+
+	const expectedNextCode = [];
+	let index = 0;
+	let deleted = 0;
+	let inserted = 0;
+	for (const edit of testCase.edits) {
+		while (index < edit.rangeOffset) {
+			expectedNextCode[index] = testCase.previousDom[index];
+			index++;
+		}
+
+		index += edit.rangeLength;
+		deleted += edit.rangeLength;
+		inserted += edit.text.length;
+		for (let j = 0; j < edit.text.length; j++) {
+			expectedNextCode[index + j] = edit.text[j];
+			expectedNextCode.join(''); // ?
+		}
+	}
+
+	expectedNextCode.join(''); // ?
+
+	index;
+	while (index < testCase.previousDom.length) {
+		index;
+		expectedNextCode[index + inserted] = testCase.previousDom[index];
+		index++;
+	}
+
+	if (expectedNextCode.join('') !== testCase.nextDom) {
+		f;
+		testCase.name; // ?
+		expectedNextCode.join(''); // ?
+		testCase.nextDom; // ?
+		throw new Error(
+			`testcase ${f} "${testCase.name}" is invalid, nextdom does not match specified edit`
+		);
+	}
+}
+
 const jestCases = tests.map(test => {
 	const {previousDom} = test;
 	validatePreviousDom(previousDom);
@@ -163,6 +203,7 @@ const jestCases = tests.map(test => {
 	validateExpectedEdits(expectedEdits);
 	const {name} = test;
 	validateName(name);
+	validateTestCase({previousDom, nextDom, edits, name});
 	return `test(\`${name || nextDom}\`, () => {
   const parser = createParser()
   const previousDom = parser.parse(\`${previousDom}\`)

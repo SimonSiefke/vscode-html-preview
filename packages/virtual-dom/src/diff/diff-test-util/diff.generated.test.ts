@@ -23,7 +23,7 @@ test(`attribute delete #1`, () => {
   const parser = createParser()
   const previousDom = parser.parse(`<h1 class></h1>`)
   const oldNodeMap = parser.nodeMap
-  const nextDom = parser.edit(`<h1></h1>`, [
+  const nextDom = parser.edit(`<h1 ></h1>`, [
     {
       "rangeOffset": 4,
       "rangeLength": 5,
@@ -51,7 +51,7 @@ test(`attribute change #1`, () => {
     {
       "rangeOffset": 9,
       "rangeLength": 0,
-      "text": "green"
+      "text": "=\"green\""
     }
   ])
   const newNodeMap = parser.nodeMap
@@ -268,7 +268,7 @@ test(`element addition in the middle`, () => {
   const oldNodeMap = parser.nodeMap
   const nextDom = parser.edit(`<h1>a</h1><h1>b</h1><h1>c</h1>`, [
     {
-      "rangeOffset": 7,
+      "rangeOffset": 10,
       "rangeLength": 0,
       "text": "<h1>b</h1>"
     }
@@ -306,7 +306,7 @@ test(`text insertion in nested html`, () => {
   <p>nested <strong>text</strong>!!!</p>
 </div>`, [
     {
-      "rangeOffset": 109,
+      "rangeOffset": 107,
       "rangeLength": 0,
       "text": "!!!"
     }
@@ -348,7 +348,7 @@ test(`insertion of attribute with value`, () => {
   const oldNodeMap = parser.nodeMap
   const nextDom = parser.edit(`<h1 class="big">hello world</h1>`, [
     {
-      "rangeOffset": 3,
+      "rangeOffset": 4,
       "rangeLength": 0,
       "text": "class=\"big\""
     }
@@ -406,9 +406,9 @@ test(`insertion of multiple elements and text nodes`, () => {
   <input type="text" name="lastName"><br>
 </form>`, [
     {
-      "rangeOffset": 69,
+      "rangeOffset": 68,
       "rangeLength": 0,
-      "text": "Last name:<br>\n  <input type=\"text\" name=\"lastName\"><br>"
+      "text": "  Last name:<br>\n  <input type=\"text\" name=\"lastName\"><br>\n"
     }
   ])
   const newNodeMap = parser.nodeMap
@@ -469,7 +469,7 @@ test(`attribute name change`, () => {
   const oldNodeMap = parser.nodeMap
   const nextDom = parser.edit(`<h1 class>hello world</h1>`, [
     {
-      "rangeOffset": 4,
+      "rangeOffset": 5,
       "rangeLength": 0,
       "text": "lass"
     }
@@ -604,7 +604,7 @@ test(`basic replace text #2`, () => {
   const nextDom = parser.edit(`<h1>b</h1>`, [
     {
       "rangeOffset": 4,
-      "rangeLength": 1,
+      "rangeLength": 2,
       "text": "b"
     }
   ])
@@ -1020,69 +1020,6 @@ test(`element addition at the start`, () => {
   expect(adjustEdits(edits)).toEqual(adjustExpectedEdits(expectedEdits))
 })
 
-test(`element addition in the middle`, () => {
-  const parser = createParser()
-  const previousDom = parser.parse(`<h1>a</h1><h1>c</h1>`)
-  const oldNodeMap = parser.nodeMap
-  const nextDom = parser.edit(`<h1>a</h1><h1>b</h1><h1>c</h1>`, [
-    {
-      "rangeOffset": 7,
-      "rangeLength": 0,
-      "text": "<h1>b</h1>"
-    }
-  ])
-  const newNodeMap = parser.nodeMap
-  const edits = domdiff(previousDom, nextDom, {oldNodeMap, newNodeMap})
-  const expectedEdits = [
-    {
-      "command": "elementInsert",
-      "payload": {
-        "nodeType": "ElementNode",
-        "tag": "h1"
-      }
-    },
-    {
-      "command": "elementInsert",
-      "payload": {
-        "nodeType": "TextNode",
-        "text": "b"
-      }
-    }
-  ]
-  expect(adjustEdits(edits)).toEqual(adjustExpectedEdits(expectedEdits))
-})
-
-test(`text insertion in nested html`, () => {
-  const parser = createParser()
-  const previousDom = parser.parse(`<div>
-  <img src="https://source.unsplash.com/random" alt="random image">
-  <p>nested <strong>text</strong></p>
-</div>`)
-  const oldNodeMap = parser.nodeMap
-  const nextDom = parser.edit(`<div>
-  <img src="https://source.unsplash.com/random" alt="random image">
-  <p>nested <strong>text</strong>!!!</p>
-</div>`, [
-    {
-      "rangeOffset": 109,
-      "rangeLength": 0,
-      "text": "!!!"
-    }
-  ])
-  const newNodeMap = parser.nodeMap
-  const edits = domdiff(previousDom, nextDom, {oldNodeMap, newNodeMap})
-  const expectedEdits = [
-    {
-      "command": "elementInsert",
-      "payload": {
-        "nodeType": "TextNode",
-        "text": "!!!"
-      }
-    }
-  ]
-  expect(adjustEdits(edits)).toEqual(adjustExpectedEdits(expectedEdits))
-})
-
 test(`whitespace insertion at start tag`, () => {
   const parser = createParser()
   const previousDom = parser.parse(`<h1>hello world</h1>`)
@@ -1106,7 +1043,7 @@ test(`insertion of attribute with value`, () => {
   const oldNodeMap = parser.nodeMap
   const nextDom = parser.edit(`<h1 class="big">hello world</h1>`, [
     {
-      "rangeOffset": 3,
+      "rangeOffset": 4,
       "rangeLength": 0,
       "text": "class=\"big\""
     }
@@ -1150,84 +1087,13 @@ test(`insertion of attribute without value`, () => {
   expect(adjustEdits(edits)).toEqual(adjustExpectedEdits(expectedEdits))
 })
 
-test(`insertion of multiple elements and text nodes`, () => {
-  const parser = createParser()
-  const previousDom = parser.parse(`<form>
-  First name:<br>
-  <input type="text" name="firstName"><br>
-</form>`)
-  const oldNodeMap = parser.nodeMap
-  const nextDom = parser.edit(`<form>
-  First name:<br>
-  <input type="text" name="firstName"><br>
-  Last name:<br>
-  <input type="text" name="lastName"><br>
-</form>`, [
-    {
-      "rangeOffset": 69,
-      "rangeLength": 0,
-      "text": "Last name:<br>\n  <input type=\"text\" name=\"lastName\"><br>"
-    }
-  ])
-  const newNodeMap = parser.nodeMap
-  const edits = domdiff(previousDom, nextDom, {oldNodeMap, newNodeMap})
-  const expectedEdits = [
-    {
-      "command": "textReplace",
-      "payload": {
-        "text": "\n  Last name:"
-      }
-    },
-    {
-      "command": "elementInsert",
-      "payload": {
-        "nodeType": "ElementNode",
-        "tag": "br"
-      }
-    },
-    {
-      "command": "elementInsert",
-      "payload": {
-        "nodeType": "TextNode",
-        "text": "\n  "
-      }
-    },
-    {
-      "command": "elementInsert",
-      "payload": {
-        "nodeType": "ElementNode",
-        "tag": "input",
-        "attributes": {
-          "name": "\"lastName\"",
-          "type": "\"text\""
-        }
-      }
-    },
-    {
-      "command": "elementInsert",
-      "payload": {
-        "nodeType": "ElementNode",
-        "tag": "br"
-      }
-    },
-    {
-      "command": "elementInsert",
-      "payload": {
-        "nodeType": "TextNode",
-        "text": "\n"
-      }
-    }
-  ]
-  expect(adjustEdits(edits)).toEqual(adjustExpectedEdits(expectedEdits))
-})
-
 test(`attribute name change`, () => {
   const parser = createParser()
   const previousDom = parser.parse(`<h1 c>hello world</h1>`)
   const oldNodeMap = parser.nodeMap
   const nextDom = parser.edit(`<h1 class>hello world</h1>`, [
     {
-      "rangeOffset": 4,
+      "rangeOffset": 5,
       "rangeLength": 0,
       "text": "lass"
     }
@@ -1296,83 +1162,6 @@ test(`attribute value replacement`, () => {
       "payload": {
         "attribute": "class",
         "value": "\"small\""
-      }
-    }
-  ]
-  expect(adjustEdits(edits)).toEqual(adjustExpectedEdits(expectedEdits))
-})
-
-test(`replace text with element`, () => {
-  const parser = createParser()
-  const previousDom = parser.parse(`h1`)
-  const oldNodeMap = parser.nodeMap
-  const nextDom = parser.edit(`<h1></h1>`, [
-    {
-      "rangeOffset": 0,
-      "rangeLength": 2,
-      "text": "<h1></h1>"
-    }
-  ])
-  const newNodeMap = parser.nodeMap
-  const edits = domdiff(previousDom, nextDom, {oldNodeMap, newNodeMap})
-  const expectedEdits = [
-    {
-      "command": "elementDelete",
-      "payload": {}
-    },
-    {
-      "command": "elementInsert",
-      "payload": {
-        "nodeType": "ElementNode",
-        "tag": "h1"
-      }
-    }
-  ]
-  expect(adjustEdits(edits)).toEqual(adjustExpectedEdits(expectedEdits))
-})
-
-test(`basic replace text #1`, () => {
-  const parser = createParser()
-  const previousDom = parser.parse(`<h1>a</h1>`)
-  const oldNodeMap = parser.nodeMap
-  const nextDom = parser.edit(`<h1>b</h1>`, [
-    {
-      "rangeOffset": 4,
-      "rangeLength": 1,
-      "text": "b"
-    }
-  ])
-  const newNodeMap = parser.nodeMap
-  const edits = domdiff(previousDom, nextDom, {oldNodeMap, newNodeMap})
-  const expectedEdits = [
-    {
-      "command": "textReplace",
-      "payload": {
-        "text": "b"
-      }
-    }
-  ]
-  expect(adjustEdits(edits)).toEqual(adjustExpectedEdits(expectedEdits))
-})
-
-test(`basic replace text #2`, () => {
-  const parser = createParser()
-  const previousDom = parser.parse(`<h1>aa</h1>`)
-  const oldNodeMap = parser.nodeMap
-  const nextDom = parser.edit(`<h1>b</h1>`, [
-    {
-      "rangeOffset": 4,
-      "rangeLength": 1,
-      "text": "b"
-    }
-  ])
-  const newNodeMap = parser.nodeMap
-  const edits = domdiff(previousDom, nextDom, {oldNodeMap, newNodeMap})
-  const expectedEdits = [
-    {
-      "command": "textReplace",
-      "payload": {
-        "text": "b"
       }
     }
   ]
