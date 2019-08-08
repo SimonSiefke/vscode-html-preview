@@ -38,8 +38,8 @@ module.exports = {
 	},
 	plugins: [],
 	optimization: {
-		removeAvailableModules: false,
-		removeEmptyChunks: false,
-		splitChunks: false
+		// removeAvailableModules: false,
+		// removeEmptyChunks: false,
+		// splitChunks: false
 	}
 };

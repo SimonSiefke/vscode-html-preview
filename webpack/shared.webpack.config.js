@@ -18,7 +18,7 @@ module.exports = function withDefaults(/** @type WebpackConfig & {context:string
 			extensions: ['.ts', '.js'] // support ts-files and js-files
 		},
 		optimization: {
-			minimize: false
+			// minimize: false
 		},
 		module: {
 			rules: [

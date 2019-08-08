@@ -1,3 +1,5 @@
+import {addHighlight} from './highlight/highlight';
+
 function walk(dom, fn, childrenFirst = false) {
 	if (Array.isArray(dom)) {
 		return dom.map(d => walk(d, fn, childrenFirst));
@@ -104,26 +106,27 @@ export const highlight: Command = useCommand(() => {
 	return payload => {
 		const {id} = payload;
 		const $node = nodeMap[id];
+		addHighlight($node);
 		// @debug
-		if ($highlightedNode) {
-			if ($node !== $highlightedNode) {
-				$highlightedNode.style.background = 'transparent';
-				$highlightedNode = undefined;
-			}
+		// if ($highlightedNode) {
+		// 	if ($node !== $highlightedNode) {
+		// 		$highlightedNode.style.background = 'transparent';
+		// 		$highlightedNode = undefined;
+		// 	}
 
-			clearTimeout(highlightTimeout);
-		}
+		// 	clearTimeout(highlightTimeout);
+		// }
 
-		if ($highlightedNode !== $node) {
-			$highlightedNode = $node;
-			$highlightedNode!.scrollIntoView();
-			$node.style.background = 'dodgerblue';
-		}
+		// if ($highlightedNode !== $node) {
+		// 	$highlightedNode = $node;
+		// 	$highlightedNode!.scrollIntoView();
+		// 	$node.style.background = 'dodgerblue';
+		// }
 
-		highlightTimeout = setTimeout(() => {
-			$highlightedNode!.style.background = 'transparent';
-			$highlightedNode = undefined;
-		}, 1000);
+		// highlightTimeout = setTimeout(() => {
+		// 	$highlightedNode!.style.background = 'transparent';
+		// 	$highlightedNode = undefined;
+		// }, 1000);
 	};
 });
 
