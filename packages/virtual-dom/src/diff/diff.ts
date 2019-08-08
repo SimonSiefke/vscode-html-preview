@@ -1,5 +1,7 @@
 import {createParser} from '../parse/parse';
 
+// TODO optimize all this spaghetti code
+
 /**
  * Determines the changes made to attributes and generates edits for those changes.
  *
@@ -241,7 +243,7 @@ export function domdiff(
 
 		if (newNode.type !== 'ElementNode' && oldNode.type === 'ElementNode') {
 			if (newNodeMap[oldNode.id]) {
-				edits = [...edits, ...elementInsert(newNode, parentId, newIndex - 1)];
+				edits = [...edits, ...elementInsert(newNode, parentId, newIndex)];
 				newIndex++;
 			} else {
 				edits = [...edits, elementDelete(oldNode)];
@@ -263,10 +265,24 @@ export function domdiff(
 				(newNode.type === 'CommentNode' && oldNode.type === 'CommentNode')) &&
 			newNode.textSignature !== oldNode.textSignature
 		) {
-			edits = [...edits, textReplace(newNode)];
-			oldIndex++;
-			newIndex++;
-			continue;
+			if (oldNode.id === newNode.id) {
+				edits = [...edits, textReplace(newNode)];
+				oldIndex++;
+				newIndex++;
+				continue;
+			} else if (!newNodeMap[oldNode.id]) {
+				edits = [...edits, elementDelete(oldNode)];
+				oldIndex++;
+				continue;
+			} else if (!oldNodeMap[newNode.id]) {
+				edits = [...edits, ...elementInsert(newNode, parentId, newIndex)];
+				newIndex++;
+			} else {
+				edits = [...edits, elementDelete(oldNode), ...elementInsert(newNode, parentId, newIndex)];
+				oldIndex++;
+				newIndex++;
+				// Throw new Error('cannot determine diff');
+			}
 		}
 
 		oldNode;

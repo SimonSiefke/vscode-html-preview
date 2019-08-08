@@ -184,8 +184,8 @@ function validateTestCase(testCase) {
 	if (expectedNextCode.join('') !== testCase.nextDom) {
 		f;
 		testCase.name; // ?
-		expectedNextCode.join(''); // ?
-		testCase.nextDom; // ?
+		console.log(expectedNextCode.join('')); // ?
+		console.log(testCase.nextDom); // ?
 		throw new Error(
 			`testcase ${f} "${testCase.name}" is invalid, nextdom does not match specified edit`
 		);

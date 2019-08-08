@@ -1794,6 +1794,28 @@ test(`delete 201 - delete comment between text and element`, () => {
   expect(adjustEdits(edits)).toEqual(adjustExpectedEdits(expectedEdits))
 })
 
+test(`delete 202 - delete comment between text and comment`, () => {
+  const parser = createParser()
+  const previousDom = parser.parse(`a<!--b--><!--c-->`)
+  const oldNodeMap = parser.nodeMap
+  const nextDom = parser.edit(`a<!--c-->`, [
+    {
+      "rangeOffset": 1,
+      "rangeLength": 8,
+      "text": ""
+    }
+  ])
+  const newNodeMap = parser.nodeMap
+  const edits = domdiff(previousDom, nextDom, {oldNodeMap, newNodeMap})
+  const expectedEdits = [
+    {
+      "command": "elementDelete",
+      "payload": {}
+    }
+  ]
+  expect(adjustEdits(edits)).toEqual(adjustExpectedEdits(expectedEdits))
+})
+
 test(`delete 211 - delete comment between element and element`, () => {
   const parser = createParser()
   const previousDom = parser.parse(`<h1>a</h1><!--b--><h1>c</h1>`)
@@ -1821,6 +1843,28 @@ test(`delete 221 - delete comment between comment and element`, () => {
   const previousDom = parser.parse(`<!--a--><!--b--><h1>c</h1>`)
   const oldNodeMap = parser.nodeMap
   const nextDom = parser.edit(`<!--a--><h1>c</h1>`, [
+    {
+      "rangeOffset": 8,
+      "rangeLength": 8,
+      "text": ""
+    }
+  ])
+  const newNodeMap = parser.nodeMap
+  const edits = domdiff(previousDom, nextDom, {oldNodeMap, newNodeMap})
+  const expectedEdits = [
+    {
+      "command": "elementDelete",
+      "payload": {}
+    }
+  ]
+  expect(adjustEdits(edits)).toEqual(adjustExpectedEdits(expectedEdits))
+})
+
+test(`delete 222 - delete comment between comment and comment`, () => {
+  const parser = createParser()
+  const previousDom = parser.parse(`<!--a--><!--b--><!--c-->`)
+  const oldNodeMap = parser.nodeMap
+  const nextDom = parser.edit(`<!--a--><!--c-->`, [
     {
       "rangeOffset": 8,
       "rangeLength": 8,
@@ -1953,6 +1997,31 @@ test(`insert 020 - insert text between comment and text`, () => {
       "command": "textReplace",
       "payload": {
         "text": "bc"
+      }
+    }
+  ]
+  expect(adjustEdits(edits)).toEqual(adjustExpectedEdits(expectedEdits))
+})
+
+test(`insert 021 - insert text between comment and element`, () => {
+  const parser = createParser()
+  const previousDom = parser.parse(`<!--a--><h1>c</h1>`)
+  const oldNodeMap = parser.nodeMap
+  const nextDom = parser.edit(`<!--a-->b<h1>c</h1>`, [
+    {
+      "rangeOffset": 8,
+      "rangeLength": 0,
+      "text": "b"
+    }
+  ])
+  const newNodeMap = parser.nodeMap
+  const edits = domdiff(previousDom, nextDom, {oldNodeMap, newNodeMap})
+  const expectedEdits = [
+    {
+      "command": "elementInsert",
+      "payload": {
+        "nodeType": "TextNode",
+        "text": "b"
       }
     }
   ]
@@ -2164,6 +2233,38 @@ test(`insert 112 - insert element between element and comment`, () => {
   expect(adjustEdits(edits)).toEqual(adjustExpectedEdits(expectedEdits))
 })
 
+test(`insert 120 - insert element between comment and text`, () => {
+  const parser = createParser()
+  const previousDom = parser.parse(`<!--a-->c`)
+  const oldNodeMap = parser.nodeMap
+  const nextDom = parser.edit(`<!--a--><h1>b</h1>c`, [
+    {
+      "rangeOffset": 8,
+      "rangeLength": 0,
+      "text": "<h1>b</h1>"
+    }
+  ])
+  const newNodeMap = parser.nodeMap
+  const edits = domdiff(previousDom, nextDom, {oldNodeMap, newNodeMap})
+  const expectedEdits = [
+    {
+      "command": "elementInsert",
+      "payload": {
+        "nodeType": "ElementNode",
+        "tag": "h1"
+      }
+    },
+    {
+      "command": "elementInsert",
+      "payload": {
+        "nodeType": "TextNode",
+        "text": "b"
+      }
+    }
+  ]
+  expect(adjustEdits(edits)).toEqual(adjustExpectedEdits(expectedEdits))
+})
+
 test(`insert 121 - insert element between comment and element`, () => {
   const parser = createParser()
   const previousDom = parser.parse(`<!--a--><h1>c</h1>`)
@@ -2291,6 +2392,31 @@ test(`insert 201 - insert comment between text and element`, () => {
   expect(adjustEdits(edits)).toEqual(adjustExpectedEdits(expectedEdits))
 })
 
+test(`insert 202 - insert comment between text and comment`, () => {
+  const parser = createParser()
+  const previousDom = parser.parse(`a<!--c-->`)
+  const oldNodeMap = parser.nodeMap
+  const nextDom = parser.edit(`a<!--b--><!--c-->`, [
+    {
+      "rangeOffset": 1,
+      "rangeLength": 0,
+      "text": "<!--b-->"
+    }
+  ])
+  const newNodeMap = parser.nodeMap
+  const edits = domdiff(previousDom, nextDom, {oldNodeMap, newNodeMap})
+  const expectedEdits = [
+    {
+      "command": "elementInsert",
+      "payload": {
+        "nodeType": "CommentNode",
+        "text": "b"
+      }
+    }
+  ]
+  expect(adjustEdits(edits)).toEqual(adjustExpectedEdits(expectedEdits))
+})
+
 test(`insert 211 - insert comment between element and element`, () => {
   const parser = createParser()
   const previousDom = parser.parse(`<h1>a</h1><h1>c</h1>`)
@@ -2298,6 +2424,81 @@ test(`insert 211 - insert comment between element and element`, () => {
   const nextDom = parser.edit(`<h1>a</h1><!--b--><h1>c</h1>`, [
     {
       "rangeOffset": 10,
+      "rangeLength": 0,
+      "text": "<!--b-->"
+    }
+  ])
+  const newNodeMap = parser.nodeMap
+  const edits = domdiff(previousDom, nextDom, {oldNodeMap, newNodeMap})
+  const expectedEdits = [
+    {
+      "command": "elementInsert",
+      "payload": {
+        "nodeType": "CommentNode",
+        "text": "b"
+      }
+    }
+  ]
+  expect(adjustEdits(edits)).toEqual(adjustExpectedEdits(expectedEdits))
+})
+
+test(`insert 212 - insert comment between element and comment`, () => {
+  const parser = createParser()
+  const previousDom = parser.parse(`<h1>a</h1><!--c-->`)
+  const oldNodeMap = parser.nodeMap
+  const nextDom = parser.edit(`<h1>a</h1><!--b--><!--c-->`, [
+    {
+      "rangeOffset": 10,
+      "rangeLength": 0,
+      "text": "<!--b-->"
+    }
+  ])
+  const newNodeMap = parser.nodeMap
+  const edits = domdiff(previousDom, nextDom, {oldNodeMap, newNodeMap})
+  const expectedEdits = [
+    {
+      "command": "elementInsert",
+      "payload": {
+        "nodeType": "CommentNode",
+        "text": "b"
+      }
+    }
+  ]
+  expect(adjustEdits(edits)).toEqual(adjustExpectedEdits(expectedEdits))
+})
+
+test(`insert 221 - insert comment between comment and element`, () => {
+  const parser = createParser()
+  const previousDom = parser.parse(`<!--a--><h1>c</h1>`)
+  const oldNodeMap = parser.nodeMap
+  const nextDom = parser.edit(`<!--a--><!--b--><h1>c</h1>`, [
+    {
+      "rangeOffset": 8,
+      "rangeLength": 0,
+      "text": "<!--b-->"
+    }
+  ])
+  const newNodeMap = parser.nodeMap
+  const edits = domdiff(previousDom, nextDom, {oldNodeMap, newNodeMap})
+  const expectedEdits = [
+    {
+      "command": "elementInsert",
+      "payload": {
+        "nodeType": "CommentNode",
+        "text": "b"
+      }
+    }
+  ]
+  expect(adjustEdits(edits)).toEqual(adjustExpectedEdits(expectedEdits))
+})
+
+test(`insert 222 - insert comment between comment and comment`, () => {
+  const parser = createParser()
+  const previousDom = parser.parse(`<!--a--><!--c-->`)
+  const oldNodeMap = parser.nodeMap
+  const nextDom = parser.edit(`<!--a--><!--b--><!--c-->`, [
+    {
+      "rangeOffset": 8,
       "rangeLength": 0,
       "text": "<!--b-->"
     }
