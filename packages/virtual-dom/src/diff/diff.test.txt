@@ -1761,32 +1761,32 @@ expectedEdits:
   }
 ]
 
-//name:
-//delete element after elements
-//
-//previousDom:
-//<h1>a</h1><h1>b</h1>
-//
-//edits:
-//[
-//  {
-//    rangeOffset: 10
-//    rangeLength: 10
-//    text: ""
-//  }
-//]
-//
-//nextDom:
-//<h1>b</h1>
-//
-//expectedEdits:
-//[
-//  {
-//     command: elementDelete
-//     payload: {}
-//  }
-//]
-//
+name:
+delete element after element
+
+previousDom:
+<h1>a</h1><h1>b</h1>
+
+edits:
+[
+  {
+    rangeOffset: 10
+    rangeLength: 10
+    text: ""
+  }
+]
+
+nextDom:
+<h1>a</h1>
+
+expectedEdits:
+[
+  {
+     command: elementDelete
+     payload: {}
+  }
+]
+
 
 name:
 delete text before text

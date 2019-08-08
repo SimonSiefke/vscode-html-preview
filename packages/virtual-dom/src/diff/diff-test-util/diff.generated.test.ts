@@ -1212,6 +1212,28 @@ test(`delete element before element`, () => {
   expect(adjustEdits(edits)).toEqual(adjustExpectedEdits(expectedEdits))
 })
 
+test(`delete element after element`, () => {
+  const parser = createParser()
+  const previousDom = parser.parse(`<h1>a</h1><h1>b</h1>`)
+  const oldNodeMap = parser.nodeMap
+  const nextDom = parser.edit(`<h1>a</h1>`, [
+    {
+      "rangeOffset": 10,
+      "rangeLength": 10,
+      "text": ""
+    }
+  ])
+  const newNodeMap = parser.nodeMap
+  const edits = domdiff(previousDom, nextDom, {oldNodeMap, newNodeMap})
+  const expectedEdits = [
+    {
+      "command": "elementDelete",
+      "payload": {}
+    }
+  ]
+  expect(adjustEdits(edits)).toEqual(adjustExpectedEdits(expectedEdits))
+})
+
 test(`delete text before text`, () => {
   const parser = createParser()
   const previousDom = parser.parse(`ab`)
