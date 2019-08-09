@@ -1,8 +1,9 @@
 import * as Commands from './Commands';
 const ws = new WebSocket('ws://localhost:3001');
 
-const nodeMap: {[key: number]: any} = {
-	0: document.body
+const send = (message: LocalCommandWebsocketMessage) => {
+	const serializedMessage = JSON.stringify(message);
+	ws.send(serializedMessage);
 };
 
 ws.onmessage = ({data}) => {
@@ -15,7 +16,7 @@ ws.onmessage = ({data}) => {
 			Commands[command](payload);
 		} else {
 			// @debug
-			Commands.error('command does not exist');
+			Commands.error({message: 'command does not exist'});
 		}
 	}
 
@@ -23,8 +24,13 @@ ws.onmessage = ({data}) => {
 		return;
 	}
 
-	// console.log(messages);
-	ws.send(JSON.stringify({success: true, id, type: 'response'}));
+	const successMessage: LocalCommandWebsocketMessage = {
+		command: 'success',
+		payload: {},
+		type: 'response',
+		id
+	};
+	send(successMessage);
 };
 
 const nextId = (() => {
@@ -40,15 +46,13 @@ window.addEventListener('click', event => {
 		return;
 	}
 
-	const message = {
+	const message: LocalCommandWebsocketMessage = {
 		type: 'request',
 		id: nextId(),
-		message: {
-			command: 'highlight',
-			payload: {
-				id
-			}
+		command: 'highlight',
+		payload: {
+			id
 		}
 	};
-	ws.send(JSON.stringify(message));
+	send(message);
 });

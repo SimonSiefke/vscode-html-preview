@@ -20,11 +20,10 @@ function walk(dom, fn, childrenFirst = false) {
 	return dom;
 }
 
-const nodeMap: {[key: number]: any} = (() => {
+const nodeMap: {[key: number]: HTMLElement | Text | Comment} = (() => {
 	const _nodeMap = {0: document.body};
 	const $virtualDom = document.getElementById('virtual-dom') as HTMLScriptElement;
 	const virtualDom = JSON.parse($virtualDom.innerText);
-	console.log(virtualDom);
 	for (let i = 0; i < virtualDom.length; i++) {
 		const rootNode = virtualDom[i];
 		if (rootNode.type === 'TextNode') {
@@ -92,16 +91,17 @@ function fixAttributeValue(value: string | null) {
 	return value;
 }
 
-type Command = (payload: any) => void;
-const useCommand = (fn: () => Command) => fn();
+type Command<K extends keyof RemoteCommandMap> = (payload: RemoteCommandMap[K]) => void;
+const useCommand: <K extends keyof RemoteCommandMap>(fn: () => Command<K>) => Command<K> = fn =>
+	fn();
 
-export const error: Command = useCommand(() => {
+export const error: Command<'error'> = useCommand(() => {
 	return payload => {
-		alert('error' + payload);
+		alert('error' + payload.message);
 	};
 });
 
-export const highlight: Command = useCommand(() => {
+export const highlight: Command<'highlight'> = useCommand(() => {
 	let $highlightedNode: HTMLElement | undefined;
 	let highlightTimeout: number | undefined;
 	return payload => {
@@ -131,9 +131,9 @@ export const highlight: Command = useCommand(() => {
 	};
 });
 
-export const textReplace: Command = useCommand(() => {
+export const textReplace: Command<'textReplace'> = useCommand(() => {
 	return payload => {
-		const $node = nodeMap[payload.id];
+		const $node = nodeMap[payload.id] as Comment;
 		if ($node === undefined) {
 			debugger;
 		}
@@ -142,27 +142,28 @@ export const textReplace: Command = useCommand(() => {
 	};
 });
 
-export const attributeChange: Command = useCommand(() => {
+export const attributeChange: Command<'attributeChange'> = useCommand(() => {
 	return payload => {
-		const $node = nodeMap[payload.id];
+		const $node = nodeMap[payload.id] as HTMLElement;
 		$node.setAttribute(payload.attribute, fixAttributeValue(payload.value));
 	};
 });
 
-export const attributeAdd: Command = useCommand(() => {
+export const attributeAdd: Command<'attributeAdd'> = useCommand(() => {
 	return payload => {
+		// just forward the request because it does the same thing
 		attributeChange(payload);
 	};
 });
 
-export const attributeDelete: Command = useCommand(() => {
+export const attributeDelete: Command<'attributeDelete'> = useCommand(() => {
 	return payload => {
-		const $node = nodeMap[payload.id];
+		const $node = nodeMap[payload.id] as HTMLElement;
 		$node.removeAttribute(payload.attribute);
 	};
 });
 
-export const elementDelete: Command = useCommand(() => {
+export const elementDelete: Command<'elementDelete'> = useCommand(() => {
 	return payload => {
 		const $node = nodeMap[payload.id];
 		if (!$node) {
@@ -179,27 +180,28 @@ export const elementDelete: Command = useCommand(() => {
 	};
 });
 
-export const elementInsert: Command = useCommand(() => {
+export const elementInsert: Command<'elementInsert'> = useCommand(() => {
 	return payload => {
-		let $node;
+		let $node: HTMLElement | Text | Comment;
 		if (payload.nodeType === 'ElementNode') {
-			$node = document.createElement(payload.tag);
+			$node = document.createElement(payload.tag) as HTMLElement;
 			for (const attributeName of Object.keys(payload.attributes)) {
 				$node.setAttribute(attributeName, fixAttributeValue(payload.attributes[attributeName]));
 				console.log(payload.id);
 			}
 
-			$node.setAttribute('data-id', payload.id);
+			$node.setAttribute('data-id', `${payload.id}`);
 		} else if (payload.nodeType === 'TextNode') {
 			$node = document.createTextNode(payload.text);
 		} else if (payload.nodeType === 'CommentNode') {
 			$node = document.createComment(payload.text);
 		} else {
+			// @debug
 			throw new Error('invalid node type');
 		}
 
 		nodeMap[payload.id] = $node;
-		const $parent = nodeMap[payload.parentId];
+		const $parent = nodeMap[payload.parentId] as HTMLElement;
 		if (!$parent) {
 			debugger;
 		}
@@ -223,8 +225,8 @@ export const elementInsert: Command = useCommand(() => {
 	};
 });
 
-export const redirect: Command = useCommand(() => {
+export const redirect: Command<'redirect'> = useCommand(() => {
 	return payload => {
-		window.location.replace(payload);
+		window.location.replace(payload.url);
 	};
 });

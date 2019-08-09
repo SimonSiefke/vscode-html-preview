@@ -6,7 +6,7 @@
     "strictNullChecks": false,
     "types": ["node"]
   },
-  "include": ["src"],
+  "include": ["src", "../../global.d.ts"],
   "references": [
     {
       "path": "../html-preview-service"

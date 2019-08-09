@@ -6,9 +6,9 @@ interface WebSocketServer {
 	 */
 	readonly port: number | undefined
 	/**
-	 * Send a message to all connected clients.
+	 * Send a list of commands to all connected clients.
 	 */
-	readonly broadcast: (message: any, {skip}: {skip?: WebSocket}) => void
+	readonly broadcast: (commands: RemoteCommand[], {skip}?: {skip?: WebSocket}) => void
 	/**
 	 * Start the websocket server.
 	 */
@@ -18,7 +18,7 @@ interface WebSocketServer {
 	 */
 	readonly stop: () => void
 
-	readonly onMessage: (message) => void
+	readonly onMessage: (fn: (message: LocalCommandWebsocketMessage) => void) => void
 }
 
 const nextId = (() => {
@@ -31,21 +31,18 @@ const pendingResults = {};
 export function createWebSocketServer(): WebSocketServer {
 	let webSocketServer: WebSocket.Server;
 	const onMessageListeners: Array<(message: any) => void> = [];
-	/**
-	 * @type {{[key:string]:any}}
-	 */
 	return {
 		get port() {
 			return webSocketServer.options.port;
 		},
-		broadcast(messages: {command: string; payload: any}[], {skip}: any = {}) {
+		broadcast(messages, options = {}) {
 			const id = nextId();
 			pendingResults[id] = {
 				start: process.hrtime()
 			};
 			const stringifiedMessage = JSON.stringify({messages, id, type: 'request'});
 			for (const client of webSocketServer.clients) {
-				if (skip !== client && client.readyState === WebSocket.OPEN) {
+				if (options.skip !== client && client.readyState === WebSocket.OPEN) {
 					client.send(stringifiedMessage);
 				}
 			}

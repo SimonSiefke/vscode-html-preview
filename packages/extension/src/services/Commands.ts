@@ -107,7 +107,9 @@ export function activate(context: vscode.ExtensionContext) {
 						[
 							{
 								command: 'redirect',
-								payload: vscode.workspace.asRelativePath(event.document.uri)
+								payload: {
+									url: vscode.workspace.asRelativePath(event.document.uri)
+								}
 							}
 						],
 						{}
@@ -212,8 +214,8 @@ export function activate(context: vscode.ExtensionContext) {
 				}
 			});
 			webSocketServer.onMessage(message => {
-				if (message.type === 'request' && message.message.command === 'highlight') {
-					const {id} = message.message.payload;
+				if (message.type === 'request' && message.command === 'highlight') {
+					const {id} = message.payload;
 					// console.log('id', message.message.payload.id);
 					// console.log(parser.prefixSums);
 					for (const [key, value] of Object.entries(parser.prefixSums)) {
@@ -274,7 +276,9 @@ export function activate(context: vscode.ExtensionContext) {
 							[
 								{
 									command: 'error',
-									payload: 'too many changes'
+									payload: {
+										message: 'too many changes'
+									}
 								}
 							],
 							{}
