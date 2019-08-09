@@ -1,0 +1,15 @@
+
+name:
+text from scratch
+
+previousDom:
+
+
+nextDom:
+hello world
+
+browserDom:
+hello world
+
+browserError:
+false

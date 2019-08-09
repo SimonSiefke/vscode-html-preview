@@ -82,10 +82,11 @@ async function expectHtml(html) {
 		}
 
 		let result = getAst(Array.from(body.childNodes));
-		const virtualDomIndex = result.findIndex(
-			// @ts-ignore
-			child => child.tag === 'script' && child.attributes.id === 'virtual-dom'
-		);
+		const virtualDomIndex =
+			result.findIndex(
+				// @ts-ignore
+				child => child.tag === 'script' && child.attributes.id === 'virtual-dom'
+			) - 1;
 		result = result.slice(0, virtualDomIndex);
 		// return new Promise(() => {});
 		return result;
@@ -109,10 +110,6 @@ test('basic', async () => {
 					text: 'hello world'
 				}
 			]
-		},
-		{
-			nodeType: 'TextNode',
-			text: '\n'
 		}
 	]);
 
@@ -131,10 +128,6 @@ test('basic', async () => {
 					text: 'hello world!'
 				}
 			]
-		},
-		{
-			nodeType: 'TextNode',
-			text: '\n'
 		}
 	]);
 	// await new Promise(() => {});
