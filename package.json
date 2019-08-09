@@ -88,7 +88,8 @@
     ],
     "testPathIgnorePatterns": [
       "/node_modules/",
-      "/dist/"
+      "/dist/",
+      "extension/src/test"
     ]
   },
   "prettier": {
