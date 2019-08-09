@@ -24,10 +24,11 @@ const nodeMap: {[key: number]: any} = (() => {
 	const _nodeMap = {0: document.body};
 	const $virtualDom = document.getElementById('virtual-dom') as HTMLScriptElement;
 	const virtualDom = JSON.parse($virtualDom.innerText);
+	console.log(virtualDom);
 	for (let i = 0; i < virtualDom.length; i++) {
 		const rootNode = virtualDom[i];
 		if (rootNode.type === 'TextNode') {
-			_nodeMap[rootNode.id] = document.documentElement.childNodes[i];
+			_nodeMap[rootNode.id] = document.body.childNodes[i];
 			// @debug
 			if (!_nodeMap[rootNode.id] || _nodeMap[rootNode.id].nodeType !== Node.TEXT_NODE) {
 				console.error('invalid', _nodeMap[rootNode.id]);
@@ -194,16 +195,28 @@ export const elementInsert: Command = useCommand(() => {
 			throw new Error('invalid node type');
 		}
 
+		console.log(nodeMap);
+
 		nodeMap[payload.id] = $node;
 		const $parent = nodeMap[payload.parentId];
 		if (!$parent) {
 			debugger;
 		}
 
-		if (payload.index === -1) {
+		if (payload.beforeId === 0) {
 			$parent.prepend($node);
 		} else {
-			const $referenceNode = $parent.childNodes[payload.index + 1];
+			const $referenceNode = nodeMap[payload.beforeId];
+			// @debug
+			if (!$referenceNode) {
+				console.log(payload.beforeId);
+				console.log(nodeMap);
+				console.error(
+					`failed to insert new element because reference node with id ${payload.beforeId} does not exist`
+				);
+				return;
+			}
+
 			$parent.insertBefore($node, $referenceNode);
 		}
 	};

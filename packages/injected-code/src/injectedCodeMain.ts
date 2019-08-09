@@ -7,7 +7,7 @@ const nodeMap: {[key: number]: any} = {
 
 ws.onmessage = ({data}) => {
 	const {messages, id} = JSON.parse(data);
-	console.clear();
+	// console.clear();
 	console.log(JSON.stringify(messages, null, 2));
 	for (const message of messages) {
 		const {command, payload} = message;

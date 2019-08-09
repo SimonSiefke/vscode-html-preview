@@ -70,8 +70,11 @@ function elementInsert(
 	text: any
 	},
 	parentId: number,
-	index: number
+	index: number,
+	nodeMap
 ) {
+	const beforeElement = nodeMap[parentId] && nodeMap[parentId].children[index - 1];
+	const beforeElementId = (beforeElement && beforeElement.id) || 0;
 	if (node.type === 'ElementNode') {
 		return [
 			{
@@ -81,12 +84,14 @@ function elementInsert(
 					nodeType: node.type,
 					tag: node.tag,
 					parentId,
-					index,
+					beforeId: beforeElementId,
 					attributes: node.attributes
 				}
 			},
 			// @ts-ignore
-			...node.children.flatMap((child: any, index: any) => elementInsert(child, node.id, index))
+			...node.children.flatMap((child: any, index: any) =>
+				elementInsert(child, node.id, index, nodeMap)
+			)
 		];
 	}
 
@@ -99,7 +104,8 @@ function elementInsert(
 					id: node.id,
 					text: node.text,
 					parentId,
-					index
+					index,
+					beforeId: beforeElementId
 				}
 			}
 		];
@@ -184,8 +190,9 @@ export function domdiff(
 				oldIndex++;
 				continue;
 			} else if (!oldNodeMap[newNode.id]) {
-				edits = [...edits, ...elementInsert(newNode, parentId, newIndex)];
+				edits = [...edits, ...elementInsert(newNode, parentId, newIndex, newNodeMap)];
 				newIndex++;
+				continue;
 			} else {
 				newNodeMap;
 				newNode;
@@ -219,12 +226,17 @@ export function domdiff(
 				oldIndex++;
 				continue;
 			} else if (!oldNodeMap[newNode.id]) {
-				edits = [...edits, ...elementInsert(newNode, parentId, newIndex)];
+				edits = [...edits, ...elementInsert(newNode, parentId, newIndex, newNodeMap)];
 				newIndex++;
 			} else {
-				edits = [...edits, elementDelete(oldNode), ...elementInsert(newNode, parentId, newIndex)];
+				edits = [
+					...edits,
+					elementDelete(oldNode),
+					...elementInsert(newNode, parentId, newIndex, newNodeMap)
+				];
 				oldIndex++;
 				newIndex++;
+				continue;
 				// Throw new Error('cannot determine diff');
 			}
 
@@ -243,11 +255,13 @@ export function domdiff(
 
 		if (newNode.type !== 'ElementNode' && oldNode.type === 'ElementNode') {
 			if (newNodeMap[oldNode.id]) {
-				edits = [...edits, ...elementInsert(newNode, parentId, newIndex)];
+				edits = [...edits, ...elementInsert(newNode, parentId, newIndex, newNodeMap)];
 				newIndex++;
+				continue;
 			} else {
 				edits = [...edits, elementDelete(oldNode)];
 				oldIndex++;
+				continue;
 			}
 
 			continue;
@@ -264,12 +278,18 @@ export function domdiff(
 				oldIndex++;
 				continue;
 			} else if (!oldNodeMap[newNode.id]) {
-				edits = [...edits, ...elementInsert(newNode, parentId, newIndex)];
+				edits = [...edits, ...elementInsert(newNode, parentId, newIndex, newNodeMap)];
 				newIndex++;
+				continue;
 			} else {
-				edits = [...edits, elementDelete(oldNode), ...elementInsert(newNode, parentId, newIndex)];
+				edits = [
+					...edits,
+					elementDelete(oldNode),
+					...elementInsert(newNode, parentId, newIndex, newNodeMap)
+				];
 				oldIndex++;
 				newIndex++;
+				continue;
 				// Throw new Error('cannot determine diff');
 			}
 		}
@@ -289,12 +309,18 @@ export function domdiff(
 				oldIndex++;
 				continue;
 			} else if (!oldNodeMap[newNode.id]) {
-				edits = [...edits, ...elementInsert(newNode, parentId, newIndex)];
+				edits = [...edits, ...elementInsert(newNode, parentId, newIndex, newNodeMap)];
 				newIndex++;
+				continue;
 			} else {
-				edits = [...edits, elementDelete(oldNode), ...elementInsert(newNode, parentId, newIndex)];
+				edits = [
+					...edits,
+					elementDelete(oldNode),
+					...elementInsert(newNode, parentId, newIndex, newNodeMap)
+				];
 				oldIndex++;
 				newIndex++;
+				continue;
 				// Throw new Error('cannot determine diff');
 			}
 		}
@@ -323,7 +349,7 @@ export function domdiff(
 	while (newIndex < newNodes.length) {
 		const newNode = newNodes[newIndex];
 		newIndex++;
-		edits = [...edits, ...elementInsert(newNode, parentId, newIndex - 1)];
+		edits = [...edits, ...elementInsert(newNode, parentId, newIndex - 1, newNodeMap)];
 	}
 
 	return edits;
@@ -386,93 +412,23 @@ Array.prototype.pretty = function () {
 	);
 };
 
-// Const testCase = {
-// 	previousDom: `<h1>hello</h1>
-// <button>button</button>`,
-// 	nextDom: '<button>button</button>'
-// };
-
-// const parser = createParser();
-
-// const parsedH1 = parser.parse(testCase.previousDom);
-// const oldNodeMap = parser.nodeMap; // ?
-// const parsedH2 = parser.edit(testCase.nextDom, [
-// 	{
-// 		rangeOffset: 0,
-// 		rangeLength: 15,
-// 		text: ''
-// 	}
-// ]);
-// const newNodeMap = parser.nodeMap; // ?
-// parsedH1.pretty(); // ?
-// parsedH2.pretty(); // ?
-// domdiff(parsedH1, parsedH2, {
-// 	oldNodeMap,
-// 	newNodeMap
-// }); // ?
-
-// const testCase = {
-// 	previousDom: `<form>
-//   First name:<br>
-//   <input type="text" name="firstName"><br>
-// </form>`,
-// 	nextDom: `<form>
-//   First name:<br>
-//   <input type="text" name="firstName"><br>
-//   Last name:<br>
-//   <input type="text" name="lastName"><br>
-// </form>`
-// };
-
-// const parser = createParser();
-
-// const parsedH1 = parser.parse(testCase.previousDom);
-// const oldNodeMap = parser.nodeMap; // ?
-// const parsedH2 = parser.edit(testCase.nextDom, [
-// 	{
-// 		rangeOffset: 69,
-// 		rangeLength: 0,
-// 		text: 'Last name:<br>\n  <input type="text" name="lastName"><br>'
-// 	}
-// ]);
-// const newNodeMap = parser.nodeMap; // ?
-// parsedH1.pretty(); // ?
-// parsedH2.pretty(); // ?
-// domdiff(parsedH1, parsedH2, {
-// 	oldNodeMap,
-// 	newNodeMap
-// }); // ?
-const testCase = {
-	previousDom: `<html>
-
-<head>
-  <title>Document</title>
-  <style>
-    </style>
-</head>
-
-<body>
-
-</body>
-
-</html>`,
-	nextDom: `<html>
-
-<head>
-  <title>Document</title>
-  <style>
-      </style>
-</head>
-
-<body>
-
-</body>
-
-</html>`
+// @ts-ignore
+Object.prototype.pretty = function () {
+	return JSON.stringify(
+		this.children.map(pretty),
+		(k, v) => {
+			return v === undefined ? null : v;
+		},
+		2
+	);
 };
 
-const parser = createParser();
+const testCase = {
+	previousDom: '<h1>a</h1>',
 
+	nextDom: '<h1>a</h1>\n<h1>a</h1>'
+};
+const parser = createParser();
 const parsedH1 = parser.parse(testCase.previousDom);
 const oldNodeMap = parser.nodeMap; // ?
 const parsedH2 = parser.edit(testCase.nextDom, [
@@ -489,5 +445,3 @@ domdiff(parsedH1, parsedH2, {
 	oldNodeMap,
 	newNodeMap
 }); // ?
-
-// parseHTML(testCase.nextDom).pretty(); // ?

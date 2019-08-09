@@ -27,8 +27,7 @@ export function genDom(orig) {
 		}
 	}
 
-	dom.forEach(walk);
+	dom.children.forEach(walk);
 	gen += orig.substr(lastIndex);
-
 	return gen;
 }

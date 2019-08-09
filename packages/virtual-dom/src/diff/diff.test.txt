@@ -27,6 +27,48 @@ expectedEdits:
 ]
 
 name:
+useless whitespace change #1
+
+previousDom:
+<h1></h1>
+
+edits:
+[
+  {
+    rangeOffset: 3
+    rangeLength: 0
+    text: " "
+  }
+]
+
+nextDom:
+<h1 ></h1>
+
+expectedEdits:
+[]
+
+name:
+useless whitespace change #2
+
+previousDom:
+<h1><br  ></h1>
+
+edits:
+[
+  {
+    rangeOffset: 7
+    rangeLength: 2
+    text: ""
+  }
+]
+
+nextDom:
+<h1><br></h1>
+
+expectedEdits:
+[]
+
+name:
 attribute change #1
 
 previousDom:
@@ -109,6 +151,7 @@ expectedEdits:
      payload: {
        nodeType: TextNode
        text: hello
+       beforeId: 0
      }
   }
 ]
@@ -138,6 +181,7 @@ expectedEdits:
      payload: {
        nodeType: ElementNode
        tag: p
+       beforeId: 0
      }
   }
   {
@@ -145,6 +189,7 @@ expectedEdits:
     payload:{
       nodeType: TextNode
       text: ok
+      beforeId: 0
     }
   }
 ]
@@ -290,6 +335,7 @@ expectedEdits:
      payload: {
        nodeType: ElementNode
        tag: h1
+       beforeId: 1
      }
   }
   {
@@ -297,6 +343,7 @@ expectedEdits:
     payload: {
       nodeType: TextNode
       text: b
+      beforeId: 0
     }
   }
 ]
@@ -326,6 +373,7 @@ expectedEdits:
      payload: {
        nodeType: ElementNode
        tag: h1
+       beforeId: 0
      }
   }
   {
@@ -333,42 +381,7 @@ expectedEdits:
     payload: {
       nodeType: TextNode
       text: b
-    }
-  }
-]
-
-name:
-element addition in the middle
-
-previousDom:
-<h1>a</h1><h1>c</h1>
-
-edits:
-[
-  {
-    rangeOffset: 10
-    rangeLength: 0
-    text: <h1>b</h1>
-  }
-]
-
-nextDom:
-<h1>a</h1><h1>b</h1><h1>c</h1>
-
-expectedEdits:
-[
-  {
-     command: elementInsert
-     payload: {
-       nodeType: ElementNode
-       tag: h1
-     }
-  }
-  {
-    command: elementInsert
-    payload: {
-      nodeType: TextNode
-      text: b
+      beforeId: 0
     }
   }
 ]
@@ -404,30 +417,10 @@ expectedEdits:
      payload: {
        nodeType: TextNode
        text: !!!
+       beforeId: 7
      }
   }
 ]
-
-name:
-whitespace insertion at start tag
-
-previousDom:
-<h1>hello world</h1>
-
-edits:
-[
-  {
-    rangeOffset: 3
-    rangeLength: 0
-    text: " "
-  }
-]
-
-nextDom:
-<h1 >hello world</h1>
-
-expectedEdits:
-[]
 
 name:
 insertion of attribute with value
@@ -526,6 +519,7 @@ expectedEdits:
     payload: {
       nodeType: ElementNode
       tag: br
+      beforeId: 7
     }
   }
   {
@@ -533,6 +527,7 @@ expectedEdits:
     payload: {
       nodeType: TextNode
       text: "\n  "
+      beforeId: 8
     }
   }
   {
@@ -543,7 +538,8 @@ expectedEdits:
       attributes: {
         name: '"lastName"'
         type: '"text"'
-      }
+      },
+      beforeId: 9
     }
   }
   {
@@ -551,6 +547,7 @@ expectedEdits:
     payload: {
       nodeType: ElementNode
       tag: br
+      beforeId: 10
     }
   }
   {
@@ -558,6 +555,7 @@ expectedEdits:
     payload: {
       nodeType: TextNode
       text: "\n"
+      beforeId: 11
     }
   }
 ]
@@ -686,6 +684,7 @@ expectedEdits:
      payload: {
        nodeType: ElementNode
        tag: h1
+       beforeId: 0
      }
   }
 ]
@@ -771,6 +770,7 @@ expectedEdits:
      payload: {
        nodeType: TextNode
        text: "hello world"
+       beforeId: 0
      }
   }
   {
@@ -1109,70 +1109,6 @@ expectedEdits:
 //  }
 //]
 //
-name:
-basic text insertion
-
-previousDom:
-<h1><p>ok</p></h1>
-
-edits:
-[
-  {
-    rangeOffset: 4
-    rangeLength: 0
-    text: hello
-  }
-]
-
-nextDom:
-<h1>hello<p>ok</p></h1>
-
-expectedEdits:
-[
-  {
-     command: elementInsert
-     payload: {
-       nodeType: TextNode
-       text: hello
-     }
-  }
-]
-
-name:
-basic element insertion
-
-previousDom:
-<h1><p>ok</p></h1>
-
-edits:
-[
-  {
-    rangeOffset: 4
-    rangeLength: 0
-    text: <p>ok</p>
-  }
-]
-
-nextDom:
-<h1><p>ok</p><p>ok</p></h1>
-
-expectedEdits:
-[
-  {
-     command: elementInsert
-     payload: {
-       nodeType: ElementNode
-       tag: p
-     }
-  }
-  {
-    command: elementInsert
-    payload:{
-      nodeType: TextNode
-      text: ok
-    }
-  }
-]
 
 //previousDom:
 //<head>
@@ -1233,334 +1169,6 @@ expectedEdits:
 //    }
 //  }
 //]
-
-name:
-basic text replace
-
-previousDom:
-<h1>a</h1>
-
-edits:
-[
-  {
-    rangeOffset: 4
-    rangeLength: 1
-    text: b
-  }
-]
-
-nextDom:
-<h1>b</h1>
-
-expectedEdits:
-[
-  {
-     command: textReplace
-     payload: {
-       text: "b"
-     }
-  }
-]
-
-name:
-basic text addition
-
-previousDom:
-<h1>aaa</h1>
-
-edits:
-[
-  {
-    rangeOffset: 7
-    rangeLength: 0
-    text: bbb
-  }
-]
-
-nextDom:
-<h1>aaabbb</h1>
-
-expectedEdits:
-[
-  {
-     command: textReplace
-     payload: {
-       text: aaabbb
-     }
-  }
-]
-
-name:
-element addition at the end
-
-previousDom:
-<h1>a</h1>
-
-edits:
-[
-  {
-    rangeOffset: 10
-    rangeLength: 0
-    text: <h1>b</h1>
-  }
-]
-
-nextDom:
-<h1>a</h1><h1>b</h1>
-
-expectedEdits:
-[
-  {
-     command: elementInsert
-     payload: {
-       nodeType: ElementNode
-       tag: h1
-     }
-  }
-  {
-    command: elementInsert
-    payload: {
-      nodeType: TextNode
-      text: b
-    }
-  }
-]
-
-name:
-element addition at the start
-
-previousDom:
-<h1>a</h1>
-
-edits:
-[
-  {
-    rangeOffset: 0
-    rangeLength: 0
-    text: <h1>b</h1>
-  }
-]
-
-nextDom:
-<h1>b</h1><h1>a</h1>
-
-expectedEdits:
-[
-  {
-     command: elementInsert
-     payload: {
-       nodeType: ElementNode
-       tag: h1
-     }
-  }
-  {
-    command: elementInsert
-    payload: {
-      nodeType: TextNode
-      text: b
-    }
-  }
-]
-
-name:
-whitespace insertion at start tag
-
-previousDom:
-<h1>hello world</h1>
-
-edits:
-[
-  {
-    rangeOffset: 3
-    rangeLength: 0
-    text: " "
-  }
-]
-
-nextDom:
-<h1 >hello world</h1>
-
-expectedEdits:
-[]
-
-name:
-insertion of attribute with value
-
-previousDom:
-<h1 >hello world</h1>
-
-edits:
-[
-  {
-    rangeOffset: 4
-    rangeLength: 0
-    text: 'class="big"'
-  }
-]
-
-nextDom:
-<h1 class="big">hello world</h1>
-
-expectedEdits:
-[
-  {
-     command: attributeAdd
-     payload: {
-       attribute: class
-       value: '"big"'
-     }
-  }
-]
-
-name:
-insertion of attribute without value
-
-previousDom:
-<h1 >hello world</h1>
-
-edits:
-[
-  {
-    rangeOffset: 4
-    rangeLength: 0
-    text: class
-  }
-]
-
-nextDom:
-<h1 class>hello world</h1>
-
-expectedEdits:
-[
-  {
-     command: attributeAdd
-     payload: {
-       attribute: class
-       value: null
-     }
-  }
-]
-
-name:
-attribute name change
-
-previousDom:
-<h1 c>hello world</h1>
-
-edits:
-[
-  {
-    rangeOffset: 5
-    rangeLength: 0
-    text: lass
-  }
-]
-
-nextDom:
-<h1 class>hello world</h1>
-
-expectedEdits:
-[
-  {
-     command: attributeAdd
-     payload: {
-       attribute: class
-       value: null
-     }
-  }
-  {
-     command: attributeDelete
-     payload: {
-       attribute: c
-     }
-  }
-]
-
-name:
-attribute value insertion at end
-
-previousDom:
-<h1 class="big">hello world</h1>
-
-edits:
-[
-  {
-    rangeOffset: 14
-    rangeLength: 0
-    text: ger
-  }
-]
-
-nextDom:
-<h1 class="bigger">hello world</h1>
-
-expectedEdits:
-[
-  {
-     command: attributeChange
-     payload: {
-       attribute: class
-       value: '"bigger"'
-     }
-  }
-]
-
-name:
-attribute value replacement
-
-previousDom:
-<h1 class="big">hello world</h1>
-
-edits:
-[
-  {
-    rangeOffset: 11
-    rangeLength: 3
-    text: small
-  }
-]
-
-nextDom:
-<h1 class="small">hello world</h1>
-
-expectedEdits:
-[
-  {
-     command: attributeChange
-     payload: {
-       attribute: class
-       value: '"small"'
-     }
-  }
-]
-
-name:
-replace text inside element with attributes
-
-previousDom:
-<h1 style="background:orange">a</h1>
-
-edits:
-[
-  {
-    rangeOffset: 30
-    rangeLength: 1
-    text: b
-  }
-]
-
-nextDom:
-<h1 style="background:orange">b</h1>
-
-expectedEdits:
-[
-   {
-     command: textReplace
-     payload: {
-       text: b
-     }
-  }
-]
 
 //name:
 //replace text after element node
@@ -1670,179 +1278,6 @@ expectedEdits:
 //  }
 //]
 //
-
-name:
-replace element with text
-
-previousDom:
-<h1>hello world</h1>
-
-edits:
-[
-  {
-    rangeOffset: 0
-    rangeLength: 20
-    text: "hello world"
-  }
-]
-
-nextDom:
-hello world
-
-expectedEdits:
-[
-   {
-     command: elementInsert
-     payload: {
-       nodeType: TextNode
-       text: "hello world"
-     }
-  }
-  {
-    command: elementDelete
-    payload: {}
-  }
-]
-
-name:
-delete first element node
-
-previousDom:
-<h1>hello</h1>
-<button>button</button>
-
-edits:
-[
-  {
-    rangeOffset: 0
-    rangeLength: 15
-    text: ""
-  }
-]
-
-nextDom:
-<button>button</button>
-
-expectedEdits:
-[
-  {
-     command: elementDelete
-     payload: {}
-  }
-  {
-     command: elementDelete
-     payload: {}
-  }
-]
-
-name:
-delete element before element
-
-previousDom:
-<h1>a</h1><h1>b</h1>
-
-edits:
-[
-  {
-    rangeOffset: 0
-    rangeLength: 10
-    text: ""
-  }
-]
-
-nextDom:
-<h1>b</h1>
-
-expectedEdits:
-[
-  {
-     command: elementDelete
-     payload: {}
-  }
-]
-
-name:
-delete element after element
-
-previousDom:
-<h1>a</h1><h1>b</h1>
-
-edits:
-[
-  {
-    rangeOffset: 10
-    rangeLength: 10
-    text: ""
-  }
-]
-
-nextDom:
-<h1>a</h1>
-
-expectedEdits:
-[
-  {
-     command: elementDelete
-     payload: {}
-  }
-]
-
-
-name:
-delete text before text
-
-previousDom:
-ab
-
-edits:
-[
-  {
-    rangeOffset: 0
-    rangeLength: 1
-    text: ""
-  }
-]
-
-nextDom:
-b
-
-expectedEdits:
-[
-  {
-     command: textReplace
-     payload: {
-       text: b
-     }
-  }
-]
-
-name:
-delete text after text
-
-previousDom:
-ab
-
-edits:
-[
-  {
-    rangeOffset: 1
-    rangeLength: 1
-    text: ""
-  }
-]
-
-nextDom:
-a
-
-expectedEdits:
-[
-  {
-     command: textReplace
-     payload: {
-       text: a
-     }
-  }
-]
 
 //name:
 //delete comment before comment
@@ -2869,7 +2304,7 @@ expectedEdits:
 ]
 
 name:
-010 - insert text between element and text
+insert 010 - insert text between element and text
 
 previousDom:
 <h1>a</h1><!--c-->
@@ -2893,6 +2328,7 @@ expectedEdits:
      payload: {
        nodeType: TextNode
        text: b
+       beforeId: 1
      }
   }
 ]
@@ -2922,12 +2358,13 @@ expectedEdits:
      payload: {
        nodeType: TextNode
        text: b
+       beforeId: 1
      }
   }
 ]
 
 name:
-012 - insert text between element and comment
+insert 012 - insert text between element and comment
 
 previousDom:
 <h1>a</h1><!--c-->
@@ -2951,6 +2388,7 @@ expectedEdits:
      payload: {
        nodeType: TextNode
        text: b
+       beforeId: 1
     }
   }
 ]
@@ -3008,12 +2446,13 @@ expectedEdits:
      payload: {
        nodeType: TextNode
        text: b
+       beforeId: 1
      }
   }
 ]
 
 name:
-022 - insert text between comment and comment
+insert 022 - insert text between comment and comment
 
 previousDom:
 <!--a--><!--c-->
@@ -3035,8 +2474,9 @@ expectedEdits:
   {
      command: elementInsert
      payload: {
-       nodeType:TextNode
-       text:b
+       nodeType: TextNode
+       text: b
+       beforeId: 1
      }
   }
 ]
@@ -3072,6 +2512,7 @@ expectedEdits:
     payload: {
       nodeType: ElementNode
       tag: h1
+      beforeId: 1
     }
   }
   {
@@ -3079,6 +2520,7 @@ expectedEdits:
     payload: {
       nodeType: TextNode
       text: b
+      beforeId: 0
     }
   }
   {
@@ -3086,6 +2528,7 @@ expectedEdits:
     payload: {
       nodeType: TextNode
       text: c
+      beforeId: 2
     }
   }
 ]
@@ -3115,6 +2558,7 @@ expectedEdits:
     payload: {
       nodeType: ElementNode
       tag: h1
+      beforeId: 1
     }
   }
   {
@@ -3122,6 +2566,7 @@ expectedEdits:
     payload: {
       nodeType: TextNode
       text: b
+      beforeId: 0
     }
   }
 ]
@@ -3151,6 +2596,7 @@ expectedEdits:
     payload: {
       nodeType: ElementNode
       tag: h1
+      beforeId: 1
     }
   }
   {
@@ -3158,6 +2604,7 @@ expectedEdits:
     payload: {
       nodeType: TextNode
       text: b
+      beforeId: 0
     }
   }
 ]
@@ -3187,6 +2634,7 @@ expectedEdits:
     payload: {
       nodeType: ElementNode
       tag: h1
+      beforeId: 1
     }
   }
   {
@@ -3194,6 +2642,7 @@ expectedEdits:
     payload: {
       nodeType: TextNode
       text: b
+      beforeId: 0
     }
   }
 ]
@@ -3223,6 +2672,7 @@ expectedEdits:
     payload: {
       nodeType: ElementNode
       tag: h1
+      beforeId: 1
     }
   }
   {
@@ -3230,6 +2680,7 @@ expectedEdits:
     payload: {
       nodeType: TextNode
       text: b
+      beforeId: 0
     }
   }
 ]
@@ -3259,6 +2710,7 @@ expectedEdits:
     payload: {
       nodeType: ElementNode
       tag: h1
+      beforeId: 1
     }
   }
   {
@@ -3266,6 +2718,7 @@ expectedEdits:
     payload: {
       nodeType: TextNode
       text: b
+      beforeId: 0
     }
   }
 ]
@@ -3295,6 +2748,7 @@ expectedEdits:
     payload: {
       nodeType: ElementNode
       tag: h1
+      beforeId: 1
     }
   }
   {
@@ -3302,6 +2756,7 @@ expectedEdits:
     payload: {
       nodeType: TextNode
       text: b
+      beforeId: 0
     }
   }
 ]
@@ -3331,6 +2786,7 @@ expectedEdits:
     payload: {
       nodeType: ElementNode
       tag: h1
+      beforeId: 1
     }
   }
   {
@@ -3338,6 +2794,7 @@ expectedEdits:
     payload: {
       nodeType: TextNode
       text: b
+      beforeId: 0
     }
   }
 ]
@@ -3367,6 +2824,7 @@ expectedEdits:
     payload: {
       nodeType: ElementNode
       tag: h1
+      beforeId: 1
     }
   }
   {
@@ -3374,6 +2832,7 @@ expectedEdits:
     payload: {
       nodeType: TextNode
       text: b
+      beforeId: 0
     }
   }
 ]
@@ -3409,6 +2868,7 @@ expectedEdits:
     payload: {
       nodeType: CommentNode
       text: b
+      beforeId: 1
     }
   }
   {
@@ -3416,6 +2876,7 @@ expectedEdits:
     payload: {
       nodeType: TextNode
       text: c
+      beforeId: 2
     }
   }
 ]
@@ -3445,6 +2906,7 @@ expectedEdits:
     payload: {
       nodeType: CommentNode
       text: b
+      beforeId: 1
     }
   }
 ]
@@ -3474,13 +2936,14 @@ expectedEdits:
     payload: {
       nodeType: CommentNode
       text: b
+      beforeId: 1
     }
   }
 ]
 
 
 name:
-210 - insert comment between element and text
+insert 210 - insert comment between element and text
 
 previousDom:
 <h1>a</h1>c
@@ -3504,6 +2967,7 @@ expectedEdits:
     payload: {
       nodeType: CommentNode
       text: b
+      beforeId: 1
     }
   }
 ]
@@ -3533,6 +2997,7 @@ expectedEdits:
     payload: {
       nodeType: CommentNode
       text: b
+      beforeId: 1
     }
   }
 ]
@@ -3562,6 +3027,7 @@ expectedEdits:
     payload: {
       nodeType: CommentNode
       text: b
+      beforeId: 1
     }
   }
 ]
@@ -3591,6 +3057,7 @@ expectedEdits:
     payload: {
       nodeType: CommentNode
       text: b
+      beforeId: 1
     }
   }
 ]
@@ -3620,6 +3087,7 @@ expectedEdits:
     payload: {
       nodeType: CommentNode
       text: b
+      beforeId: 1
     }
   }
 ]
@@ -3649,6 +3117,7 @@ expectedEdits:
     payload: {
       nodeType: CommentNode
       text: b
+      beforeId: 1
     }
   }
 ]
@@ -3847,3 +3316,50 @@ expectedEdits:
 //     }
 //  }
 //]
+
+name:
+test because of bug #3
+
+previousDom:
+<h1>a</h1>
+
+edits:
+[
+  {
+    rangeOffset: 0
+    rangeLength: 0
+    text: "<h1>a</h1>\n"
+  }
+]
+
+nextDom:
+<h1>a</h1>
+<h1>a</h1>
+
+expectedEdits:
+[
+  {
+     command: elementInsert
+     payload: {
+       nodeType: ElementNode
+       tag: h1
+       beforeId: 0
+     }
+  }
+  {
+     command: elementInsert
+     payload: {
+       nodeType: TextNode
+       text: a
+       beforeId: 0
+     }
+  }
+  {
+     command: elementInsert
+     payload: {
+       nodeType: TextNode
+       text: "\n"
+       beforeId: 3
+     }
+  }
+]

@@ -125,7 +125,7 @@ export function activate(context: vscode.ExtensionContext) {
 				path.join(packagesRoot, 'injected-code/dist/injectedCodeMain.js.map')
 			);
 			const parser = createParser();
-			let previousDom = parser.parse(previousText);
+			let previousDom = parser.parse(previousText) as {children: any[]};
 
 			const send = false;
 
@@ -156,7 +156,9 @@ export function activate(context: vscode.ExtensionContext) {
 						let dom = genDom(previousText);
 						const bodyIndex = dom.lastIndexOf('</body');
 						previousDom = parser.parse(previousText);
-						const $virtualDom = `<script id="virtual-dom">${JSON.stringify(previousDom)}</script>`;
+						const $virtualDom = `<script id="virtual-dom">${JSON.stringify(
+							previousDom.children
+						)}</script>`;
 						const $script = '<script type="module" src="index.js"></script>';
 						const $inner = '\n' + $virtualDom + '\n' + $script;
 						if (bodyIndex !== -1) {
@@ -255,7 +257,7 @@ export function activate(context: vscode.ExtensionContext) {
 						const oldNodeMap = parser.nodeMap;
 						const nextDom = parser.edit(newText, [change]);
 						const newNodeMap = parser.nodeMap;
-						const diffs = diff(previousDom, nextDom, {oldNodeMap, newNodeMap});
+						const diffs = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap});
 						previousDom = nextDom;
 						webSocketServer.broadcast(diffs, {});
 						previousText = newText;

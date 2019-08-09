@@ -213,7 +213,7 @@ function validateTestCase(testCase) {
 }
 
 for (const test of tests) {
-	if (tests.filter(t => t.name === test.name).length > 2) {
+	if (tests.filter(t => t.name === test.name).length >= 2) {
 		throw new Error(`test with name "${test.name}" exists twice`);
 	}
 }
@@ -239,7 +239,7 @@ const jestCases = tests.map(test => {
 	.map((x, index) => (index === 0 ? x : '  ' + x))
 	.join('\n')})
   const newNodeMap = parser.nodeMap
-  const edits = domdiff(previousDom, nextDom, {oldNodeMap, newNodeMap})
+  const edits = domdiff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
   const expectedEdits = ${JSON.stringify(expectedEdits, null, 2)
 		.split('\n')
 		.map((x, index) => (index === 0 ? x : '  ' + x))
@@ -257,7 +257,7 @@ const functionCode = [
   for(const edit of edits){
     delete edit.payload.id
     delete edit.payload.index
-    delete edit.payload.parentId
+		delete edit.payload.parentId
   }
   return edits
 }`,
