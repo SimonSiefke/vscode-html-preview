@@ -186,16 +186,17 @@ export const elementInsert: Command = useCommand(() => {
 			$node = document.createElement(payload.tag);
 			for (const attributeName of Object.keys(payload.attributes)) {
 				$node.setAttribute(attributeName, fixAttributeValue(payload.attributes[attributeName]));
+				console.log(payload.id);
 			}
+
+			$node.setAttribute('data-id', payload.id);
 		} else if (payload.nodeType === 'TextNode') {
 			$node = document.createTextNode(payload.text);
-		} else if (payload.nodeType === 'ElementNode') {
+		} else if (payload.nodeType === 'CommentNode') {
 			$node = document.createComment(payload.text);
 		} else {
 			throw new Error('invalid node type');
 		}
-
-		console.log(nodeMap);
 
 		nodeMap[payload.id] = $node;
 		const $parent = nodeMap[payload.parentId];
@@ -217,7 +218,7 @@ export const elementInsert: Command = useCommand(() => {
 				return;
 			}
 
-			$parent.insertBefore($node, $referenceNode);
+			$parent.insertBefore($node, $referenceNode.nextSibling);
 		}
 	};
 });

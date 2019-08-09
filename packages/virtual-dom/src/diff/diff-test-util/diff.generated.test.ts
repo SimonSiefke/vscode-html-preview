@@ -2343,3 +2343,48 @@ test(`test because of bug #3`, () => {
   ]
   expect(adjustEdits(edits)).toEqual(adjustExpectedEdits(expectedEdits))
 })
+
+test(`test because of bug #4`, () => {
+  const parser = createParser()
+  const previousDom = parser.parse(`<h1>a</h1>
+<h1>a</h1>`)
+  const oldNodeMap = parser.nodeMap
+  const nextDom = parser.edit(`<h1>a</h1>
+<h1>a</h1>
+<h1>a</h1>`, [
+    {
+      "rangeOffset": 11,
+      "rangeLength": 0,
+      "text": "<h1>a</h1>\n"
+    }
+  ])
+  const newNodeMap = parser.nodeMap
+  const edits = domdiff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const expectedEdits = [
+    {
+      "command": "elementInsert",
+      "payload": {
+        "nodeType": "ElementNode",
+        "tag": "h1",
+        "beforeId": 3
+      }
+    },
+    {
+      "command": "elementInsert",
+      "payload": {
+        "nodeType": "TextNode",
+        "text": "a",
+        "beforeId": 0
+      }
+    },
+    {
+      "command": "elementInsert",
+      "payload": {
+        "nodeType": "TextNode",
+        "text": "\n",
+        "beforeId": 6
+      }
+    }
+  ]
+  expect(adjustEdits(edits)).toEqual(adjustExpectedEdits(expectedEdits))
+})
