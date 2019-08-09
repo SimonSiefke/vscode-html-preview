@@ -114,6 +114,7 @@ export function activate(context: vscode.ExtensionContext) {
 					);
 				})
 			);
+
 			let previousText =
 				(vscode.window.activeTextEditor && vscode.window.activeTextEditor.document.getText()) || '';
 			const webSocketServer = createWebSocketServer();
@@ -127,6 +128,7 @@ export function activate(context: vscode.ExtensionContext) {
 			let previousDom = parser.parse(previousText);
 
 			const send = false;
+
 			const httpServer = http.createServer((req, res) => {
 				try {
 					try {
@@ -185,6 +187,7 @@ export function activate(context: vscode.ExtensionContext) {
 				console.error(error);
 				vscode.window.showErrorMessage(error.message);
 			});
+
 			httpServer.listen(3000, () => {
 				console.log('listening');
 			});
@@ -193,6 +196,7 @@ export function activate(context: vscode.ExtensionContext) {
 					httpServer.close();
 				}
 			});
+
 			try {
 				webSocketServer.start(3001);
 			} catch (error) {

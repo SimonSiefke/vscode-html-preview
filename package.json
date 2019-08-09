@@ -11,13 +11,15 @@
     "generate:watch:genDomTests": "cd packages/html-preview-service && npm run generate:watch:genDomTests",
     "test": "jest",
     "bundlesize": "bundlesize",
-    "update-highlight-css": "postcss packages/injected-code/src/highlight/highlight.css --no-map --output packages/injected-code/src/highlight/highlight.min.css && node scripts/update-highlight-css"
+    "update-highlight-css": "postcss packages/injected-code/src/highlight/highlight.css --no-map --output packages/injected-code/src/highlight/highlight.min.css && node scripts/update-highlight-css",
+    "e2e": "cd packages/extension && npm run e2e"
   },
   "devDependencies": {
     "@babel/core": "^7.5.5",
     "@babel/node": "^7.5.5",
     "@types/jest": "^24.0.16",
     "@types/lodash": "^4.14.136",
+    "@types/puppeteer": "^1.19.0",
     "@types/webpack": "^4.32.1",
     "autoprefixer": "^9.6.1",
     "babel-preset-latest-node": "^3.2.1",
