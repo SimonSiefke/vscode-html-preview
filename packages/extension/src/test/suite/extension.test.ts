@@ -21,7 +21,7 @@ before(async () => {
 	await createTestFile('hello world.html');
 	await setText('<h1>hello world</h1>');
 	await activateExtension();
-	browser = await puppeteer.launch({headless});
+	browser = await puppeteer.launch({headless, args: ['--no-sandbox']});
 	page = await browser.newPage();
 });
 
