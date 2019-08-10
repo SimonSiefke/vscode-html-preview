@@ -1,2 +1,2 @@
 export {genDom} from './genDom/genDom';
-export {createWebSocketServer} from './WebSocketServer/createWebSocketServer';
+export {createWebSocketServer, WebSocketServer} from './WebSocketServer/createWebSocketServer';

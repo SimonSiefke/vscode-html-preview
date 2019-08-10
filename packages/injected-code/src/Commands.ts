@@ -1,4 +1,4 @@
-import {addHighlight} from './highlight/highlight';
+import {addHighlight} from './plugins/highlight/highlight';
 
 function walk(dom, fn, childrenFirst = false) {
 	if (Array.isArray(dom)) {

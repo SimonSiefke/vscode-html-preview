@@ -3,7 +3,8 @@ import {createParser, diff} from 'virtual-dom';
 import * as http from 'http';
 import * as fs from 'fs';
 import * as path from 'path';
-import {createWebSocketServer, genDom} from 'html-preview-service';
+import {createWebSocketServer, genDom, WebSocketServer} from 'html-preview-service';
+import {open} from './open';
 
 const packagesRoot =
 	process.env.NODE_ENV === 'production' ?
@@ -20,7 +21,7 @@ const wrapError = fn => {
 
 let highlightedId;
 
-function highlight(parser, webSocketServer) {
+function highlight(parser: any, webSocketServer: WebSocketServer) {
 	vscode.window.onDidChangeTextEditorSelection(event => {
 		wrapError(() => {
 			if (event.selections.length !== 1) {
@@ -42,7 +43,9 @@ function highlight(parser, webSocketServer) {
 						[
 							{
 								command: 'error',
-								payload: `highlight error, node ${value} doesn\'t exist`
+								payload: {
+									message: `highlight error, node ${value} doesn\'t exist`
+								}
 							}
 						],
 						{}
@@ -193,7 +196,7 @@ export function activate(context: vscode.ExtensionContext) {
 			});
 
 			httpServer.listen(3000, () => {
-				console.log('listening');
+				open('http://localhost:3000');
 			});
 			context.subscriptions.push({
 				dispose() {

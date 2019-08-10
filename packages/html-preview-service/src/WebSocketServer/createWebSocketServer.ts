@@ -1,6 +1,6 @@
 import * as WebSocket from 'ws';
 
-interface WebSocketServer {
+export interface WebSocketServer {
 	/**
 	 * The port of the server.
 	 */

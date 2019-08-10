@@ -62,14 +62,15 @@
   "main": "dist/extensionMain.js",
   "dependencies": {
     "html-preview-service": "^0.0.0-development",
+    "open": "^6.4.0",
     "virtual-dom": "^0.0.0-development"
   },
   "devDependencies": {
-    "vscode-test": "^1.2.0",
     "@types/mocha": "^5.2.7",
     "@types/vscode": "^1.37.0",
     "cross-env": "^5.2.0",
     "mocha": "^6.2.0",
-    "puppeteer": "^1.19.0"
+    "puppeteer": "^1.19.0",
+    "vscode-test": "^1.2.0"
   }
 }
