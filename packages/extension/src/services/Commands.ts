@@ -1,15 +1,13 @@
 import * as vscode from 'vscode';
-import {createParser, diff} from 'virtual-dom';
-import * as http from 'http';
 import * as fs from 'fs';
 import * as path from 'path';
 import {
 	createWebSocketServer,
 	genDom,
-	WebSocketServer,
 	createHttpServer,
-	HttpServer,
-	open
+	open,
+	createParser,
+	diff
 } from 'html-preview-service';
 import {core} from '../plugins/local-plugin-core/core';
 import {redirect} from '../plugins/local-plugin-redirect/redirect';
