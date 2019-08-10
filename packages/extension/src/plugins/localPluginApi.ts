@@ -18,7 +18,7 @@ export interface LocalPluginApi {
 	}
 	// parser: ReturnType<typeof import('virtual-dom').createParser>
 	parser: any
-	diff: typeof import('virtual-dom').diff
+	diff: typeof import('html-preview-service').diff
 	webSocketServer: WebSocketServer
 }
 
