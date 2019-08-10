@@ -1,18 +1,29 @@
 import * as openInBrowser from 'open';
 
-type Browser = 'default' | 'chrome' | 'firefox';
-
 /**
  * Opens a url in a browser.
+ *
  * The currently supported browsers are:
  * - default
  * - chrome
  * - firefox
+ *
+ * TODO egde browser
+ * TODO safari browser
+ * TODO sizzy
+ * TODO blisk
+ *
+ * The currently no supported browsers are:
+ * - brave, it opens with a vscode icon instead of a brave icon
+ * - vivaldi, it opens with a vscode icon instead of a vivaldi icon
+ *
+
  */
 export const open = (url: string, browser: string) => {
 	let app: string | undefined;
+	const args: string[] = [];
 	if (browser === 'default') {
-		// do nothing special
+		// do nothing special, keeping app undefined means that it opens in a default browser
 	} else if (browser === 'chrome') {
 		if (process.platform === 'darwin' || process.platform === 'linux') {
 			app = 'google-chrome';
@@ -21,10 +32,23 @@ export const open = (url: string, browser: string) => {
 		}
 	} else if (browser === 'firefox') {
 		app = 'firefox';
-	} else {
+	}
+	// TODO brave not quite working
+	// else if (browser === 'brave') {
+	// 	app = 'brave-browser';
+	// args.push('--no-default-browser-check');
+	// }
+	// TODO vivaldi not quite working
+	// else if (browser === 'vivaldi') {
+	// 	app = 'vivaldi';
+	// }
+	else {
 		// @debug
 		console.warn(`unknown browser ${browser}`);
 	}
 
-	return openInBrowser(url, {app});
+	const launchCommand = app ? [app, ...args] : app;
+	return openInBrowser(url, {
+		app: launchCommand
+	});
 };
