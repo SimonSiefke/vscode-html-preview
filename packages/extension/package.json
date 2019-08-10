@@ -40,6 +40,11 @@
         "category": "Html Preview",
         "command": "htmlPreview.openPreview",
         "title": "Open Preview"
+      },
+      {
+        "category": "Html Preview",
+        "command": "htmlPreview.closePreview",
+        "title": "Close Preview"
       }
     ],
     "configuration": {

@@ -7,23 +7,24 @@ export interface HttpServer {
 	 */
 	readonly port: number | undefined
 	/**
-	 * Start the websocket server.
+	 * Start the server.
 	 */
 	readonly start: (port?: number) => void
-	/**
-	 * Stop the websocket server.
-	 */
-	readonly stop: () => void
 	/**
 	 * Listen for requests
 	 */
 	readonly onRequest: (listener: http.RequestListener) => void
+
+	readonly server: import('http').Server
 }
 
 export function createHttpServer(): HttpServer {
 	let httpServer: http.Server;
 	let requestListener: http.RequestListener;
 	return {
+		get server() {
+			return httpServer;
+		},
 		get port() {
 			return (httpServer.address() as AddressInfo).port;
 		},
@@ -40,9 +41,6 @@ export function createHttpServer(): HttpServer {
 			}
 
 			requestListener = listener;
-		},
-		stop() {
-			httpServer.close();
 		}
 	};
 }

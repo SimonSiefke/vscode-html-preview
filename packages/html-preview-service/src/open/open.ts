@@ -12,6 +12,7 @@ import * as openInBrowser from 'open';
  * TODO safari browser
  * TODO sizzy
  * TODO blisk
+ * TODO opera
  *
  * The currently no supported browsers are:
  * - brave, it opens with a vscode icon instead of a brave icon

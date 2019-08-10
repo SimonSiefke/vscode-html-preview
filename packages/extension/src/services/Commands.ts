@@ -7,7 +7,9 @@ import {
 	createHttpServer,
 	open,
 	createParser,
-	diff
+	diff,
+	HttpServer,
+	WebSocketServer
 } from 'html-preview-service';
 import {core} from '../plugins/local-plugin-core/core';
 import {redirect} from '../plugins/local-plugin-redirect/redirect';
@@ -19,7 +21,14 @@ const packagesRoot =
 		path.join(__dirname, '../../') :
 		path.join(__dirname, '../../../');
 
+let webSocketServer: WebSocketServer | undefined;
+
 async function openPreview(context: vscode.ExtensionContext) {
+	if (webSocketServer) {
+		// @debug
+		throw new Error('preview already open');
+	}
+
 	const indexJs = fs.readFileSync(path.join(packagesRoot, 'injected-code/dist/injectedCodeMain.js'));
 	const indexJsMap = fs.readFileSync(
 		path.join(packagesRoot, 'injected-code/dist/injectedCodeMain.js.map')
@@ -83,26 +92,14 @@ async function openPreview(context: vscode.ExtensionContext) {
 	});
 	context.subscriptions.push({
 		dispose() {
-			httpServer.stop();
+			webSocketServer.stop();
+			webSocketServer = undefined;
 		}
 	});
 	await httpServer.start(3000);
 	const browser = vscode.workspace.getConfiguration().get<string>('htmlPreview.browser');
 	await open('http://localhost:3000', browser);
-	const webSocketServer = createWebSocketServer();
-	try {
-		webSocketServer.start(3001);
-	} catch (error) {
-		// @debug
-		console.error(error);
-		vscode.window.showErrorMessage(error);
-	}
-
-	context.subscriptions.push({
-		dispose() {
-			webSocketServer.stop();
-		}
-	});
+	webSocketServer = createWebSocketServer(httpServer.server);
 
 	const autoDispose = (fn: (...args: any[]) => vscode.Disposable) => (...args: any[]) =>
 		context.subscriptions.push(fn(...args));
@@ -132,6 +129,20 @@ async function openPreview(context: vscode.ExtensionContext) {
 	enablePlugin(redirect);
 }
 
+const closePreview = async () => {
+	if (!webSocketServer) {
+		throw new Error('cannot close because server isn\'t open');
+	}
+
+	await webSocketServer.stop();
+	webSocketServer = undefined;
+};
+
 export function activate(context: vscode.ExtensionContext) {
-	vscode.commands.registerCommand('htmlPreview.openPreview', () => openPreview(context));
+	context.subscriptions.push(
+		vscode.commands.registerCommand('htmlPreview.openPreview', () => openPreview(context))
+	);
+	context.subscriptions.push(
+		vscode.commands.registerCommand('htmlPreview.closePreview', closePreview)
+	);
 }

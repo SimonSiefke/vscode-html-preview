@@ -2,23 +2,15 @@ import * as WebSocket from 'ws';
 
 export interface WebSocketServer {
 	/**
-	 * The port of the server.
-	 */
-	readonly port: number | undefined
-	/**
 	 * Send a list of commands to all connected clients.
 	 */
 	readonly broadcast: (commands: object[], {skip}?: {skip?: WebSocket}) => void
-	/**
-	 * Start the websocket server.
-	 */
-	readonly start: (port?: number) => void
-	/**
-	 * Stop the websocket server.
-	 */
-	readonly stop: () => void
 
 	readonly onMessage: (fn: (message: object) => void) => void
+	/**
+	 * Stop the websocket server. Also stops the underlying http server.
+	 */
+	readonly stop: () => Promise<void>
 }
 
 const nextId = (() => {
@@ -28,13 +20,28 @@ const nextId = (() => {
 
 const pendingResults = {};
 
-export function createWebSocketServer(): WebSocketServer {
-	let webSocketServer: WebSocket.Server;
+export function createWebSocketServer(httpServer: import('http').Server): WebSocketServer {
+	const webSocketServer = new WebSocket.Server({server: httpServer});
+	webSocketServer.on('connection', websocket => {
+		websocket.on('message', data => {
+			const message = JSON.parse(data.toString());
+			onMessageListeners.forEach(fn => fn(message));
+			// const {id} = JSON.parse(data.toString());
+			// const {start} = pendingResults[id];
+			// const end = Math.round(process.hrtime(start)[1] / 1000000);
+			// if (end > 15) {
+			// this.broadcast([
+			// 	{command: 'error', payload: ` - performance violation: handler took ${end}ms`}
+			// ]);
+			// }
+
+			// console.log(end);
+			// console.log(end / 1000000);
+			// console.log(id);
+		});
+	});
 	const onMessageListeners: Array<(message: any) => void> = [];
 	return {
-		get port() {
-			return webSocketServer.options.port;
-		},
 		broadcast(messages, options = {}) {
 			const id = nextId();
 			pendingResults[id] = {
@@ -47,32 +54,15 @@ export function createWebSocketServer(): WebSocketServer {
 				}
 			}
 		},
-		start(port = 3000) {
-			webSocketServer = new WebSocket.Server({port});
-			webSocketServer.on('connection', websocket => {
-				websocket.on('message', data => {
-					const message = JSON.parse(data.toString());
-					onMessageListeners.forEach(fn => fn(message));
-					// const {id} = JSON.parse(data.toString());
-					// const {start} = pendingResults[id];
-					// const end = Math.round(process.hrtime(start)[1] / 1000000);
-					// if (end > 15) {
-					// this.broadcast([
-					// 	{command: 'error', payload: ` - performance violation: handler took ${end}ms`}
-					// ]);
-					// }
-
-					// console.log(end);
-					// console.log(end / 1000000);
-					// console.log(id);
-				});
-			});
-		},
 		onMessage: fn => {
 			onMessageListeners.push(fn);
 		},
 		stop() {
-			webSocketServer.close();
+			return new Promise(resolve => {
+				webSocketServer.close(() => {
+					resolve();
+				});
+			});
 		}
 	};
 }

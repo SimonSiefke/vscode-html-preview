@@ -8,7 +8,7 @@ const messageHandlers = {
 	...highlight
 };
 
-const webSocket = new WebSocket('ws://localhost:3001');
+const webSocket = new WebSocket('ws://localhost:3000');
 
 export const send = (message: object) => {
 	const serializedMessage = JSON.stringify(message);
