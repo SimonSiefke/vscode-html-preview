@@ -367,8 +367,11 @@ export function createParser() {
 	let prefixSums: {[key: number]: number} = {};
 	let nodeMap = {};
 	let nextId = createIdGenerator();
+	let dom: any;
+	let text: string;
 	return {
-		parse(text) {
+		parse(domString: string) {
+			text = domString;
 			prefixSums = {};
 			nodeMap = {};
 			nextId = createIdGenerator();
@@ -381,7 +384,14 @@ export function createParser() {
 			walk(result, node => {
 				nodeMap[node.id] = node;
 			});
+			dom = result;
 			return result;
+		},
+		get text() {
+			return text;
+		},
+		get dom() {
+			return dom;
 		},
 		get prefixSums() {
 			return prefixSums;
@@ -393,8 +403,9 @@ export function createParser() {
 			textWithEdits: string,
 			edits: Array<{rangeLength: number; rangeOffset: number; text: string}>
 		) {
+			text = textWithEdits;
 			const edit = edits[0];
-			const {rangeOffset, rangeLength, text} = edit;
+			const {rangeOffset, rangeLength, text: editText} = edit;
 			for (const rawPrefixSum of Object.keys(prefixSums).reverse()) {
 				const prefixSum = parseInt(rawPrefixSum, 10);
 				// TODO something is wrong here
@@ -415,18 +426,19 @@ export function createParser() {
 					// Is after
 					const id = prefixSums[prefixSum];
 					delete prefixSums[prefixSum];
-					prefixSums[prefixSum + text.length - rangeLength] = id;
+					prefixSums[prefixSum + editText.length - rangeLength] = id;
 				}
 			}
 
 			const newNodeMap = {};
-			const result = parseHtml(textWithEdits, {
+			const result = parseHtml(text, {
 				prefixSums,
 				nextId,
 				nodeMap,
 				newNodeMap
 			});
 			nodeMap = newNodeMap;
+			dom = result;
 			return result;
 		}
 	};

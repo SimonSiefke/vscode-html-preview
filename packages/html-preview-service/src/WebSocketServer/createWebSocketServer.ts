@@ -8,7 +8,7 @@ export interface WebSocketServer {
 	/**
 	 * Send a list of commands to all connected clients.
 	 */
-	readonly broadcast: (commands: RemoteCommand[], {skip}?: {skip?: WebSocket}) => void
+	readonly broadcast: (commands: object[], {skip}?: {skip?: WebSocket}) => void
 	/**
 	 * Start the websocket server.
 	 */
@@ -18,7 +18,7 @@ export interface WebSocketServer {
 	 */
 	readonly stop: () => void
 
-	readonly onMessage: (fn: (message: LocalCommandWebsocketMessage) => void) => void
+	readonly onMessage: (fn: (message: object) => void) => void
 }
 
 const nextId = (() => {

@@ -4,6 +4,7 @@
 
 const path = require('path');
 const _ = require('lodash');
+const CircularDependencyPlugin = require('circular-dependency-plugin');
 
 module.exports = function withDefaults(/** @type WebpackConfig & {context:string} */ extConfig) {
 	/** @type WebpackConfig */
@@ -53,7 +54,8 @@ module.exports = function withDefaults(/** @type WebpackConfig & {context:string
 			libraryTarget: 'commonjs'
 		},
 		// yes, really source maps
-		devtool: 'source-map'
+		devtool: 'source-map',
+		plugins: [new CircularDependencyPlugin()]
 	};
 
 	return _.merge(defaultConfig, extConfig);

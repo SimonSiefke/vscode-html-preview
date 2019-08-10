@@ -1,58 +1,32 @@
-import * as Commands from './Commands';
-const ws = new WebSocket('ws://localhost:3001');
+import * as core from './plugins/remote-plugin-core/core';
+import * as error from './plugins/remote-plugin-error/error';
+import * as highlight from './plugins/remote-plugin-highlight/highlight';
 
-const send = (message: LocalCommandWebsocketMessage) => {
-	const serializedMessage = JSON.stringify(message);
-	ws.send(serializedMessage);
+const messageHandlers = {
+	...core,
+	...error,
+	...highlight
 };
 
-ws.onmessage = ({data}) => {
+const webSocket = new WebSocket('ws://localhost:3001');
+
+export const send = (message: object) => {
+	const serializedMessage = JSON.stringify(message);
+	webSocket.send(serializedMessage);
+};
+
+webSocket.onmessage = ({data}) => {
 	const {messages, id} = JSON.parse(data);
-	// console.clear();
-	console.log(JSON.stringify(messages, null, 2));
 	for (const message of messages) {
 		const {command, payload} = message;
-		if (command in Commands) {
-			Commands[command](payload);
+		if (command in messageHandlers) {
+			messageHandlers[command](payload);
 		} else {
 			// @debug
-			Commands.error({message: 'command does not exist'});
+			alert({message: 'command does not exist'});
 		}
 	}
 
 	if (messages.length === 1 && messages[0].command === 'error') {
-		return;
 	}
-
-	const successMessage: LocalCommandWebsocketMessage = {
-		command: 'success',
-		payload: {},
-		type: 'response',
-		id
-	};
-	send(successMessage);
 };
-
-const nextId = (() => {
-	let id = 0;
-	return () => id++;
-})();
-
-window.addEventListener('click', event => {
-	// @ts-ignore
-	const id = parseInt((event.target as HTMLElement).dataset.id, 10);
-	if (!id) {
-		console.error('no id for', event.target);
-		return;
-	}
-
-	const message: LocalCommandWebsocketMessage = {
-		type: 'request',
-		id: nextId(),
-		command: 'highlight',
-		payload: {
-			id
-		}
-	};
-	send(message);
-});

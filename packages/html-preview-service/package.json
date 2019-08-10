@@ -8,6 +8,7 @@
     "generate:watch:genDomTests": "nodemon --watch src/genDom/genDom.test.txt --exec npm run generate:genDomTests"
   },
   "dependencies": {
+    "open": "^6.4.0",
     "virtual-dom": "^0.0.0-development",
     "ws": "^7.1.1"
   },

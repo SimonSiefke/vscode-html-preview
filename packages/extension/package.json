@@ -62,8 +62,7 @@
   "main": "dist/extensionMain.js",
   "dependencies": {
     "html-preview-service": "^0.0.0-development",
-    "open": "^6.4.0",
-    "virtual-dom": "^0.0.0-development"
+    "open": "^6.4.0"
   },
   "devDependencies": {
     "@types/mocha": "^5.2.7",
