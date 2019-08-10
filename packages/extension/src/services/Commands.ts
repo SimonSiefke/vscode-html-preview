@@ -87,7 +87,8 @@ async function openPreview(context: vscode.ExtensionContext) {
 		}
 	});
 	await httpServer.start(3000);
-	await open('http://localhost:3000');
+	const browser = vscode.workspace.getConfiguration().get<string>('htmlPreview.browser');
+	await open('http://localhost:3000', browser);
 	const webSocketServer = createWebSocketServer();
 	try {
 		webSocketServer.start(3001);

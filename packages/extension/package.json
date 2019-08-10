@@ -49,7 +49,17 @@
         "htmlPreview.highlight": {
           "type": "boolean",
           "default": true,
-          "description": "Highlight elements in the browser when they are selected in VSCode"
+          "description": "Highlight elements in the browser when they are selected in VSCode."
+        },
+        "htmlPreview.browser": {
+          "default": "default",
+          "description": "The browser to open the preview with.",
+          "type": "string",
+          "enum": [
+            "default",
+            "chrome",
+            "firefox"
+          ]
         }
       }
     }
