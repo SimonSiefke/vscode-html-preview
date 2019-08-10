@@ -1,0 +1,91 @@
+name: 
+broken html #1
+
+input: 
+<
+
+name: 
+broken html #2
+
+input:
+<h1
+
+name:
+broken html #3
+
+input:
+<h1>
+
+name:
+broken html #4
+
+input:
+<h1></h1
+
+name: 
+broken html #5
+
+input:
+< h1></h1>
+
+name:
+broken html #6
+
+input:
+<h1></ht>
+
+name:
+broken html #7
+
+input:
+<h1>hi<h1>
+
+name:
+broken html #8
+
+input:
+<br>hi<h1>
+
+name:
+broken html #9
+
+input:
+<br>hi</>
+
+name:
+broken html #10
+
+input:
+<br>hi</br>
+
+name:
+broken html #11
+
+input:
+<br>>
+
+name:
+broken html #12
+
+input:
+<<br>>
+
+name:
+broken html #13
+
+input:
+<<br>></<br>>
+
+name:
+broken html #14
+
+input:
+<></>
+
+name:
+broken html #15
+
+input:
+<div
+  <button>hi</button>
+</div>
