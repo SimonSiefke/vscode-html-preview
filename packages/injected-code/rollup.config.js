@@ -18,6 +18,8 @@ export default {
 		typescript({
 			typescript: require('typescript')
 		}),
-		terser()
+		terser({
+			mangle: false // keep output readable for debugging, even in production
+		})
 	]
 };
