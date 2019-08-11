@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "tsc -b -w",
     "clean": "rimraf dist",
-    "package": "npm run clean && webpack --mode production --config ./webpack/extension.webpack.config.js && webpack --mode production --config ./webpack/injected-code.webpack.config.js&& node scripts/package.js && npm run bundlesize",
+    "package": "npm run clean && cd packages/injected-code && npm run build && cd ../../ && webpack --mode production --config ./webpack/extension.webpack.config.js && webpack --mode production --config ./webpack/injected-code.webpack.config.js&& node scripts/package.js && npm run bundlesize",
     "postinstall": "lerna bootstrap && tsc -b",
     "generate:diffTests": "cd packages/virtual-dom && npm run generate:diffTests",
     "generate:watch:diffTests": "cd packages/virtual-dom && npm run generate:watch:diffTests",
@@ -131,18 +131,6 @@
       "semantic-release-vsce"
     ]
   },
-  "bundlesize": [
-    {
-      "path": "./dist/packages/extension/dist/extensionMain.js",
-      "maxSize": "60.0 kB",
-      "compression": "none"
-    },
-    {
-      "path": "./dist/packages/injected-code/dist/injectedCodeMain.js",
-      "maxSize": "9.0 kB",
-      "compression": "none"
-    }
-  ],
   "renovate": {
     "extends": [
       "bitworkers"
@@ -161,5 +149,17 @@
       "autoprefixer": {},
       "cssnano": {}
     }
-  }
+  },
+  "bundlesize": [
+    {
+      "path": "./dist/packages/extension/dist/extensionMain.js",
+      "maxSize": "190.0 kB",
+      "compression": "none"
+    },
+    {
+      "path": "./dist/packages/injected-code/dist/injectedCodeMain.js",
+      "maxSize": "8.3 kB",
+      "compression": "none"
+    }
+  ]
 }
