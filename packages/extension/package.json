@@ -32,21 +32,41 @@
     "live"
   ],
   "activationEvents": [
-    "onLanguage:html"
+    "*"
   ],
   "contributes": {
     "commands": [
       {
         "category": "Html Preview",
         "command": "htmlPreview.openPreview",
-        "title": "Open Preview"
+        "title": "Open"
+      },
+      {
+        "category": "Html Preview",
+        "command": "htmlPreview.openWithHtmlPreview",
+        "title": "Open with Html Preview"
       },
       {
         "category": "Html Preview",
         "command": "htmlPreview.closePreview",
-        "title": "Close Preview"
+        "title": "Stop"
       }
     ],
+    "menus": {
+      "commandPalette": [
+        {
+          "command": "htmlPreview.openWithHtmlPreview",
+          "when": "false"
+        }
+      ],
+      "explorer/context": [
+        {
+          "command": "htmlPreview.openWithHtmlPreview",
+          "group": "navigation@-HtmlPreview",
+          "when": "resourceLangId == html"
+        }
+      ]
+    },
     "configuration": {
       "type": "object",
       "title": "Html Preview",

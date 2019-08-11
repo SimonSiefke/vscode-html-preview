@@ -1,0 +1,16 @@
+{
+  "type": "object",
+  "required": ["htmlPreview.openWithHtmlPreview", "htmlPreview.open", "htmlPreview.stop"],
+  "properties": {
+    "htmlPreview.openWithHtmlPreview": {
+      "type": "string"
+    },
+    "htmlPreview.open": {
+      "type": "string"
+    },
+    "htmlPreview.stop": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": false
+}

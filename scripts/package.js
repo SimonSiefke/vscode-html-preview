@@ -16,18 +16,13 @@ delete pkg.dependencies;
 delete pkg.devDependencies;
 delete pkg.enableProposedApi;
 
-fs.writeFileSync(
-	path.join(root, 'dist/package.json'),
-	`${JSON.stringify(pkg, null, 2)}\n`
-);
+fs.writeFileSync(path.join(root, 'dist/package.json'), `${JSON.stringify(pkg, null, 2)}\n`);
 
 for (const file of ['README.md', 'LICENSE', 'CHANGELOG.md']) {
 	fs.copySync(path.join(root, file), `dist/${file}`);
 }
 
-for (const file of fs.readdirSync(
-	path.join(root, 'packages/extension/images')
-)) {
+for (const file of fs.readdirSync(path.join(root, 'packages/extension/images'))) {
 	if (
 		[
 			'icon.png',
@@ -37,15 +32,9 @@ for (const file of fs.readdirSync(
 			'refresh_original_lightgray_optimized.svg'
 		].includes(file)
 	) {
-		fs.copySync(
-			path.join(root, `packages/extension/images/${file}`),
-			`dist/images/${file}`
-		);
+		fs.copySync(path.join(root, `packages/extension/images/${file}`), `dist/images/${file}`);
 	} else if (
-		[
-			'bolt_original_yellow_optimized.svg',
-			'bolt_original_red_optimized.svg'
-		].includes(file)
+		['bolt_original_yellow_optimized.svg', 'bolt_original_red_optimized.svg'].includes(file)
 	) {
 		fs.copySync(
 			path.join(root, `packages/extension/images/${file}`),
@@ -53,3 +42,5 @@ for (const file of fs.readdirSync(
 		);
 	}
 }
+
+require('./package-i18n');

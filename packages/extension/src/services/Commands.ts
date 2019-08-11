@@ -5,7 +5,7 @@ import {
 	createWebSocketServer,
 	genDom,
 	createHttpServer,
-	open,
+	openInBrowser,
 	createParser,
 	diff,
 	HttpServer,
@@ -15,18 +15,21 @@ import {core} from '../plugins/local-plugin-core/core';
 import {redirect} from '../plugins/local-plugin-redirect/redirect';
 import {highlight} from '../plugins/local-plugin-highlight/highlight';
 import {LocalPluginApi, LocalPlugin} from '../plugins/localPluginApi';
+import {config} from '../config';
 
-const packagesRoot =
-	process.env.NODE_ENV === 'production' ?
-		path.join(__dirname, '../../') :
-		path.join(__dirname, '../../../');
+const packagesRoot = path.join(config.root, 'packages');
 
 let webSocketServer: WebSocketServer | undefined;
 
+async function open() {
+	const browser = vscode.workspace.getConfiguration().get<string>('htmlPreview.browser');
+	await openInBrowser('http://localhost:3000', browser);
+}
+
 async function openPreview(context: vscode.ExtensionContext) {
 	if (webSocketServer) {
-		// @debug
-		throw new Error('preview already open');
+		await open();
+		return;
 	}
 
 	const indexJs = fs.readFileSync(path.join(packagesRoot, 'injected-code/dist/injectedCodeMain.js'));
@@ -97,8 +100,7 @@ async function openPreview(context: vscode.ExtensionContext) {
 		}
 	});
 	await httpServer.start(3000);
-	const browser = vscode.workspace.getConfiguration().get<string>('htmlPreview.browser');
-	await open('http://localhost:3000', browser);
+	await open();
 	webSocketServer = createWebSocketServer(httpServer.server);
 
 	const autoDispose = (fn: (...args: any[]) => vscode.Disposable) => (...args: any[]) =>
@@ -141,6 +143,9 @@ const closePreview = async () => {
 export function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push(
 		vscode.commands.registerCommand('htmlPreview.openPreview', () => openPreview(context))
+	);
+	context.subscriptions.push(
+		vscode.commands.registerCommand('htmlPreview.openWithHtmlPreview', () => openPreview(context))
 	);
 	context.subscriptions.push(
 		vscode.commands.registerCommand('htmlPreview.closePreview', closePreview)

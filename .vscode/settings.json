@@ -37,5 +37,21 @@
   },
   "files.trimTrailingWhitespace": false,
   "editor.formatOnSave": true,
-  "eslint.autoFixOnSave": true
+  "eslint.autoFixOnSave": true,
+  "json.schemas": [
+    {
+      "fileMatch": [
+        "i18n/de.json",
+        "i18n/en.json",
+        "i18n/es.json",
+        "i18n/fr.json",
+        "i18n/it.json",
+        "i18n/ja.json",
+        "i18n/nl.json",
+        "i18n/ru.json",
+        "i18n.zh-cn.json"
+      ],
+      "url": "./i18n/_schema.json"
+    }
+  ]
 }

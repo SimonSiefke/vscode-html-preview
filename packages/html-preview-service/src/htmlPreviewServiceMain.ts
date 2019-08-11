@@ -1,4 +1,4 @@
-export {open} from './open/open';
+export {openInBrowser} from './openInBrowser/openInBrowser';
 export * from 'virtual-dom';
 export {genDom} from './genDom/genDom';
 export {createWebSocketServer, WebSocketServer} from './WebSocketServer/createWebSocketServer';

@@ -1,4 +1,4 @@
-import * as openInBrowser from 'open';
+import * as open from 'open';
 
 /**
  * Opens a url in a browser.
@@ -20,7 +20,7 @@ import * as openInBrowser from 'open';
  *
 
  */
-export const open = (url: string, browser: string) => {
+export const openInBrowser = (url: string, browser: string) => {
 	let app: string | undefined;
 	const args: string[] = [];
 	if (browser === 'default') {
@@ -49,7 +49,7 @@ export const open = (url: string, browser: string) => {
 	}
 
 	const launchCommand = app ? [app, ...args] : app;
-	return openInBrowser(url, {
+	return open(url, {
 		app: launchCommand
 	});
 };
