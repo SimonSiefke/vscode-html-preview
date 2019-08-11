@@ -11,13 +11,15 @@
 
 ## Commands
 
-- Html Preview: Open Preview
+- Html Preview: Open
+- Html Preview: Stop
 
 ## Settings
 
-<!-- TODO settings -->
-
-TODO
+| Property             | Description                                                         | Default     |
+| -------------------- | ------------------------------------------------------------------- | ----------- |
+| htmlPreview.browser  | The browser to open the preview with                                | `"default"` |
+| svgPreview.highlight | Highlight elements in the browser when they are selected in VSCode. | `true`      |
 
 <!-- TODO bug: type <h1>a</h1>, select a , type b, $node is undefined -->
 
