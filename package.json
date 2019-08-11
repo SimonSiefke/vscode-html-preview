@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "tsc -b -w",
     "clean": "rimraf dist",
-    "package": "npm run clean && cd packages/injected-code && npm run build && cd ../../ && webpack --mode production --config ./webpack/extension.webpack.config.js && webpack --mode production --config ./webpack/injected-code.webpack.config.js&& node scripts/package.js && npm run bundlesize",
+    "package": "npm run clean && cd packages/injected-code && npm run build && cd ../../ && webpack --mode production --config ./webpack/extension.webpack.config.js && node scripts/package.js && npm run bundlesize",
     "postinstall": "lerna bootstrap && tsc -b",
     "generate:diffTests": "cd packages/virtual-dom && npm run generate:diffTests",
     "generate:watch:diffTests": "cd packages/virtual-dom && npm run generate:watch:diffTests",
@@ -28,6 +28,7 @@
     "babel-preset-latest-node": "^3.2.1",
     "bundlesize": "^0.18.0",
     "circular-dependency-plugin": "^5.1.0",
+    "copy-webpack-plugin": "^5.0.4",
     "cssnano": "^4.1.10",
     "eslint": "^6.0.1",
     "eslint-config-xo": "^0.26.0",
@@ -157,8 +158,8 @@
       "compression": "none"
     },
     {
-      "path": "./dist/packages/injected-code/dist/injectedCodeMain.js",
-      "maxSize": "8.3 kB",
+      "path": "./dist/packages/injected-code/dist/html-preview.js",
+      "maxSize": "7.2 kB",
       "compression": "none"
     }
   ]

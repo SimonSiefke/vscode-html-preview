@@ -43,4 +43,9 @@ for (const file of fs.readdirSync(path.join(root, 'packages/extension/images')))
 	}
 }
 
+fs.copySync(
+	path.join(root, 'packages/injected-code/dist'),
+	path.join(root, 'dist/packages/injected-code/dist')
+);
+
 require('./package-i18n');

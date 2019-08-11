@@ -9,7 +9,6 @@ export default {
 		{
 			file: pkg.main,
 			format: 'es',
-			name: 'injectedCodeMain',
 			sourcemap: true
 		}
 	],
