@@ -1,4 +1,7 @@
 {
+  "engines": {
+    "node": "12"
+  },
   "name": "vscode-html-preview",
   "scripts": {
     "dev": "tsc -b -w",
