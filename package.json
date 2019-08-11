@@ -1,6 +1,6 @@
 {
   "engines": {
-    "node": ">=11"
+    "node": "12"
   },
   "name": "vscode-html-preview",
   "scripts": {
