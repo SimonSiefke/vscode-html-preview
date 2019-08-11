@@ -22,7 +22,8 @@
     "tsconfig-noncomposite-base.json": true,
     "tsconfig.json": true,
     "scripts": true,
-    "**/tsconfig.tsbuildinfo": true
+    "**/tsconfig.tsbuildinfo": true,
+    "i18n": true
   },
   "search.exclude": {
     "**/node_modules": true,

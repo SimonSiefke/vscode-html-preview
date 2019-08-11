@@ -8,8 +8,8 @@ import {
 	openInBrowser,
 	createParser,
 	diff,
-	HttpServer,
-	WebSocketServer
+	WebSocketServer,
+	mime
 } from 'html-preview-service';
 import {core} from '../plugins/local-plugin-core/core';
 import {redirect} from '../plugins/local-plugin-redirect/redirect';
@@ -32,13 +32,13 @@ async function openPreview(context: vscode.ExtensionContext) {
 		return;
 	}
 
-	const indexJs = fs.readFileSync(path.join(packagesRoot, 'injected-code/dist/injectedCodeMain.js'));
+	const indexJs = fs.readFileSync(path.join(packagesRoot, 'injected-code/dist/$$html-preview.js'));
 	const indexJsMap = fs.readFileSync(
-		path.join(packagesRoot, 'injected-code/dist/injectedCodeMain.js.map')
+		path.join(packagesRoot, 'injected-code/dist/$$html-preview.js.map')
 	);
 	const httpServer = createHttpServer();
 	const parser = createParser();
-	httpServer.onRequest((req, res) => {
+	httpServer.onRequest(async (req, res) => {
 		try {
 			try {
 				const file = fs.readFileSync(
@@ -67,7 +67,7 @@ async function openPreview(context: vscode.ExtensionContext) {
 				const $virtualDom = `<script id="virtual-dom">${JSON.stringify(
 					parser.dom.children
 				)}</script>`;
-				const $script = '<script type="module" src="index.js"></script>';
+				const $script = '<script type="module" src="html-preview.js"></script>';
 				const $inner = '\n' + $virtualDom + '\n' + $script;
 				if (bodyIndex !== -1) {
 					dom = dom.slice(0, bodyIndex) + $inner + dom.slice(bodyIndex);
@@ -77,16 +77,27 @@ async function openPreview(context: vscode.ExtensionContext) {
 
 				res.write(dom);
 				res.end();
-			} else if (req.url === '/index.js') {
+			} else if (req.url === '/html-preview.js') {
 				res.writeHead(200, {'Content-Type': 'text/javascript'});
 				res.write(indexJs);
 				res.end();
-			} else if (req.url === '/injectedCodeMain.js.map') {
+			} else if (req.url === '/html-preview.js.map') {
 				res.write(indexJsMap);
 				res.end();
 			} else {
-				res.statusCode = 404;
-				res.end();
+				try {
+					const diskPath = path.join(vscode.workspace.workspaceFolders[0].uri.fsPath, req.url);
+					const uri = vscode.Uri.file(diskPath);
+					const file = await vscode.workspace.fs.readFile(uri);
+					const mimeType = mime.getType(req.url);
+					res.writeHead(200, {'Content-Type': mimeType});
+					res.write(file);
+					res.end();
+				} catch (error) {
+					console.log('error', error);
+					res.statusCode = 404;
+					res.end();
+				}
 			}
 		} catch (error) {
 			console.error(error);

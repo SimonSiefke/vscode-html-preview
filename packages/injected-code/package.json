@@ -1,10 +1,18 @@
 {
   "name": "injected-code",
   "version": "0.0.0-development",
+  "main": "dist/html-preview.js",
+  "scripts": {
+    "build": "rollup -c rollup.config.js",
+    "dev": "rollup -c -w rollup.config.js"
+  },
   "dependencies": {
     "lodash": "^4.17.15"
   },
   "devDependencies": {
-    "@types/lodash": "^4.14.136"
+    "@types/lodash": "^4.14.136",
+    "rollup": "^1.19.4",
+    "rollup-plugin-terser": "^5.1.1",
+    "rollup-plugin-typescript2": "^0.22.1"
   }
 }

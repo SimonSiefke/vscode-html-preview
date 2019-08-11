@@ -8,11 +8,13 @@
     "generate:watch:genDomTests": "nodemon --watch src/genDom/genDom.test.txt --exec npm run generate:genDomTests"
   },
   "dependencies": {
+    "mime-types": "^2.1.24",
     "open": "^6.4.0",
     "virtual-dom": "^0.0.0-development",
     "ws": "^7.1.1"
   },
   "devDependencies": {
+    "@types/mime-types": "^2.1.0",
     "@types/ws": "^6.0.2"
   }
 }

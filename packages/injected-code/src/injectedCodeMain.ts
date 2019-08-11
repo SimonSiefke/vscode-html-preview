@@ -10,10 +10,10 @@ const messageHandlers = {
 
 const webSocket = new WebSocket('ws://localhost:3000');
 
-export const send = (message: object) => {
-	const serializedMessage = JSON.stringify(message);
-	webSocket.send(serializedMessage);
-};
+// const send = (message: object) => {
+// 	const serializedMessage = JSON.stringify(message);
+// 	webSocket.send(serializedMessage);
+// };
 
 webSocket.onmessage = ({data}) => {
 	const {messages, id} = JSON.parse(data);

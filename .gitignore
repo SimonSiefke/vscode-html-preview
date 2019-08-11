@@ -1,6 +1,6 @@
 dist
 .vscode-test
-
+.rpt2_cache
 # Logs
 logs
 *.log
