@@ -40,16 +40,6 @@ async function openPreview(context: vscode.ExtensionContext) {
 	const parser = createParser();
 	httpServer.onRequest(async (req, res) => {
 		try {
-			try {
-				const file = fs.readFileSync(
-					path.join(packagesRoot, `injected-code/dist/${req.url}.js`),
-					'utf-8'
-				);
-				res.writeHead(200, {'Content-Type': 'text/javascript'});
-				res.write(file);
-				res.end();
-			} catch (error) {}
-
 			if (req.url === '/') {
 				// TODO later: caching and etags
 				// if (!send) {
