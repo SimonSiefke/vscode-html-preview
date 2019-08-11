@@ -32,9 +32,9 @@ async function openPreview(context: vscode.ExtensionContext) {
 		return;
 	}
 
-	const indexJs = fs.readFileSync(path.join(packagesRoot, 'injected-code/dist/$$html-preview.js'));
+	const indexJs = fs.readFileSync(path.join(packagesRoot, 'injected-code/dist/html-preview.js'));
 	const indexJsMap = fs.readFileSync(
-		path.join(packagesRoot, 'injected-code/dist/$$html-preview.js.map')
+		path.join(packagesRoot, 'injected-code/dist/html-preview.js.map')
 	);
 	const httpServer = createHttpServer();
 	const parser = createParser();
