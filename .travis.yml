@@ -21,9 +21,9 @@ jobs:
     - stage: test
       script:
         - npx tsc -b
+        - npm run package
         - npm test
         - npm run e2e
-        - npm run package
     - stage: release
       script:
         - npm run package
