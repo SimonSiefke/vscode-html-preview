@@ -32,7 +32,7 @@
     "live"
   ],
   "activationEvents": [
-    "*"
+    "onLanguage:html"
   ],
   "contributes": {
     "commands": [
@@ -91,8 +91,7 @@
   },
   "scripts": {
     "dev": "cd ../../ && npm run dev",
-    "pretest": "tsc -b",
-    "e2e": "cross-env NODE_ENV=test node ./dist/test/runTest.js"
+    "e2e": "tsc -b && cross-env NODE_ENV=test node ./dist/test/runTest.js"
   },
   "main": "dist/extensionMain.js",
   "dependencies": {
