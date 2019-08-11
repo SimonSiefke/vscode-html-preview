@@ -1,7 +1,7 @@
-import {useCommand} from '../remotePluginApi';
+import {RemotePlugin} from '../remotePluginApi';
 
-export const error: RemotePluginError['error'] = useCommand(() => {
-	return payload => {
+export const error: RemotePlugin = api => {
+	api.webSocket.onMessage('error', payload => {
 		alert('error' + payload.message);
-	};
-});
+	});
+};

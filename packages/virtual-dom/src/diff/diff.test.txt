@@ -3410,3 +3410,69 @@ expectedEdits:
      }
   }
 ]
+
+name:
+doctype and whitespace #1
+
+previousDom:
+<!DOCTYPE html>
+
+edits:
+[
+  {
+    rangeOffset: 15
+    rangeLength: 0
+    text: "\n"
+  }
+]
+
+nextDom:
+<!DOCTYPE html>
+
+
+expectedEdits:
+[]
+
+name:
+doctype and whitespace #2
+
+previousDom:
+<!doctype html>
+
+edits:
+[
+  {
+    rangeOffset: 15
+    rangeLength: 0
+    text: "\n"
+  }
+]
+
+nextDom:
+<!doctype html>
+
+
+expectedEdits:
+[]
+
+name:
+doctype and whitespace #3
+
+previousDom:
+<!doctype html>
+
+
+edits:
+[
+  {
+    rangeOffset: 15
+    rangeLength: 1
+    text: ""
+  }
+]
+
+nextDom:
+<!doctype html>
+
+expectedEdits:
+[]

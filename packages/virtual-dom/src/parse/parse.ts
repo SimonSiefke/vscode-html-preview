@@ -68,6 +68,10 @@ function parse(
 	const scanner = createScanner(text);
 	const htmlDocument = createElementNode();
 	newNodeMap[0] = htmlDocument;
+	/**
+	 * special case: whitespace text nodes after <!DOCTYPE html> must be ignored
+	 */
+	let isAfterDoctype = false;
 	let curr: any = htmlDocument;
 	let prefixSum = 0;
 	let endTagName: string | undefined;
@@ -162,6 +166,11 @@ function parse(
 	while (token !== 'eos') {
 		switch (token) {
 			case 'content':
+				if (isAfterDoctype && !scanner.getTokenText().trim()) {
+					isAfterDoctype = false;
+					break;
+				}
+
 				addNode(createTextNode(scanner.getTokenText()));
 				curr = curr.parent;
 				break;
@@ -173,6 +182,10 @@ function parse(
 				break;
 			case 'start-tag-close':
 				if (curr.tag && selfClosingTags.includes(curr.tag) && curr.parent) {
+					if (curr.tag.toLowerCase() === '!doctype') {
+						isAfterDoctype = true;
+					}
+
 					curr.closed = true;
 					curr = curr.parent;
 				}
@@ -472,21 +485,23 @@ Object.prototype.pretty = function () {
 	);
 };
 
-const testCase = {
-	previousDom: '<h1>a</h1>',
+// const testCase = {
+// 	previousDom: '<!DOCTYPE html>',
 
-	nextDom: '<h1>a</h1>\n<h1>a</h1>'
-};
-const parser = createParser();
-const parsedH1 = parser.parse(testCase.previousDom);
-const oldNodeMap = parser.nodeMap; // ?
-const parsedH2 = parser.edit(testCase.nextDom, [
-	{
-		rangeOffset: 53,
-		rangeLength: 0,
-		text: '  '
-	}
-]);
-const newNodeMap = parser.nodeMap; // ?
-parsedH1.pretty(); // ?
-parsedH2.pretty(); // ?
+// 	nextDom: '<h1>a</h1>\n<h1>a</h1>'
+// };
+// const parser = createParser();
+// const parsedH1 = parser.parse(testCase.previousDom);
+// const oldNodeMap = parser.nodeMap; // ?
+// const parsedH2 = parser.edit(testCase.nextDom, [
+// 	{
+// 		rangeOffset: 53,
+// 		rangeLength: 0,
+// 		text: '  '
+// 	}
+// ]);
+// const newNodeMap = parser.nodeMap; // ?
+// parsedH1.pretty(); // ?
+// parsedH2.pretty(); // ?
+
+parseHtml('<!DOCTYPE html>\n');

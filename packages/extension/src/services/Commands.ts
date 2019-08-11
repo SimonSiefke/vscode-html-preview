@@ -27,6 +27,7 @@ async function open() {
 }
 
 async function openPreview(context: vscode.ExtensionContext) {
+	console.log('open preview');
 	if (webSocketServer) {
 		await open();
 		return;
@@ -54,11 +55,11 @@ async function openPreview(context: vscode.ExtensionContext) {
 				res.writeHead(200, {'Content-Type': 'text/html'});
 				let dom = genDom(parser.text);
 				const bodyIndex = dom.lastIndexOf('</body');
-				const $virtualDom = `<script id="virtual-dom">${JSON.stringify(
-					parser.dom.children
-				)}</script>`;
+				// const $virtualDom = `<script id="virtual-dom">${JSON.stringify(
+				// 	parser.dom.children
+				// )}</script>`;
 				const $script = '<script type="module" src="html-preview.js"></script>';
-				const $inner = '\n' + $virtualDom + '\n' + $script;
+				const $inner = '\n' + $script;
 				if (bodyIndex !== -1) {
 					dom = dom.slice(0, bodyIndex) + $inner + dom.slice(bodyIndex);
 				} else {
@@ -66,6 +67,11 @@ async function openPreview(context: vscode.ExtensionContext) {
 				}
 
 				res.write(dom);
+				res.end();
+			} else if (req.url === '/virtual-dom.json') {
+				res.writeHead(200, {'Content-Type': 'text/json'});
+				const virtualDom = JSON.stringify(parser.dom.children);
+				res.write(virtualDom);
 				res.end();
 			} else if (req.url === '/html-preview.js') {
 				res.writeHead(200, {'Content-Type': 'text/javascript'});

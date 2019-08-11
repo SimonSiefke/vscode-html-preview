@@ -2388,3 +2388,57 @@ test(`test because of bug #4`, () => {
   ]
   expect(adjustEdits(edits)).toEqual(adjustExpectedEdits(expectedEdits))
 })
+
+test(`doctype and whitespace #1`, () => {
+  const parser = createParser()
+  const previousDom = parser.parse(`<!DOCTYPE html>`)
+  const oldNodeMap = parser.nodeMap
+  const nextDom = parser.edit(`<!DOCTYPE html>
+`, [
+    {
+      "rangeOffset": 15,
+      "rangeLength": 0,
+      "text": "\n"
+    }
+  ])
+  const newNodeMap = parser.nodeMap
+  const edits = domdiff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const expectedEdits = []
+  expect(adjustEdits(edits)).toEqual(adjustExpectedEdits(expectedEdits))
+})
+
+test(`doctype and whitespace #2`, () => {
+  const parser = createParser()
+  const previousDom = parser.parse(`<!doctype html>`)
+  const oldNodeMap = parser.nodeMap
+  const nextDom = parser.edit(`<!doctype html>
+`, [
+    {
+      "rangeOffset": 15,
+      "rangeLength": 0,
+      "text": "\n"
+    }
+  ])
+  const newNodeMap = parser.nodeMap
+  const edits = domdiff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const expectedEdits = []
+  expect(adjustEdits(edits)).toEqual(adjustExpectedEdits(expectedEdits))
+})
+
+test(`doctype and whitespace #3`, () => {
+  const parser = createParser()
+  const previousDom = parser.parse(`<!doctype html>
+`)
+  const oldNodeMap = parser.nodeMap
+  const nextDom = parser.edit(`<!doctype html>`, [
+    {
+      "rangeOffset": 15,
+      "rangeLength": 1,
+      "text": ""
+    }
+  ])
+  const newNodeMap = parser.nodeMap
+  const edits = domdiff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const expectedEdits = []
+  expect(adjustEdits(edits)).toEqual(adjustExpectedEdits(expectedEdits))
+})

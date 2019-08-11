@@ -162,5 +162,8 @@
       "maxSize": "7.2 kB",
       "compression": "none"
     }
-  ]
+  ],
+  "dependencies": {
+    "open": "^6.4.0"
+  }
 }

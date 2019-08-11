@@ -1,4 +1,4 @@
-import {nodeMap, useCommand} from '../remotePluginApi';
+import {RemotePlugin, mergePlugins} from '../remotePluginApi';
 
 function fixAttributeValue(value: string | null) {
 	if (value === null) {
@@ -15,41 +15,41 @@ function fixAttributeValue(value: string | null) {
 	return value;
 }
 
-export const textReplace: RemotePluginCore['textReplace'] = useCommand(() => {
-	return payload => {
-		const $node = nodeMap[payload.id] as Comment;
+const textReplace: RemotePlugin = api => {
+	api.webSocket.onMessage('textReplace', payload => {
+		const $node = api.nodeMap[payload.id] as Comment;
 		if ($node === undefined) {
 			debugger;
 		}
 
 		$node.data = payload.text;
-	};
-});
+	});
+};
 
-export const attributeChange: RemotePluginCore['attributeChange'] = useCommand(() => {
-	return payload => {
-		const $node = nodeMap[payload.id] as HTMLElement;
+const attributeChange: RemotePlugin = api => {
+	api.webSocket.onMessage('textReplace', payload => {
+		const $node = api.nodeMap[payload.id] as HTMLElement;
 		$node.setAttribute(payload.attribute, fixAttributeValue(payload.value));
-	};
-});
+	});
+};
 
-export const attributeAdd: RemotePluginCore['attributeAdd'] = useCommand(() => {
-	return payload => {
-		// just forward the request because it does the same thing
-		attributeChange(payload);
-	};
-});
+const attributeAdd: RemotePlugin = api => {
+	api.webSocket.onMessage('textReplace', payload => {
+		const $node = api.nodeMap[payload.id] as HTMLElement;
+		$node.setAttribute(payload.attribute, fixAttributeValue(payload.value));
+	});
+};
 
-export const attributeDelete: RemotePluginCore['attributeDelete'] = useCommand(() => {
-	return payload => {
-		const $node = nodeMap[payload.id] as HTMLElement;
+const attributeDelete: RemotePlugin = api => {
+	api.webSocket.onMessage('attributeDelete', payload => {
+		const $node = api.nodeMap[payload.id] as HTMLElement;
 		$node.removeAttribute(payload.attribute);
-	};
-});
+	});
+};
 
-export const elementDelete: RemotePluginCore['elementDelete'] = useCommand(() => {
-	return payload => {
-		const $node = nodeMap[payload.id];
+const elementDelete: RemotePlugin = api => {
+	api.webSocket.onMessage('elementDelete', payload => {
+		const $node = api.nodeMap[payload.id];
 		if (!$node) {
 			debugger;
 		}
@@ -60,12 +60,12 @@ export const elementDelete: RemotePluginCore['elementDelete'] = useCommand(() =>
 			$node.parentNode.removeChild($node);
 		}
 
-		delete nodeMap[payload.id];
-	};
-});
+		delete api.nodeMap[payload.id];
+	});
+};
 
-export const elementInsert: RemotePluginCore['elementInsert'] = useCommand(() => {
-	return payload => {
+const elementInsert: RemotePlugin = api => {
+	api.webSocket.onMessage('elementInsert', payload => {
 		let $node: HTMLElement | Text | Comment;
 		if (payload.nodeType === 'ElementNode') {
 			$node = document.createElement(payload.tag) as HTMLElement;
@@ -84,8 +84,8 @@ export const elementInsert: RemotePluginCore['elementInsert'] = useCommand(() =>
 			throw new Error('invalid node type');
 		}
 
-		nodeMap[payload.id] = $node;
-		const $parent = nodeMap[payload.parentId] as HTMLElement;
+		api.nodeMap[payload.id] = $node;
+		const $parent = api.nodeMap[payload.parentId] as HTMLElement;
 		if (!$parent) {
 			debugger;
 		}
@@ -93,11 +93,11 @@ export const elementInsert: RemotePluginCore['elementInsert'] = useCommand(() =>
 		if (payload.beforeId === 0) {
 			$parent.prepend($node);
 		} else {
-			const $referenceNode = nodeMap[payload.beforeId];
+			const $referenceNode = api.nodeMap[payload.beforeId];
 			// @debug
 			if (!$referenceNode) {
 				console.log(payload.beforeId);
-				console.log(nodeMap);
+				console.log(api.nodeMap);
 				console.error(
 					`failed to insert new element because reference node with id ${payload.beforeId} does not exist`
 				);
@@ -106,5 +106,14 @@ export const elementInsert: RemotePluginCore['elementInsert'] = useCommand(() =>
 
 			$parent.insertBefore($node, $referenceNode.nextSibling);
 		}
-	};
-});
+	});
+};
+
+export const core = mergePlugins(
+	textReplace,
+	attributeChange,
+	elementDelete,
+	elementInsert,
+	attributeAdd,
+	attributeDelete
+);

@@ -1,32 +1,119 @@
-import * as core from './plugins/remote-plugin-core/core';
-import * as error from './plugins/remote-plugin-error/error';
-import * as highlight from './plugins/remote-plugin-highlight/highlight';
+import {core} from './plugins/remote-plugin-core/core';
+import {error} from './plugins/remote-plugin-error/error';
+import {highlight} from './plugins/remote-plugin-highlight/highlight';
+import {RemotePluginApi} from './plugins/remotePluginApi';
 
-const messageHandlers = {
-	...core,
-	...error,
-	...highlight
-};
+function walk(dom, fn, childrenFirst = false) {
+	if (Array.isArray(dom)) {
+		return dom.map(d => walk(d, fn, childrenFirst));
+	}
 
-const webSocket = new WebSocket('ws://localhost:3000');
+	if (!childrenFirst) {
+		fn(dom);
+	}
 
-// const send = (message: object) => {
-// 	const serializedMessage = JSON.stringify(message);
-// 	webSocket.send(serializedMessage);
-// };
+	if (dom.children) {
+		walk(dom.children, fn, childrenFirst);
+	}
 
-webSocket.onmessage = ({data}) => {
-	const {messages, id} = JSON.parse(data);
-	for (const message of messages) {
-		const {command, payload} = message;
-		if (command in messageHandlers) {
-			messageHandlers[command](payload);
-		} else {
+	if (childrenFirst) {
+		fn(dom);
+	}
+
+	return dom;
+}
+
+async function fetchNodeMap() {
+	const nodeMap = {0: document.body};
+	const virtualDom = await fetch('/virtual-dom.json').then(res => res.json());
+	for (let i = 0; i < virtualDom.length; i++) {
+		const rootNode = virtualDom[i];
+		if (rootNode.type === 'TextNode') {
+			nodeMap[rootNode.id] = document.childNodes[i];
 			// @debug
-			alert({message: 'command does not exist'});
+			if (!nodeMap[rootNode.id] || nodeMap[rootNode.id].nodeType !== Node.TEXT_NODE) {
+				console.log('expected text node, got');
+				console.error('invalid', nodeMap[rootNode.id]);
+				alert('error, failed to hydrate dom (1)');
+			}
 		}
 	}
 
-	if (messages.length === 1 && messages[0].command === 'error') {
-	}
-};
+	walk(virtualDom, node => {
+		if (node.type !== 'ElementNode') {
+			return;
+		}
+
+		const $node = document.querySelector(`[data-id='${node.id}']`) as HTMLElement;
+		// @debug
+		if (!$node && node.tag.toLowerCase() !== '!doctype') {
+			console.error(node);
+			console.error(node.id, $node);
+			debugger;
+			alert('error, failed to hydrate dom (2)');
+		}
+
+		// $node.removeAttribute('data-id'); // TODO enable this again later
+		nodeMap[node.id] = $node;
+		for (let i = 0; i < node.children.length; i++) {
+			const child = node.children[i];
+			if (child.type === 'TextNode') {
+				if (node.tag === 'html') {
+					// TODO what is happening here?
+					// TODO handle whitespace in html nodes / implicitly inserted nodes
+					continue;
+				}
+
+				const $child = document.createTextNode(child.text);
+				$node.replaceChild($child, $node.childNodes[i]);
+				nodeMap[child.id] = $child;
+			}
+
+			if (child.type === 'CommentNode') {
+				const $child = document.createComment(child.text);
+				$node.replaceChild($child, $node.childNodes[i]);
+				nodeMap[child.id] = $child;
+			}
+		}
+	});
+	return nodeMap;
+}
+
+(async () => {
+	const nodeMap = await fetchNodeMap();
+	const webSocket = new WebSocket('ws://localhost:3000');
+	webSocket.onmessage = ({data}) => {
+		const {messages, id} = JSON.parse(data);
+		for (const message of messages) {
+			const {command, payload} = message;
+			if (command in listeners) {
+				listeners[command].forEach(listener => listener(payload));
+			} else {
+				// @debug
+				alert({message: 'command does not exist'});
+			}
+		}
+
+		if (messages.length === 1 && messages[0].command === 'error') {
+		}
+	};
+
+	const listeners: {[key: string]: Array<(payload) => void>} = {};
+
+	const remotePluginApi: RemotePluginApi = {
+		nodeMap,
+		webSocket: {
+			onMessage(command, listener) {
+				if (!listeners[command]) {
+					listeners[command] = [];
+				}
+
+				listeners[command]!.push(listener);
+			}
+		}
+	};
+
+	core(remotePluginApi);
+	error(remotePluginApi);
+	highlight(remotePluginApi);
+})();

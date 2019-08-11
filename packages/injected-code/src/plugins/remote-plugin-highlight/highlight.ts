@@ -1,10 +1,10 @@
-import {useCommand, nodeMap} from '../remotePluginApi';
 import {addHighlight} from './highlight-service/highlightServiceMain';
+import {RemotePlugin} from '../remotePluginApi';
 
-export const highlight: RemotePluginHighlight['highlight'] = useCommand(() => {
-	return payload => {
+export const highlight: RemotePlugin = api => {
+	api.webSocket.onMessage('highlight', payload => {
 		const {id} = payload;
-		const $node = nodeMap[id];
+		const $node = api.nodeMap[id];
 		addHighlight($node);
-	};
-});
+	});
+};
