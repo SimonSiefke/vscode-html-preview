@@ -23,11 +23,12 @@ let webSocketServer: WebSocketServer | undefined;
 
 async function open() {
 	const browser = vscode.workspace.getConfiguration().get<string>('htmlPreview.browser');
-	await openInBrowser('http://localhost:3000', browser);
+	if (process.env.NODE_ENV !== 'test') {
+		await openInBrowser('http://localhost:3000', browser);
+	}
 }
 
 async function openPreview(context: vscode.ExtensionContext) {
-	console.log('open preview');
 	if (webSocketServer) {
 		await open();
 		return;
@@ -40,6 +41,12 @@ async function openPreview(context: vscode.ExtensionContext) {
 	const httpServer = createHttpServer();
 	const parser = createParser();
 	httpServer.onRequest(async (req, res) => {
+		const notFound = () => {
+			console.log('not found');
+			res.statusCode = 404;
+			res.end();
+		};
+
 		try {
 			if (req.url === '/') {
 				// TODO later: caching and etags
@@ -82,17 +89,31 @@ async function openPreview(context: vscode.ExtensionContext) {
 				res.end();
 			} else {
 				try {
-					const diskPath = path.join(vscode.workspace.workspaceFolders[0].uri.fsPath, req.url);
-					const uri = vscode.Uri.file(diskPath);
-					const file = await vscode.workspace.fs.readFile(uri);
+					let file: Uint8Array | string;
+					if (!vscode.workspace.workspaceFolders) {
+						const matchingTextEditor = vscode.window.visibleTextEditors.find(textEditor => {
+							console.log(textEditor.document.uri.fsPath);
+							console.log(req.url);
+							return textEditor.document.uri.fsPath.endsWith(req.url);
+						});
+						if (!matchingTextEditor) {
+							return notFound();
+						}
+
+						file = matchingTextEditor.document.getText();
+					} else {
+						const diskPath = path.join(vscode.workspace.workspaceFolders[0].uri.fsPath, req.url);
+						const uri = vscode.Uri.file(diskPath);
+						file = await vscode.workspace.fs.readFile(uri);
+					}
+
 					const mimeType = mime.getType(req.url);
 					res.writeHead(200, {'Content-Type': mimeType});
 					res.write(file);
 					res.end();
 				} catch (error) {
 					console.log('error', error);
-					res.statusCode = 404;
-					res.end();
+					return notFound();
 				}
 			}
 		} catch (error) {

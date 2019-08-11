@@ -82,13 +82,12 @@ async function expectHtml(html) {
 		}
 
 		let result = getAst(Array.from(body.childNodes));
-		const virtualDomIndex =
+		const injectedScriptIndex =
 			result.findIndex(
 				// @ts-ignore
-				child => child.tag === 'script' && child.attributes.id === 'virtual-dom'
+				child => child.tag === 'script' && child.attributes.src === 'html-preview.js'
 			) - 1;
-		result = result.slice(0, virtualDomIndex);
-		// return new Promise(() => {});
+		result = result.slice(0, injectedScriptIndex);
 		return result;
 	});
 	assert.deepStrictEqual(bodyChildren, html);
@@ -130,5 +129,4 @@ test('basic', async () => {
 			]
 		}
 	]);
-	// await new Promise(() => {});
 });
