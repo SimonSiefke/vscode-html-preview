@@ -14,7 +14,7 @@ import {hash} from '../hash/hash';
 function createElementNode() {
 	return {
 		attributes: {},
-		children: [],
+		children: [] as any,
 		type: 'ElementNode',
 		parent: undefined
 	};
@@ -68,10 +68,7 @@ function parse(
 	const scanner = createScanner(text);
 	const htmlDocument = createElementNode();
 	newNodeMap[0] = htmlDocument;
-	/**
-	 * special case: whitespace text nodes after <!DOCTYPE html> must be ignored
-	 */
-	let isAfterDoctype = false;
+
 	let curr: any = htmlDocument;
 	let prefixSum = 0;
 	let endTagName: string | undefined;
@@ -166,11 +163,6 @@ function parse(
 	while (token !== 'eos') {
 		switch (token) {
 			case 'content':
-				if (isAfterDoctype && !scanner.getTokenText().trim()) {
-					isAfterDoctype = false;
-					break;
-				}
-
 				addNode(createTextNode(scanner.getTokenText()));
 				curr = curr.parent;
 				break;
@@ -182,10 +174,6 @@ function parse(
 				break;
 			case 'start-tag-close':
 				if (curr.tag && selfClosingTags.includes(curr.tag) && curr.parent) {
-					if (curr.tag.toLowerCase() === '!doctype') {
-						isAfterDoctype = true;
-					}
-
 					curr.closed = true;
 					curr = curr.parent;
 				}
@@ -273,6 +261,21 @@ function parse(
 		curr.closed = false;
 		// @ts-ignore
 		curr = curr.parent;
+	}
+
+	/**
+	 * special case: whitespace text nodes before and after <!DOCTYPE html> must be ignored
+	 */
+	if (
+		htmlDocument.children.find(
+			child => child.type === 'ElementNode' && child.tag.toLowerCase() === '!doctype'
+		)
+	) {
+		for (const child of htmlDocument.children) {
+			if (child.type === 'TextNode') {
+				child.type = 'Irrelevant';
+			}
+		}
 	}
 
 	return htmlDocument;
@@ -504,4 +507,6 @@ Object.prototype.pretty = function () {
 // parsedH1.pretty(); // ?
 // parsedH2.pretty(); // ?
 
-parseHtml('<!DOCTYPE html>\n');
+parseHtml(`<!doctype html>
+
+`); // ?

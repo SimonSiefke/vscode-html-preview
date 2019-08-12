@@ -111,6 +111,8 @@ function elementInsert(
 		];
 	}
 
+	console.log(node);
+
 	throw new Error('invalid node');
 }
 
@@ -158,6 +160,15 @@ export function domdiff(
 	while (newIndex < newNodes.length && oldIndex < oldNodes.length) {
 		const newNode = newNodes[newIndex];
 		const oldNode = oldNodes[oldIndex];
+		if (oldNode.type === 'Irrelevant') {
+			oldIndex++;
+			continue;
+		}
+
+		if (newNode.type === 'Irrelevant') {
+			newIndex++;
+			continue;
+		}
 
 		oldNode.type; // ?
 		newNode.type; // ?
@@ -337,9 +348,11 @@ export function domdiff(
 	 */
 	while (oldIndex < oldNodes.length) {
 		const oldNode = oldNodes[oldIndex];
-		oldNode; // ?
-		oldIndex;
 		oldIndex++;
+		if (oldNode.type === 'Irrelevant') {
+			continue;
+		}
+
 		edits = [...edits, elementDelete(oldNode)];
 	}
 
@@ -349,6 +362,10 @@ export function domdiff(
 	while (newIndex < newNodes.length) {
 		const newNode = newNodes[newIndex];
 		newIndex++;
+		if (newNode.type === 'Irrelevant') {
+			continue;
+		}
+
 		edits = [...edits, ...elementInsert(newNode, parentId, newIndex - 1, newNodeMap)];
 	}
 
@@ -424,18 +441,18 @@ Object.prototype.pretty = function () {
 };
 
 const testCase = {
-	previousDom: '<h1>a</h1>',
+	previousDom: '<!doctype html>\n',
 
-	nextDom: '<h1>a</h1>\n<h1>a</h1>'
+	nextDom: '<!doctype html>'
 };
 const parser = createParser();
 const parsedH1 = parser.parse(testCase.previousDom);
 const oldNodeMap = parser.nodeMap; // ?
 const parsedH2 = parser.edit(testCase.nextDom, [
 	{
-		rangeOffset: 53,
-		rangeLength: 0,
-		text: '  '
+		rangeOffset: 15,
+		rangeLength: 1,
+		text: ''
 	}
 ]);
 const newNodeMap = parser.nodeMap; // ?
