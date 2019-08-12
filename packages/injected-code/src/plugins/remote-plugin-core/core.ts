@@ -1,6 +1,7 @@
 import {RemotePlugin, mergePlugins} from '../remotePluginApi';
 
 function fixAttributeValue(value: string | null) {
+	console.log(value);
 	if (value === null) {
 		return '';
 	}
@@ -27,14 +28,14 @@ const textReplace: RemotePlugin = api => {
 };
 
 const attributeChange: RemotePlugin = api => {
-	api.webSocket.onMessage('textReplace', payload => {
+	api.webSocket.onMessage('attributeChange', payload => {
 		const $node = api.nodeMap[payload.id] as HTMLElement;
 		$node.setAttribute(payload.attribute, fixAttributeValue(payload.value));
 	});
 };
 
 const attributeAdd: RemotePlugin = api => {
-	api.webSocket.onMessage('textReplace', payload => {
+	api.webSocket.onMessage('attributeAdd', payload => {
 		const $node = api.nodeMap[payload.id] as HTMLElement;
 		$node.setAttribute(payload.attribute, fixAttributeValue(payload.value));
 	});

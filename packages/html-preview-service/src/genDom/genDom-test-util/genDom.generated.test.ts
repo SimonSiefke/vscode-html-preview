@@ -12,6 +12,18 @@ test(`only element node`, () => {
   expect(output).toBe(expectedOutput)
 })
 
+test(`comments before doctype`, () => {
+  const output = genDom(`<!-- ## Introduction -->
+<!doctype html>
+<html ⚡>
+</html>`)
+  const expectedOutput = `<!-- ## Introduction -->
+<!doctype html>
+<html data-id="3"⚡>
+</html>`
+  expect(output).toBe(expectedOutput)
+})
+
 test(`only self-closing element node`, () => {
   const output = genDom(`<br>`)
   const expectedOutput = `<br data-id="1">`

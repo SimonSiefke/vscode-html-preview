@@ -1,0 +1,17 @@
+previousText:
+hello 
+
+edits:
+[
+  {
+    rangeOffset: 6
+    rangeLength: 0
+    text: world
+  }
+]
+
+nextText:
+hello world
+
+expectedDom:
+hello world

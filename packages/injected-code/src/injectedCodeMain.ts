@@ -26,10 +26,15 @@ function walk(dom, fn, childrenFirst = false) {
 async function fetchNodeMap() {
 	const nodeMap = {0: document.body};
 	const virtualDom = await fetch('/virtual-dom.json').then(res => res.json());
+	let topLevelElement: HTMLElement | Document = document;
 	for (let i = 0; i < virtualDom.length; i++) {
 		const rootNode = virtualDom[i];
+		if (rootNode.type !== Node.DOCUMENT_NODE) {
+			topLevelElement = document.body;
+		}
+
 		if (rootNode.type === 'TextNode') {
-			nodeMap[rootNode.id] = document.childNodes[i];
+			nodeMap[rootNode.id] = topLevelElement.childNodes[i];
 			// @debug
 			if (!nodeMap[rootNode.id] || nodeMap[rootNode.id].nodeType !== Node.TEXT_NODE) {
 				console.log('expected text node, got');
@@ -84,6 +89,7 @@ async function fetchNodeMap() {
 	const webSocket = new WebSocket('ws://localhost:3000');
 	webSocket.onmessage = ({data}) => {
 		const {messages, id} = JSON.parse(data);
+		console.log(JSON.stringify(messages, null, 2));
 		for (const message of messages) {
 			const {command, payload} = message;
 			if (command in listeners) {

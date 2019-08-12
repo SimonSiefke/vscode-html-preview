@@ -15,6 +15,7 @@ pkg.main = `./packages/extension/${pkg.main}`;
 delete pkg.dependencies;
 delete pkg.devDependencies;
 delete pkg.enableProposedApi;
+pkg.activationEvents = pkg.activationEvents.filter(event => event !== 'onLanguage:html');
 
 fs.writeFileSync(path.join(root, 'dist/package.json'), `${JSON.stringify(pkg, null, 2)}\n`);
 

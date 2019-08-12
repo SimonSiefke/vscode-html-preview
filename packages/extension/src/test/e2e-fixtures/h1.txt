@@ -1,0 +1,106 @@
+previousText:
+<h1>
+
+edits:
+[
+  {
+    rangeOffset: 4
+    rangeLength: hello world
+  }
+]
+
+nextText:
+<h1>hello world
+
+expectedDom:
+<h1>hello world</h1>
+
+previousText:
+<h1>hello world
+
+edits:
+[
+  {
+    rangeOffset: 15
+    rangeLength: 0
+    text <
+  }
+]
+
+nextText:
+<h1>hello world<
+
+expectedDom:
+<h1>hello world<</h1>
+
+previousText:
+<h1>hello world<
+
+edits:
+[
+  {
+    rangeOffset: 16
+    rangeLength: 0
+    text /
+  }
+]
+
+nextText:
+<h1>hello world</
+
+expectedDom:
+broken
+
+previousText:
+<h1>hello world</
+
+edits:
+[
+  {
+    rangeOffset: 17
+    rangeLength: 0
+    text h
+  }
+]
+
+nextText:
+<h1>hello world</h
+
+expectedDom:
+broken
+
+previousText:
+<h1>hello world</h
+
+edits:
+[
+  {
+    rangeOffset: 18
+    rangeLength: 0
+    text 1
+  }
+]
+
+nextText:
+<h1>hello world</h1
+
+expectedDom:
+broken
+
+previousText:
+<h1>hello world</h1
+
+edits:
+[
+  {
+    rangeOffset: 18
+    rangeLength: 0
+    text >
+  }
+]
+
+nextText:
+<h1>hello world</h1>
+
+expectedDom:
+<h1>hello world</h1>

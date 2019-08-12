@@ -32,7 +32,10 @@
     "live"
   ],
   "activationEvents": [
-    "onLanguage:html"
+    "onLanguage:html",
+    "onCommand:htmlPreview.openPreview",
+    "onCommand:htmlPreview.openWithHtmlPreview",
+    "onCommand:htmlPreview.closePreview"
   ],
   "contributes": {
     "commands": [

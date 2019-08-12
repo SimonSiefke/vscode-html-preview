@@ -17,6 +17,21 @@ expectedOutput:
 <h1 data-id="1"></h1>
 
 name: 
+comments before doctype
+
+input: 
+<!-- ## Introduction -->
+<!doctype html>
+<html ⚡>
+</html>
+
+expectedOutput:
+<!-- ## Introduction -->
+<!doctype html>
+<html data-id="3"⚡>
+</html>
+
+name: 
 only self-closing element node
 
 input: 
