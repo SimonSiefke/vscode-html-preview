@@ -3431,7 +3431,16 @@ nextDom:
 
 
 expectedEdits:
-[]
+[
+  {
+    command: elementInsert
+    payload: {
+      beforeId: 1
+      nodeType: TextNode
+      text: "\n"
+    }
+  }
+]
 
 name:
 doctype and whitespace #2
@@ -3453,7 +3462,16 @@ nextDom:
 
 
 expectedEdits:
-[]
+[
+  {
+    command: elementInsert
+    payload: {
+      beforeId: 1
+      nodeType: TextNode
+      text: "\n"
+    }
+  }
+]
 
 name:
 doctype and whitespace #3
@@ -3475,4 +3493,9 @@ nextDom:
 <!doctype html>
 
 expectedEdits:
-[]
+[
+  {
+    command: elementDelete,
+    payload: {}
+  }
+]

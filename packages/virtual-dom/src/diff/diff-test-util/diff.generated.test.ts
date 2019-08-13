@@ -2403,7 +2403,16 @@ test(`doctype and whitespace #1`, () => {
   ])
   const newNodeMap = parser.nodeMap
   const edits = domdiff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
-  const expectedEdits = []
+  const expectedEdits = [
+    {
+      "command": "elementInsert",
+      "payload": {
+        "beforeId": 1,
+        "nodeType": "TextNode",
+        "text": "\n"
+      }
+    }
+  ]
   expect(adjustEdits(edits)).toEqual(adjustExpectedEdits(expectedEdits))
 })
 
@@ -2421,7 +2430,16 @@ test(`doctype and whitespace #2`, () => {
   ])
   const newNodeMap = parser.nodeMap
   const edits = domdiff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
-  const expectedEdits = []
+  const expectedEdits = [
+    {
+      "command": "elementInsert",
+      "payload": {
+        "beforeId": 1,
+        "nodeType": "TextNode",
+        "text": "\n"
+      }
+    }
+  ]
   expect(adjustEdits(edits)).toEqual(adjustExpectedEdits(expectedEdits))
 })
 
@@ -2439,6 +2457,11 @@ test(`doctype and whitespace #3`, () => {
   ])
   const newNodeMap = parser.nodeMap
   const edits = domdiff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
-  const expectedEdits = []
+  const expectedEdits = [
+    {
+      "command": "elementDelete",
+      "payload": {}
+    }
+  ]
   expect(adjustEdits(edits)).toEqual(adjustExpectedEdits(expectedEdits))
 })
