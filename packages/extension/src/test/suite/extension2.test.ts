@@ -17,9 +17,10 @@ let browser: puppeteer.Browser;
 let page: puppeteer.Page;
 const headless = false;
 
+let uri: vscode.Uri;
 before(async () => {
-	await createTestFile('hello world.html');
-	await setText('<h1>hello world</h1>');
+	uri = await createTestFile('hello world.html');
+	await setText('');
 	await activateExtension();
 	browser = await puppeteer.launch({headless, args: ['--no-sandbox']});
 	page = await browser.newPage();
@@ -96,39 +97,25 @@ async function expectHtml(html) {
 test('basic', async () => {
 	await vscode.commands.executeCommand('htmlPreview.openPreview');
 	await page.goto('http://localhost:3000');
-	await expectHtml([
-		{
-			nodeType: 'ElementNode',
-			tag: 'h1',
-			attributes: {
-				'data-id': '1'
-			},
-			children: [
-				{
-					nodeType: 'TextNode',
-					text: 'hello world'
-				}
-			]
-		}
-	]);
-
-	setCursorPosition(15);
-	await type('!');
-	await expectHtml([
-		{
-			nodeType: 'ElementNode',
-			tag: 'h1',
-			attributes: {
-				'data-id': '1'
-			},
-			children: [
-				{
-					nodeType: 'TextNode',
-					text: 'hello world!'
-				}
-			]
-		}
-	]);
+	const edit = {
+		rangeOffset: 0,
+		rangeLength: 0,
+		text: 'hello world'
+	};
+	const vscodeEdit = new vscode.WorkspaceEdit();
+	const {document} = vscode.window.activeTextEditor;
+	vscodeEdit.replace(
+		uri,
+		new vscode.Range(
+			document.positionAt(edit.rangeOffset),
+			document.positionAt(edit.rangeOffset + edit.rangeLength)
+		),
+		edit.text
+	);
+	vscode.workspace.applyEdit(vscodeEdit);
+	const html = await page.content();
+	console.log(html);
+	await new Promise(resolve => {});
 });
 
 // const edit = new vscode.WorkspaceEdit()

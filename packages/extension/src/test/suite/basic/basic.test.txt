@@ -1,0 +1,11 @@
+previousText:
+<h1>hello world</h1>
+
+edits:
+[]
+
+nextText:
+<h1>hello world!</h1>
+
+expectedDom:
+<h1>hello world!</h1>

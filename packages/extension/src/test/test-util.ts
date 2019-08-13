@@ -18,11 +18,12 @@ export interface TestCase {
 	timeout?: 'never' | number
 }
 
-export async function createTestFile(fileName: string, content: string = ''): Promise<void> {
+export async function createTestFile(fileName: string, content: string = ''): Promise<vscode.Uri> {
 	const filePath = path.join(__dirname, fileName);
 	fs.writeFileSync(filePath, content);
 	const uri = vscode.Uri.file(filePath);
 	await vscode.window.showTextDocument(uri);
+	return uri;
 }
 
 export async function closeTestFile(): Promise<void> {
