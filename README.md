@@ -19,7 +19,7 @@
 | Property              | Description                                                         | Default     |
 | --------------------- | ------------------------------------------------------------------- | ----------- |
 | htmlPreview.browser   | The browser to open the preview with                                | `"default"` |
-| htmlPreview.highlight | Highlight elements in the browser when they are selected in VSCode. | `true`      |
+| htmlPreview.highlight | Highlight elements in the browser when they are selected in VSCode. | `false`     |
 
 <!-- TODO bug: type <h1>a</h1>, select a , type b, $node is undefined -->
 
