@@ -51,11 +51,20 @@ const attributeDelete: RemotePlugin = api => {
 const elementDelete: RemotePlugin = api => {
 	api.webSocket.onMessage('elementDelete', payload => {
 		const $node = api.nodeMap[payload.id];
+		// cannot delete those
+		// @ts-ignore
+		if ($node.tagName && ['HTML', 'HEAD', 'BODY'].includes($node.tagName)) {
+			delete api.nodeMap[payload.id];
+			return;
+		}
+
 		if (!$node) {
 			debugger;
 		}
 
+		// @ts-ignore
 		if ($node.remove) {
+			// @ts-ignore
 			$node.remove();
 		} else if ($node.parentNode && $node.parentNode.removeChild) {
 			$node.parentNode.removeChild($node);
@@ -67,15 +76,34 @@ const elementDelete: RemotePlugin = api => {
 
 const elementInsert: RemotePlugin = api => {
 	api.webSocket.onMessage('elementInsert', payload => {
-		let $node: HTMLElement | Text | Comment;
+		let $node: HTMLElement | Text | Comment | DocumentType;
 		if (payload.nodeType === 'ElementNode') {
-			$node = document.createElement(payload.tag) as HTMLElement;
-			for (const attributeName of Object.keys(payload.attributes)) {
-				$node.setAttribute(attributeName, fixAttributeValue(payload.attributes[attributeName]));
-				console.log(payload.id);
+			const tag = payload.tag.toLowerCase();
+			if (tag === 'html') {
+				api.nodeMap[payload.id] = document.documentElement;
+				return;
 			}
 
-			$node.setAttribute('data-id', `${payload.id}`);
+			if (tag === 'body') {
+				api.nodeMap[payload.id] = document.body;
+				return;
+			}
+
+			if (tag === 'head') {
+				api.nodeMap[payload.id] = document.head;
+				return;
+			}
+
+			if (tag === '!doctype') {
+				$node = document.implementation.createDocumentType('html', '', '');
+			} else {
+				$node = document.createElement(payload.tag) as HTMLElement;
+				for (const [attributeName, attributeValue] of Object.keys(payload.attributes)) {
+					$node.setAttribute(attributeName, fixAttributeValue(attributeValue));
+				}
+
+				$node.setAttribute('data-id', `${payload.id}`);
+			}
 		} else if (payload.nodeType === 'TextNode') {
 			$node = document.createTextNode(payload.text);
 		} else if (payload.nodeType === 'CommentNode') {
@@ -90,6 +118,8 @@ const elementInsert: RemotePlugin = api => {
 		if (!$parent) {
 			debugger;
 		}
+
+		console.log($parent, $node);
 
 		if (payload.beforeId === 0) {
 			$parent.prepend($node);

@@ -266,17 +266,17 @@ function parse(
 	/**
 	 * special case: whitespace text nodes before and after <!DOCTYPE html> must be ignored
 	 */
-	if (
-		htmlDocument.children.find(
-			child => child.type === 'ElementNode' && child.tag.toLowerCase() === '!doctype'
-		)
-	) {
-		for (const child of htmlDocument.children) {
-			if (child.type === 'TextNode') {
-				child.type = 'Irrelevant';
-			}
-		}
-	}
+	// if (
+	// 	htmlDocument.children.find(
+	// 		child => child.type === 'ElementNode' && child.tag.toLowerCase() === '!doctype'
+	// 	)
+	// ) {
+	// 	for (const child of htmlDocument.children) {
+	// 		if (child.type === 'TextNode' && !) {
+	// 			child.type = 'Irrelevant';
+	// 		}
+	// 	}
+	// }
 
 	return htmlDocument;
 }

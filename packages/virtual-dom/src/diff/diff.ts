@@ -73,7 +73,19 @@ function elementInsert(
 	index: number,
 	nodeMap
 ) {
-	const beforeElement = nodeMap[parentId] && nodeMap[parentId].children[index - 1];
+	let beforeElement;
+	if (nodeMap[parentId] && nodeMap[parentId].children) {
+		let left = 1;
+		while (
+			nodeMap[parentId].children[index - left] &&
+			nodeMap[parentId].children[index - left].type === 'Irrelevant'
+		) {
+			left++;
+		}
+
+		beforeElement = nodeMap[parentId].children[index - left];
+	}
+
 	const beforeElementId = (beforeElement && beforeElement.id) || 0;
 	if (node.type === 'ElementNode') {
 		return [

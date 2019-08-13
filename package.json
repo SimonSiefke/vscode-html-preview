@@ -15,7 +15,8 @@
     "test": "jest",
     "bundlesize": "bundlesize",
     "update-highlight-css": "postcss packages/injected-code/src/highlight/highlight.css --no-map --output packages/injected-code/src/highlight/highlight.min.css && node scripts/update-highlight-css",
-    "e2e": "cd packages/extension && npm run e2e"
+    "e2e": "cd packages/extension && npm run e2e",
+    "autoupdate": "nodemon --watch **/dist/** --exec node scripts/update-extension.js"
   },
   "devDependencies": {
     "@babel/core": "^7.5.5",

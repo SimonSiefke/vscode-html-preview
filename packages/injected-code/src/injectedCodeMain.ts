@@ -23,29 +23,159 @@ function walk(dom, fn, childrenFirst = false) {
 	return dom;
 }
 
-async function fetchNodeMap() {
-	const nodeMap = {0: document.body};
-	const virtualDom = await fetch('/virtual-dom.json').then(res => res.json());
-	let topLevelElement: HTMLElement | Document = document;
-	for (let i = 0; i < virtualDom.length; i++) {
-		const rootNode = virtualDom[i];
-		if (rootNode.type !== Node.DOCUMENT_NODE) {
-			topLevelElement = document.body;
-		}
+function validate(node: any, $actualNode: Node) {
+	if (
+		node.type === 'TextNode' &&
+		($actualNode.nodeType !== Node.TEXT_NODE ||
+			(($actualNode as Text).data !== node.text && ($actualNode as Text).data !== node.text + '\n'))
+	) {
+		console.log(($actualNode as Text).data.includes(node.text));
+		console.log(($actualNode as Text).data);
+		console.log(node.text);
+		console.log('expected text node, got');
+		console.error('(1) invalid', $actualNode);
+		alert('error, failed to hydrate dom (1)');
+	} else if (
+		node.type === 'ElementNode' &&
+		node.tag.toLowerCase() === '!doctype' &&
+		$actualNode.nodeType !== Node.DOCUMENT_TYPE_NODE
+	) {
+		console.log('expected doctype node, got');
+		console.error('(2) invalid', $actualNode);
+		alert('error, failed to hydrate dom (2)');
+	} else if (
+		node.type === 'ElementNode' &&
+		node.tag.toLowerCase() === 'html' &&
+		$actualNode !== document.documentElement
+	) {
+		console.log('expected html node, got');
+		console.error('(3) invalid', $actualNode);
+		alert('error, failed to hydrate dom (3)');
+	} else if (
+		node.type === 'ElementNode' &&
+		node.tag.toLowerCase() === 'body' &&
+		$actualNode !== document.body
+	) {
+		console.log('expected body node, got');
+		console.error('(4) invalid', $actualNode);
+		alert('error, failed to hydrate dom (4)');
+	} else if (
+		node.type === 'ElementNode' &&
+		node.tag.toLowerCase() === 'head' &&
+		$actualNode !== document.head
+	) {
+		console.log('expected head node, got');
+		console.error('(5) invalid', $actualNode);
+		alert('error, failed to hydrate dom (5)');
+	} else if (
+		node.type === 'ElementNode' &&
+		!['html', 'body', 'head', '!doctype'].includes(node.tag.toLowerCase()) &&
+		$actualNode.nodeType !== Node.ELEMENT_NODE
+	) {
+		console.log('expected element node, got');
+		console.error('(6) invalid', $actualNode);
+		alert('error, failed to hydrate dom (6)');
+	} else if (
+		node.type === 'CommentNode' &&
+		($actualNode.nodeType !== Node.COMMENT_NODE || node.text !== ($actualNode as Comment).data)
+	) {
+		console.log('expected comment node, got');
+		console.error('(7) invalid', $actualNode);
+		alert('error, failed to hydrate dom (7)');
+	}
+}
 
-		if (rootNode.type === 'TextNode') {
-			nodeMap[rootNode.id] = topLevelElement.childNodes[i];
-			// @debug
-			if (!nodeMap[rootNode.id] || nodeMap[rootNode.id].nodeType !== Node.TEXT_NODE) {
-				console.log('expected text node, got');
-				console.error('invalid', nodeMap[rootNode.id]);
-				alert('error, failed to hydrate dom (1)');
+async function fetchNodeMap() {
+	const nodeMap = {0: document};
+	const virtualDom = await fetch('/virtual-dom.json').then(res => res.json());
+	let domIndex = 0;
+	const inBody = false;
+	let hasBody = false;
+	let hasHtml = false;
+	let hasHead = false;
+	let hasText = false;
+	for (const node of virtualDom) {
+		if (node.tag === 'html') {
+			hasHtml = true;
+		} else if (node.tag === 'body') {
+			hasBody = true;
+		} else if (node.tag === 'head') {
+			hasHead = true;
+		} else if (node.type === 'Text' && !node.text.trim()) {
+			hasText = true;
+		}
+	}
+
+	let hadBody = false;
+	let hadHtml = false;
+	let hadHead = false;
+	let hadText = false;
+	for (const node of virtualDom) {
+		if (node.tag === 'html') {
+			if (hadHtml || hasBody || hasHead || hasText) {
+				alert('invalid dom');
+			} else {
+				hadHtml = true;
+			}
+		} else if (node.tag === 'body') {
+			if (hadBody || hasHtml || hasText) {
+				alert('invalid dom');
+			} else {
+				hadBody = true;
+			}
+		} else if (node.tag === 'head') {
+			if (hadBody || hadHead || hasHtml || hadText) {
+				alert('invalid dom');
+			} else {
+				hadHead = true;
+			}
+		} else if (node.type === 'Text' && !node.text.trim()) {
+			if (hasBody || hasHtml) {
+				alert('invalid dom');
+			} else {
+				hadText = true;
 			}
 		}
 	}
 
+	let $root = document as Node;
+	let inHtml = false;
+
+	for (let i = 0; i < virtualDom.length; i++) {
+		const node = virtualDom[i];
+		// must ignore whitespace nodes at top level
+		if (!inBody && node.type === 'TextNode' && !node.text.trim()) {
+			continue;
+		}
+
+		if (node.tag === 'body' && !inHtml) {
+			$root = document.documentElement;
+			domIndex = 1; // because of implicit head tag
+		} else if (node.tag === 'head') {
+			$root = document.documentElement;
+			domIndex = 0;
+			inHtml = true;
+			const nextNode = virtualDom[i + 1];
+			// special case: whitespace after head is ignored when the next node is a text node
+			if (nextNode && nextNode.type === 'TextNode') {
+				nextNode.text = nextNode.text.trimStart();
+			}
+		}
+
+		if (node.type === 'TextNode' && !hasBody && !hasHtml && !inBody) {
+			$root = document.body;
+			domIndex = 0;
+		}
+
+		const $node = $root.childNodes[domIndex];
+		nodeMap[node.id] = $node;
+		domIndex++;
+		validate(node, $node);
+	}
+
+	// const ignoredTags
 	walk(virtualDom, node => {
-		if (node.type !== 'ElementNode') {
+		if (node.type !== 'ElementNode' || node.tag === '!doctype' || node.tag === '!DOCTYPE') {
 			return;
 		}
 
@@ -60,24 +190,15 @@ async function fetchNodeMap() {
 
 		// $node.removeAttribute('data-id'); // TODO enable this again later
 		nodeMap[node.id] = $node;
+		const $children = $node.childNodes;
 		for (let i = 0; i < node.children.length; i++) {
 			const child = node.children[i];
 			if (child.type === 'TextNode') {
-				if (node.tag === 'html') {
-					// TODO what is happening here?
-					// TODO handle whitespace in html nodes / implicitly inserted nodes
-					continue;
-				}
-
-				const $child = document.createTextNode(child.text);
-				$node.replaceChild($child, $node.childNodes[i]);
-				nodeMap[child.id] = $child;
+				nodeMap[child.id] = $children[i];
 			}
 
 			if (child.type === 'CommentNode') {
-				const $child = document.createComment(child.text);
-				$node.replaceChild($child, $node.childNodes[i]);
-				nodeMap[child.id] = $child;
+				nodeMap[child.id] = $children[i];
 			}
 		}
 	});
@@ -86,11 +207,13 @@ async function fetchNodeMap() {
 
 (async () => {
 	const nodeMap = await fetchNodeMap();
+	// @ts-ignore
+	window.nodeMap = nodeMap;
 	const webSocket = new WebSocket('ws://localhost:3000');
 	webSocket.onmessage = ({data}) => {
 		const {messages, id} = JSON.parse(data);
-		console.log(JSON.stringify(messages, null, 2));
 		for (const message of messages) {
+			console.log(JSON.stringify(message, null, 2));
 			const {command, payload} = message;
 			if (command in listeners) {
 				listeners[command].forEach(listener => listener(payload));

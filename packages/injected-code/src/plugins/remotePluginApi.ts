@@ -1,10 +1,8 @@
-
-
 // export type Command<K extends keyof RemoteCommandMap> = (payload: RemoteCommandMap[K]) => void;
 // export const useCommand: <T>(fn: () => T) => T = fn => fn();
 
 interface NodeMap {
-	[key: number]: HTMLElement | Text | Comment
+	[key: number]: HTMLElement | Text | Comment | DocumentType | Document
 }
 
 export interface RemotePluginApi {

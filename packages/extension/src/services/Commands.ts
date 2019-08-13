@@ -127,7 +127,12 @@ async function openPreview(context: vscode.ExtensionContext) {
 			webSocketServer = undefined;
 		}
 	});
-	await httpServer.start(3000);
+	try {
+		await httpServer.start(3000);
+	} catch (error) {
+		vscode.window.showErrorMessage(error)
+		return
+	}
 	await open();
 	webSocketServer = createWebSocketServer(httpServer.server);
 

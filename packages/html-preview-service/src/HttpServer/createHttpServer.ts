@@ -29,11 +29,11 @@ export function createHttpServer(): HttpServer {
 			return (httpServer.address() as AddressInfo).port;
 		},
 		start(port = 3000) {
-			httpServer = http.createServer(requestListener);
-			httpServer.on('error', error => {
-				throw error;
+			return new Promise((resolve, reject) => {
+				httpServer = http.createServer(requestListener);
+				httpServer.once('error', reject);
+				httpServer.listen(port, resolve);
 			});
-			return new Promise(resolve => httpServer.listen(port, resolve));
 		},
 		onRequest: listener => {
 			if (requestListener) {
