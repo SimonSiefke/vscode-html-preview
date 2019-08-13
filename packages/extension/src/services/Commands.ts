@@ -28,6 +28,11 @@ async function open() {
 	}
 }
 
+function handleError(error) {
+	console.error(error);
+	vscode.window.showErrorMessage(`Html Preview: ${error.message}`);
+}
+
 async function openPreview(context: vscode.ExtensionContext) {
 	if (webSocketServer) {
 		await open();
@@ -112,13 +117,11 @@ async function openPreview(context: vscode.ExtensionContext) {
 					res.write(file);
 					res.end();
 				} catch (error) {
-					console.log('error', error);
-					return notFound();
+					handleError(error);
 				}
 			}
 		} catch (error) {
-			console.error(error);
-			vscode.window.showErrorMessage(error);
+			handleError(error);
 		}
 	});
 	context.subscriptions.push({
@@ -130,9 +133,10 @@ async function openPreview(context: vscode.ExtensionContext) {
 	try {
 		await httpServer.start(3000);
 	} catch (error) {
-		vscode.window.showErrorMessage(error)
-		return
+		handleError(error);
+		return;
 	}
+
 	await open();
 	webSocketServer = createWebSocketServer(httpServer.server);
 
@@ -174,13 +178,9 @@ const closePreview = async () => {
 };
 
 export function activate(context: vscode.ExtensionContext) {
-	context.subscriptions.push(
-		vscode.commands.registerCommand('htmlPreview.openPreview', () => openPreview(context))
-	);
-	context.subscriptions.push(
-		vscode.commands.registerCommand('htmlPreview.openWithHtmlPreview', () => openPreview(context))
-	);
-	context.subscriptions.push(
-		vscode.commands.registerCommand('htmlPreview.closePreview', closePreview)
-	);
+	const registerCommand = (commandName: string, command: () => void) =>
+		context.subscriptions.push(vscode.commands.registerCommand(commandName, command));
+	registerCommand('htmlPreview.openPreview', () => openPreview(context));
+	registerCommand('htmlPreview.openWithHtmlPreview', () => openPreview(context));
+	registerCommand('htmlPreview.closePreview', closePreview);
 }

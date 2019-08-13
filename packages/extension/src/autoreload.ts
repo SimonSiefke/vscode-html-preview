@@ -1,8 +1,8 @@
 import * as http from 'http';
 import * as vscode from 'vscode';
 
-function afterActivate() {
-	vscode.commands.executeCommand('htmlPreview.openPreview');
+function afterActivate(): void {
+	// vscode.commands.executeCommand('htmlPreview.openPreview');
 }
 
 function clearRequireCache() {

@@ -55,6 +55,13 @@
         "title": "Stop"
       }
     ],
+    "keybindings": [
+      {
+        "command": "htmlPreview.openPreview",
+        "key": "ctrl+alt+p",
+        "when": "resourceLangId == html"
+      }
+    ],
     "menus": {
       "commandPalette": [
         {

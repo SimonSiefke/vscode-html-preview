@@ -9,7 +9,7 @@ export interface HttpServer {
 	/**
 	 * Start the server.
 	 */
-	readonly start: (port?: number) => void
+	readonly start: (port?: number) => Promise<void>
 	/**
 	 * Listen for requests
 	 */

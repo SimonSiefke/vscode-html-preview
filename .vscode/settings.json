@@ -23,7 +23,18 @@
     "tsconfig.json": true,
     "scripts": true,
     "**/tsconfig.tsbuildinfo": true,
-    "i18n": true
+    "i18n": true,
+    "**/.rpt2_cache": true,
+    "**/.vscode-test": true,
+    "debug.log": true,
+    "global.d.ts": true,
+    "open.js": true,
+    "index.html": true,
+    "perfomance-observer.html": true,
+    "process.js": true,
+    "tempdir.js": true,
+    "**/rollup.config.js": true,
+    "**/images": true
   },
   "search.exclude": {
     "**/node_modules": true,

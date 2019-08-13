@@ -11,8 +11,10 @@
 
 ## Commands
 
-- Html Preview: Open
-- Html Preview: Stop
+| Command            | Keybinding   |
+| ------------------ | ------------ |
+| Html Preview: Open | `ctrl+alt+p` |
+| Html Preview: Stop | none         |
 
 ## Settings
 
