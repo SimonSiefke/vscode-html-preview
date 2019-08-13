@@ -27,11 +27,10 @@ function validate(node: any, $actualNode: Node) {
 	if (
 		node.type === 'TextNode' &&
 		($actualNode.nodeType !== Node.TEXT_NODE ||
-			(($actualNode as Text).data !== node.text && ($actualNode as Text).data !== node.text + '\n'))
+			(($actualNode as Text).data !== node.text &&
+				// special case: check for new line because the html-preview script is inserted together with a new line and the new line becomes part of the previous text node inside the body
+				($actualNode as Text).data !== node.text + '\n'))
 	) {
-		console.log(($actualNode as Text).data.includes(node.text));
-		console.log(($actualNode as Text).data);
-		console.log(node.text);
 		console.log('expected text node, got');
 		console.error('(1) invalid', $actualNode);
 		alert('error, failed to hydrate dom (1)');
