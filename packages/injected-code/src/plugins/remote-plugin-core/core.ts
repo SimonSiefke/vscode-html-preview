@@ -114,12 +114,24 @@ const elementInsert: RemotePlugin = api => {
 		}
 
 		api.nodeMap[payload.id] = $node;
-		const $parent = api.nodeMap[payload.parentId] as HTMLElement;
+		let $parent = api.nodeMap[payload.parentId] as HTMLElement;
 		if (!$parent) {
 			debugger;
 		}
 
-		console.log($parent, $node);
+		if (
+			payload.parentId === 0 &&
+			!(payload.nodeType === 'CommentNode' || ['html', 'head', 'body'].includes(payload.tag))
+		) {
+			$parent = document.body;
+			for (const rootNode of api.virtualDom) {
+				if (api.nodeMap[rootNode.id].parentNode === document) {
+					payload.beforeId--;
+				} else {
+					break;
+				}
+			}
+		}
 
 		if (payload.beforeId === 0) {
 			$parent.prepend($node);

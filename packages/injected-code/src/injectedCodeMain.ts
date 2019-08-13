@@ -202,11 +202,11 @@ async function fetchNodeMap() {
 			}
 		}
 	});
-	return nodeMap;
+	return {nodeMap, hasBody, hasHead, hasHtml, virtualDom};
 }
 
 (async () => {
-	const nodeMap = await fetchNodeMap();
+	const {nodeMap, hasBody, hasHtml, hasHead, virtualDom} = await fetchNodeMap();
 	// @ts-ignore
 	window.nodeMap = nodeMap;
 	const webSocket = new WebSocket('ws://localhost:3000');
@@ -239,7 +239,11 @@ async function fetchNodeMap() {
 
 				listeners[command]!.push(listener);
 			}
-		}
+		},
+		hasBody,
+		hasHead,
+		hasHtml,
+		virtualDom
 	};
 
 	core(remotePluginApi);

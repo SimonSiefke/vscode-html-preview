@@ -10,6 +10,10 @@ export interface RemotePluginApi {
 	webSocket: {
 		onMessage: (command: string, listener: (payload: any) => void) => void
 	}
+	hasBody: boolean
+	hasHtml: boolean
+	hasHead: boolean
+	virtualDom: any
 }
 
 export type RemotePlugin = (api: RemotePluginApi) => void;
