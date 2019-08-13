@@ -16,6 +16,8 @@ export interface HttpServer {
 	readonly onRequest: (listener: http.RequestListener) => void
 
 	readonly server: import('http').Server
+
+	readonly stop: () => Promise<void>
 }
 
 export function createHttpServer(): HttpServer {
@@ -41,6 +43,17 @@ export function createHttpServer(): HttpServer {
 			}
 
 			requestListener = listener;
+		},
+		stop() {
+			return new Promise((resolve, reject) => {
+				httpServer.close(error => {
+					if (error) {
+						reject(error);
+					}
+
+					resolve();
+				});
+			});
 		}
 	};
 }

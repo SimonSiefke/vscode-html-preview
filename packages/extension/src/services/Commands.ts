@@ -9,7 +9,8 @@ import {
 	createParser,
 	diff,
 	WebSocketServer,
-	mime
+	mime,
+	HttpServer
 } from 'html-preview-service';
 import {core} from '../plugins/local-plugin-core/core';
 import {redirect} from '../plugins/local-plugin-redirect/redirect';
@@ -20,6 +21,8 @@ import {config} from '../config';
 const packagesRoot = path.join(config.root, 'packages');
 
 let webSocketServer: WebSocketServer | undefined;
+let httpServer: HttpServer | undefined;
+let state: 'opening' | 'open' | 'closing' | 'closed' = 'closed';
 
 async function open() {
 	const browser = vscode.workspace.getConfiguration().get<string>('htmlPreview.browser');
@@ -34,16 +37,21 @@ function handleError(error) {
 }
 
 async function openPreview(context: vscode.ExtensionContext) {
-	if (webSocketServer) {
+	if (state === 'opening') {
+		return;
+	}
+
+	if (state === 'open') {
 		await open();
 		return;
 	}
 
+	state = 'opening';
 	const indexJs = fs.readFileSync(path.join(packagesRoot, 'injected-code/dist/html-preview.js'));
 	const indexJsMap = fs.readFileSync(
 		path.join(packagesRoot, 'injected-code/dist/html-preview.js.map')
 	);
-	const httpServer = createHttpServer();
+	httpServer = createHttpServer();
 	const parser = createParser();
 	httpServer.onRequest(async (req, res) => {
 		const notFound = () => {
@@ -124,18 +132,15 @@ async function openPreview(context: vscode.ExtensionContext) {
 			handleError(error);
 		}
 	});
-	context.subscriptions.push({
-		dispose() {
-			webSocketServer.stop();
-			webSocketServer = undefined;
-		}
-	});
 	try {
 		await httpServer.start(3000);
 	} catch (error) {
+		state = 'closed';
 		handleError(error);
 		return;
 	}
+
+	state = 'open';
 
 	await open();
 	webSocketServer = createWebSocketServer(httpServer.server);
@@ -161,20 +166,35 @@ async function openPreview(context: vscode.ExtensionContext) {
 	};
 	const enablePlugin = (plugin: LocalPlugin) => plugin(localPluginApi);
 	enablePlugin(core);
+	enablePlugin(redirect);
 	if (vscode.workspace.getConfiguration().get('htmlPreview.highlight')) {
 		enablePlugin(highlight);
 	}
-
-	enablePlugin(redirect);
 }
 
 const closePreview = async () => {
-	if (!webSocketServer) {
-		throw new Error('cannot close because server isn\'t open');
+	if (state === 'closing') {
+		return;
 	}
 
+	if (state === 'closed') {
+		handleError(new Error('preview is already closed'));
+		return;
+	}
+
+	state = 'closing';
+
+	webSocketServer.broadcast([
+		{
+			command: 'connectionClosed',
+			payload: {}
+		}
+	]);
 	await webSocketServer.stop();
+	await httpServer.stop();
+	httpServer = undefined;
 	webSocketServer = undefined;
+	state = 'closed';
 };
 
 export function activate(context: vscode.ExtensionContext) {

@@ -1,5 +1,5 @@
 {
   "htmlPreview.openWithHtmlPreview": "Ouvrir con Html Preview",
   "htmlPreview.open": "Ouvrir",
-  "htmlPreview.stop": "Arrêtez"
+  "htmlPreview.closePreviewServer": "Fermer le serveur de prévisualisation"
 }

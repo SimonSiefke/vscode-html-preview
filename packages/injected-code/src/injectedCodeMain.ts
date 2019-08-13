@@ -2,6 +2,7 @@ import {core} from './plugins/remote-plugin-core/core';
 import {error} from './plugins/remote-plugin-error/error';
 import {highlight} from './plugins/remote-plugin-highlight/highlight';
 import {RemotePluginApi} from './plugins/remotePluginApi';
+import {connection} from './plugins/remote-plugin-connection/remote-plugin-connection';
 
 function walk(dom, fn, childrenFirst = false) {
 	if (Array.isArray(dom)) {
@@ -218,7 +219,7 @@ async function fetchNodeMap() {
 				listeners[command].forEach(listener => listener(payload));
 			} else {
 				// @debug
-				alert({message: 'command does not exist'});
+				alert(`command "${message.command}" does not exist`);
 			}
 		}
 
@@ -244,4 +245,5 @@ async function fetchNodeMap() {
 	core(remotePluginApi);
 	error(remotePluginApi);
 	highlight(remotePluginApi);
+	connection(remotePluginApi);
 })();

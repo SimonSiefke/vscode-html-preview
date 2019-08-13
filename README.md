@@ -64,3 +64,5 @@ error: prefixSum or nodeMap is invalid because node is not found
 <!-- TODO stop probably not necessary because we can just disconnect when there are no more open sockets (meaning the user has closed the browser and probably wants to close the preview anyway, also he can just reopen the preview) -->
 
 <!-- TODO when opening preview, open new files to the left -->
+
+<!-- TODO why is html preview not closing -->

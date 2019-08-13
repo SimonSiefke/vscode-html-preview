@@ -51,8 +51,8 @@
       },
       {
         "category": "Html Preview",
-        "command": "htmlPreview.closePreview",
-        "title": "Stop"
+        "command": "htmlPreview.closePreviewServer",
+        "title": "Close Preview Server"
       }
     ],
     "keybindings": [

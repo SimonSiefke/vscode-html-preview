@@ -58,8 +58,12 @@ export function createWebSocketServer(httpServer: import('http').Server): WebSoc
 			onMessageListeners.push(fn);
 		},
 		stop() {
-			return new Promise(resolve => {
-				webSocketServer.close(() => {
+			return new Promise((resolve, reject) => {
+				webSocketServer.close(error => {
+					if (error) {
+						reject(error);
+					}
+
 					resolve();
 				});
 			});

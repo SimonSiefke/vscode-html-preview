@@ -16,7 +16,8 @@
     "bundlesize": "bundlesize",
     "update-highlight-css": "postcss packages/injected-code/src/highlight/highlight.css --no-map --output packages/injected-code/src/highlight/highlight.min.css && node scripts/update-highlight-css",
     "e2e": "cd packages/extension && npm run e2e",
-    "autoupdate": "nodemon --watch **/dist/** --exec node scripts/update-extension.js"
+    "autoreload": "nodemon --watch **/dist/** --exec node scripts/update-extension.js",
+    "kill-whatever-is-on-port-3000": "fuser -k -TERM -n tcp 3000"
   },
   "devDependencies": {
     "@babel/core": "^7.5.5",

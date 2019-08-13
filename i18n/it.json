@@ -1,5 +1,5 @@
 {
   "htmlPreview.openWithHtmlPreview": "Aperto con Html Preview",
   "htmlPreview.open": "Aperto",
-  "htmlPreview.stop": "Chiudi"
+  "htmlPreview.closePreviewServer": "Chiudi l'anteprima del server"
 }
