@@ -18,7 +18,9 @@ const testFileNames = [
 	'basic-text-addition.test.txt',
 	'element-addition-at-the-end.test.txt',
 	'element-addition-at-the-start.test.txt',
-	'text-insertion-in-nested-html.test.txt'
+	'text-insertion-in-nested-html.test.txt',
+	'insertion-of-attribute-with-value.test.txt',
+	'insertion-of-attribute-without-value.test.txt'
 ];
 testFileNames.length; // ?
 // const testFileNames = ['text-from-scratch.txt'];
