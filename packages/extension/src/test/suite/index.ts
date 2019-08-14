@@ -3,7 +3,8 @@ import * as Mocha from 'mocha';
 import * as glob from 'glob';
 
 // const testFiles = '**/**.test.js';
-const testFiles = '**/extension2.test.js';
+const testFiles = '**/extension.test.js';
+// const testFiles = '**/extension2.test.js';
 // const testFiles = '**/+(emmetCompleteTag|autoCloseTag).test.js'
 // const testFiles = '**/+(emmetCompleteTag).test.js'
 // const testFiles = '**/+(recordVideo).test.js'
