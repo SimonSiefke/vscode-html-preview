@@ -73,18 +73,7 @@ function elementInsert(
 	index: number,
 	nodeMap
 ) {
-	let beforeElement;
-	if (nodeMap[parentId] && nodeMap[parentId].children) {
-		let left = 1;
-		while (
-			nodeMap[parentId].children[index - left] &&
-			nodeMap[parentId].children[index - left].type === 'Irrelevant'
-		) {
-			left++;
-		}
-
-		beforeElement = nodeMap[parentId].children[index - left];
-	}
+	const beforeElement = nodeMap[parentId].children[index - 1];
 
 	const beforeElementId = (beforeElement && beforeElement.id) || 0;
 	if (node.type === 'ElementNode') {
@@ -157,7 +146,7 @@ function textReplace(node: {id: any; text: any}) {
  * @param {Object} newNode SimpleDOM node with the new content
  * @return {Array<Object>} list of edit operations
  */
-export function domdiff(
+export function diff(
 	oldNodes: any[],
 	newNodes: any[],
 	{parentId = 0, oldNodeMap = {}, newNodeMap = {}} = {}
@@ -172,15 +161,6 @@ export function domdiff(
 	while (newIndex < newNodes.length && oldIndex < oldNodes.length) {
 		const newNode = newNodes[newIndex];
 		const oldNode = oldNodes[oldIndex];
-		if (oldNode.type === 'Irrelevant') {
-			oldIndex++;
-			continue;
-		}
-
-		if (newNode.type === 'Irrelevant') {
-			newIndex++;
-			continue;
-		}
 
 		oldNode.type; // ?
 		newNode.type; // ?
@@ -196,7 +176,7 @@ export function domdiff(
 				if (newNode.subtreeSignature !== oldNode.subtreeSignature) {
 					edits = [
 						...edits,
-						...domdiff(oldNode.children, newNode.children, {
+						...diff(oldNode.children, newNode.children, {
 							parentId: newNode.id,
 							oldNodeMap,
 							newNodeMap
@@ -361,9 +341,6 @@ export function domdiff(
 	while (oldIndex < oldNodes.length) {
 		const oldNode = oldNodes[oldIndex];
 		oldIndex++;
-		if (oldNode.type === 'Irrelevant') {
-			continue;
-		}
 
 		edits = [...edits, elementDelete(oldNode)];
 	}
@@ -374,9 +351,6 @@ export function domdiff(
 	while (newIndex < newNodes.length) {
 		const newNode = newNodes[newIndex];
 		newIndex++;
-		if (newNode.type === 'Irrelevant') {
-			continue;
-		}
 
 		edits = [...edits, ...elementInsert(newNode, parentId, newIndex - 1, newNodeMap)];
 	}
@@ -470,7 +444,7 @@ const parsedH2 = parser.edit(testCase.nextDom, [
 const newNodeMap = parser.nodeMap; // ?
 parsedH1.pretty(); // ?
 parsedH2.pretty(); // ?
-domdiff(parsedH1, parsedH2, {
+diff(parsedH1, parsedH2, {
 	oldNodeMap,
 	newNodeMap
 }); // ?

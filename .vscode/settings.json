@@ -29,7 +29,6 @@
     "debug.log": true,
     "global.d.ts": true,
     "open.js": true,
-    "index.html": true,
     "perfomance-observer.html": true,
     "process.js": true,
     "tempdir.js": true,

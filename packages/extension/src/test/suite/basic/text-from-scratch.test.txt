@@ -1,12 +1,12 @@
 previousText:
-hello
+
 
 edits:
 [
   {
-    rangeOffset: 5
-    rangeLength: 0
-    text: " world"
+    rangeLength:0
+    rangeOffset:0
+    text: "hello world"
   }
 ]
 

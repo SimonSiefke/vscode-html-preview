@@ -12,8 +12,8 @@ export interface LocalPluginApi {
 			activeTextEditor: vscode.TextEditor | undefined
 		}
 		workspace: {
-			onDidChangeTextDocument: (event: any) => any
-			asRelativePath: (uri: any) => any
+			onDidChangeTextDocument: (listener: (event: vscode.TextDocumentChangeEvent) => void) => void
+			asRelativePath: (uri: vscode.Uri) => string
 		}
 	}
 	// parser: ReturnType<typeof import('virtual-dom').createParser>

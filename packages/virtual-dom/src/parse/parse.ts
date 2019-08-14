@@ -52,11 +52,9 @@ let d = 0;
 
 /**
  *
- * @param {string} text
- * @param {string[]} selfClosingTags
  */
 function parse(
-	text,
+	text: string,
 	{
 		selfClosingTags = ['!DOCTYPE', '!doctype', 'input', 'br', 'base', 'link', 'hr', 'img', 'meta'],
 		prefixSums = {},
@@ -65,6 +63,7 @@ function parse(
 		newNodeMap = {}
 	} = {}
 ) {
+	console.log('parse text', text);
 	const scanner = createScanner(text);
 	const htmlDocument = createElementNode();
 	newNodeMap[0] = htmlDocument;
@@ -262,21 +261,6 @@ function parse(
 		// @ts-ignore
 		curr = curr.parent;
 	}
-
-	/**
-	 * special case: whitespace text nodes before and after <!DOCTYPE html> must be ignored
-	 */
-	// if (
-	// 	htmlDocument.children.find(
-	// 		child => child.type === 'ElementNode' && child.tag.toLowerCase() === '!doctype'
-	// 	)
-	// ) {
-	// 	for (const child of htmlDocument.children) {
-	// 		if (child.type === 'TextNode' && !) {
-	// 			child.type = 'Irrelevant';
-	// 		}
-	// 	}
-	// }
 
 	return htmlDocument;
 }

@@ -47,8 +47,10 @@ async function openPreview(context: vscode.ExtensionContext) {
 	}
 
 	state = 'opening';
-	const indexJs = fs.readFileSync(path.join(packagesRoot, 'injected-code/dist/html-preview.js'));
-	const indexJsMap = fs.readFileSync(
+	const htmlPreviewJs = fs.readFileSync(
+		path.join(packagesRoot, 'injected-code/dist/html-preview.js')
+	);
+	const htmlPreviewJsMap = fs.readFileSync(
 		path.join(packagesRoot, 'injected-code/dist/html-preview.js.map')
 	);
 	httpServer = createHttpServer();
@@ -95,10 +97,10 @@ async function openPreview(context: vscode.ExtensionContext) {
 				res.end();
 			} else if (req.url === '/html-preview.js') {
 				res.writeHead(200, {'Content-Type': 'text/javascript'});
-				res.write(indexJs);
+				res.write(htmlPreviewJs);
 				res.end();
 			} else if (req.url === '/html-preview.js.map') {
-				res.write(indexJsMap);
+				res.write(htmlPreviewJsMap);
 				res.end();
 			} else {
 				try {
@@ -166,8 +168,14 @@ async function openPreview(context: vscode.ExtensionContext) {
 	};
 	const enablePlugin = (plugin: LocalPlugin) => plugin(localPluginApi);
 	enablePlugin(core);
-	enablePlugin(redirect);
-	if (vscode.workspace.getConfiguration().get('htmlPreview.highlight')) {
+	if (process.env.NODE_ENV !== 'test') {
+		enablePlugin(redirect);
+	}
+
+	if (
+		vscode.workspace.getConfiguration().get('htmlPreview.highlight') &&
+		process.env.NODE_ENV !== 'test'
+	) {
 		enablePlugin(highlight);
 	}
 }

@@ -239,7 +239,7 @@ const jestCases = tests.map(test => {
 	.map((x, index) => (index === 0 ? x : '  ' + x))
 	.join('\n')})
   const newNodeMap = parser.nodeMap
-  const edits = domdiff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
   const expectedEdits = ${JSON.stringify(expectedEdits, null, 2)
 		.split('\n')
 		.map((x, index) => (index === 0 ? x : '  ' + x))
@@ -249,7 +249,7 @@ const jestCases = tests.map(test => {
 });
 
 const importCode = [
-	'import { domdiff } from \'../diff\'',
+	'import { diff } from \'../diff\'',
 	'import { createParser } from \'../../parse/parse\''
 ].join('\n');
 const functionCode = [

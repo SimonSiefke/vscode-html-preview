@@ -1,4 +1,4 @@
-import { domdiff } from '../diff'
+import { diff } from '../diff'
 import { createParser } from '../../parse/parse'
 
 function adjustEdits(edits){
@@ -31,7 +31,7 @@ test(`attribute delete #1`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = domdiff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "attributeDelete",
@@ -55,7 +55,7 @@ test(`useless whitespace change #1`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = domdiff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
   const expectedEdits = []
   expect(adjustEdits(edits)).toEqual(adjustExpectedEdits(expectedEdits))
 })
@@ -72,7 +72,7 @@ test(`useless whitespace change #2`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = domdiff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
   const expectedEdits = []
   expect(adjustEdits(edits)).toEqual(adjustExpectedEdits(expectedEdits))
 })
@@ -89,7 +89,7 @@ test(`attribute change #1`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = domdiff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "attributeChange",
@@ -114,7 +114,7 @@ test(`attribute change #2`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = domdiff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "attributeChange",
@@ -139,7 +139,7 @@ test(`basic text insertion`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = domdiff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "elementInsert",
@@ -165,7 +165,7 @@ test(`basic element insertion`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = domdiff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "elementInsert",
@@ -199,7 +199,7 @@ test(`basic text replace`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = domdiff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "textReplace",
@@ -223,7 +223,7 @@ test(`basic text addition`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = domdiff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "textReplace",
@@ -247,7 +247,7 @@ test(`element addition at the end`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = domdiff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "elementInsert",
@@ -281,7 +281,7 @@ test(`element addition at the start`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = domdiff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "elementInsert",
@@ -321,7 +321,7 @@ test(`text insertion in nested html`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = domdiff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "elementInsert",
@@ -347,7 +347,7 @@ test(`insertion of attribute with value`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = domdiff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "attributeAdd",
@@ -372,7 +372,7 @@ test(`insertion of attribute without value`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = domdiff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "attributeAdd",
@@ -405,7 +405,7 @@ test(`insertion of multiple elements and text nodes`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = domdiff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "textReplace",
@@ -473,7 +473,7 @@ test(`attribute name change`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = domdiff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "attributeAdd",
@@ -504,7 +504,7 @@ test(`attribute value insertion at end`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = domdiff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "attributeChange",
@@ -529,7 +529,7 @@ test(`attribute value replacement`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = domdiff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "attributeChange",
@@ -554,7 +554,7 @@ test(`replace text with element`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = domdiff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "elementDelete",
@@ -584,7 +584,7 @@ test(`basic replace text #1`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = domdiff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "textReplace",
@@ -608,7 +608,7 @@ test(`basic replace text #2`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = domdiff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "textReplace",
@@ -632,7 +632,7 @@ test(`replace element with text`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = domdiff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "elementInsert",
@@ -662,7 +662,7 @@ test(`replace text inside element with attributes`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = domdiff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "textReplace",
@@ -687,7 +687,7 @@ test(`delete first element node`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = domdiff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "elementDelete",
@@ -713,7 +713,7 @@ test(`delete element before element`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = domdiff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "elementDelete",
@@ -735,7 +735,7 @@ test(`delete element between elements`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = domdiff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "elementDelete",
@@ -757,7 +757,7 @@ test(`delete text before text`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = domdiff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "textReplace",
@@ -781,7 +781,7 @@ test(`delete text after text`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = domdiff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "textReplace",
@@ -805,7 +805,7 @@ test(`delete text before element`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = domdiff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "elementDelete",
@@ -827,7 +827,7 @@ test(`delete text between elements`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = domdiff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "elementDelete",
@@ -849,7 +849,7 @@ test(`delete text after element`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = domdiff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "elementDelete",
@@ -871,7 +871,7 @@ test(`delete element before text`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = domdiff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "elementDelete",
@@ -893,7 +893,7 @@ test(`delete element after text`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = domdiff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "elementDelete",
@@ -915,7 +915,7 @@ test(`delete 000 - delete text between text and text`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = domdiff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "textReplace",
@@ -939,7 +939,7 @@ test(`delete 001 - delete text between text and element`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = domdiff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "textReplace",
@@ -963,7 +963,7 @@ test(`delete 002 - delete text between text and comment`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = domdiff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "textReplace",
@@ -987,7 +987,7 @@ test(`delete 011 - delete text between element and element`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = domdiff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "elementDelete",
@@ -1009,7 +1009,7 @@ test(`delete 020 - delete text between comment and text`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = domdiff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "textReplace",
@@ -1033,7 +1033,7 @@ test(`delete 021 - delete text between comment and element`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = domdiff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "elementDelete",
@@ -1055,7 +1055,7 @@ test(`delete 100 - delete element between text and text`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = domdiff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "textReplace",
@@ -1087,7 +1087,7 @@ test(`delete 101 - delete element between text and element`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = domdiff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "elementDelete",
@@ -1109,7 +1109,7 @@ test(`delete 102 - delete element between text and comment`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = domdiff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "elementDelete",
@@ -1131,7 +1131,7 @@ test(`delete 110 - delete element between element and text`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = domdiff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "elementDelete",
@@ -1153,7 +1153,7 @@ test(`delete 111 - delete element between element and element`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = domdiff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "elementDelete",
@@ -1175,7 +1175,7 @@ test(`delete 112 - delete element between element and comment`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = domdiff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "elementDelete",
@@ -1197,7 +1197,7 @@ test(`delete 120 - delete element between comment and text`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = domdiff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "elementDelete",
@@ -1219,7 +1219,7 @@ test(`delete 121 - delete element between comment and element`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = domdiff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "elementDelete",
@@ -1241,7 +1241,7 @@ test(`delete 122 - delete element between comment and comment`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = domdiff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "elementDelete",
@@ -1263,7 +1263,7 @@ test(`delete 200 - delete comment between text and text`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = domdiff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "textReplace",
@@ -1295,7 +1295,7 @@ test(`delete 201 - delete comment between text and element`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = domdiff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "elementDelete",
@@ -1317,7 +1317,7 @@ test(`delete 202 - delete comment between text and comment`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = domdiff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "elementDelete",
@@ -1339,7 +1339,7 @@ test(`delete 210 - delete comment between element and text`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = domdiff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "elementDelete",
@@ -1361,7 +1361,7 @@ test(`delete 211 - delete comment between element and element`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = domdiff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "elementDelete",
@@ -1383,7 +1383,7 @@ test(`delete 212 - delete comment between element and comment`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = domdiff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "elementDelete",
@@ -1405,7 +1405,7 @@ test(`delete 220 - delete comment between comment and text`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = domdiff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "elementDelete",
@@ -1427,7 +1427,7 @@ test(`delete 221 - delete comment between comment and element`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = domdiff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "elementDelete",
@@ -1449,7 +1449,7 @@ test(`delete 222 - delete comment between comment and comment`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = domdiff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "elementDelete",
@@ -1471,7 +1471,7 @@ test(`insert 000 - insert text between text and text`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = domdiff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "textReplace",
@@ -1495,7 +1495,7 @@ test(`insert 001 - insert text between text and element`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = domdiff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "textReplace",
@@ -1519,7 +1519,7 @@ test(`insert 002 - insert text between text and comment`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = domdiff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "textReplace",
@@ -1543,7 +1543,7 @@ test(`insert 010 - insert text between element and text`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = domdiff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "elementInsert",
@@ -1569,7 +1569,7 @@ test(`insert 011 - insert text between element and element`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = domdiff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "elementInsert",
@@ -1595,7 +1595,7 @@ test(`insert 012 - insert text between element and comment`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = domdiff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "elementInsert",
@@ -1621,7 +1621,7 @@ test(`insert 020 - insert text between comment and text`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = domdiff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "textReplace",
@@ -1645,7 +1645,7 @@ test(`insert 021 - insert text between comment and element`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = domdiff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "elementInsert",
@@ -1671,7 +1671,7 @@ test(`insert 022 - insert text between comment and comment`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = domdiff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "elementInsert",
@@ -1697,7 +1697,7 @@ test(`insert 100 - insert element between text and text`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = domdiff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "textReplace",
@@ -1745,7 +1745,7 @@ test(`insert 101 - insert element between text and element`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = domdiff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "elementInsert",
@@ -1779,7 +1779,7 @@ test(`insert 102 - insert element between text and comment`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = domdiff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "elementInsert",
@@ -1813,7 +1813,7 @@ test(`insert 110 - insert element between element and text`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = domdiff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "elementInsert",
@@ -1847,7 +1847,7 @@ test(`insert 111 - insert element between element and element`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = domdiff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "elementInsert",
@@ -1881,7 +1881,7 @@ test(`insert 112 - insert element between element and comment`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = domdiff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "elementInsert",
@@ -1915,7 +1915,7 @@ test(`insert 120 - insert element between comment and text`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = domdiff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "elementInsert",
@@ -1949,7 +1949,7 @@ test(`insert 121 - insert element between comment and element`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = domdiff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "elementInsert",
@@ -1983,7 +1983,7 @@ test(`insert 122 - insert element between comment and comment`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = domdiff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "elementInsert",
@@ -2017,7 +2017,7 @@ test(`insert 200 - insert comment between text and text`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = domdiff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "textReplace",
@@ -2057,7 +2057,7 @@ test(`insert 201 - insert comment between text and element`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = domdiff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "elementInsert",
@@ -2083,7 +2083,7 @@ test(`insert 202 - insert comment between text and comment`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = domdiff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "elementInsert",
@@ -2109,7 +2109,7 @@ test(`insert 210 - insert comment between element and text`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = domdiff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "elementInsert",
@@ -2135,7 +2135,7 @@ test(`insert 211 - insert comment between element and element`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = domdiff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "elementInsert",
@@ -2161,7 +2161,7 @@ test(`insert 212 - insert comment between element and comment`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = domdiff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "elementInsert",
@@ -2187,7 +2187,7 @@ test(`insert 220 - insert comment between comment and text`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = domdiff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "elementInsert",
@@ -2213,7 +2213,7 @@ test(`insert 221 - insert comment between comment and element`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = domdiff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "elementInsert",
@@ -2239,7 +2239,7 @@ test(`insert 222 - insert comment between comment and comment`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = domdiff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "elementInsert",
@@ -2289,7 +2289,7 @@ test(`test because of bug #1`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = domdiff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "textReplace",
@@ -2314,7 +2314,7 @@ test(`test because of bug #3`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = domdiff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "elementInsert",
@@ -2359,7 +2359,7 @@ test(`test because of bug #4`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = domdiff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "elementInsert",
@@ -2402,7 +2402,7 @@ test(`doctype and whitespace #1`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = domdiff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "elementInsert",
@@ -2429,7 +2429,7 @@ test(`doctype and whitespace #2`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = domdiff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "elementInsert",
@@ -2456,7 +2456,7 @@ test(`doctype and whitespace #3`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = domdiff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "elementDelete",

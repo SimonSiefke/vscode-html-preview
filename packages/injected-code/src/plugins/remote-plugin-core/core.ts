@@ -98,7 +98,7 @@ const elementInsert: RemotePlugin = api => {
 				$node = document.implementation.createDocumentType('html', '', '');
 			} else {
 				$node = document.createElement(payload.tag) as HTMLElement;
-				for (const [attributeName, attributeValue] of Object.keys(payload.attributes)) {
+				for (const [attributeName, attributeValue] of Object.entries<any>(payload.attributes)) {
 					$node.setAttribute(attributeName, fixAttributeValue(attributeValue));
 				}
 
@@ -125,7 +125,8 @@ const elementInsert: RemotePlugin = api => {
 		) {
 			$parent = document.body;
 			for (const rootNode of api.virtualDom) {
-				if (api.nodeMap[rootNode.id].parentNode === document) {
+				const rootNodeParent = api.nodeMap[rootNode.id] && api.nodeMap[rootNode.id].parentNode;
+				if (rootNodeParent === document) {
 					payload.beforeId--;
 				} else {
 					break;
@@ -133,7 +134,9 @@ const elementInsert: RemotePlugin = api => {
 			}
 		}
 
+		console.log($parent);
 		if (payload.beforeId === 0) {
+			console.log('prepend');
 			$parent.prepend($node);
 		} else {
 			const $referenceNode = api.nodeMap[payload.beforeId];

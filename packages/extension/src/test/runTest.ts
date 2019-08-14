@@ -1,6 +1,9 @@
 import * as path from 'path';
 
 import {runTests} from 'vscode-test';
+const extensionRoot = path.join(__dirname, '../../');
+const basicTestWorkspace = path.join(extensionRoot, 'src/test/suite/basic/basic-test-workspace');
+console.log(basicTestWorkspace);
 (async () => {
 	try {
 		// The folder containing the Extension Manifest package.json
@@ -15,7 +18,7 @@ import {runTests} from 'vscode-test';
 		await runTests({
 			extensionDevelopmentPath,
 			extensionTestsPath,
-			launchArgs: ['--disable-extensions']
+			launchArgs: ['--disable-extensions', basicTestWorkspace]
 		});
 	} catch (err) {
 		console.error('Failed to run tests :(');

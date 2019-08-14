@@ -94,6 +94,10 @@ async function expectHtml(html) {
 	assert.deepStrictEqual(bodyChildren, html);
 }
 
+function adjust(html) {
+	return html.replace('<script type="module" src="html-preview.js"></script>', '');
+}
+
 test('basic', async () => {
 	await vscode.commands.executeCommand('htmlPreview.openPreview');
 	await page.goto('http://localhost:3000');
@@ -112,10 +116,10 @@ test('basic', async () => {
 		),
 		edit.text
 	);
-	vscode.workspace.applyEdit(vscodeEdit);
+	await vscode.workspace.applyEdit(vscodeEdit);
 	const html = await page.content();
-	console.log(html);
-	await new Promise(resolve => {});
+	assert.equal(adjust(html), '<html><head></head><body>hello world</body></html>');
+	// await new Promise(resolve => {});
 });
 
 // const edit = new vscode.WorkspaceEdit()

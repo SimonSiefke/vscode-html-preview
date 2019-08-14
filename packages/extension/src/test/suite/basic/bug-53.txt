@@ -1,6 +1,0 @@
-<!DOCTYPE html>
-<head>
-</head>
-hello world!!!
-this is live preview
-h1

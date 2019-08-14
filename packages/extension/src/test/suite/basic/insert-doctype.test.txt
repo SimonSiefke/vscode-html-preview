@@ -6,7 +6,7 @@ edits:
   {
     rangeOffset: 0
     rangeLength: 0
-    text: <!DOCTYPE html>
+    text: "<!DOCTYPE html>"
   }
 ]
 

@@ -14,4 +14,4 @@ nextText:
 <h1></h1>
 
 expectedDom:
-<h1></h1>
+<html><head></head><body><h1></h1></body></html>
