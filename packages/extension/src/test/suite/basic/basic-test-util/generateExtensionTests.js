@@ -20,8 +20,13 @@ const testFileNames = [
 	'element-addition-at-the-start.test.txt',
 	'text-insertion-in-nested-html.test.txt',
 	'insertion-of-attribute-with-value.test.txt',
-	'insertion-of-attribute-without-value.test.txt'
+	'insertion-of-attribute-without-value.test.txt',
+	'insertion-of-multiple-elements-and-text-nodes.test.txt',
+	'attribute-name-change.test.txt',
+	'attribute-value-insertion-at-the-end.test.txt',
+	'attribute-value-replacement.test.txt'
 ];
+const headless = true;
 testFileNames.length; // ?
 // const testFileNames = ['text-from-scratch.txt'];
 
@@ -70,7 +75,7 @@ function generateTestCase({fileName, testCases}) {
 	const edit = testCases[0].edits[0]; // ?
 	const singles = testCases.map(genSingle);
 	return `${importCode}
-const headless = false
+const headless = ${headless}
 
 function getBrowser(){
 	return puppeteer.launch({headless, args: ['--no-sandbox']})

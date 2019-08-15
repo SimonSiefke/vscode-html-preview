@@ -9,7 +9,7 @@ import * as vscode from 'vscode'
 import * as assert from 'assert'
 import * as _ from 'lodash'
 
-const headless = false
+const headless = true
 
 function getBrowser(){
 	return puppeteer.launch({headless, args: ['--no-sandbox']})

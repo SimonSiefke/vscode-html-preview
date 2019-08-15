@@ -39,9 +39,9 @@ function adjust(html) {
 	return html.replace('\n<script type="module" src="html-preview.js"></script>', '').replace('<script type="module" src="html-preview.js"></script>', '').replace(/ data-id="\d*"/g, '');
 }
 
-test('useless-whitespace-change-2', async () => {
-	const uri = await createTestFile('useless-whitespace-change-2.html')
-  await setText(`<h1><br  ></h1>`)
+test('attribute-name-change', async () => {
+	const uri = await createTestFile('attribute-name-change.html')
+  await setText(`<h1 c>hello world</h1>`)
   await activateExtension()
   const browser = await getBrowser()
   const page = await browser.newPage()
@@ -50,9 +50,9 @@ test('useless-whitespace-change-2', async () => {
 	
 	{
 		const edit = {
-  "rangeOffset": 7,
-  "rangeLength": 2,
-  "text": ""
+  "rangeOffset": 5,
+  "rangeLength": 0,
+  "text": "lass"
 }
   const vscodeEdit = new vscode.WorkspaceEdit()
   const {document} = vscode.window.activeTextEditor
@@ -68,7 +68,7 @@ test('useless-whitespace-change-2', async () => {
 	waitForUpdateStart(page)
 	const html = await page.content()
 	await waitForUpdateEnd(page)
-	assert.equal(adjust(html), `<html><head></head><body><h1><br></h1></body></html>`);
+	assert.equal(adjust(html), `<html><head></head><body><h1 class="">hello world</h1></body></html>`);
 	
 		}
 	await browser.close()

@@ -596,7 +596,7 @@ expectedEdits:
 ]
 
 name:
-attribute value insertion at end
+attribute value insertion at the end
 
 previousDom:
 <h1 class="big">hello world</h1>

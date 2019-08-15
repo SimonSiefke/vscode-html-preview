@@ -492,7 +492,7 @@ test(`attribute name change`, () => {
   expect(adjustEdits(edits)).toEqual(adjustExpectedEdits(expectedEdits))
 })
 
-test(`attribute value insertion at end`, () => {
+test(`attribute value insertion at the end`, () => {
   const parser = createParser()
   const previousDom = parser.parse(`<h1 class="big">hello world</h1>`)
   const oldNodeMap = parser.nodeMap
