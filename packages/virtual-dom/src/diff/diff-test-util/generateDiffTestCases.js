@@ -21,7 +21,7 @@ function finishBlock() {
 		return;
 	}
 
-	if ((blockType === 'name' || blockType === 'previousDom') && currentTest.previousDom) {
+	if ((blockType === 'name' || blockType === 'previousText') && currentTest.previousText) {
 		tests.push(currentTest);
 		currentTest = {};
 	}
@@ -42,9 +42,9 @@ for (let i = 0; i < lines.length; i++) {
 		continue;
 	}
 
-	if (line.startsWith('previousDom:')) {
+	if (line.startsWith('previousText:')) {
 		finishBlock();
-		blockType = 'previousDom';
+		blockType = 'previousText';
 		continue;
 	}
 
@@ -54,9 +54,9 @@ for (let i = 0; i < lines.length; i++) {
 		continue;
 	}
 
-	if (line.startsWith('nextDom:')) {
+	if (line.startsWith('nextText:')) {
 		finishBlock();
-		blockType = 'nextDom';
+		blockType = 'nextText';
 		continue;
 	}
 
@@ -70,7 +70,7 @@ for (let i = 0; i < lines.length; i++) {
 }
 
 finishBlock();
-blockType = 'previousDom';
+blockType = 'previousText';
 finishBlock();
 
 function parseJson(json) {
@@ -120,12 +120,12 @@ const expectedEditsSchema = {
 	}
 };
 
-function validatePreviousDom(previousDom) {
-	return typeof previousDom === 'string';
+function validatePreviousText(previousText) {
+	return typeof previousText === 'string';
 }
 
-function validateNextDom(nextDom) {
-	return typeof nextDom === 'string';
+function validateNextText(nextText) {
+	return typeof nextText === 'string';
 }
 
 function validateEdits(edits) {
@@ -159,7 +159,7 @@ function validateTestCase(testCase) {
 	let inserted = 0;
 	for (const edit of testCase.edits) {
 		while (index < edit.rangeOffset) {
-			expectedNextCode[index] = testCase.previousDom[index];
+			expectedNextCode[index] = testCase.previousText[index];
 			index++;
 		}
 
@@ -175,20 +175,20 @@ function validateTestCase(testCase) {
 	expectedNextCode.join(''); // ?
 
 	index;
-	while (index < testCase.previousDom.length) {
+	while (index < testCase.previousText.length) {
 		index;
-		expectedNextCode[index + inserted] = testCase.previousDom[index];
+		expectedNextCode[index + inserted] = testCase.previousText[index];
 		index++;
 	}
 
-	if (expectedNextCode.join('') !== testCase.nextDom) {
+	if (expectedNextCode.join('') !== testCase.nextText) {
 		f;
 		testCase.name; // ?
 		console.log(expectedNextCode.join('')); // ?
-		console.log(testCase.nextDom); // ?
+		console.log(testCase.nextText); // ?
 		const en = expectedNextCode.join('');
 		for (let n = 0; n < en.length; n++) {
-			if (en[n] !== testCase.nextDom[n]) {
+			if (en[n] !== testCase.nextText[n]) {
 				console.log('\nindex is', n);
 				console.log(
 					'expected',
@@ -197,7 +197,7 @@ function validateTestCase(testCase) {
 						.replace(/ /g, 'SPACE')
 						.replace(/\n/g, 'NEWLINE'),
 					'\ngot',
-					testCase.nextDom
+					testCase.nextText
 						.slice(n, n + 10)
 						.replace(/ /g, 'SPACE')
 						.replace(/\n/g, 'NEWLINE')
@@ -207,7 +207,7 @@ function validateTestCase(testCase) {
 		}
 
 		throw new Error(
-			`testcase ${f} "${testCase.name}" is invalid, nextdom does not match specified edit`
+			`testcase ${f} "${testCase.name}" is invalid, nextText does not match specified edit`
 		);
 	}
 }
@@ -219,27 +219,27 @@ for (const test of tests) {
 }
 
 const jestCases = tests.map(test => {
-	const {previousDom} = test;
-	validatePreviousDom(previousDom);
-	const {nextDom} = test;
-	validateNextDom(nextDom);
+	const {previousText} = test;
+	validatePreviousText(previousText);
+	const {nextText} = test;
+	validateNextText(nextText);
 	const edits = parseJson(test.edits);
 	validateEdits(edits);
 	const expectedEdits = parseJson(test.expectedEdits);
 	validateExpectedEdits(expectedEdits);
 	const {name} = test;
 	validateName(name);
-	validateTestCase({previousDom, nextDom, edits, name});
-	return `test(\`${name || nextDom}\`, () => {
+	validateTestCase({previousText, nextText, edits, name});
+	return `test(\`${name || nextText}\`, () => {
   const parser = createParser()
-  const previousDom = parser.parse(\`${previousDom}\`)
+  const previousText = parser.parse(\`${previousText}\`)
   const oldNodeMap = parser.nodeMap
-  const nextDom = parser.edit(\`${nextDom}\`, ${JSON.stringify(edits, null, 2)
+  const nextText = parser.edit(\`${nextText}\`, ${JSON.stringify(edits, null, 2)
 	.split('\n')
 	.map((x, index) => (index === 0 ? x : '  ' + x))
 	.join('\n')})
   const newNodeMap = parser.nodeMap
-  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousText.children, nextText.children, {oldNodeMap, newNodeMap})
   const expectedEdits = ${JSON.stringify(expectedEdits, null, 2)
 		.split('\n')
 		.map((x, index) => (index === 0 ? x : '  ' + x))

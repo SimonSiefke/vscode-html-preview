@@ -1,7 +1,7 @@
 name:
 attribute delete #1
 
-previousDom:
+previousText:
 <h1 class></h1>
 
 edits:
@@ -13,7 +13,7 @@ edits:
   }
 ]
 
-nextDom:
+nextText:
 <h1 ></h1>
 
 expectedEdits:
@@ -29,7 +29,7 @@ expectedEdits:
 name:
 useless whitespace change #1
 
-previousDom:
+previousText:
 <h1></h1>
 
 edits:
@@ -41,7 +41,7 @@ edits:
   }
 ]
 
-nextDom:
+nextText:
 <h1 ></h1>
 
 expectedEdits:
@@ -50,7 +50,7 @@ expectedEdits:
 name:
 useless whitespace change #2
 
-previousDom:
+previousText:
 <h1><br  ></h1>
 
 edits:
@@ -62,7 +62,7 @@ edits:
   }
 ]
 
-nextDom:
+nextText:
 <h1><br></h1>
 
 expectedEdits:
@@ -71,7 +71,7 @@ expectedEdits:
 name:
 attribute change #1
 
-previousDom:
+previousText:
 <h1 class></h1>
 
 edits:
@@ -83,7 +83,7 @@ edits:
   }
 ]
 
-nextDom:
+nextText:
 <h1 class="green"></h1>
 
 expectedEdits:
@@ -100,7 +100,7 @@ expectedEdits:
 name:
 attribute change #2
 
-previousDom:
+previousText:
 <h1 class="gre"></h1>
 
 edits:
@@ -112,7 +112,7 @@ edits:
   }
 ]
 
-nextDom:
+nextText:
 <h1 class="green"></h1>
 
 expectedEdits:
@@ -129,7 +129,7 @@ expectedEdits:
 name:
 basic text insertion
 
-previousDom:
+previousText:
 <h1><p>ok</p></h1>
 
 edits:
@@ -141,7 +141,7 @@ edits:
   }
 ]
 
-nextDom:
+nextText:
 <h1>hello<p>ok</p></h1>
 
 expectedEdits:
@@ -159,7 +159,7 @@ expectedEdits:
 name:
 basic element insertion
 
-previousDom:
+previousText:
 <h1><p>ok</p></h1>
 
 edits:
@@ -171,7 +171,7 @@ edits:
   }
 ]
 
-nextDom:
+nextText:
 <h1><p>ok</p><p>ok</p></h1>
 
 expectedEdits:
@@ -194,7 +194,7 @@ expectedEdits:
   }
 ]
 
-//previousDom:
+//previousText:
 //<head>
 //  <meta charset="utf-8" />
 //</head>
@@ -212,7 +212,7 @@ expectedEdits:
 //  }
 //]
 //
-//nextDom:
+//nextText:
 //<head>
 //  <meta charset="utf-8" />
 //</head>
@@ -257,7 +257,7 @@ expectedEdits:
 name:
 basic text replace
 
-previousDom:
+previousText:
 <h1>a</h1>
 
 edits:
@@ -269,7 +269,7 @@ edits:
   }
 ]
 
-nextDom:
+nextText:
 <h1>b</h1>
 
 expectedEdits:
@@ -285,7 +285,7 @@ expectedEdits:
 name:
 basic text addition
 
-previousDom:
+previousText:
 <h1>aaa</h1>
 
 edits:
@@ -297,7 +297,7 @@ edits:
   }
 ]
 
-nextDom:
+nextText:
 <h1>aaabbb</h1>
 
 expectedEdits:
@@ -313,7 +313,7 @@ expectedEdits:
 name:
 element addition at the end
 
-previousDom:
+previousText:
 <h1>a</h1>
 
 edits:
@@ -325,7 +325,7 @@ edits:
   }
 ]
 
-nextDom:
+nextText:
 <h1>a</h1><h1>b</h1>
 
 expectedEdits:
@@ -351,7 +351,7 @@ expectedEdits:
 name:
 element addition at the start
 
-previousDom:
+previousText:
 <h1>a</h1>
 
 edits:
@@ -363,7 +363,7 @@ edits:
   }
 ]
 
-nextDom:
+nextText:
 <h1>b</h1><h1>a</h1>
 
 expectedEdits:
@@ -389,7 +389,7 @@ expectedEdits:
 name:
 text insertion in nested html
 
-previousDom:
+previousText:
 <div>
   <img src="https://source.unsplash.com/random" alt="random image">
   <p>nested <strong>text</strong></p>
@@ -404,7 +404,7 @@ edits:
   }
 ]
 
-nextDom:
+nextText:
 <div>
   <img src="https://source.unsplash.com/random" alt="random image">
   <p>nested <strong>text</strong>!!!</p>
@@ -425,7 +425,7 @@ expectedEdits:
 name:
 insertion of attribute with value
 
-previousDom:
+previousText:
 <h1 >hello world</h1>
 
 edits:
@@ -437,7 +437,7 @@ edits:
   }
 ]
 
-nextDom:
+nextText:
 <h1 class="big">hello world</h1>
 
 expectedEdits:
@@ -454,7 +454,7 @@ expectedEdits:
 name:
 insertion of attribute without value
 
-previousDom:
+previousText:
 <h1 >hello world</h1>
 
 edits:
@@ -466,7 +466,7 @@ edits:
   }
 ]
 
-nextDom:
+nextText:
 <h1 class>hello world</h1>
 
 expectedEdits:
@@ -483,7 +483,7 @@ expectedEdits:
 name:
 insertion of multiple elements and text nodes
 
-previousDom:
+previousText:
 <form>
   First name:<br>
   <input type="text" name="firstName"><br>
@@ -498,7 +498,7 @@ edits:
   }
 ]
 
-nextDom:
+nextText:
 <form>
   First name:<br>
   <input type="text" name="firstName"><br>
@@ -563,7 +563,7 @@ expectedEdits:
 name:
 attribute name change
 
-previousDom:
+previousText:
 <h1 c>hello world</h1>
 
 edits:
@@ -575,7 +575,7 @@ edits:
   }
 ]
 
-nextDom:
+nextText:
 <h1 class>hello world</h1>
 
 expectedEdits:
@@ -598,7 +598,7 @@ expectedEdits:
 name:
 attribute value insertion at the end
 
-previousDom:
+previousText:
 <h1 class="big">hello world</h1>
 
 edits:
@@ -610,7 +610,7 @@ edits:
   }
 ]
 
-nextDom:
+nextText:
 <h1 class="bigger">hello world</h1>
 
 expectedEdits:
@@ -627,7 +627,7 @@ expectedEdits:
 name:
 attribute value replacement
 
-previousDom:
+previousText:
 <h1 class="big">hello world</h1>
 
 edits:
@@ -639,7 +639,7 @@ edits:
   }
 ]
 
-nextDom:
+nextText:
 <h1 class="small">hello world</h1>
 
 expectedEdits:
@@ -656,7 +656,7 @@ expectedEdits:
 name:
 replace text with element
 
-previousDom:
+previousText:
 h1
 
 edits:
@@ -668,7 +668,7 @@ edits:
   }
 ]
 
-nextDom:
+nextText:
 <h1></h1>
 
 expectedEdits:
@@ -690,7 +690,7 @@ expectedEdits:
 name:
 basic replace text #1
 
-previousDom:
+previousText:
 <h1>a</h1>
 
 edits:
@@ -702,7 +702,7 @@ edits:
   }
 ]
 
-nextDom:
+nextText:
 <h1>b</h1>
 
 expectedEdits:
@@ -718,7 +718,7 @@ expectedEdits:
 name:
 basic replace text #2
 
-previousDom:
+previousText:
 <h1>aa</h1>
 
 edits:
@@ -730,7 +730,7 @@ edits:
   }
 ]
 
-nextDom:
+nextText:
 <h1>b</h1>
 
 expectedEdits:
@@ -746,7 +746,7 @@ expectedEdits:
 name:
 replace element with text
 
-previousDom:
+previousText:
 <h1>hello world</h1>
 
 edits:
@@ -758,7 +758,7 @@ edits:
   }
 ]
 
-nextDom:
+nextText:
 hello world
 
 expectedEdits:
@@ -780,7 +780,7 @@ expectedEdits:
 name:
 replace text inside element with attributes
 
-previousDom:
+previousText:
 <h1 style="background:orange">a</h1>
 
 edits:
@@ -792,7 +792,7 @@ edits:
   }
 ]
 
-nextDom:
+nextText:
 <h1 style="background:orange">b</h1>
 
 expectedEdits:
@@ -808,7 +808,7 @@ expectedEdits:
 //name:
 //replace text after element node
 //
-//previousDom:
+//previousText:
 //<!DOCTYPE html>
 //<html lang="en">
 //<head>
@@ -831,7 +831,7 @@ expectedEdits:
 //  }
 //]
 //
-//nextDom:
+//nextText:
 //<!DOCTYPE html>
 //<html lang="en">
 //<head>
@@ -859,7 +859,7 @@ expectedEdits:
 //name:
 //replace text after element node and insert element
 //
-//previousDom:
+//previousText:
 //<!DOCTYPE html>
 //<html lang="en">
 //<head>
@@ -888,7 +888,7 @@ expectedEdits:
 //  }
 //]
 //
-//nextDom:
+//nextText:
 //<!DOCTYPE html>
 //<html lang="en">
 //<head>
@@ -918,7 +918,7 @@ expectedEdits:
 name:
 delete first element node
 
-previousDom:
+previousText:
 <h1>hello</h1>
 <button>button</button>
 
@@ -931,7 +931,7 @@ edits:
   }
 ]
 
-nextDom:
+nextText:
 <button>button</button>
 
 expectedEdits:
@@ -949,7 +949,7 @@ expectedEdits:
 name:
 delete element before element
 
-previousDom:
+previousText:
 <h1>a</h1><h1>b</h1>
 
 edits:
@@ -961,7 +961,7 @@ edits:
   }
 ]
 
-nextDom:
+nextText:
 <h1>b</h1>
 
 expectedEdits:
@@ -975,7 +975,7 @@ expectedEdits:
 //name:
 //delete element after elements
 //
-//previousDom:
+//previousText:
 //<h1>a</h1><h1>b</h1>
 //
 //edits:
@@ -987,7 +987,7 @@ expectedEdits:
 //  }
 //]
 //
-//nextDom:
+//nextText:
 //<h1>b</h1>
 //
 //expectedEdits:
@@ -1002,7 +1002,7 @@ expectedEdits:
 name:
 delete text before text
 
-previousDom:
+previousText:
 ab
 
 edits:
@@ -1014,7 +1014,7 @@ edits:
   }
 ]
 
-nextDom:
+nextText:
 b
 
 expectedEdits:
@@ -1030,7 +1030,7 @@ expectedEdits:
 name:
 delete text after text
 
-previousDom:
+previousText:
 ab
 
 edits:
@@ -1042,7 +1042,7 @@ edits:
   }
 ]
 
-nextDom:
+nextText:
 a
 
 expectedEdits:
@@ -1058,7 +1058,7 @@ expectedEdits:
 //name:
 //delete comment before comment
 //
-//previousDom:
+//previousText:
 //<!--a--><!--b-->
 //
 //edits:
@@ -1070,7 +1070,7 @@ expectedEdits:
 //  }
 //]
 //
-//nextDom:
+//nextText:
 //<!--b-->
 //
 //expectedEdits:
@@ -1082,7 +1082,7 @@ expectedEdits:
 //]
 //
 
-//previousDom:
+//previousText:
 //<head>
 //  <meta charset="utf-8" />
 //</head>
@@ -1100,7 +1100,7 @@ expectedEdits:
 //  }
 //]
 //
-//nextDom:
+//nextText:
 //<head>
 //  <meta charset="utf-8" />
 //</head>
@@ -1145,7 +1145,7 @@ expectedEdits:
 //name:
 //replace text after element node
 //
-//previousDom:
+//previousText:
 //<!DOCTYPE html>
 //<html lang="en">
 //<head>
@@ -1168,7 +1168,7 @@ expectedEdits:
 //  }
 //]
 //
-//nextDom:
+//nextText:
 //<!DOCTYPE html>
 //<html lang="en">
 //<head>
@@ -1196,7 +1196,7 @@ expectedEdits:
 //name:
 //replace text after element node and insert element
 //
-//previousDom:
+//previousText:
 //<!DOCTYPE html>
 //<html lang="en">
 //<head>
@@ -1225,7 +1225,7 @@ expectedEdits:
 //  }
 //]
 //
-//nextDom:
+//nextText:
 //<!DOCTYPE html>
 //<html lang="en">
 //<head>
@@ -1254,7 +1254,7 @@ expectedEdits:
 //name:
 //delete comment before comment
 //
-//previousDom:
+//previousText:
 //<!--a--><!--b-->
 //
 //edits:
@@ -1266,7 +1266,7 @@ expectedEdits:
 //  }
 //]
 //
-//nextDom:
+//nextText:
 //<!--b-->
 //
 //expectedEdits:
@@ -1281,7 +1281,7 @@ expectedEdits:
 //name:
 //delete comment between comments
 //
-//previousDom:
+//previousText:
 //<!--a--><!--b--><!--c-->
 //
 //edits:
@@ -1293,7 +1293,7 @@ expectedEdits:
 //  }
 //]
 //
-//nextDom:
+//nextText:
 //<!--a--><!--c-->
 //
 //expectedEdits:
@@ -1307,7 +1307,7 @@ expectedEdits:
 //name:
 //delete comment after comment
 //
-//previousDom:
+//previousText:
 //<!--a--><!--b-->
 //
 //edits:
@@ -1319,7 +1319,7 @@ expectedEdits:
 //  }
 //]
 //
-//nextDom:
+//nextText:
 //<!--a-->
 //
 //expectedEdits:
@@ -1333,7 +1333,7 @@ expectedEdits:
 name:
 delete text before element
 
-previousDom:
+previousText:
 a<h1>b</h1>
 
 edits:
@@ -1345,7 +1345,7 @@ edits:
   }
 ]
 
-nextDom:
+nextText:
 <h1>b</h1>
 
 expectedEdits:
@@ -1359,7 +1359,7 @@ expectedEdits:
 name:
 delete text after element
 
-previousDom:
+previousText:
 <h1>a</h1>b
 
 edits:
@@ -1371,7 +1371,7 @@ edits:
   }
 ]
 
-nextDom:
+nextText:
 <h1>a</h1>
 
 expectedEdits:
@@ -1385,7 +1385,7 @@ expectedEdits:
 name:
 delete element before text
 
-previousDom:
+previousText:
 <h1>a</h1>b
 
 edits:
@@ -1397,7 +1397,7 @@ edits:
   }
 ]
 
-nextDom:
+nextText:
 b
 
 expectedEdits:
@@ -1411,7 +1411,7 @@ expectedEdits:
 name:
 delete element after text
 
-previousDom:
+previousText:
 a<h1>b</h1>
 
 edits:
@@ -1423,7 +1423,7 @@ edits:
   }
 ]
 
-nextDom:
+nextText:
 a
 
 expectedEdits:
@@ -1437,7 +1437,7 @@ expectedEdits:
 name:
 delete 000 - delete text between text and text
 
-previousDom:
+previousText:
 abc
 
 edits:
@@ -1449,7 +1449,7 @@ edits:
   }
 ]
 
-nextDom:
+nextText:
 ac
 
 expectedEdits:
@@ -1465,7 +1465,7 @@ expectedEdits:
 name:
 delete 001 - delete text between text and element
 
-previousDom:
+previousText:
 ab<h1>c</h1>
 
 edits:
@@ -1477,7 +1477,7 @@ edits:
   }
 ]
 
-nextDom:
+nextText:
 a<h1>c</h1>
 
 expectedEdits:
@@ -1493,7 +1493,7 @@ expectedEdits:
 name:
 delete 002 - delete text between text and comment
 
-previousDom:
+previousText:
 ab<!--c-->
 
 edits:
@@ -1505,7 +1505,7 @@ edits:
   }
 ]
 
-nextDom:
+nextText:
 a<!--c-->
 
 expectedEdits:
@@ -1521,7 +1521,7 @@ expectedEdits:
 //name:
 //delete 010 - delete text between element and text
 //
-//previousDom:
+//previousText:
 //<h1>a</h1>b<!--c-->
 //
 //edits:
@@ -1533,7 +1533,7 @@ expectedEdits:
 //  }
 //]
 //
-//nextDom:
+//nextText:
 //<h1>a</h1><!--c-->
 //
 //expectedEdits:
@@ -1547,7 +1547,7 @@ expectedEdits:
 name:
 delete 011 - delete text between element and element
 
-previousDom:
+previousText:
 <h1>a</h1>b<h1>c</h1>
 
 edits:
@@ -1559,7 +1559,7 @@ edits:
   }
 ]
 
-nextDom:
+nextText:
 <h1>a</h1><h1>c</h1>
 
 expectedEdits:
@@ -1573,7 +1573,7 @@ expectedEdits:
 //name:
 //delete 012 - delete text between element and comment
 //
-//previousDom:
+//previousText:
 //<h1>a</h1>b<!--c-->
 //
 //edits:
@@ -1585,7 +1585,7 @@ expectedEdits:
 //  }
 //]
 //
-//nextDom:
+//nextText:
 //<h1>a</h1><!--c-->
 //
 //expectedEdits:
@@ -1599,7 +1599,7 @@ expectedEdits:
 name:
 delete 020 - delete text between comment and text
 
-previousDom:
+previousText:
 <!--a-->bc
 
 edits:
@@ -1611,7 +1611,7 @@ edits:
   }
 ]
 
-nextDom:
+nextText:
 <!--a-->c
 
 expectedEdits:
@@ -1627,7 +1627,7 @@ expectedEdits:
 name:
 delete 021 - delete text between comment and element
 
-previousDom:
+previousText:
 <!--a-->b<h1>c</h1>
 
 edits:
@@ -1639,7 +1639,7 @@ edits:
   }
 ]
 
-nextDom:
+nextText:
 <!--a--><h1>c</h1>
 
 expectedEdits:
@@ -1653,7 +1653,7 @@ expectedEdits:
 //name:
 //delete 022 - delete text between comment and comment
 //
-//previousDom:
+//previousText:
 //<!--a-->b<!--c-->
 //
 //edits:
@@ -1665,7 +1665,7 @@ expectedEdits:
 //  }
 //]
 //
-//nextDom:
+//nextText:
 //<!--a--><!--c-->
 //
 //expectedEdits:
@@ -1679,7 +1679,7 @@ expectedEdits:
 name:
 delete 100 - delete element between text and text
 
-previousDom:
+previousText:
 a<h1>b</h1>c
 
 edits:
@@ -1691,7 +1691,7 @@ edits:
   }
 ]
 
-nextDom:
+nextText:
 ac
 
 expectedEdits:
@@ -1715,7 +1715,7 @@ expectedEdits:
 name:
 delete 101 - delete element between text and element
 
-previousDom:
+previousText:
 a<h1>b</h1><h1>c</h1>
 
 edits:
@@ -1727,7 +1727,7 @@ edits:
   }
 ]
 
-nextDom:
+nextText:
 a<h1>c</h1>
 
 expectedEdits:
@@ -1741,7 +1741,7 @@ expectedEdits:
 name:
 delete 102 - delete element between text and comment
 
-previousDom:
+previousText:
 a<h1>b</h1><!--c-->
 
 edits:
@@ -1753,7 +1753,7 @@ edits:
   }
 ]
 
-nextDom:
+nextText:
 a<!--c-->
 
 expectedEdits:
@@ -1767,7 +1767,7 @@ expectedEdits:
 name:
 delete 110 - delete element between element and text
 
-previousDom:
+previousText:
 <h1>a</h1><h1>b</h1>c
 
 edits:
@@ -1779,7 +1779,7 @@ edits:
   }
 ]
 
-nextDom:
+nextText:
 <h1>a</h1>c
 
 expectedEdits:
@@ -1793,7 +1793,7 @@ expectedEdits:
 name:
 delete 111 - delete element between element and element
 
-previousDom:
+previousText:
 <h1>a</h1><h1>b</h1><h1>c</h1>
 
 edits:
@@ -1805,7 +1805,7 @@ edits:
   }
 ]
 
-nextDom:
+nextText:
 <h1>a</h1><h1>c</h1>
 
 expectedEdits:
@@ -1819,7 +1819,7 @@ expectedEdits:
 name:
 delete 112 - delete element between element and comment
 
-previousDom:
+previousText:
 <h1>a</h1><h1>b</h1><!--c-->
 
 edits:
@@ -1831,7 +1831,7 @@ edits:
   }
 ]
 
-nextDom:
+nextText:
 <h1>a</h1><!--c-->
 
 expectedEdits:
@@ -1845,7 +1845,7 @@ expectedEdits:
 name:
 delete 120 - delete element between comment and text
 
-previousDom:
+previousText:
 <!--a--><h1>b</h1>c
 
 edits:
@@ -1857,7 +1857,7 @@ edits:
   }
 ]
 
-nextDom:
+nextText:
 <!--a-->c
 
 expectedEdits:
@@ -1871,7 +1871,7 @@ expectedEdits:
 name:
 delete 121 - delete element between comment and element
 
-previousDom:
+previousText:
 <!--a--><h1>b</h1><h1>c</h1>
 
 edits:
@@ -1883,7 +1883,7 @@ edits:
   }
 ]
 
-nextDom:
+nextText:
 <!--a--><h1>c</h1>
 
 expectedEdits:
@@ -1897,7 +1897,7 @@ expectedEdits:
 name:
 delete 122 - delete element between comment and comment
 
-previousDom:
+previousText:
 <!--a--><h1>b</h1><!--c-->
 
 edits:
@@ -1909,7 +1909,7 @@ edits:
   }
 ]
 
-nextDom:
+nextText:
 <!--a--><!--c-->
 
 expectedEdits:
@@ -1923,7 +1923,7 @@ expectedEdits:
 name:
 delete 200 - delete comment between text and text
 
-previousDom:
+previousText:
 a<!--b-->c
 
 edits:
@@ -1935,7 +1935,7 @@ edits:
   }
 ]
 
-nextDom:
+nextText:
 ac
 
 expectedEdits:
@@ -1959,7 +1959,7 @@ expectedEdits:
 name:
 delete 201 - delete comment between text and element
 
-previousDom:
+previousText:
 a<!--b--><h1>c</h1>
 
 edits:
@@ -1971,7 +1971,7 @@ edits:
   }
 ]
 
-nextDom:
+nextText:
 a<h1>c</h1>
 
 expectedEdits:
@@ -1985,7 +1985,7 @@ expectedEdits:
 name:
 delete 202 - delete comment between text and comment
 
-previousDom:
+previousText:
 a<!--b--><!--c-->
 
 edits:
@@ -1997,7 +1997,7 @@ edits:
   }
 ]
 
-nextDom:
+nextText:
 a<!--c-->
 
 expectedEdits:
@@ -2012,7 +2012,7 @@ expectedEdits:
 name:
 delete 210 - delete comment between element and text
 
-previousDom:
+previousText:
 <h1>a</h1><!--b-->c
 
 edits:
@@ -2024,7 +2024,7 @@ edits:
   }
 ]
 
-nextDom:
+nextText:
 <h1>a</h1>c
 
 expectedEdits:
@@ -2038,7 +2038,7 @@ expectedEdits:
 name:
 delete 211 - delete comment between element and element
 
-previousDom:
+previousText:
 <h1>a</h1><!--b--><h1>c</h1>
 
 edits:
@@ -2050,7 +2050,7 @@ edits:
   }
 ]
 
-nextDom:
+nextText:
 <h1>a</h1><h1>c</h1>
 
 expectedEdits:
@@ -2064,7 +2064,7 @@ expectedEdits:
 name:
 delete 212 - delete comment between element and comment
 
-previousDom:
+previousText:
 <h1>a</h1><!--b--><!--c-->
 
 edits:
@@ -2076,7 +2076,7 @@ edits:
   }
 ]
 
-nextDom:
+nextText:
 <h1>a</h1><!--c-->
 
 expectedEdits:
@@ -2090,7 +2090,7 @@ expectedEdits:
 name:
 delete 220 - delete comment between comment and text
 
-previousDom:
+previousText:
 <!--a--><!--b-->c
 
 edits:
@@ -2102,7 +2102,7 @@ edits:
   }
 ]
 
-nextDom:
+nextText:
 <!--a-->c
 
 expectedEdits:
@@ -2116,7 +2116,7 @@ expectedEdits:
 name:
 delete 221 - delete comment between comment and element
 
-previousDom:
+previousText:
 <!--a--><!--b--><h1>c</h1>
 
 edits:
@@ -2128,7 +2128,7 @@ edits:
   }
 ]
 
-nextDom:
+nextText:
 <!--a--><h1>c</h1>
 
 expectedEdits:
@@ -2142,7 +2142,7 @@ expectedEdits:
 name:
 delete 222 - delete comment between comment and comment
 
-previousDom:
+previousText:
 <!--a--><!--b--><!--c-->
 
 edits:
@@ -2154,7 +2154,7 @@ edits:
   }
 ]
 
-nextDom:
+nextText:
 <!--a--><!--c-->
 
 expectedEdits:
@@ -2168,7 +2168,7 @@ expectedEdits:
 name:
 insert 000 - insert text between text and text
 
-previousDom:
+previousText:
 ac
 
 edits:
@@ -2180,7 +2180,7 @@ edits:
   }
 ]
 
-nextDom:
+nextText:
 abc
 
 expectedEdits:
@@ -2196,7 +2196,7 @@ expectedEdits:
 name:
 insert 001 - insert text between text and element
 
-previousDom:
+previousText:
 a<h1>c</h1>
 
 edits:
@@ -2208,7 +2208,7 @@ edits:
   }
 ]
 
-nextDom:
+nextText:
 ab<h1>c</h1>
 
 expectedEdits:
@@ -2224,7 +2224,7 @@ expectedEdits:
 name:
 insert 002 - insert text between text and comment
 
-previousDom:
+previousText:
 a<!--c-->
 
 edits:
@@ -2236,7 +2236,7 @@ edits:
   }
 ]
 
-nextDom:
+nextText:
 ab<!--c-->
 
 expectedEdits:
@@ -2252,7 +2252,7 @@ expectedEdits:
 name:
 insert 010 - insert text between element and text
 
-previousDom:
+previousText:
 <h1>a</h1><!--c-->
 
 edits:
@@ -2264,7 +2264,7 @@ edits:
   }
 ]
 
-nextDom:
+nextText:
 <h1>a</h1>b<!--c-->
 
 expectedEdits:
@@ -2282,7 +2282,7 @@ expectedEdits:
 name:
 insert 011 - insert text between element and element
 
-previousDom:
+previousText:
 <h1>a</h1><h1>c</h1>
 
 edits:
@@ -2294,7 +2294,7 @@ edits:
   }
 ]
 
-nextDom:
+nextText:
 <h1>a</h1>b<h1>c</h1>
 
 expectedEdits:
@@ -2312,7 +2312,7 @@ expectedEdits:
 name:
 insert 012 - insert text between element and comment
 
-previousDom:
+previousText:
 <h1>a</h1><!--c-->
 
 edits:
@@ -2324,7 +2324,7 @@ edits:
   }
 ]
 
-nextDom:
+nextText:
 <h1>a</h1>b<!--c-->
 
 expectedEdits:
@@ -2342,7 +2342,7 @@ expectedEdits:
 name:
 insert 020 - insert text between comment and text
 
-previousDom:
+previousText:
 <!--a-->c
 
 edits:
@@ -2354,7 +2354,7 @@ edits:
   }
 ]
 
-nextDom:
+nextText:
 <!--a-->bc
 
 expectedEdits:
@@ -2370,7 +2370,7 @@ expectedEdits:
 name:
 insert 021 - insert text between comment and element
 
-previousDom:
+previousText:
 <!--a--><h1>c</h1>
 
 edits:
@@ -2382,7 +2382,7 @@ edits:
   }
 ]
 
-nextDom:
+nextText:
 <!--a-->b<h1>c</h1>
 
 expectedEdits:
@@ -2400,7 +2400,7 @@ expectedEdits:
 name:
 insert 022 - insert text between comment and comment
 
-previousDom:
+previousText:
 <!--a--><!--c-->
 
 edits:
@@ -2412,7 +2412,7 @@ edits:
   }
 ]
 
-nextDom:
+nextText:
 <!--a-->b<!--c-->
 
 expectedEdits:
@@ -2430,7 +2430,7 @@ expectedEdits:
 name:
 insert 100 - insert element between text and text
 
-previousDom:
+previousText:
 ac
 
 edits:
@@ -2442,7 +2442,7 @@ edits:
   }
 ]
 
-nextDom:
+nextText:
 a<h1>b</h1>c
 
 expectedEdits:
@@ -2482,7 +2482,7 @@ expectedEdits:
 name:
 insert 101 - insert element between text and element
 
-previousDom:
+previousText:
 a<h1>c</h1>
 
 edits:
@@ -2494,7 +2494,7 @@ edits:
   }
 ]
 
-nextDom:
+nextText:
 a<h1>b</h1><h1>c</h1>
 
 expectedEdits:
@@ -2520,7 +2520,7 @@ expectedEdits:
 name:
 insert 102 - insert element between text and comment
 
-previousDom:
+previousText:
 a<!--c-->
 
 edits:
@@ -2532,7 +2532,7 @@ edits:
   }
 ]
 
-nextDom:
+nextText:
 a<h1>b</h1><!--c-->
 
 expectedEdits:
@@ -2558,7 +2558,7 @@ expectedEdits:
 name:
 insert 110 - insert element between element and text
 
-previousDom:
+previousText:
 <h1>a</h1>c
 
 edits:
@@ -2570,7 +2570,7 @@ edits:
   }
 ]
 
-nextDom:
+nextText:
 <h1>a</h1><h1>b</h1>c
 
 expectedEdits:
@@ -2596,7 +2596,7 @@ expectedEdits:
 name:
 insert 111 - insert element between element and element
 
-previousDom:
+previousText:
 <h1>a</h1><h1>c</h1>
 
 edits:
@@ -2608,7 +2608,7 @@ edits:
   }
 ]
 
-nextDom:
+nextText:
 <h1>a</h1><h1>b</h1><h1>c</h1>
 
 expectedEdits:
@@ -2634,7 +2634,7 @@ expectedEdits:
 name:
 insert 112 - insert element between element and comment
 
-previousDom:
+previousText:
 <h1>a</h1><!--c-->
 
 edits:
@@ -2646,7 +2646,7 @@ edits:
   }
 ]
 
-nextDom:
+nextText:
 <h1>a</h1><h1>b</h1><!--c-->
 
 expectedEdits:
@@ -2672,7 +2672,7 @@ expectedEdits:
 name:
 insert 120 - insert element between comment and text
 
-previousDom:
+previousText:
 <!--a-->c
 
 edits:
@@ -2684,7 +2684,7 @@ edits:
   }
 ]
 
-nextDom:
+nextText:
 <!--a--><h1>b</h1>c
 
 expectedEdits:
@@ -2710,7 +2710,7 @@ expectedEdits:
 name:
 insert 121 - insert element between comment and element
 
-previousDom:
+previousText:
 <!--a--><h1>c</h1>
 
 edits:
@@ -2722,7 +2722,7 @@ edits:
   }
 ]
 
-nextDom:
+nextText:
 <!--a--><h1>b</h1><h1>c</h1>
 
 expectedEdits:
@@ -2748,7 +2748,7 @@ expectedEdits:
 name:
 insert 122 - insert element between comment and comment
 
-previousDom:
+previousText:
 <!--a--><!--c-->
 
 edits:
@@ -2760,7 +2760,7 @@ edits:
   }
 ]
 
-nextDom:
+nextText:
 <!--a--><h1>b</h1><!--c-->
 
 expectedEdits:
@@ -2786,7 +2786,7 @@ expectedEdits:
 name:
 insert 200 - insert comment between text and text
 
-previousDom:
+previousText:
 ac
 
 edits:
@@ -2798,7 +2798,7 @@ edits:
   }
 ]
 
-nextDom:
+nextText:
 a<!--b-->c
 
 expectedEdits:
@@ -2830,7 +2830,7 @@ expectedEdits:
 name:
 insert 201 - insert comment between text and element
 
-previousDom:
+previousText:
 a<h1>c</h1>
 
 edits:
@@ -2842,7 +2842,7 @@ edits:
   }
 ]
 
-nextDom:
+nextText:
 a<!--b--><h1>c</h1>
 
 expectedEdits:
@@ -2860,7 +2860,7 @@ expectedEdits:
 name:
 insert 202 - insert comment between text and comment
 
-previousDom:
+previousText:
 a<!--c-->
 
 edits:
@@ -2872,7 +2872,7 @@ edits:
   }
 ]
 
-nextDom:
+nextText:
 a<!--b--><!--c-->
 
 expectedEdits:
@@ -2891,7 +2891,7 @@ expectedEdits:
 name:
 insert 210 - insert comment between element and text
 
-previousDom:
+previousText:
 <h1>a</h1>c
 
 edits:
@@ -2903,7 +2903,7 @@ edits:
   }
 ]
 
-nextDom:
+nextText:
 <h1>a</h1><!--b-->c
 
 expectedEdits:
@@ -2921,7 +2921,7 @@ expectedEdits:
 name:
 insert 211 - insert comment between element and element
 
-previousDom:
+previousText:
 <h1>a</h1><h1>c</h1>
 
 edits:
@@ -2933,7 +2933,7 @@ edits:
   }
 ]
 
-nextDom:
+nextText:
 <h1>a</h1><!--b--><h1>c</h1>
 
 expectedEdits:
@@ -2951,7 +2951,7 @@ expectedEdits:
 name:
 insert 212 - insert comment between element and comment
 
-previousDom:
+previousText:
 <h1>a</h1><!--c-->
 
 edits:
@@ -2963,7 +2963,7 @@ edits:
   }
 ]
 
-nextDom:
+nextText:
 <h1>a</h1><!--b--><!--c-->
 
 expectedEdits:
@@ -2981,7 +2981,7 @@ expectedEdits:
 name:
 insert 220 - insert comment between comment and text
 
-previousDom:
+previousText:
 <!--a-->c
 
 edits:
@@ -2993,7 +2993,7 @@ edits:
   }
 ]
 
-nextDom:
+nextText:
 <!--a--><!--b-->c
 
 expectedEdits:
@@ -3011,7 +3011,7 @@ expectedEdits:
 name:
 insert 221 - insert comment between comment and element
 
-previousDom:
+previousText:
 <!--a--><h1>c</h1>
 
 edits:
@@ -3023,7 +3023,7 @@ edits:
   }
 ]
 
-nextDom:
+nextText:
 <!--a--><!--b--><h1>c</h1>
 
 expectedEdits:
@@ -3041,7 +3041,7 @@ expectedEdits:
 name:
 insert 222 - insert comment between comment and comment
 
-previousDom:
+previousText:
 <!--a--><!--c-->
 
 edits:
@@ -3053,7 +3053,7 @@ edits:
   }
 ]
 
-nextDom:
+nextText:
 <!--a--><!--b--><!--c-->
 
 expectedEdits:
@@ -3071,7 +3071,7 @@ expectedEdits:
 name:
 test because of bug #1
 
-previousDom:
+previousText:
 <html>
 
 <head>
@@ -3095,7 +3095,7 @@ edits:
   }
 ]
 
-nextDom:
+nextText:
 <html>
 
 <head>
@@ -3123,7 +3123,7 @@ expectedEdits:
 //name:
 //test because of bug #2
 //
-//previousDom:
+//previousText:
 //<html>
 //
 //<head>
@@ -3149,7 +3149,7 @@ expectedEdits:
 //  }
 //]
 
-//nextDom:
+//nextText:
 //<html>
 //
 //<head>
@@ -3178,7 +3178,7 @@ expectedEdits:
 //name:
 //replace element with same length element
 //
-//previousDom:
+//previousText:
 //<div>
 //  <h1>hello world</h1>
 //</div>
@@ -3192,7 +3192,7 @@ expectedEdits:
 //  }
 //]
 //
-//nextDom:
+//nextText:
 //<div>
 //  <h2>hello world</h2>
 //</div>
@@ -3222,7 +3222,7 @@ expectedEdits:
 //name:
 //replace element with longer length element
 //
-//previousDom:
+//previousText:
 //<div>
 //  <h1>hello world</h1>
 //</div>
@@ -3236,7 +3236,7 @@ expectedEdits:
 //  }
 //]
 //
-//nextDom:
+//nextText:
 //<div>
 //  <button>hello world</button>
 //</div>
@@ -3266,7 +3266,7 @@ expectedEdits:
 name:
 test because of bug #3
 
-previousDom:
+previousText:
 <h1>a</h1>
 
 edits:
@@ -3278,7 +3278,7 @@ edits:
   }
 ]
 
-nextDom:
+nextText:
 <h1>a</h1>
 <h1>a</h1>
 
@@ -3313,7 +3313,7 @@ expectedEdits:
 name:
 test because of bug #4
 
-previousDom:
+previousText:
 <h1>a</h1>
 <h1>a</h1>
 
@@ -3326,7 +3326,7 @@ edits:
   }
 ]
 
-nextDom:
+nextText:
 <h1>a</h1>
 <h1>a</h1>
 <h1>a</h1>
@@ -3362,7 +3362,7 @@ expectedEdits:
 name:
 doctype and whitespace #1
 
-previousDom:
+previousText:
 <!DOCTYPE html>
 
 edits:
@@ -3374,7 +3374,7 @@ edits:
   }
 ]
 
-nextDom:
+nextText:
 <!DOCTYPE html>
 
 
@@ -3393,7 +3393,7 @@ expectedEdits:
 name:
 doctype and whitespace #2
 
-previousDom:
+previousText:
 <!doctype html>
 
 edits:
@@ -3405,7 +3405,7 @@ edits:
   }
 ]
 
-nextDom:
+nextText:
 <!doctype html>
 
 
@@ -3424,7 +3424,7 @@ expectedEdits:
 name:
 doctype and whitespace #3
 
-previousDom:
+previousText:
 <!doctype html>
 
 
@@ -3437,7 +3437,7 @@ edits:
   }
 ]
 
-nextDom:
+nextText:
 <!doctype html>
 
 expectedEdits:

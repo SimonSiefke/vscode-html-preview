@@ -11,7 +11,18 @@ const failing = [
 	'delete-element-before-element.test.txt',
 	'delete-text-before-text.test.txt',
 	'delete-text-after-element.test.txt',
-	'delete-element-before-text.test.txt'
+	'delete-element-before-text.test.txt',
+	'delete-011-delete-text-between-element-and-element.test.txt',
+	'delete-020-delete-text-between-comment-and-text.test.txt',
+	'delete-021-delete-text-between-comment-and-element.test.txt',
+	'delete-100-delete-element-between-text-and-text.test.txt',
+	'delete-110-delete-element-between-element-and-text.test.txt',
+	'delete-111-delete-element-between-element-and-element.test.txt',
+	'delete-112-delete-element-between-element-and-comment.test.txt',
+	'delete-120-delete-element-between-comment-and-text.test.txt',
+	'delete-121-delete-element-between-comment-and-element.test.txt',
+	'delete-122-delete-element-between-comment-and-comment.test.txt',
+	'delete-200-delete-comment-between-text-and-text.test.txt'
 ]; // TODO
 const testFileNames = [
 	'basic.test.txt',
@@ -47,7 +58,24 @@ const testFileNames = [
 	'delete-text-before-element.test.txt',
 	'delete-text-after-element.test.txt',
 	'delete-element-before-text.test.txt',
-	'delete-000-delete-text-between-text-and-text.test.txt'
+	'delete-000-delete-text-between-text-and-text.test.txt',
+	'delete-001-delete-text-between-text-and-element.test.txt',
+	'delete-002-delete-text-between-text-and-comment.test.txt',
+	'delete-011-delete-text-between-element-and-element.test.txt',
+	'delete-020-delete-text-between-comment-and-text.test.txt',
+	'delete-021-delete-text-between-comment-and-element.test.txt',
+	'delete-100-delete-element-between-text-and-text.test.txt',
+	'delete-101-delete-element-between-text-and-element.test.txt',
+	'delete-102-delete-element-between-text-and-comment.test.txt',
+	'delete-110-delete-element-between-element-and-text.test.txt',
+	'delete-111-delete-element-between-element-and-element.test.txt',
+	'delete-112-delete-element-between-element-and-comment.test.txt',
+	'delete-120-delete-element-between-comment-and-text.test.txt',
+	'delete-121-delete-element-between-comment-and-element.test.txt',
+	'delete-122-delete-element-between-comment-and-comment.test.txt',
+	'delete-200-delete-comment-between-text-and-text.test.txt',
+	'delete-201-delete-comment-between-text-and-element.test.txt',
+	'delete-202-delete-comment-between-text-and-comment.test.txt'
 ].filter(t => !failing.includes(t));
 
 const only = undefined;

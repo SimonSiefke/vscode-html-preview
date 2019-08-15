@@ -21,9 +21,9 @@ function adjustExpectedEdits(expectedEdits){
 
 test(`attribute delete #1`, () => {
   const parser = createParser()
-  const previousDom = parser.parse(`<h1 class></h1>`)
+  const previousText = parser.parse(`<h1 class></h1>`)
   const oldNodeMap = parser.nodeMap
-  const nextDom = parser.edit(`<h1 ></h1>`, [
+  const nextText = parser.edit(`<h1 ></h1>`, [
     {
       "rangeOffset": 4,
       "rangeLength": 5,
@@ -31,7 +31,7 @@ test(`attribute delete #1`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousText.children, nextText.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "attributeDelete",
@@ -45,9 +45,9 @@ test(`attribute delete #1`, () => {
 
 test(`useless whitespace change #1`, () => {
   const parser = createParser()
-  const previousDom = parser.parse(`<h1></h1>`)
+  const previousText = parser.parse(`<h1></h1>`)
   const oldNodeMap = parser.nodeMap
-  const nextDom = parser.edit(`<h1 ></h1>`, [
+  const nextText = parser.edit(`<h1 ></h1>`, [
     {
       "rangeOffset": 3,
       "rangeLength": 0,
@@ -55,16 +55,16 @@ test(`useless whitespace change #1`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousText.children, nextText.children, {oldNodeMap, newNodeMap})
   const expectedEdits = []
   expect(adjustEdits(edits)).toEqual(adjustExpectedEdits(expectedEdits))
 })
 
 test(`useless whitespace change #2`, () => {
   const parser = createParser()
-  const previousDom = parser.parse(`<h1><br  ></h1>`)
+  const previousText = parser.parse(`<h1><br  ></h1>`)
   const oldNodeMap = parser.nodeMap
-  const nextDom = parser.edit(`<h1><br></h1>`, [
+  const nextText = parser.edit(`<h1><br></h1>`, [
     {
       "rangeOffset": 7,
       "rangeLength": 2,
@@ -72,16 +72,16 @@ test(`useless whitespace change #2`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousText.children, nextText.children, {oldNodeMap, newNodeMap})
   const expectedEdits = []
   expect(adjustEdits(edits)).toEqual(adjustExpectedEdits(expectedEdits))
 })
 
 test(`attribute change #1`, () => {
   const parser = createParser()
-  const previousDom = parser.parse(`<h1 class></h1>`)
+  const previousText = parser.parse(`<h1 class></h1>`)
   const oldNodeMap = parser.nodeMap
-  const nextDom = parser.edit(`<h1 class="green"></h1>`, [
+  const nextText = parser.edit(`<h1 class="green"></h1>`, [
     {
       "rangeOffset": 9,
       "rangeLength": 0,
@@ -89,7 +89,7 @@ test(`attribute change #1`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousText.children, nextText.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "attributeChange",
@@ -104,9 +104,9 @@ test(`attribute change #1`, () => {
 
 test(`attribute change #2`, () => {
   const parser = createParser()
-  const previousDom = parser.parse(`<h1 class="gre"></h1>`)
+  const previousText = parser.parse(`<h1 class="gre"></h1>`)
   const oldNodeMap = parser.nodeMap
-  const nextDom = parser.edit(`<h1 class="green"></h1>`, [
+  const nextText = parser.edit(`<h1 class="green"></h1>`, [
     {
       "rangeOffset": 14,
       "rangeLength": 0,
@@ -114,7 +114,7 @@ test(`attribute change #2`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousText.children, nextText.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "attributeChange",
@@ -129,9 +129,9 @@ test(`attribute change #2`, () => {
 
 test(`basic text insertion`, () => {
   const parser = createParser()
-  const previousDom = parser.parse(`<h1><p>ok</p></h1>`)
+  const previousText = parser.parse(`<h1><p>ok</p></h1>`)
   const oldNodeMap = parser.nodeMap
-  const nextDom = parser.edit(`<h1>hello<p>ok</p></h1>`, [
+  const nextText = parser.edit(`<h1>hello<p>ok</p></h1>`, [
     {
       "rangeOffset": 4,
       "rangeLength": 0,
@@ -139,7 +139,7 @@ test(`basic text insertion`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousText.children, nextText.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "elementInsert",
@@ -155,9 +155,9 @@ test(`basic text insertion`, () => {
 
 test(`basic element insertion`, () => {
   const parser = createParser()
-  const previousDom = parser.parse(`<h1><p>ok</p></h1>`)
+  const previousText = parser.parse(`<h1><p>ok</p></h1>`)
   const oldNodeMap = parser.nodeMap
-  const nextDom = parser.edit(`<h1><p>ok</p><p>ok</p></h1>`, [
+  const nextText = parser.edit(`<h1><p>ok</p><p>ok</p></h1>`, [
     {
       "rangeOffset": 4,
       "rangeLength": 0,
@@ -165,7 +165,7 @@ test(`basic element insertion`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousText.children, nextText.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "elementInsert",
@@ -189,9 +189,9 @@ test(`basic element insertion`, () => {
 
 test(`basic text replace`, () => {
   const parser = createParser()
-  const previousDom = parser.parse(`<h1>a</h1>`)
+  const previousText = parser.parse(`<h1>a</h1>`)
   const oldNodeMap = parser.nodeMap
-  const nextDom = parser.edit(`<h1>b</h1>`, [
+  const nextText = parser.edit(`<h1>b</h1>`, [
     {
       "rangeOffset": 4,
       "rangeLength": 1,
@@ -199,7 +199,7 @@ test(`basic text replace`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousText.children, nextText.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "textReplace",
@@ -213,9 +213,9 @@ test(`basic text replace`, () => {
 
 test(`basic text addition`, () => {
   const parser = createParser()
-  const previousDom = parser.parse(`<h1>aaa</h1>`)
+  const previousText = parser.parse(`<h1>aaa</h1>`)
   const oldNodeMap = parser.nodeMap
-  const nextDom = parser.edit(`<h1>aaabbb</h1>`, [
+  const nextText = parser.edit(`<h1>aaabbb</h1>`, [
     {
       "rangeOffset": 7,
       "rangeLength": 0,
@@ -223,7 +223,7 @@ test(`basic text addition`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousText.children, nextText.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "textReplace",
@@ -237,9 +237,9 @@ test(`basic text addition`, () => {
 
 test(`element addition at the end`, () => {
   const parser = createParser()
-  const previousDom = parser.parse(`<h1>a</h1>`)
+  const previousText = parser.parse(`<h1>a</h1>`)
   const oldNodeMap = parser.nodeMap
-  const nextDom = parser.edit(`<h1>a</h1><h1>b</h1>`, [
+  const nextText = parser.edit(`<h1>a</h1><h1>b</h1>`, [
     {
       "rangeOffset": 10,
       "rangeLength": 0,
@@ -247,7 +247,7 @@ test(`element addition at the end`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousText.children, nextText.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "elementInsert",
@@ -271,9 +271,9 @@ test(`element addition at the end`, () => {
 
 test(`element addition at the start`, () => {
   const parser = createParser()
-  const previousDom = parser.parse(`<h1>a</h1>`)
+  const previousText = parser.parse(`<h1>a</h1>`)
   const oldNodeMap = parser.nodeMap
-  const nextDom = parser.edit(`<h1>b</h1><h1>a</h1>`, [
+  const nextText = parser.edit(`<h1>b</h1><h1>a</h1>`, [
     {
       "rangeOffset": 0,
       "rangeLength": 0,
@@ -281,7 +281,7 @@ test(`element addition at the start`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousText.children, nextText.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "elementInsert",
@@ -305,12 +305,12 @@ test(`element addition at the start`, () => {
 
 test(`text insertion in nested html`, () => {
   const parser = createParser()
-  const previousDom = parser.parse(`<div>
+  const previousText = parser.parse(`<div>
   <img src="https://source.unsplash.com/random" alt="random image">
   <p>nested <strong>text</strong></p>
 </div>`)
   const oldNodeMap = parser.nodeMap
-  const nextDom = parser.edit(`<div>
+  const nextText = parser.edit(`<div>
   <img src="https://source.unsplash.com/random" alt="random image">
   <p>nested <strong>text</strong>!!!</p>
 </div>`, [
@@ -321,7 +321,7 @@ test(`text insertion in nested html`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousText.children, nextText.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "elementInsert",
@@ -337,9 +337,9 @@ test(`text insertion in nested html`, () => {
 
 test(`insertion of attribute with value`, () => {
   const parser = createParser()
-  const previousDom = parser.parse(`<h1 >hello world</h1>`)
+  const previousText = parser.parse(`<h1 >hello world</h1>`)
   const oldNodeMap = parser.nodeMap
-  const nextDom = parser.edit(`<h1 class="big">hello world</h1>`, [
+  const nextText = parser.edit(`<h1 class="big">hello world</h1>`, [
     {
       "rangeOffset": 4,
       "rangeLength": 0,
@@ -347,7 +347,7 @@ test(`insertion of attribute with value`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousText.children, nextText.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "attributeAdd",
@@ -362,9 +362,9 @@ test(`insertion of attribute with value`, () => {
 
 test(`insertion of attribute without value`, () => {
   const parser = createParser()
-  const previousDom = parser.parse(`<h1 >hello world</h1>`)
+  const previousText = parser.parse(`<h1 >hello world</h1>`)
   const oldNodeMap = parser.nodeMap
-  const nextDom = parser.edit(`<h1 class>hello world</h1>`, [
+  const nextText = parser.edit(`<h1 class>hello world</h1>`, [
     {
       "rangeOffset": 4,
       "rangeLength": 0,
@@ -372,7 +372,7 @@ test(`insertion of attribute without value`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousText.children, nextText.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "attributeAdd",
@@ -387,12 +387,12 @@ test(`insertion of attribute without value`, () => {
 
 test(`insertion of multiple elements and text nodes`, () => {
   const parser = createParser()
-  const previousDom = parser.parse(`<form>
+  const previousText = parser.parse(`<form>
   First name:<br>
   <input type="text" name="firstName"><br>
 </form>`)
   const oldNodeMap = parser.nodeMap
-  const nextDom = parser.edit(`<form>
+  const nextText = parser.edit(`<form>
   First name:<br>
   <input type="text" name="firstName"><br>
   Last name:<br>
@@ -405,7 +405,7 @@ test(`insertion of multiple elements and text nodes`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousText.children, nextText.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "textReplace",
@@ -463,9 +463,9 @@ test(`insertion of multiple elements and text nodes`, () => {
 
 test(`attribute name change`, () => {
   const parser = createParser()
-  const previousDom = parser.parse(`<h1 c>hello world</h1>`)
+  const previousText = parser.parse(`<h1 c>hello world</h1>`)
   const oldNodeMap = parser.nodeMap
-  const nextDom = parser.edit(`<h1 class>hello world</h1>`, [
+  const nextText = parser.edit(`<h1 class>hello world</h1>`, [
     {
       "rangeOffset": 5,
       "rangeLength": 0,
@@ -473,7 +473,7 @@ test(`attribute name change`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousText.children, nextText.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "attributeAdd",
@@ -494,9 +494,9 @@ test(`attribute name change`, () => {
 
 test(`attribute value insertion at the end`, () => {
   const parser = createParser()
-  const previousDom = parser.parse(`<h1 class="big">hello world</h1>`)
+  const previousText = parser.parse(`<h1 class="big">hello world</h1>`)
   const oldNodeMap = parser.nodeMap
-  const nextDom = parser.edit(`<h1 class="bigger">hello world</h1>`, [
+  const nextText = parser.edit(`<h1 class="bigger">hello world</h1>`, [
     {
       "rangeOffset": 14,
       "rangeLength": 0,
@@ -504,7 +504,7 @@ test(`attribute value insertion at the end`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousText.children, nextText.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "attributeChange",
@@ -519,9 +519,9 @@ test(`attribute value insertion at the end`, () => {
 
 test(`attribute value replacement`, () => {
   const parser = createParser()
-  const previousDom = parser.parse(`<h1 class="big">hello world</h1>`)
+  const previousText = parser.parse(`<h1 class="big">hello world</h1>`)
   const oldNodeMap = parser.nodeMap
-  const nextDom = parser.edit(`<h1 class="small">hello world</h1>`, [
+  const nextText = parser.edit(`<h1 class="small">hello world</h1>`, [
     {
       "rangeOffset": 11,
       "rangeLength": 3,
@@ -529,7 +529,7 @@ test(`attribute value replacement`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousText.children, nextText.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "attributeChange",
@@ -544,9 +544,9 @@ test(`attribute value replacement`, () => {
 
 test(`replace text with element`, () => {
   const parser = createParser()
-  const previousDom = parser.parse(`h1`)
+  const previousText = parser.parse(`h1`)
   const oldNodeMap = parser.nodeMap
-  const nextDom = parser.edit(`<h1></h1>`, [
+  const nextText = parser.edit(`<h1></h1>`, [
     {
       "rangeOffset": 0,
       "rangeLength": 2,
@@ -554,7 +554,7 @@ test(`replace text with element`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousText.children, nextText.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "elementDelete",
@@ -574,9 +574,9 @@ test(`replace text with element`, () => {
 
 test(`basic replace text #1`, () => {
   const parser = createParser()
-  const previousDom = parser.parse(`<h1>a</h1>`)
+  const previousText = parser.parse(`<h1>a</h1>`)
   const oldNodeMap = parser.nodeMap
-  const nextDom = parser.edit(`<h1>b</h1>`, [
+  const nextText = parser.edit(`<h1>b</h1>`, [
     {
       "rangeOffset": 4,
       "rangeLength": 1,
@@ -584,7 +584,7 @@ test(`basic replace text #1`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousText.children, nextText.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "textReplace",
@@ -598,9 +598,9 @@ test(`basic replace text #1`, () => {
 
 test(`basic replace text #2`, () => {
   const parser = createParser()
-  const previousDom = parser.parse(`<h1>aa</h1>`)
+  const previousText = parser.parse(`<h1>aa</h1>`)
   const oldNodeMap = parser.nodeMap
-  const nextDom = parser.edit(`<h1>b</h1>`, [
+  const nextText = parser.edit(`<h1>b</h1>`, [
     {
       "rangeOffset": 4,
       "rangeLength": 2,
@@ -608,7 +608,7 @@ test(`basic replace text #2`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousText.children, nextText.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "textReplace",
@@ -622,9 +622,9 @@ test(`basic replace text #2`, () => {
 
 test(`replace element with text`, () => {
   const parser = createParser()
-  const previousDom = parser.parse(`<h1>hello world</h1>`)
+  const previousText = parser.parse(`<h1>hello world</h1>`)
   const oldNodeMap = parser.nodeMap
-  const nextDom = parser.edit(`hello world`, [
+  const nextText = parser.edit(`hello world`, [
     {
       "rangeOffset": 0,
       "rangeLength": 20,
@@ -632,7 +632,7 @@ test(`replace element with text`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousText.children, nextText.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "elementInsert",
@@ -652,9 +652,9 @@ test(`replace element with text`, () => {
 
 test(`replace text inside element with attributes`, () => {
   const parser = createParser()
-  const previousDom = parser.parse(`<h1 style="background:orange">a</h1>`)
+  const previousText = parser.parse(`<h1 style="background:orange">a</h1>`)
   const oldNodeMap = parser.nodeMap
-  const nextDom = parser.edit(`<h1 style="background:orange">b</h1>`, [
+  const nextText = parser.edit(`<h1 style="background:orange">b</h1>`, [
     {
       "rangeOffset": 30,
       "rangeLength": 1,
@@ -662,7 +662,7 @@ test(`replace text inside element with attributes`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousText.children, nextText.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "textReplace",
@@ -676,10 +676,10 @@ test(`replace text inside element with attributes`, () => {
 
 test(`delete first element node`, () => {
   const parser = createParser()
-  const previousDom = parser.parse(`<h1>hello</h1>
+  const previousText = parser.parse(`<h1>hello</h1>
 <button>button</button>`)
   const oldNodeMap = parser.nodeMap
-  const nextDom = parser.edit(`<button>button</button>`, [
+  const nextText = parser.edit(`<button>button</button>`, [
     {
       "rangeOffset": 0,
       "rangeLength": 15,
@@ -687,7 +687,7 @@ test(`delete first element node`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousText.children, nextText.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "elementDelete",
@@ -703,9 +703,9 @@ test(`delete first element node`, () => {
 
 test(`delete element before element`, () => {
   const parser = createParser()
-  const previousDom = parser.parse(`<h1>a</h1><h1>b</h1>`)
+  const previousText = parser.parse(`<h1>a</h1><h1>b</h1>`)
   const oldNodeMap = parser.nodeMap
-  const nextDom = parser.edit(`<h1>b</h1>`, [
+  const nextText = parser.edit(`<h1>b</h1>`, [
     {
       "rangeOffset": 0,
       "rangeLength": 10,
@@ -713,7 +713,7 @@ test(`delete element before element`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousText.children, nextText.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "elementDelete",
@@ -725,9 +725,9 @@ test(`delete element before element`, () => {
 
 test(`delete text before text`, () => {
   const parser = createParser()
-  const previousDom = parser.parse(`ab`)
+  const previousText = parser.parse(`ab`)
   const oldNodeMap = parser.nodeMap
-  const nextDom = parser.edit(`b`, [
+  const nextText = parser.edit(`b`, [
     {
       "rangeOffset": 0,
       "rangeLength": 1,
@@ -735,7 +735,7 @@ test(`delete text before text`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousText.children, nextText.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "textReplace",
@@ -749,9 +749,9 @@ test(`delete text before text`, () => {
 
 test(`delete text after text`, () => {
   const parser = createParser()
-  const previousDom = parser.parse(`ab`)
+  const previousText = parser.parse(`ab`)
   const oldNodeMap = parser.nodeMap
-  const nextDom = parser.edit(`a`, [
+  const nextText = parser.edit(`a`, [
     {
       "rangeOffset": 1,
       "rangeLength": 1,
@@ -759,7 +759,7 @@ test(`delete text after text`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousText.children, nextText.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "textReplace",
@@ -773,9 +773,9 @@ test(`delete text after text`, () => {
 
 test(`delete text before element`, () => {
   const parser = createParser()
-  const previousDom = parser.parse(`a<h1>b</h1>`)
+  const previousText = parser.parse(`a<h1>b</h1>`)
   const oldNodeMap = parser.nodeMap
-  const nextDom = parser.edit(`<h1>b</h1>`, [
+  const nextText = parser.edit(`<h1>b</h1>`, [
     {
       "rangeOffset": 0,
       "rangeLength": 1,
@@ -783,7 +783,7 @@ test(`delete text before element`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousText.children, nextText.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "elementDelete",
@@ -795,9 +795,9 @@ test(`delete text before element`, () => {
 
 test(`delete text after element`, () => {
   const parser = createParser()
-  const previousDom = parser.parse(`<h1>a</h1>b`)
+  const previousText = parser.parse(`<h1>a</h1>b`)
   const oldNodeMap = parser.nodeMap
-  const nextDom = parser.edit(`<h1>a</h1>`, [
+  const nextText = parser.edit(`<h1>a</h1>`, [
     {
       "rangeOffset": 10,
       "rangeLength": 1,
@@ -805,7 +805,7 @@ test(`delete text after element`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousText.children, nextText.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "elementDelete",
@@ -817,9 +817,9 @@ test(`delete text after element`, () => {
 
 test(`delete element before text`, () => {
   const parser = createParser()
-  const previousDom = parser.parse(`<h1>a</h1>b`)
+  const previousText = parser.parse(`<h1>a</h1>b`)
   const oldNodeMap = parser.nodeMap
-  const nextDom = parser.edit(`b`, [
+  const nextText = parser.edit(`b`, [
     {
       "rangeOffset": 0,
       "rangeLength": 10,
@@ -827,7 +827,7 @@ test(`delete element before text`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousText.children, nextText.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "elementDelete",
@@ -839,9 +839,9 @@ test(`delete element before text`, () => {
 
 test(`delete element after text`, () => {
   const parser = createParser()
-  const previousDom = parser.parse(`a<h1>b</h1>`)
+  const previousText = parser.parse(`a<h1>b</h1>`)
   const oldNodeMap = parser.nodeMap
-  const nextDom = parser.edit(`a`, [
+  const nextText = parser.edit(`a`, [
     {
       "rangeOffset": 1,
       "rangeLength": 10,
@@ -849,7 +849,7 @@ test(`delete element after text`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousText.children, nextText.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "elementDelete",
@@ -861,9 +861,9 @@ test(`delete element after text`, () => {
 
 test(`delete 000 - delete text between text and text`, () => {
   const parser = createParser()
-  const previousDom = parser.parse(`abc`)
+  const previousText = parser.parse(`abc`)
   const oldNodeMap = parser.nodeMap
-  const nextDom = parser.edit(`ac`, [
+  const nextText = parser.edit(`ac`, [
     {
       "rangeOffset": 1,
       "rangeLength": 1,
@@ -871,7 +871,7 @@ test(`delete 000 - delete text between text and text`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousText.children, nextText.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "textReplace",
@@ -885,9 +885,9 @@ test(`delete 000 - delete text between text and text`, () => {
 
 test(`delete 001 - delete text between text and element`, () => {
   const parser = createParser()
-  const previousDom = parser.parse(`ab<h1>c</h1>`)
+  const previousText = parser.parse(`ab<h1>c</h1>`)
   const oldNodeMap = parser.nodeMap
-  const nextDom = parser.edit(`a<h1>c</h1>`, [
+  const nextText = parser.edit(`a<h1>c</h1>`, [
     {
       "rangeOffset": 1,
       "rangeLength": 1,
@@ -895,7 +895,7 @@ test(`delete 001 - delete text between text and element`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousText.children, nextText.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "textReplace",
@@ -909,9 +909,9 @@ test(`delete 001 - delete text between text and element`, () => {
 
 test(`delete 002 - delete text between text and comment`, () => {
   const parser = createParser()
-  const previousDom = parser.parse(`ab<!--c-->`)
+  const previousText = parser.parse(`ab<!--c-->`)
   const oldNodeMap = parser.nodeMap
-  const nextDom = parser.edit(`a<!--c-->`, [
+  const nextText = parser.edit(`a<!--c-->`, [
     {
       "rangeOffset": 1,
       "rangeLength": 1,
@@ -919,7 +919,7 @@ test(`delete 002 - delete text between text and comment`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousText.children, nextText.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "textReplace",
@@ -933,9 +933,9 @@ test(`delete 002 - delete text between text and comment`, () => {
 
 test(`delete 011 - delete text between element and element`, () => {
   const parser = createParser()
-  const previousDom = parser.parse(`<h1>a</h1>b<h1>c</h1>`)
+  const previousText = parser.parse(`<h1>a</h1>b<h1>c</h1>`)
   const oldNodeMap = parser.nodeMap
-  const nextDom = parser.edit(`<h1>a</h1><h1>c</h1>`, [
+  const nextText = parser.edit(`<h1>a</h1><h1>c</h1>`, [
     {
       "rangeOffset": 10,
       "rangeLength": 1,
@@ -943,7 +943,7 @@ test(`delete 011 - delete text between element and element`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousText.children, nextText.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "elementDelete",
@@ -955,9 +955,9 @@ test(`delete 011 - delete text between element and element`, () => {
 
 test(`delete 020 - delete text between comment and text`, () => {
   const parser = createParser()
-  const previousDom = parser.parse(`<!--a-->bc`)
+  const previousText = parser.parse(`<!--a-->bc`)
   const oldNodeMap = parser.nodeMap
-  const nextDom = parser.edit(`<!--a-->c`, [
+  const nextText = parser.edit(`<!--a-->c`, [
     {
       "rangeOffset": 8,
       "rangeLength": 1,
@@ -965,7 +965,7 @@ test(`delete 020 - delete text between comment and text`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousText.children, nextText.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "textReplace",
@@ -979,9 +979,9 @@ test(`delete 020 - delete text between comment and text`, () => {
 
 test(`delete 021 - delete text between comment and element`, () => {
   const parser = createParser()
-  const previousDom = parser.parse(`<!--a-->b<h1>c</h1>`)
+  const previousText = parser.parse(`<!--a-->b<h1>c</h1>`)
   const oldNodeMap = parser.nodeMap
-  const nextDom = parser.edit(`<!--a--><h1>c</h1>`, [
+  const nextText = parser.edit(`<!--a--><h1>c</h1>`, [
     {
       "rangeOffset": 8,
       "rangeLength": 1,
@@ -989,7 +989,7 @@ test(`delete 021 - delete text between comment and element`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousText.children, nextText.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "elementDelete",
@@ -1001,9 +1001,9 @@ test(`delete 021 - delete text between comment and element`, () => {
 
 test(`delete 100 - delete element between text and text`, () => {
   const parser = createParser()
-  const previousDom = parser.parse(`a<h1>b</h1>c`)
+  const previousText = parser.parse(`a<h1>b</h1>c`)
   const oldNodeMap = parser.nodeMap
-  const nextDom = parser.edit(`ac`, [
+  const nextText = parser.edit(`ac`, [
     {
       "rangeOffset": 1,
       "rangeLength": 10,
@@ -1011,7 +1011,7 @@ test(`delete 100 - delete element between text and text`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousText.children, nextText.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "textReplace",
@@ -1033,9 +1033,9 @@ test(`delete 100 - delete element between text and text`, () => {
 
 test(`delete 101 - delete element between text and element`, () => {
   const parser = createParser()
-  const previousDom = parser.parse(`a<h1>b</h1><h1>c</h1>`)
+  const previousText = parser.parse(`a<h1>b</h1><h1>c</h1>`)
   const oldNodeMap = parser.nodeMap
-  const nextDom = parser.edit(`a<h1>c</h1>`, [
+  const nextText = parser.edit(`a<h1>c</h1>`, [
     {
       "rangeOffset": 1,
       "rangeLength": 10,
@@ -1043,7 +1043,7 @@ test(`delete 101 - delete element between text and element`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousText.children, nextText.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "elementDelete",
@@ -1055,9 +1055,9 @@ test(`delete 101 - delete element between text and element`, () => {
 
 test(`delete 102 - delete element between text and comment`, () => {
   const parser = createParser()
-  const previousDom = parser.parse(`a<h1>b</h1><!--c-->`)
+  const previousText = parser.parse(`a<h1>b</h1><!--c-->`)
   const oldNodeMap = parser.nodeMap
-  const nextDom = parser.edit(`a<!--c-->`, [
+  const nextText = parser.edit(`a<!--c-->`, [
     {
       "rangeOffset": 1,
       "rangeLength": 10,
@@ -1065,7 +1065,7 @@ test(`delete 102 - delete element between text and comment`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousText.children, nextText.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "elementDelete",
@@ -1077,9 +1077,9 @@ test(`delete 102 - delete element between text and comment`, () => {
 
 test(`delete 110 - delete element between element and text`, () => {
   const parser = createParser()
-  const previousDom = parser.parse(`<h1>a</h1><h1>b</h1>c`)
+  const previousText = parser.parse(`<h1>a</h1><h1>b</h1>c`)
   const oldNodeMap = parser.nodeMap
-  const nextDom = parser.edit(`<h1>a</h1>c`, [
+  const nextText = parser.edit(`<h1>a</h1>c`, [
     {
       "rangeOffset": 10,
       "rangeLength": 10,
@@ -1087,7 +1087,7 @@ test(`delete 110 - delete element between element and text`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousText.children, nextText.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "elementDelete",
@@ -1099,9 +1099,9 @@ test(`delete 110 - delete element between element and text`, () => {
 
 test(`delete 111 - delete element between element and element`, () => {
   const parser = createParser()
-  const previousDom = parser.parse(`<h1>a</h1><h1>b</h1><h1>c</h1>`)
+  const previousText = parser.parse(`<h1>a</h1><h1>b</h1><h1>c</h1>`)
   const oldNodeMap = parser.nodeMap
-  const nextDom = parser.edit(`<h1>a</h1><h1>c</h1>`, [
+  const nextText = parser.edit(`<h1>a</h1><h1>c</h1>`, [
     {
       "rangeOffset": 10,
       "rangeLength": 10,
@@ -1109,7 +1109,7 @@ test(`delete 111 - delete element between element and element`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousText.children, nextText.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "elementDelete",
@@ -1121,9 +1121,9 @@ test(`delete 111 - delete element between element and element`, () => {
 
 test(`delete 112 - delete element between element and comment`, () => {
   const parser = createParser()
-  const previousDom = parser.parse(`<h1>a</h1><h1>b</h1><!--c-->`)
+  const previousText = parser.parse(`<h1>a</h1><h1>b</h1><!--c-->`)
   const oldNodeMap = parser.nodeMap
-  const nextDom = parser.edit(`<h1>a</h1><!--c-->`, [
+  const nextText = parser.edit(`<h1>a</h1><!--c-->`, [
     {
       "rangeOffset": 10,
       "rangeLength": 10,
@@ -1131,7 +1131,7 @@ test(`delete 112 - delete element between element and comment`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousText.children, nextText.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "elementDelete",
@@ -1143,9 +1143,9 @@ test(`delete 112 - delete element between element and comment`, () => {
 
 test(`delete 120 - delete element between comment and text`, () => {
   const parser = createParser()
-  const previousDom = parser.parse(`<!--a--><h1>b</h1>c`)
+  const previousText = parser.parse(`<!--a--><h1>b</h1>c`)
   const oldNodeMap = parser.nodeMap
-  const nextDom = parser.edit(`<!--a-->c`, [
+  const nextText = parser.edit(`<!--a-->c`, [
     {
       "rangeOffset": 8,
       "rangeLength": 10,
@@ -1153,7 +1153,7 @@ test(`delete 120 - delete element between comment and text`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousText.children, nextText.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "elementDelete",
@@ -1165,9 +1165,9 @@ test(`delete 120 - delete element between comment and text`, () => {
 
 test(`delete 121 - delete element between comment and element`, () => {
   const parser = createParser()
-  const previousDom = parser.parse(`<!--a--><h1>b</h1><h1>c</h1>`)
+  const previousText = parser.parse(`<!--a--><h1>b</h1><h1>c</h1>`)
   const oldNodeMap = parser.nodeMap
-  const nextDom = parser.edit(`<!--a--><h1>c</h1>`, [
+  const nextText = parser.edit(`<!--a--><h1>c</h1>`, [
     {
       "rangeOffset": 8,
       "rangeLength": 10,
@@ -1175,7 +1175,7 @@ test(`delete 121 - delete element between comment and element`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousText.children, nextText.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "elementDelete",
@@ -1187,9 +1187,9 @@ test(`delete 121 - delete element between comment and element`, () => {
 
 test(`delete 122 - delete element between comment and comment`, () => {
   const parser = createParser()
-  const previousDom = parser.parse(`<!--a--><h1>b</h1><!--c-->`)
+  const previousText = parser.parse(`<!--a--><h1>b</h1><!--c-->`)
   const oldNodeMap = parser.nodeMap
-  const nextDom = parser.edit(`<!--a--><!--c-->`, [
+  const nextText = parser.edit(`<!--a--><!--c-->`, [
     {
       "rangeOffset": 8,
       "rangeLength": 10,
@@ -1197,7 +1197,7 @@ test(`delete 122 - delete element between comment and comment`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousText.children, nextText.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "elementDelete",
@@ -1209,9 +1209,9 @@ test(`delete 122 - delete element between comment and comment`, () => {
 
 test(`delete 200 - delete comment between text and text`, () => {
   const parser = createParser()
-  const previousDom = parser.parse(`a<!--b-->c`)
+  const previousText = parser.parse(`a<!--b-->c`)
   const oldNodeMap = parser.nodeMap
-  const nextDom = parser.edit(`ac`, [
+  const nextText = parser.edit(`ac`, [
     {
       "rangeOffset": 1,
       "rangeLength": 8,
@@ -1219,7 +1219,7 @@ test(`delete 200 - delete comment between text and text`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousText.children, nextText.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "textReplace",
@@ -1241,9 +1241,9 @@ test(`delete 200 - delete comment between text and text`, () => {
 
 test(`delete 201 - delete comment between text and element`, () => {
   const parser = createParser()
-  const previousDom = parser.parse(`a<!--b--><h1>c</h1>`)
+  const previousText = parser.parse(`a<!--b--><h1>c</h1>`)
   const oldNodeMap = parser.nodeMap
-  const nextDom = parser.edit(`a<h1>c</h1>`, [
+  const nextText = parser.edit(`a<h1>c</h1>`, [
     {
       "rangeOffset": 1,
       "rangeLength": 8,
@@ -1251,7 +1251,7 @@ test(`delete 201 - delete comment between text and element`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousText.children, nextText.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "elementDelete",
@@ -1263,9 +1263,9 @@ test(`delete 201 - delete comment between text and element`, () => {
 
 test(`delete 202 - delete comment between text and comment`, () => {
   const parser = createParser()
-  const previousDom = parser.parse(`a<!--b--><!--c-->`)
+  const previousText = parser.parse(`a<!--b--><!--c-->`)
   const oldNodeMap = parser.nodeMap
-  const nextDom = parser.edit(`a<!--c-->`, [
+  const nextText = parser.edit(`a<!--c-->`, [
     {
       "rangeOffset": 1,
       "rangeLength": 8,
@@ -1273,7 +1273,7 @@ test(`delete 202 - delete comment between text and comment`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousText.children, nextText.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "elementDelete",
@@ -1285,9 +1285,9 @@ test(`delete 202 - delete comment between text and comment`, () => {
 
 test(`delete 210 - delete comment between element and text`, () => {
   const parser = createParser()
-  const previousDom = parser.parse(`<h1>a</h1><!--b-->c`)
+  const previousText = parser.parse(`<h1>a</h1><!--b-->c`)
   const oldNodeMap = parser.nodeMap
-  const nextDom = parser.edit(`<h1>a</h1>c`, [
+  const nextText = parser.edit(`<h1>a</h1>c`, [
     {
       "rangeOffset": 10,
       "rangeLength": 8,
@@ -1295,7 +1295,7 @@ test(`delete 210 - delete comment between element and text`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousText.children, nextText.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "elementDelete",
@@ -1307,9 +1307,9 @@ test(`delete 210 - delete comment between element and text`, () => {
 
 test(`delete 211 - delete comment between element and element`, () => {
   const parser = createParser()
-  const previousDom = parser.parse(`<h1>a</h1><!--b--><h1>c</h1>`)
+  const previousText = parser.parse(`<h1>a</h1><!--b--><h1>c</h1>`)
   const oldNodeMap = parser.nodeMap
-  const nextDom = parser.edit(`<h1>a</h1><h1>c</h1>`, [
+  const nextText = parser.edit(`<h1>a</h1><h1>c</h1>`, [
     {
       "rangeOffset": 10,
       "rangeLength": 8,
@@ -1317,7 +1317,7 @@ test(`delete 211 - delete comment between element and element`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousText.children, nextText.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "elementDelete",
@@ -1329,9 +1329,9 @@ test(`delete 211 - delete comment between element and element`, () => {
 
 test(`delete 212 - delete comment between element and comment`, () => {
   const parser = createParser()
-  const previousDom = parser.parse(`<h1>a</h1><!--b--><!--c-->`)
+  const previousText = parser.parse(`<h1>a</h1><!--b--><!--c-->`)
   const oldNodeMap = parser.nodeMap
-  const nextDom = parser.edit(`<h1>a</h1><!--c-->`, [
+  const nextText = parser.edit(`<h1>a</h1><!--c-->`, [
     {
       "rangeOffset": 10,
       "rangeLength": 8,
@@ -1339,7 +1339,7 @@ test(`delete 212 - delete comment between element and comment`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousText.children, nextText.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "elementDelete",
@@ -1351,9 +1351,9 @@ test(`delete 212 - delete comment between element and comment`, () => {
 
 test(`delete 220 - delete comment between comment and text`, () => {
   const parser = createParser()
-  const previousDom = parser.parse(`<!--a--><!--b-->c`)
+  const previousText = parser.parse(`<!--a--><!--b-->c`)
   const oldNodeMap = parser.nodeMap
-  const nextDom = parser.edit(`<!--a-->c`, [
+  const nextText = parser.edit(`<!--a-->c`, [
     {
       "rangeOffset": 8,
       "rangeLength": 8,
@@ -1361,7 +1361,7 @@ test(`delete 220 - delete comment between comment and text`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousText.children, nextText.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "elementDelete",
@@ -1373,9 +1373,9 @@ test(`delete 220 - delete comment between comment and text`, () => {
 
 test(`delete 221 - delete comment between comment and element`, () => {
   const parser = createParser()
-  const previousDom = parser.parse(`<!--a--><!--b--><h1>c</h1>`)
+  const previousText = parser.parse(`<!--a--><!--b--><h1>c</h1>`)
   const oldNodeMap = parser.nodeMap
-  const nextDom = parser.edit(`<!--a--><h1>c</h1>`, [
+  const nextText = parser.edit(`<!--a--><h1>c</h1>`, [
     {
       "rangeOffset": 8,
       "rangeLength": 8,
@@ -1383,7 +1383,7 @@ test(`delete 221 - delete comment between comment and element`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousText.children, nextText.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "elementDelete",
@@ -1395,9 +1395,9 @@ test(`delete 221 - delete comment between comment and element`, () => {
 
 test(`delete 222 - delete comment between comment and comment`, () => {
   const parser = createParser()
-  const previousDom = parser.parse(`<!--a--><!--b--><!--c-->`)
+  const previousText = parser.parse(`<!--a--><!--b--><!--c-->`)
   const oldNodeMap = parser.nodeMap
-  const nextDom = parser.edit(`<!--a--><!--c-->`, [
+  const nextText = parser.edit(`<!--a--><!--c-->`, [
     {
       "rangeOffset": 8,
       "rangeLength": 8,
@@ -1405,7 +1405,7 @@ test(`delete 222 - delete comment between comment and comment`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousText.children, nextText.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "elementDelete",
@@ -1417,9 +1417,9 @@ test(`delete 222 - delete comment between comment and comment`, () => {
 
 test(`insert 000 - insert text between text and text`, () => {
   const parser = createParser()
-  const previousDom = parser.parse(`ac`)
+  const previousText = parser.parse(`ac`)
   const oldNodeMap = parser.nodeMap
-  const nextDom = parser.edit(`abc`, [
+  const nextText = parser.edit(`abc`, [
     {
       "rangeOffset": 1,
       "rangeLength": 0,
@@ -1427,7 +1427,7 @@ test(`insert 000 - insert text between text and text`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousText.children, nextText.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "textReplace",
@@ -1441,9 +1441,9 @@ test(`insert 000 - insert text between text and text`, () => {
 
 test(`insert 001 - insert text between text and element`, () => {
   const parser = createParser()
-  const previousDom = parser.parse(`a<h1>c</h1>`)
+  const previousText = parser.parse(`a<h1>c</h1>`)
   const oldNodeMap = parser.nodeMap
-  const nextDom = parser.edit(`ab<h1>c</h1>`, [
+  const nextText = parser.edit(`ab<h1>c</h1>`, [
     {
       "rangeOffset": 1,
       "rangeLength": 0,
@@ -1451,7 +1451,7 @@ test(`insert 001 - insert text between text and element`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousText.children, nextText.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "textReplace",
@@ -1465,9 +1465,9 @@ test(`insert 001 - insert text between text and element`, () => {
 
 test(`insert 002 - insert text between text and comment`, () => {
   const parser = createParser()
-  const previousDom = parser.parse(`a<!--c-->`)
+  const previousText = parser.parse(`a<!--c-->`)
   const oldNodeMap = parser.nodeMap
-  const nextDom = parser.edit(`ab<!--c-->`, [
+  const nextText = parser.edit(`ab<!--c-->`, [
     {
       "rangeOffset": 1,
       "rangeLength": 0,
@@ -1475,7 +1475,7 @@ test(`insert 002 - insert text between text and comment`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousText.children, nextText.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "textReplace",
@@ -1489,9 +1489,9 @@ test(`insert 002 - insert text between text and comment`, () => {
 
 test(`insert 010 - insert text between element and text`, () => {
   const parser = createParser()
-  const previousDom = parser.parse(`<h1>a</h1><!--c-->`)
+  const previousText = parser.parse(`<h1>a</h1><!--c-->`)
   const oldNodeMap = parser.nodeMap
-  const nextDom = parser.edit(`<h1>a</h1>b<!--c-->`, [
+  const nextText = parser.edit(`<h1>a</h1>b<!--c-->`, [
     {
       "rangeOffset": 10,
       "rangeLength": 0,
@@ -1499,7 +1499,7 @@ test(`insert 010 - insert text between element and text`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousText.children, nextText.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "elementInsert",
@@ -1515,9 +1515,9 @@ test(`insert 010 - insert text between element and text`, () => {
 
 test(`insert 011 - insert text between element and element`, () => {
   const parser = createParser()
-  const previousDom = parser.parse(`<h1>a</h1><h1>c</h1>`)
+  const previousText = parser.parse(`<h1>a</h1><h1>c</h1>`)
   const oldNodeMap = parser.nodeMap
-  const nextDom = parser.edit(`<h1>a</h1>b<h1>c</h1>`, [
+  const nextText = parser.edit(`<h1>a</h1>b<h1>c</h1>`, [
     {
       "rangeOffset": 10,
       "rangeLength": 0,
@@ -1525,7 +1525,7 @@ test(`insert 011 - insert text between element and element`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousText.children, nextText.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "elementInsert",
@@ -1541,9 +1541,9 @@ test(`insert 011 - insert text between element and element`, () => {
 
 test(`insert 012 - insert text between element and comment`, () => {
   const parser = createParser()
-  const previousDom = parser.parse(`<h1>a</h1><!--c-->`)
+  const previousText = parser.parse(`<h1>a</h1><!--c-->`)
   const oldNodeMap = parser.nodeMap
-  const nextDom = parser.edit(`<h1>a</h1>b<!--c-->`, [
+  const nextText = parser.edit(`<h1>a</h1>b<!--c-->`, [
     {
       "rangeOffset": 10,
       "rangeLength": 0,
@@ -1551,7 +1551,7 @@ test(`insert 012 - insert text between element and comment`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousText.children, nextText.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "elementInsert",
@@ -1567,9 +1567,9 @@ test(`insert 012 - insert text between element and comment`, () => {
 
 test(`insert 020 - insert text between comment and text`, () => {
   const parser = createParser()
-  const previousDom = parser.parse(`<!--a-->c`)
+  const previousText = parser.parse(`<!--a-->c`)
   const oldNodeMap = parser.nodeMap
-  const nextDom = parser.edit(`<!--a-->bc`, [
+  const nextText = parser.edit(`<!--a-->bc`, [
     {
       "rangeOffset": 8,
       "rangeLength": 0,
@@ -1577,7 +1577,7 @@ test(`insert 020 - insert text between comment and text`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousText.children, nextText.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "textReplace",
@@ -1591,9 +1591,9 @@ test(`insert 020 - insert text between comment and text`, () => {
 
 test(`insert 021 - insert text between comment and element`, () => {
   const parser = createParser()
-  const previousDom = parser.parse(`<!--a--><h1>c</h1>`)
+  const previousText = parser.parse(`<!--a--><h1>c</h1>`)
   const oldNodeMap = parser.nodeMap
-  const nextDom = parser.edit(`<!--a-->b<h1>c</h1>`, [
+  const nextText = parser.edit(`<!--a-->b<h1>c</h1>`, [
     {
       "rangeOffset": 8,
       "rangeLength": 0,
@@ -1601,7 +1601,7 @@ test(`insert 021 - insert text between comment and element`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousText.children, nextText.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "elementInsert",
@@ -1617,9 +1617,9 @@ test(`insert 021 - insert text between comment and element`, () => {
 
 test(`insert 022 - insert text between comment and comment`, () => {
   const parser = createParser()
-  const previousDom = parser.parse(`<!--a--><!--c-->`)
+  const previousText = parser.parse(`<!--a--><!--c-->`)
   const oldNodeMap = parser.nodeMap
-  const nextDom = parser.edit(`<!--a-->b<!--c-->`, [
+  const nextText = parser.edit(`<!--a-->b<!--c-->`, [
     {
       "rangeOffset": 8,
       "rangeLength": 0,
@@ -1627,7 +1627,7 @@ test(`insert 022 - insert text between comment and comment`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousText.children, nextText.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "elementInsert",
@@ -1643,9 +1643,9 @@ test(`insert 022 - insert text between comment and comment`, () => {
 
 test(`insert 100 - insert element between text and text`, () => {
   const parser = createParser()
-  const previousDom = parser.parse(`ac`)
+  const previousText = parser.parse(`ac`)
   const oldNodeMap = parser.nodeMap
-  const nextDom = parser.edit(`a<h1>b</h1>c`, [
+  const nextText = parser.edit(`a<h1>b</h1>c`, [
     {
       "rangeOffset": 1,
       "rangeLength": 0,
@@ -1653,7 +1653,7 @@ test(`insert 100 - insert element between text and text`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousText.children, nextText.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "textReplace",
@@ -1691,9 +1691,9 @@ test(`insert 100 - insert element between text and text`, () => {
 
 test(`insert 101 - insert element between text and element`, () => {
   const parser = createParser()
-  const previousDom = parser.parse(`a<h1>c</h1>`)
+  const previousText = parser.parse(`a<h1>c</h1>`)
   const oldNodeMap = parser.nodeMap
-  const nextDom = parser.edit(`a<h1>b</h1><h1>c</h1>`, [
+  const nextText = parser.edit(`a<h1>b</h1><h1>c</h1>`, [
     {
       "rangeOffset": 1,
       "rangeLength": 0,
@@ -1701,7 +1701,7 @@ test(`insert 101 - insert element between text and element`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousText.children, nextText.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "elementInsert",
@@ -1725,9 +1725,9 @@ test(`insert 101 - insert element between text and element`, () => {
 
 test(`insert 102 - insert element between text and comment`, () => {
   const parser = createParser()
-  const previousDom = parser.parse(`a<!--c-->`)
+  const previousText = parser.parse(`a<!--c-->`)
   const oldNodeMap = parser.nodeMap
-  const nextDom = parser.edit(`a<h1>b</h1><!--c-->`, [
+  const nextText = parser.edit(`a<h1>b</h1><!--c-->`, [
     {
       "rangeOffset": 1,
       "rangeLength": 0,
@@ -1735,7 +1735,7 @@ test(`insert 102 - insert element between text and comment`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousText.children, nextText.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "elementInsert",
@@ -1759,9 +1759,9 @@ test(`insert 102 - insert element between text and comment`, () => {
 
 test(`insert 110 - insert element between element and text`, () => {
   const parser = createParser()
-  const previousDom = parser.parse(`<h1>a</h1>c`)
+  const previousText = parser.parse(`<h1>a</h1>c`)
   const oldNodeMap = parser.nodeMap
-  const nextDom = parser.edit(`<h1>a</h1><h1>b</h1>c`, [
+  const nextText = parser.edit(`<h1>a</h1><h1>b</h1>c`, [
     {
       "rangeOffset": 10,
       "rangeLength": 0,
@@ -1769,7 +1769,7 @@ test(`insert 110 - insert element between element and text`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousText.children, nextText.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "elementInsert",
@@ -1793,9 +1793,9 @@ test(`insert 110 - insert element between element and text`, () => {
 
 test(`insert 111 - insert element between element and element`, () => {
   const parser = createParser()
-  const previousDom = parser.parse(`<h1>a</h1><h1>c</h1>`)
+  const previousText = parser.parse(`<h1>a</h1><h1>c</h1>`)
   const oldNodeMap = parser.nodeMap
-  const nextDom = parser.edit(`<h1>a</h1><h1>b</h1><h1>c</h1>`, [
+  const nextText = parser.edit(`<h1>a</h1><h1>b</h1><h1>c</h1>`, [
     {
       "rangeOffset": 10,
       "rangeLength": 0,
@@ -1803,7 +1803,7 @@ test(`insert 111 - insert element between element and element`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousText.children, nextText.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "elementInsert",
@@ -1827,9 +1827,9 @@ test(`insert 111 - insert element between element and element`, () => {
 
 test(`insert 112 - insert element between element and comment`, () => {
   const parser = createParser()
-  const previousDom = parser.parse(`<h1>a</h1><!--c-->`)
+  const previousText = parser.parse(`<h1>a</h1><!--c-->`)
   const oldNodeMap = parser.nodeMap
-  const nextDom = parser.edit(`<h1>a</h1><h1>b</h1><!--c-->`, [
+  const nextText = parser.edit(`<h1>a</h1><h1>b</h1><!--c-->`, [
     {
       "rangeOffset": 10,
       "rangeLength": 0,
@@ -1837,7 +1837,7 @@ test(`insert 112 - insert element between element and comment`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousText.children, nextText.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "elementInsert",
@@ -1861,9 +1861,9 @@ test(`insert 112 - insert element between element and comment`, () => {
 
 test(`insert 120 - insert element between comment and text`, () => {
   const parser = createParser()
-  const previousDom = parser.parse(`<!--a-->c`)
+  const previousText = parser.parse(`<!--a-->c`)
   const oldNodeMap = parser.nodeMap
-  const nextDom = parser.edit(`<!--a--><h1>b</h1>c`, [
+  const nextText = parser.edit(`<!--a--><h1>b</h1>c`, [
     {
       "rangeOffset": 8,
       "rangeLength": 0,
@@ -1871,7 +1871,7 @@ test(`insert 120 - insert element between comment and text`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousText.children, nextText.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "elementInsert",
@@ -1895,9 +1895,9 @@ test(`insert 120 - insert element between comment and text`, () => {
 
 test(`insert 121 - insert element between comment and element`, () => {
   const parser = createParser()
-  const previousDom = parser.parse(`<!--a--><h1>c</h1>`)
+  const previousText = parser.parse(`<!--a--><h1>c</h1>`)
   const oldNodeMap = parser.nodeMap
-  const nextDom = parser.edit(`<!--a--><h1>b</h1><h1>c</h1>`, [
+  const nextText = parser.edit(`<!--a--><h1>b</h1><h1>c</h1>`, [
     {
       "rangeOffset": 8,
       "rangeLength": 0,
@@ -1905,7 +1905,7 @@ test(`insert 121 - insert element between comment and element`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousText.children, nextText.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "elementInsert",
@@ -1929,9 +1929,9 @@ test(`insert 121 - insert element between comment and element`, () => {
 
 test(`insert 122 - insert element between comment and comment`, () => {
   const parser = createParser()
-  const previousDom = parser.parse(`<!--a--><!--c-->`)
+  const previousText = parser.parse(`<!--a--><!--c-->`)
   const oldNodeMap = parser.nodeMap
-  const nextDom = parser.edit(`<!--a--><h1>b</h1><!--c-->`, [
+  const nextText = parser.edit(`<!--a--><h1>b</h1><!--c-->`, [
     {
       "rangeOffset": 8,
       "rangeLength": 0,
@@ -1939,7 +1939,7 @@ test(`insert 122 - insert element between comment and comment`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousText.children, nextText.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "elementInsert",
@@ -1963,9 +1963,9 @@ test(`insert 122 - insert element between comment and comment`, () => {
 
 test(`insert 200 - insert comment between text and text`, () => {
   const parser = createParser()
-  const previousDom = parser.parse(`ac`)
+  const previousText = parser.parse(`ac`)
   const oldNodeMap = parser.nodeMap
-  const nextDom = parser.edit(`a<!--b-->c`, [
+  const nextText = parser.edit(`a<!--b-->c`, [
     {
       "rangeOffset": 1,
       "rangeLength": 0,
@@ -1973,7 +1973,7 @@ test(`insert 200 - insert comment between text and text`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousText.children, nextText.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "textReplace",
@@ -2003,9 +2003,9 @@ test(`insert 200 - insert comment between text and text`, () => {
 
 test(`insert 201 - insert comment between text and element`, () => {
   const parser = createParser()
-  const previousDom = parser.parse(`a<h1>c</h1>`)
+  const previousText = parser.parse(`a<h1>c</h1>`)
   const oldNodeMap = parser.nodeMap
-  const nextDom = parser.edit(`a<!--b--><h1>c</h1>`, [
+  const nextText = parser.edit(`a<!--b--><h1>c</h1>`, [
     {
       "rangeOffset": 1,
       "rangeLength": 0,
@@ -2013,7 +2013,7 @@ test(`insert 201 - insert comment between text and element`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousText.children, nextText.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "elementInsert",
@@ -2029,9 +2029,9 @@ test(`insert 201 - insert comment between text and element`, () => {
 
 test(`insert 202 - insert comment between text and comment`, () => {
   const parser = createParser()
-  const previousDom = parser.parse(`a<!--c-->`)
+  const previousText = parser.parse(`a<!--c-->`)
   const oldNodeMap = parser.nodeMap
-  const nextDom = parser.edit(`a<!--b--><!--c-->`, [
+  const nextText = parser.edit(`a<!--b--><!--c-->`, [
     {
       "rangeOffset": 1,
       "rangeLength": 0,
@@ -2039,7 +2039,7 @@ test(`insert 202 - insert comment between text and comment`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousText.children, nextText.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "elementInsert",
@@ -2055,9 +2055,9 @@ test(`insert 202 - insert comment between text and comment`, () => {
 
 test(`insert 210 - insert comment between element and text`, () => {
   const parser = createParser()
-  const previousDom = parser.parse(`<h1>a</h1>c`)
+  const previousText = parser.parse(`<h1>a</h1>c`)
   const oldNodeMap = parser.nodeMap
-  const nextDom = parser.edit(`<h1>a</h1><!--b-->c`, [
+  const nextText = parser.edit(`<h1>a</h1><!--b-->c`, [
     {
       "rangeOffset": 10,
       "rangeLength": 0,
@@ -2065,7 +2065,7 @@ test(`insert 210 - insert comment between element and text`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousText.children, nextText.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "elementInsert",
@@ -2081,9 +2081,9 @@ test(`insert 210 - insert comment between element and text`, () => {
 
 test(`insert 211 - insert comment between element and element`, () => {
   const parser = createParser()
-  const previousDom = parser.parse(`<h1>a</h1><h1>c</h1>`)
+  const previousText = parser.parse(`<h1>a</h1><h1>c</h1>`)
   const oldNodeMap = parser.nodeMap
-  const nextDom = parser.edit(`<h1>a</h1><!--b--><h1>c</h1>`, [
+  const nextText = parser.edit(`<h1>a</h1><!--b--><h1>c</h1>`, [
     {
       "rangeOffset": 10,
       "rangeLength": 0,
@@ -2091,7 +2091,7 @@ test(`insert 211 - insert comment between element and element`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousText.children, nextText.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "elementInsert",
@@ -2107,9 +2107,9 @@ test(`insert 211 - insert comment between element and element`, () => {
 
 test(`insert 212 - insert comment between element and comment`, () => {
   const parser = createParser()
-  const previousDom = parser.parse(`<h1>a</h1><!--c-->`)
+  const previousText = parser.parse(`<h1>a</h1><!--c-->`)
   const oldNodeMap = parser.nodeMap
-  const nextDom = parser.edit(`<h1>a</h1><!--b--><!--c-->`, [
+  const nextText = parser.edit(`<h1>a</h1><!--b--><!--c-->`, [
     {
       "rangeOffset": 10,
       "rangeLength": 0,
@@ -2117,7 +2117,7 @@ test(`insert 212 - insert comment between element and comment`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousText.children, nextText.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "elementInsert",
@@ -2133,9 +2133,9 @@ test(`insert 212 - insert comment between element and comment`, () => {
 
 test(`insert 220 - insert comment between comment and text`, () => {
   const parser = createParser()
-  const previousDom = parser.parse(`<!--a-->c`)
+  const previousText = parser.parse(`<!--a-->c`)
   const oldNodeMap = parser.nodeMap
-  const nextDom = parser.edit(`<!--a--><!--b-->c`, [
+  const nextText = parser.edit(`<!--a--><!--b-->c`, [
     {
       "rangeOffset": 8,
       "rangeLength": 0,
@@ -2143,7 +2143,7 @@ test(`insert 220 - insert comment between comment and text`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousText.children, nextText.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "elementInsert",
@@ -2159,9 +2159,9 @@ test(`insert 220 - insert comment between comment and text`, () => {
 
 test(`insert 221 - insert comment between comment and element`, () => {
   const parser = createParser()
-  const previousDom = parser.parse(`<!--a--><h1>c</h1>`)
+  const previousText = parser.parse(`<!--a--><h1>c</h1>`)
   const oldNodeMap = parser.nodeMap
-  const nextDom = parser.edit(`<!--a--><!--b--><h1>c</h1>`, [
+  const nextText = parser.edit(`<!--a--><!--b--><h1>c</h1>`, [
     {
       "rangeOffset": 8,
       "rangeLength": 0,
@@ -2169,7 +2169,7 @@ test(`insert 221 - insert comment between comment and element`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousText.children, nextText.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "elementInsert",
@@ -2185,9 +2185,9 @@ test(`insert 221 - insert comment between comment and element`, () => {
 
 test(`insert 222 - insert comment between comment and comment`, () => {
   const parser = createParser()
-  const previousDom = parser.parse(`<!--a--><!--c-->`)
+  const previousText = parser.parse(`<!--a--><!--c-->`)
   const oldNodeMap = parser.nodeMap
-  const nextDom = parser.edit(`<!--a--><!--b--><!--c-->`, [
+  const nextText = parser.edit(`<!--a--><!--b--><!--c-->`, [
     {
       "rangeOffset": 8,
       "rangeLength": 0,
@@ -2195,7 +2195,7 @@ test(`insert 222 - insert comment between comment and comment`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousText.children, nextText.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "elementInsert",
@@ -2211,7 +2211,7 @@ test(`insert 222 - insert comment between comment and comment`, () => {
 
 test(`test because of bug #1`, () => {
   const parser = createParser()
-  const previousDom = parser.parse(`<html>
+  const previousText = parser.parse(`<html>
 
 <head>
   <title>Document</title>
@@ -2225,7 +2225,7 @@ test(`test because of bug #1`, () => {
 
 </html>`)
   const oldNodeMap = parser.nodeMap
-  const nextDom = parser.edit(`<html>
+  const nextText = parser.edit(`<html>
 
 <head>
   <title>Document</title>
@@ -2245,7 +2245,7 @@ test(`test because of bug #1`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousText.children, nextText.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "textReplace",
@@ -2259,9 +2259,9 @@ test(`test because of bug #1`, () => {
 
 test(`test because of bug #3`, () => {
   const parser = createParser()
-  const previousDom = parser.parse(`<h1>a</h1>`)
+  const previousText = parser.parse(`<h1>a</h1>`)
   const oldNodeMap = parser.nodeMap
-  const nextDom = parser.edit(`<h1>a</h1>
+  const nextText = parser.edit(`<h1>a</h1>
 <h1>a</h1>`, [
     {
       "rangeOffset": 0,
@@ -2270,7 +2270,7 @@ test(`test because of bug #3`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousText.children, nextText.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "elementInsert",
@@ -2302,10 +2302,10 @@ test(`test because of bug #3`, () => {
 
 test(`test because of bug #4`, () => {
   const parser = createParser()
-  const previousDom = parser.parse(`<h1>a</h1>
+  const previousText = parser.parse(`<h1>a</h1>
 <h1>a</h1>`)
   const oldNodeMap = parser.nodeMap
-  const nextDom = parser.edit(`<h1>a</h1>
+  const nextText = parser.edit(`<h1>a</h1>
 <h1>a</h1>
 <h1>a</h1>`, [
     {
@@ -2315,7 +2315,7 @@ test(`test because of bug #4`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousText.children, nextText.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "elementInsert",
@@ -2347,9 +2347,9 @@ test(`test because of bug #4`, () => {
 
 test(`doctype and whitespace #1`, () => {
   const parser = createParser()
-  const previousDom = parser.parse(`<!DOCTYPE html>`)
+  const previousText = parser.parse(`<!DOCTYPE html>`)
   const oldNodeMap = parser.nodeMap
-  const nextDom = parser.edit(`<!DOCTYPE html>
+  const nextText = parser.edit(`<!DOCTYPE html>
 `, [
     {
       "rangeOffset": 15,
@@ -2358,7 +2358,7 @@ test(`doctype and whitespace #1`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousText.children, nextText.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "elementInsert",
@@ -2374,9 +2374,9 @@ test(`doctype and whitespace #1`, () => {
 
 test(`doctype and whitespace #2`, () => {
   const parser = createParser()
-  const previousDom = parser.parse(`<!doctype html>`)
+  const previousText = parser.parse(`<!doctype html>`)
   const oldNodeMap = parser.nodeMap
-  const nextDom = parser.edit(`<!doctype html>
+  const nextText = parser.edit(`<!doctype html>
 `, [
     {
       "rangeOffset": 15,
@@ -2385,7 +2385,7 @@ test(`doctype and whitespace #2`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousText.children, nextText.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "elementInsert",
@@ -2401,10 +2401,10 @@ test(`doctype and whitespace #2`, () => {
 
 test(`doctype and whitespace #3`, () => {
   const parser = createParser()
-  const previousDom = parser.parse(`<!doctype html>
+  const previousText = parser.parse(`<!doctype html>
 `)
   const oldNodeMap = parser.nodeMap
-  const nextDom = parser.edit(`<!doctype html>`, [
+  const nextText = parser.edit(`<!doctype html>`, [
     {
       "rangeOffset": 15,
       "rangeLength": 1,
@@ -2412,7 +2412,7 @@ test(`doctype and whitespace #3`, () => {
     }
   ])
   const newNodeMap = parser.nodeMap
-  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
+  const edits = diff(previousText.children, nextText.children, {oldNodeMap, newNodeMap})
   const expectedEdits = [
     {
       "command": "elementDelete",
