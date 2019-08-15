@@ -22,7 +22,13 @@ const failing = [
 	'delete-120-delete-element-between-comment-and-text.test.txt',
 	'delete-121-delete-element-between-comment-and-element.test.txt',
 	'delete-122-delete-element-between-comment-and-comment.test.txt',
-	'delete-200-delete-comment-between-text-and-text.test.txt'
+	'delete-200-delete-comment-between-text-and-text.test.txt',
+	'delete-210=delete-comment-between-element-and-text.test.txt',
+	'delete-211-delete-comment-between-element-and-element.test.txt',
+	'delete-212-delete-comment-between-element-and-comment.test.txt',
+	'delete-220-delete-comment-between-comment-and-text.test.txt',
+	'delete-221-delete-comment-between-comment-and-element.test.txt',
+	'delete-222-delete-comment-between-comment-and-comment.test.txt'
 ]; // TODO
 const testFileNames = [
 	'basic.test.txt',
@@ -75,7 +81,15 @@ const testFileNames = [
 	'delete-122-delete-element-between-comment-and-comment.test.txt',
 	'delete-200-delete-comment-between-text-and-text.test.txt',
 	'delete-201-delete-comment-between-text-and-element.test.txt',
-	'delete-202-delete-comment-between-text-and-comment.test.txt'
+	'delete-202-delete-comment-between-text-and-comment.test.txt',
+	'delete-210=delete-comment-between-element-and-text.test.txt',
+	'delete-211-delete-comment-between-element-and-element.test.txt',
+	'delete-212-delete-comment-between-element-and-comment.test.txt',
+	'delete-220-delete-comment-between-comment-and-text.test.txt',
+	'delete-221-delete-comment-between-comment-and-element.test.txt',
+	'delete-222-delete-comment-between-comment-and-comment.test.txt',
+	'insert-000-insert-text-between-text-and-text.test.txt',
+	'insert-001-insert-text-between-text-and-element.test.txt'
 ].filter(t => !failing.includes(t));
 
 testFileNames.length; // ?
