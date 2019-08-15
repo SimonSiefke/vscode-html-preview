@@ -1,0 +1,17 @@
+previousText:
+a<!--c-->
+
+edits:
+[
+  {
+    rangeOffset: 1
+    rangeLength: 0
+    text: b
+  }
+]
+
+nextText:
+ab<!--c-->
+
+expectedDom:
+<html><head></head><body>ab<!--c--></body></html>
