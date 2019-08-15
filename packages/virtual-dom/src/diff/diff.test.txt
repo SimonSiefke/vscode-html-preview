@@ -972,32 +972,6 @@ expectedEdits:
   }
 ]
 
-name:
-delete element between elements
-
-previousDom:
-<h1>a</h1><h1>b</h1><h1>c</h1>
-
-edits:
-[
-  {
-    rangeOffset: 10
-    rangeLength: 10
-    text: ""
-  }
-]
-
-nextDom:
-<h1>a</h1><h1>c</h1>
-
-expectedEdits:
-[
-  {
-     command: elementDelete
-     payload: {}
-  }
-]
-
 //name:
 //delete element after elements
 //
