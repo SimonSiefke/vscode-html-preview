@@ -793,28 +793,6 @@ test(`delete text before element`, () => {
   expect(adjustEdits(edits)).toEqual(adjustExpectedEdits(expectedEdits))
 })
 
-test(`delete text between elements`, () => {
-  const parser = createParser()
-  const previousDom = parser.parse(`<h1>a</h1>b<h1>c</h1>`)
-  const oldNodeMap = parser.nodeMap
-  const nextDom = parser.edit(`<h1>a</h1><h1>c</h1>`, [
-    {
-      "rangeOffset": 10,
-      "rangeLength": 1,
-      "text": ""
-    }
-  ])
-  const newNodeMap = parser.nodeMap
-  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
-  const expectedEdits = [
-    {
-      "command": "elementDelete",
-      "payload": {}
-    }
-  ]
-  expect(adjustEdits(edits)).toEqual(adjustExpectedEdits(expectedEdits))
-})
-
 test(`delete text after element`, () => {
   const parser = createParser()
   const previousDom = parser.parse(`<h1>a</h1>b`)

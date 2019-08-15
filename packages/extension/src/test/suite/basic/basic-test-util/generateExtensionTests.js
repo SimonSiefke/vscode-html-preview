@@ -9,7 +9,9 @@ const failing = [
 	'replace-element-with-text.test.txt',
 	'delete-first-element-node.test.txt',
 	'delete-element-before-element.test.txt',
-	'delete-text-before-text.test.txt'
+	'delete-text-before-text.test.txt',
+	'delete-text-after-element.test.txt',
+	'delete-element-before-text.test.txt'
 ]; // TODO
 const testFileNames = [
 	'basic.test.txt',
@@ -41,7 +43,11 @@ const testFileNames = [
 	'delete-first-element-node.test.txt',
 	'delete-element-before-element.test.txt',
 	'delete-text-before-text.test.txt',
-	'delete-text-after-text.test.txt'
+	'delete-text-after-text.test.txt',
+	'delete-text-before-element.test.txt',
+	'delete-text-after-element.test.txt',
+	'delete-element-before-text.test.txt',
+	'delete-000-delete-text-between-text-and-text.test.txt'
 ].filter(t => !failing.includes(t));
 
 testFileNames.length; // ?
