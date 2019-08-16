@@ -209,7 +209,7 @@ async function fetchNodeMap() {
 	const {nodeMap, hasBody, hasHtml, hasHead, virtualDom} = await fetchNodeMap();
 	// @ts-ignore
 	window.nodeMap = nodeMap;
-	const webSocket = new WebSocket('ws://localhost:3000');
+	const webSocket = new WebSocket(`ws://${location.host}`);
 	webSocket.onmessage = ({data}) => {
 		const {messages, id} = JSON.parse(data);
 		for (const message of messages) {
