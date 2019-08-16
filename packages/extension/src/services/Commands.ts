@@ -5,7 +5,6 @@ import {
 	createWebSocketServer,
 	genDom,
 	createHttpServer,
-	openInBrowser,
 	createParser,
 	diff,
 	WebSocketServer,
@@ -17,19 +16,13 @@ import {redirect} from '../plugins/local-plugin-redirect/redirect';
 import {highlight} from '../plugins/local-plugin-highlight/highlight';
 import {LocalPluginApi, LocalPlugin} from '../plugins/localPluginApi';
 import {config} from '../config';
+import {open} from './Commands-util/open';
 
 const packagesRoot = path.join(config.root, 'packages');
 
 let webSocketServer: WebSocketServer | undefined;
 let httpServer: HttpServer | undefined;
 let state: 'opening' | 'open' | 'closing' | 'closed' = 'closed';
-
-async function open() {
-	const browser = vscode.workspace.getConfiguration().get<string>('htmlPreview.browser');
-	if (process.env.NODE_ENV !== 'test') {
-		await openInBrowser('http://localhost:3000', browser);
-	}
-}
 
 function handleError(error) {
 	console.error(error);
@@ -210,5 +203,5 @@ export function activate(context: vscode.ExtensionContext) {
 		context.subscriptions.push(vscode.commands.registerCommand(commandName, command));
 	registerCommand('htmlPreview.openPreview', () => openPreview(context));
 	registerCommand('htmlPreview.openWithHtmlPreview', () => openPreview(context));
-	registerCommand('htmlPreview.closePreview', closePreview);
+	registerCommand('htmlPreview.closePreviewServer', closePreview);
 }

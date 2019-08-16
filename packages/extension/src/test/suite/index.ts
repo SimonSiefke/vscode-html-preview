@@ -102,7 +102,8 @@ const testFileNames = [
 	'insert-020-insert-text-between-comment-and-text.test.txt',
 	'insert-021-insert-text-between-comment-and-element.test.txt',
 	'insert-022-insert-text-between-comment-and-comment.test.txt',
-	'insert-100-insert-element-between-text-and-text.test.txt'
+	'insert-100-insert-element-between-text-and-text.test.txt',
+	'copy-paste-entire-document.test.txt'
 ].filter(t => !failing.includes(t));
 
 const only = undefined;

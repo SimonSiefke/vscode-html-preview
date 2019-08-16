@@ -1,4 +1,5 @@
 import {LocalPlugin} from '../localPluginApi';
+import {minimizeEdits} from '../../services/Commands-util/minimizeEdits/minimizeEdits';
 
 export const core: LocalPlugin = api => {
 	const {vscode, webSocketServer, diff} = api;
@@ -22,10 +23,15 @@ export const core: LocalPlugin = api => {
 		}
 
 		const newText = event.document.getText();
+		const edits = minimizeEdits(newText, event.contentChanges);
+
+		if (edits.length === 0) {
+			return;
+		}
 
 		try {
-			if (event.contentChanges.length === 1) {
-				const change = event.contentChanges[0];
+			if (edits.length === 1) {
+				const change = edits[0];
 				const oldNodeMap = api.parser.nodeMap;
 				const nextDom = api.parser.edit(newText, [change]);
 				const newNodeMap = api.parser.nodeMap;
@@ -36,7 +42,8 @@ export const core: LocalPlugin = api => {
 				console.log('diffs');
 				console.log(diffs);
 			} else {
-				console.log(event.contentChanges);
+				console.log(edits.length);
+				console.log(edits);
 				console.log('sorry no diffs');
 				webSocketServer.broadcast(
 					[

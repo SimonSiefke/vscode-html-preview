@@ -109,6 +109,7 @@
     "open": "^6.4.0"
   },
   "devDependencies": {
+    "@types/jest": "^24.0.17",
     "@types/mocha": "^5.2.7",
     "@types/vscode": "^1.37.0",
     "cross-env": "^5.2.0",
