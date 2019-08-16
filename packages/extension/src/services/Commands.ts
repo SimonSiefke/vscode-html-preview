@@ -112,7 +112,11 @@ async function openPreview(context: vscode.ExtensionContext) {
 					} else {
 						const diskPath = path.join(vscode.workspace.workspaceFolders[0].uri.fsPath, req.url);
 						const uri = vscode.Uri.file(diskPath);
-						file = await vscode.workspace.fs.readFile(uri);
+						try {
+							file = await vscode.workspace.fs.readFile(uri);
+						} catch (error) {
+							return notFound()
+						}
 					}
 
 					const mimeType = mime.getType(req.url);

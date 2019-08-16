@@ -140,11 +140,26 @@ async function fetchNodeMap() {
 
 	let $root = document as Node;
 	let inHtml = false;
+	hadBody = false;
+	hadHead = false;
+	hadText = false;
+	hadHtml = false;
 
 	for (let i = 0; i < virtualDom.length; i++) {
 		const node = virtualDom[i];
+
+		if (node.tag === 'html') {
+			hadHtml = true;
+		} else if (node.tag === 'body') {
+			hadBody = true;
+		} else if (node.tag === 'head') {
+			hadHead = true;
+		} else if (node.type === 'Text' && !node.text.trim()) {
+			hadText = true;
+		}
+
 		// must ignore whitespace nodes at top level
-		if (!inBody && node.type === 'TextNode' && !node.text.trim()) {
+		if (!inBody && node.type === 'TextNode' && (!hadHead || hadBody) && !node.text.trim()) {
 			continue;
 		}
 
@@ -168,6 +183,7 @@ async function fetchNodeMap() {
 		}
 
 		const $node = $root.childNodes[domIndex];
+		console.log($node);
 		nodeMap[node.id] = $node;
 		domIndex++;
 		validate(node, $node);
