@@ -104,9 +104,10 @@ const testFileNames = [
 	'insert-022-insert-text-between-comment-and-comment.test.txt',
 	'insert-100-insert-element-between-text-and-text.test.txt',
 	'insert-100-insert-element-between-text-and-text.test.txt',
-	'copy-paste-entire-document.test.txt'
+	'copy-paste-entire-document.test.txt',
+	'h1-to-h3.test.txt'
 ].filter(t => !failing.includes(t));
-// .filter(x => x === 'copy-paste-entire-document.test.txt');
+// .filter(x => x === 'h1-to-h6.test.txt');
 
 testFileNames.length; // ?
 
@@ -207,7 +208,11 @@ test('${testCaseName}', async () => {
 }
 
 function parseJson(json) {
-	return JSON.parse(toJson(json));
+	try {
+		return JSON.parse(toJson(json));
+	} catch (error) {
+		throw new Error('invalid json' + json);
+	}
 }
 
 const editsSchema = {
