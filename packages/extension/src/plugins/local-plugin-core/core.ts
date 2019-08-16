@@ -29,6 +29,8 @@ export const core: LocalPlugin = api => {
 
 		try {
 			if (edits.length === 1) {
+				console.log('change');
+				console.log(edits[0]);
 				const change = edits[0];
 				const oldNodeMap = api.parser.nodeMap;
 				const nextDom = api.parser.edit(newText, [change]);

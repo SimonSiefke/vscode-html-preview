@@ -109,10 +109,12 @@
     "open": "^6.4.0"
   },
   "devDependencies": {
+    "@types/fs-extra": "^8.0.0",
     "@types/jest": "^24.0.17",
     "@types/mocha": "^5.2.7",
     "@types/vscode": "^1.37.0",
     "cross-env": "^5.2.0",
+    "fs-extra": "^8.1.0",
     "mocha": "^6.2.0",
     "puppeteer": "^1.19.0",
     "vscode-test": "^1.2.0"
