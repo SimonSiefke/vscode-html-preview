@@ -104,9 +104,9 @@ const testFileNames = [
 	'insert-022-insert-text-between-comment-and-comment.test.txt',
 	'insert-100-insert-element-between-text-and-text.test.txt',
 	'insert-100-insert-element-between-text-and-text.test.txt',
-	'copy-paste-entire-document.test.txt',
 	'copy-paste-entire-document.test.txt'
 ].filter(t => !failing.includes(t));
+// .filter(x => x === 'copy-paste-entire-document.test.txt');
 
 testFileNames.length; // ?
 
@@ -124,6 +124,7 @@ import * as _ from 'lodash'
 
 function genSingle(testCase) {
 	const edit = testCase.edits[0];
+	const {waitForEdits} = testCase; // ?
 	return `
 	{
 		const edit = ${JSON.stringify(edit, null, 2)}
@@ -138,9 +139,13 @@ function genSingle(testCase) {
     edit.text
   )
 	await vscode.workspace.applyEdit(vscodeEdit)
-	waitForUpdateStart(page)
+	${
+	waitForEdits ?
+		'waitForUpdateStart(page)' :
+		'await new Promise(resolve=>setTimeout(resolve, 100))'
+}
 	const html = await page.content()
-	await waitForUpdateEnd(page)
+	${waitForEdits ? 'await waitForUpdateEnd(page)' : ''}
 	assert.equal(adjust(html), \`${testCase.expectedDom}\`);
 	
 		}`;
@@ -152,6 +157,7 @@ function genSingle(testCase) {
  */
 function generateTestCase({fileName, testCases}) {
 	const testCaseName = fileName.replace(/\.test\.txt$/, '');
+	testCases[0].waitForEdits; // ?
 	const edit = testCases[0].edits[0]; // ?
 	const singles = testCases.map(genSingle);
 	return `${importCode}
@@ -293,6 +299,10 @@ function validateTestCase(testCase, testCaseName) {
 	}
 }
 
+function validateWaitForEdits(waitForEdits) {
+	return waitForEdits === 'false';
+}
+
 function gen(fileName) {
 	const basicTest = fs.readFileSync(path.join(__dirname, `../${fileName}`), 'utf-8');
 
@@ -350,6 +360,12 @@ function gen(fileName) {
 			continue;
 		}
 
+		if (line.startsWith('waitForEdits:')) {
+			finishBlock();
+			blockType = 'waitForEdits';
+			continue;
+		}
+
 		blockContent.push(line);
 	}
 
@@ -358,6 +374,12 @@ function gen(fileName) {
 	finishBlock();
 
 	const e2eCases = tests.map(test => {
+		if (test.waitForEdits) {
+			validateWaitForEdits(test.waitForEdits);
+		}
+
+		const waitForEdits = test.waitForEdits !== 'false';
+
 		const {previousText} = test;
 		validatePreviousText(previousText);
 		const {nextText} = test;
@@ -367,7 +389,7 @@ function gen(fileName) {
 		const {expectedDom} = test;
 		validateExpectedDom(expectedDom);
 		validateTestCase({previousText, nextText, edits}, fileName);
-		return {previousText, edits, expectedDom};
+		return {previousText, edits, expectedDom, waitForEdits};
 	});
 
 	e2eCases;

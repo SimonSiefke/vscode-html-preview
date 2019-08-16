@@ -103,7 +103,6 @@ const testFileNames = [
 	'insert-021-insert-text-between-comment-and-element.test.txt',
 	'insert-022-insert-text-between-comment-and-comment.test.txt',
 	'insert-100-insert-element-between-text-and-text.test.txt',
-	'copy-paste-entire-document.test.txt',
 	'copy-paste-entire-document.test.txt'
 ].filter(t => !failing.includes(t));
 
@@ -127,6 +126,7 @@ export function run(): Promise<void> {
 		timeout: 1000000
 	});
 	mocha.useColors(true);
+	mocha.bail(true);
 
 	const testsRoot = path.resolve(__dirname, '..');
 

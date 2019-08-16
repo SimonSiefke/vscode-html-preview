@@ -1,5 +1,4 @@
 // related: https://github.com/adobe/brackets/issues/10634
-
 previousText:
 <!DOCTYPE html>
 <html>
@@ -18,9 +17,12 @@ edits:
   {
     rangeOffset: 0
     rangeLength: 158
-    text: "<!DOCTYPE html>\n<html>\n  <head>\n    <meta charset="utf-8">\n    <title>Live Preview</title>\n  </head>\n  <body>\n    <p>this is a paragraph</p>\n  </body>\n</html>"
+    text: '<!DOCTYPE html>\n<html>\n  <head>\n    <meta charset="utf-8">\n    <title>Live Preview</title>\n  </head>\n  <body>\n    <p>this is a paragraph</p>\n  </body>\n</html>'
   }
 ]
+
+waitForEdits:
+false
 
 nextText:
 <!DOCTYPE html>
@@ -36,13 +38,12 @@ nextText:
 
 
 expectedDom:
-<!DOCTYPE html>
-<html>
-  <head>
+<!DOCTYPE html><html><head>
     <meta charset="utf-8">
     <title>Live Preview</title>
   </head>
   <body>
     <p>this is a paragraph</p>
-  </body>
-</html>
+  
+
+</body></html>
