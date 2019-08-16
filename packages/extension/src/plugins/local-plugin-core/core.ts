@@ -12,8 +12,6 @@ export const core: LocalPlugin = api => {
 		previousDom = api.parser.parse(previousText) as {children: any[]};
 	});
 	api.vscode.workspace.onDidChangeTextDocument(event => {
-		console.log('change');
-		console.log(event.contentChanges);
 		if (event.document.languageId !== 'html') {
 			return;
 		}
@@ -22,8 +20,8 @@ export const core: LocalPlugin = api => {
 			return;
 		}
 
+		const edits = minimizeEdits(previousText, event.contentChanges);
 		const newText = event.document.getText();
-		const edits = minimizeEdits(newText, event.contentChanges);
 
 		if (edits.length === 0) {
 			return;

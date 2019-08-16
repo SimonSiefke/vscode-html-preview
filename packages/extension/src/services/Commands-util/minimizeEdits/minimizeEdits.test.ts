@@ -62,3 +62,21 @@ test('multiple edits', () => {
 		])
 	).toStrictEqual([]);
 });
+
+test('bug 1', () => {
+	expect(
+		minimizeEdits('<h1>a</h1>', [
+			{
+				rangeLength: 1,
+				rangeOffset: 4,
+				text: 'b'
+			}
+		])
+	).toStrictEqual([
+		{
+			rangeLength: 1,
+			rangeOffset: 4,
+			text: 'b'
+		}
+	]);
+});
