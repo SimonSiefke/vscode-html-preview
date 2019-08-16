@@ -1,7 +1,7 @@
 import * as path from 'path';
 import * as Mocha from 'mocha';
 
-const fileName = 'checkbox-stays-checked.test.js';
+const fileName = 'scroll-position-stays-the-same.test.js';
 
 export function run(): Promise<void> {
 	const mocha = new Mocha({

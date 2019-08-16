@@ -39,6 +39,10 @@ const tests: Test[] = [
 	{
 		workspace: 'advanced/checkbox-stays-checked/checkbox-stays-checked-workspace',
 		testPath: 'suite/advanced/checkbox-stays-checked/run'
+	},
+	{
+		workspace: 'advanced/scroll-position-stays-the-same/scroll-position-stays-the-same-workspace',
+		testPath: 'suite/advanced/scroll-position-stays-the-same/run'
 	}
 ];
 (async () => {
