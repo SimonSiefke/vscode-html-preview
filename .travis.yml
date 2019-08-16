@@ -20,7 +20,6 @@ jobs:
   include:
     - stage: test
       script:
-        - npx tsc -b
         - cd packages/injected-code && npm run build && cd ../../
         - npm run e2e
         - npm test
