@@ -46,8 +46,8 @@ const tests: Test[] = [
 		testPath: 'suite/advanced/scroll-position-stays-the-same/run'
 	},
 	{
-		workspace: 'advanced/with-image/with-image-workspace',
-		testPath: 'suite/advanced/with-image/run'
+		workspace: 'advanced/with-external-assets/with-external-assets-workspace',
+		testPath: 'suite/advanced/with-external-assets/run'
 	}
 ];
 (async () => {
