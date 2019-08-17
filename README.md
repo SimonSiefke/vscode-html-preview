@@ -66,3 +66,8 @@ error: prefixSum or nodeMap is invalid because node is not found
 <!-- TODO when opening preview, open new files to the left -->
 
 <!-- TODO why is html preview not closing -->
+
+<!-- TODO shtml -->
+<!-- TODO htm -->
+<!-- TODO proxy? -->
+<!-- TODO cors -->
