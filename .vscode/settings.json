@@ -33,7 +33,11 @@
     "process.js": true,
     "tempdir.js": true,
     "**/rollup.config.js": true,
-    "**/images": true
+    "**/images": true,
+    "**/(deprecated)*": true,
+    "examples": true,
+    "**/html-preview-service": true,
+    "**/virtual-dom": true
   },
   "search.exclude": {
     "**/node_modules": true,

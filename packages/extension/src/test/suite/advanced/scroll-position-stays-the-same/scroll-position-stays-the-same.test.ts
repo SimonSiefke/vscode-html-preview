@@ -1,8 +1,3 @@
-// 1. open index.html
-// 2. click the checkbox
-// 3. add a label before the input
-// 4. check that the checkbox is still checked
-
 import {activateExtension} from '../../../test-util';
 import * as puppeteer from 'puppeteer';
 import * as vscode from 'vscode';

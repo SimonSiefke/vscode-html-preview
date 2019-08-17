@@ -74,7 +74,7 @@ async function openPreview(context: vscode.ExtensionContext) {
 				// 	parser.dom.children
 				// )}</script>`;
 				const $script = '<script type="module" src="html-preview.js"></script>';
-				const $inner = '\n' + $script;
+				const $inner = $script;
 				if (bodyIndex !== -1) {
 					dom = dom.slice(0, bodyIndex) + $inner + dom.slice(bodyIndex);
 				} else {
@@ -115,7 +115,7 @@ async function openPreview(context: vscode.ExtensionContext) {
 						try {
 							file = await vscode.workspace.fs.readFile(uri);
 						} catch (error) {
-							return notFound()
+							return notFound();
 						}
 					}
 

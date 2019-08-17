@@ -189,7 +189,7 @@ function waitForUpdateEnd(page){
 }
 
 function adjust(html) {
-	return html.replace('\\n<script type="module" src="html-preview.js"></script>', '').replace('<script type="module" src="html-preview.js"></script>', '').replace(/ data-id="\\d*"/g, '');
+	return html.replace(/ data-id="\\d*"/g, '');
 }
 
 test('${testCaseName}', async () => {

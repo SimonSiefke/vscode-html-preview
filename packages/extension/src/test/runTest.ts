@@ -44,6 +44,10 @@ const tests: Test[] = [
 	{
 		workspace: 'advanced/scroll-position-stays-the-same/scroll-position-stays-the-same-workspace',
 		testPath: 'suite/advanced/scroll-position-stays-the-same/run'
+	},
+	{
+		workspace: 'advanced/with-image/with-image-workspace',
+		testPath: 'suite/advanced/with-image/run'
 	}
 ];
 (async () => {
