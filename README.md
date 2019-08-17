@@ -7,7 +7,7 @@
 ## Features
 
 - Live editing of html files (currently there are still some bugs)
-- Highlighting of html elements inside the browser
+- Highlighting of html elements inside the browser (there are still a lot of bugs)
 
 ## Commands
 
@@ -74,3 +74,5 @@ error: prefixSum or nodeMap is invalid because node is not found
 <!-- TODO browser ie -->
 <!-- TODO browser new ie (safari) -->
 <!-- TODO browser egde -->
+<!-- TODO elment moves https://trello.com/c/yMmDFqdq/928-live-html-support-moves -->
+<!-- TODO better highlight position matching -->
