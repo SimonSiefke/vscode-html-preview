@@ -77,3 +77,5 @@ error: prefixSum or nodeMap is invalid because node is not found
 <!-- TODO elment moves https://trello.com/c/yMmDFqdq/928-live-html-support-moves -->
 <!-- TODO better highlight position matching -->
 <!-- TODO inconsistent test result in ci (sometimes passing, sometimes not) -->
+<!-- TODO different file (index.html, about.html etc.) -->
+<!-- TODO fix redirect plugin -->
