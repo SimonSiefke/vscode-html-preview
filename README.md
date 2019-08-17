@@ -71,3 +71,6 @@ error: prefixSum or nodeMap is invalid because node is not found
 <!-- TODO htm -->
 <!-- TODO proxy? -->
 <!-- TODO cors -->
+<!-- TODO browser ie -->
+<!-- TODO browser new ie (safari) -->
+<!-- TODO browser egde -->
