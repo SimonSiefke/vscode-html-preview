@@ -4,6 +4,10 @@ import {highlight} from './plugins/remote-plugin-highlight/highlight';
 import {RemotePluginApi} from './plugins/remotePluginApi';
 import {connection} from './plugins/remote-plugin-connection/remote-plugin-connection';
 
+const $script = document.querySelector('script[src="html-preview.js"]') as HTMLScriptElement;
+$script.remove();
+// $script.parentNode!.removeChild($script);
+
 function walk(dom, fn, childrenFirst = false) {
 	if (Array.isArray(dom)) {
 		return dom.map(d => walk(d, fn, childrenFirst));
