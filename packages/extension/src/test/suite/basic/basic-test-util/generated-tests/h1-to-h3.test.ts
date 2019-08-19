@@ -49,7 +49,7 @@ test('h1-to-h3', async () => {
   const browser = await getBrowser()
   const page = await browser.newPage()
   await vscode.commands.executeCommand('htmlPreview.openPreview')
-  await page.goto('http://localhost:3000/h1-to-h3.html', {waitUntil: 'networkidle2', timeout: 2000})
+  await page.goto('http://localhost:3000/h1-to-h3.html', {waitUntil: 'networkidle2', timeout: 10000})
   //await page.goto('http://localhost:3000/h1-to-h3.html')
 	
 	{
@@ -68,8 +68,8 @@ test('h1-to-h3', async () => {
     ),
     edit.text
   )
-	await vscode.workspace.applyEdit(vscodeEdit)
 	waitForUpdateStart(page)
+	await vscode.workspace.applyEdit(vscodeEdit)
 	const html = await page.content()
 	await waitForUpdateEnd(page)
 	assert.equal(adjust(html), `<html><head></head><body>h1</body></html>`);
@@ -92,8 +92,8 @@ test('h1-to-h3', async () => {
     ),
     edit.text
   )
-	await vscode.workspace.applyEdit(vscodeEdit)
 	waitForUpdateStart(page)
+	await vscode.workspace.applyEdit(vscodeEdit)
 	const html = await page.content()
 	await waitForUpdateEnd(page)
 	assert.equal(adjust(html), `<html><head></head><body><h1></h1></body></html>`);
@@ -116,8 +116,8 @@ test('h1-to-h3', async () => {
     ),
     edit.text
   )
-	await vscode.workspace.applyEdit(vscodeEdit)
 	waitForUpdateStart(page)
+	await vscode.workspace.applyEdit(vscodeEdit)
 	const html = await page.content()
 	await waitForUpdateEnd(page)
 	assert.equal(adjust(html), `<html><head></head><body><h1>first heading</h1></body></html>`);
@@ -140,8 +140,8 @@ test('h1-to-h3', async () => {
     ),
     edit.text
   )
-	await vscode.workspace.applyEdit(vscodeEdit)
 	waitForUpdateStart(page)
+	await vscode.workspace.applyEdit(vscodeEdit)
 	const html = await page.content()
 	await waitForUpdateEnd(page)
 	assert.equal(adjust(html), `<html><head></head><body><h1>first heading</h1>
@@ -165,8 +165,8 @@ test('h1-to-h3', async () => {
     ),
     edit.text
   )
-	await vscode.workspace.applyEdit(vscodeEdit)
 	waitForUpdateStart(page)
+	await vscode.workspace.applyEdit(vscodeEdit)
 	const html = await page.content()
 	await waitForUpdateEnd(page)
 	assert.equal(adjust(html), `<html><head></head><body><h1>first heading</h1>
@@ -190,8 +190,8 @@ h2</body></html>`);
     ),
     edit.text
   )
-	await vscode.workspace.applyEdit(vscodeEdit)
 	waitForUpdateStart(page)
+	await vscode.workspace.applyEdit(vscodeEdit)
 	const html = await page.content()
 	await waitForUpdateEnd(page)
 	assert.equal(adjust(html), `<html><head></head><body><h1>first heading</h1>
@@ -215,8 +215,8 @@ h2</body></html>`);
     ),
     edit.text
   )
-	await vscode.workspace.applyEdit(vscodeEdit)
 	waitForUpdateStart(page)
+	await vscode.workspace.applyEdit(vscodeEdit)
 	const html = await page.content()
 	await waitForUpdateEnd(page)
 	assert.equal(adjust(html), `<html><head></head><body><h1>first heading</h1>
@@ -240,8 +240,8 @@ h2</body></html>`);
     ),
     edit.text
   )
-	await vscode.workspace.applyEdit(vscodeEdit)
 	waitForUpdateStart(page)
+	await vscode.workspace.applyEdit(vscodeEdit)
 	const html = await page.content()
 	await waitForUpdateEnd(page)
 	assert.equal(adjust(html), `<html><head></head><body><h1>first heading</h1>
@@ -266,8 +266,8 @@ h2</body></html>`);
     ),
     edit.text
   )
-	await vscode.workspace.applyEdit(vscodeEdit)
 	waitForUpdateStart(page)
+	await vscode.workspace.applyEdit(vscodeEdit)
 	const html = await page.content()
 	await waitForUpdateEnd(page)
 	assert.equal(adjust(html), `<html><head></head><body><h1>first heading</h1>
@@ -292,8 +292,8 @@ h3</body></html>`);
     ),
     edit.text
   )
-	await vscode.workspace.applyEdit(vscodeEdit)
 	waitForUpdateStart(page)
+	await vscode.workspace.applyEdit(vscodeEdit)
 	const html = await page.content()
 	await waitForUpdateEnd(page)
 	assert.equal(adjust(html), `<html><head></head><body><h1>first heading</h1>
@@ -318,8 +318,8 @@ h3</body></html>`);
     ),
     edit.text
   )
-	await vscode.workspace.applyEdit(vscodeEdit)
 	waitForUpdateStart(page)
+	await vscode.workspace.applyEdit(vscodeEdit)
 	const html = await page.content()
 	await waitForUpdateEnd(page)
 	assert.equal(adjust(html), `<html><head></head><body><h1>first heading</h1>

@@ -49,7 +49,7 @@ test('insert-001-insert-text-between-text-and-element', async () => {
   const browser = await getBrowser()
   const page = await browser.newPage()
   await vscode.commands.executeCommand('htmlPreview.openPreview')
-  await page.goto('http://localhost:3000/insert-001-insert-text-between-text-and-element.html', {waitUntil: 'networkidle2', timeout: 2000})
+  await page.goto('http://localhost:3000/insert-001-insert-text-between-text-and-element.html', {waitUntil: 'networkidle2', timeout: 10000})
   //await page.goto('http://localhost:3000/insert-001-insert-text-between-text-and-element.html')
 	
 	{
@@ -68,8 +68,8 @@ test('insert-001-insert-text-between-text-and-element', async () => {
     ),
     edit.text
   )
-	await vscode.workspace.applyEdit(vscodeEdit)
 	waitForUpdateStart(page)
+	await vscode.workspace.applyEdit(vscodeEdit)
 	const html = await page.content()
 	await waitForUpdateEnd(page)
 	assert.equal(adjust(html), `<html><head></head><body>ab<h1>c</h1></body></html>`);

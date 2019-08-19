@@ -49,7 +49,7 @@ test('insertion-of-attribute-without-value', async () => {
   const browser = await getBrowser()
   const page = await browser.newPage()
   await vscode.commands.executeCommand('htmlPreview.openPreview')
-  await page.goto('http://localhost:3000/insertion-of-attribute-without-value.html', {waitUntil: 'networkidle2', timeout: 2000})
+  await page.goto('http://localhost:3000/insertion-of-attribute-without-value.html', {waitUntil: 'networkidle2', timeout: 10000})
   //await page.goto('http://localhost:3000/insertion-of-attribute-without-value.html')
 	
 	{
@@ -68,8 +68,8 @@ test('insertion-of-attribute-without-value', async () => {
     ),
     edit.text
   )
-	await vscode.workspace.applyEdit(vscodeEdit)
 	waitForUpdateStart(page)
+	await vscode.workspace.applyEdit(vscodeEdit)
 	const html = await page.content()
 	await waitForUpdateEnd(page)
 	assert.equal(adjust(html), `<html><head></head><body><h1 class="">hello world</h1></body></html>`);

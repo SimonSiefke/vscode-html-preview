@@ -141,12 +141,12 @@ function genSingle(testCase) {
     ),
     edit.text
   )
-	await vscode.workspace.applyEdit(vscodeEdit)
 	${
 	waitForEdits ?
 		'waitForUpdateStart(page)' :
 		'await new Promise(resolve=>setTimeout(resolve, 100))'
 }
+	await vscode.workspace.applyEdit(vscodeEdit)
 	const html = await page.content()
 	${waitForEdits ? 'await waitForUpdateEnd(page)' : ''}
 	assert.equal(adjust(html), \`${testCase.expectedDom}\`);

@@ -59,7 +59,7 @@ test('copy-paste-entire-document', async () => {
   const browser = await getBrowser()
   const page = await browser.newPage()
   await vscode.commands.executeCommand('htmlPreview.openPreview')
-  await page.goto('http://localhost:3000/copy-paste-entire-document.html', {waitUntil: 'networkidle2', timeout: 2000})
+  await page.goto('http://localhost:3000/copy-paste-entire-document.html', {waitUntil: 'networkidle2', timeout: 10000})
   //await page.goto('http://localhost:3000/copy-paste-entire-document.html')
 	
 	{
@@ -78,8 +78,8 @@ test('copy-paste-entire-document', async () => {
     ),
     edit.text
   )
-	await vscode.workspace.applyEdit(vscodeEdit)
 	await new Promise(resolve=>setTimeout(resolve, 100))
+	await vscode.workspace.applyEdit(vscodeEdit)
 	const html = await page.content()
 	
 	assert.equal(adjust(html), `<!DOCTYPE html><html><head>
