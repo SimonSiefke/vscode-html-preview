@@ -75,7 +75,7 @@ function validate(node: any, $actualNode: Node) {
 		!['html', 'body', 'head', '!doctype'].includes(node.tag.toLowerCase()) &&
 		$actualNode.nodeType !== Node.ELEMENT_NODE
 	) {
-		console.log('expected element node, got');
+		console.log(`expected element node with tag ${node.tag}, got`);
 		console.error('(6) invalid', $actualNode);
 		alert('error, failed to hydrate dom (6)');
 	} else if (
@@ -173,21 +173,27 @@ async function fetchNodeMap() {
 			$root = document.documentElement;
 			domIndex = 0;
 			inHtml = true;
-			const nextNode = virtualDom[i + 1];
+			// const nextNode = virtualDom[i + 1];
 			// special case: whitespace after head is ignored when the next node is a text node
-			if (nextNode && nextNode.type === 'TextNode') {
-				nextNode.text = nextNode.text.trimStart();
-			}
-		}
-
-		if (node.type !== 'CommentNode' && !hasBody && !hasHtml && !inBody) {
+			// if (nextNode && nextNode.type === 'TextNode') {
+			// 	nextNode.text = nextNode.text.trimStart();
+			// }
+		} else if (
+			// comment nodes are allowed between head and body
+			node.type !== 'CommentNode' &&
+			// whitespace text nodes are allowed between head and body
+			!(node.type === 'TextNode' && !node.text.trim()) &&
+			!hasBody &&
+			!hasHtml &&
+			!inBody
+		) {
+			// if another node appears it will mark the implicit beginning of the body
 			inBody = true;
 			$root = document.body;
 			domIndex = 0;
 		}
 
 		const $node = $root.childNodes[domIndex];
-		console.log($node);
 		nodeMap[node.id] = $node;
 		domIndex++;
 		validate(node, $node);
