@@ -1,8 +1,9 @@
 import {LocalPlugin} from '../localPluginApi';
+import * as vscode from 'vscode';
 
 export const highlight: LocalPlugin = api => {
 	let highlightedId: number | undefined;
-	const {parser, vscode, webSocketServer} = api;
+	const {parser, webSocketServer} = api;
 
 	api.webSocketServer.onMessage((message: any) => {
 		if (message.type === 'request' && message.command === 'highlight') {

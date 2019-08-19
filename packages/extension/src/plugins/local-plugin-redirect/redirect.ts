@@ -1,4 +1,5 @@
 import {LocalPlugin} from '../localPluginApi';
+import * as vscode from 'vscode';
 
 export const redirect: LocalPlugin = api => {
 	api.vscode.window.onDidChangeActiveTextEditor(event => {
@@ -8,7 +9,7 @@ export const redirect: LocalPlugin = api => {
 				{
 					command: 'redirect',
 					payload: {
-						url: api.vscode.workspace.asRelativePath(event.document.uri)
+						url: vscode.workspace.asRelativePath(event.document.uri)
 					}
 				}
 			],

@@ -1,14 +1,16 @@
 import {LocalPlugin} from '../localPluginApi';
 import {minimizeEdits} from '../../services/Commands-util/minimizeEdits/minimizeEdits';
+import {createParser, diff} from 'html-preview-service';
+import * as vscode from 'vscode';
 
 export const core: LocalPlugin = api => {
-	const {vscode, webSocketServer, diff} = api;
 	let previousText =
 		(vscode.window.activeTextEditor && vscode.window.activeTextEditor.document.getText()) || '';
+	api.parser = createParser();
 	let previousDom = api.parser.parse(previousText) as {children: any[]};
-
 	api.vscode.window.onDidChangeActiveTextEditor(event => {
 		previousText = event.document.getText();
+		api.parser = createParser();
 		previousDom = api.parser.parse(previousText) as {children: any[]};
 	});
 	api.vscode.workspace.onDidChangeTextDocument(event => {
@@ -37,7 +39,7 @@ export const core: LocalPlugin = api => {
 				const newNodeMap = api.parser.nodeMap;
 				const diffs = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap});
 				previousDom = nextDom;
-				webSocketServer.broadcast(diffs, {});
+				api.webSocketServer.broadcast(diffs, {});
 				previousText = newText;
 				console.log('diffs');
 				console.log(diffs);
@@ -45,7 +47,7 @@ export const core: LocalPlugin = api => {
 				console.log(edits.length);
 				console.log(edits);
 				console.log('sorry no diffs');
-				webSocketServer.broadcast(
+				api.webSocketServer.broadcast(
 					[
 						{
 							command: 'error',

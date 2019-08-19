@@ -85,7 +85,8 @@
     "*.ts",
     "*.html",
     "*.md",
-    "*.generated.test.js"
+    "*.generated.test.js",
+    "serveStaticOriginal.js"
   ],
   "jest": {
     "preset": "ts-jest",
@@ -164,8 +165,5 @@
       "maxSize": "15 kB",
       "compression": "none"
     }
-  ],
-  "dependencies": {
-    "open": "^6.4.0"
-  }
+  ]
 }

@@ -18,22 +18,25 @@ import * as open from 'open';
  * - brave, it opens with a vscode icon instead of a brave icon
  * - vivaldi, it opens with a vscode icon instead of a vivaldi icon
  *
+ *
+ * Refactored: opens in default browser currently (which will be the most useful to most users)
+ * If the user wants a custom browser it will be enabled via cli and cli args
 
  */
-export const openInBrowser = (url: string, browser: string) => {
+export const openInBrowser = (url: string) => {
 	let app: string | undefined;
 	const args: string[] = [];
-	if (browser === 'default') {
-		// do nothing special, keeping app undefined means that it opens in a default browser
-	} else if (browser === 'chrome') {
-		if (process.platform === 'darwin' || process.platform === 'linux') {
-			app = 'google-chrome';
-		} else {
-			app = 'chrome';
-		}
-	} else if (browser === 'firefox') {
-		app = 'firefox';
-	}
+	// if (browser === 'default') {
+	// 	// do nothing special, keeping app undefined means that it opens in a default browser
+	// } else if (browser === 'chrome') {
+	// 	if (process.platform === 'darwin' || process.platform === 'linux') {
+	// 		app = 'google-chrome';
+	// 	} else {
+	// 		app = 'chrome';
+	// 	}
+	// } else if (browser === 'firefox') {
+	// 	app = 'firefox';
+	// }
 	// TODO brave not quite working
 	// else if (browser === 'brave') {
 	// 	app = 'brave-browser';
@@ -43,13 +46,11 @@ export const openInBrowser = (url: string, browser: string) => {
 	// else if (browser === 'vivaldi') {
 	// 	app = 'vivaldi';
 	// }
-	else {
-		// @debug
-		console.warn(`unknown browser ${browser}`);
-	}
+	// else {
+	// 	// @debug
+	// 	console.warn(`unknown browser ${browser}`);
+	// }
 
-	const launchCommand = app ? [app, ...args] : app;
-	return open(url, {
-		app: launchCommand
-	});
+	// const launchCommand = app ? [app, ...args] : app;
+	return open(url);
 };

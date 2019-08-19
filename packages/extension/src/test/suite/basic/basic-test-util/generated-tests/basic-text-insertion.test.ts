@@ -9,7 +9,7 @@ import * as vscode from 'vscode'
 import * as assert from 'assert'
 import * as _ from 'lodash'
 
-const headless = true
+const headless = false
 
 function getBrowser(){
 	return puppeteer.launch({headless, args: ['--no-sandbox']})
@@ -24,7 +24,10 @@ function waitForUpdateStart(page){
 	})
 }
 function waitForUpdateEnd(page){
-	return new Promise(resolve=>{
+	return new Promise((resolve, reject)=>{
+		setTimeout(() => {
+			reject(new Error('no update received'));
+		}, 100);
 		if(received){
 			resolve()
 		} else{
@@ -46,7 +49,8 @@ test('basic-text-insertion', async () => {
   const browser = await getBrowser()
   const page = await browser.newPage()
   await vscode.commands.executeCommand('htmlPreview.openPreview')
-  await page.goto('http://localhost:3000', {waitUntil: 'networkidle2'})
+  await page.goto('http://localhost:3000/basic-text-insertion.html', {waitUntil: 'networkidle2'})
+  //await page.goto('http://localhost:3000/basic-text-insertion.html')
 	
 	{
 		const edit = {

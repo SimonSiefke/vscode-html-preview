@@ -1,4 +1,5 @@
 import * as WebSocket from 'ws';
+import {HttpServer} from '../HttpServer/createHttpServerNew';
 
 export interface WebSocketServer {
 	/**
@@ -20,8 +21,8 @@ const nextId = (() => {
 
 const pendingResults = {};
 
-export function createWebSocketServer(httpServer: import('http').Server): WebSocketServer {
-	const webSocketServer = new WebSocket.Server({server: httpServer});
+export function createWebSocketServer(httpServer: HttpServer): WebSocketServer {
+	const webSocketServer = new WebSocket.Server({server: httpServer.server});
 	webSocketServer.on('connection', websocket => {
 		websocket.on('message', data => {
 			const message = JSON.parse(data.toString());

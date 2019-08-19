@@ -6,7 +6,6 @@
 import {activateExtension} from '../../../test-util';
 import * as puppeteer from 'puppeteer';
 import * as vscode from 'vscode';
-import * as assert from 'assert';
 import * as path from 'path';
 
 const headless = false;
@@ -22,12 +21,12 @@ function getUri(file) {
 }
 
 test('checkbox stays checked', async () => {
-	// vscode.workspace.openTextDocument(uri);
 	await activateExtension();
 	const uri = getUri('index.html');
 	const document = await vscode.workspace.openTextDocument(uri);
+	await vscode.window.showTextDocument(document);
 	const text = document.getText();
-	vscode.window.showTextDocument(document);
+	// await new Promise(resolve => setTimeout(resolve, 3000));
 	const browser = await getBrowser();
 	const page = await browser.newPage();
 	await vscode.commands.executeCommand('htmlPreview.openPreview');
@@ -55,6 +54,7 @@ test('checkbox stays checked', async () => {
 		edit.text
 	);
 	await vscode.workspace.applyEdit(vscodeEdit);
+	console.log(vscode.window.activeTextEditor.document.getText());
 	await page.evaluate(() => {
 		// @ts-ignore
 		const $checkbox = document.querySelector('input[type="checkbox"]');

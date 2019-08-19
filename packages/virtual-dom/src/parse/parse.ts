@@ -63,7 +63,6 @@ function parse(
 		newNodeMap = {}
 	} = {}
 ) {
-	console.log('parse text', text);
 	const scanner = createScanner(text);
 	const htmlDocument = createElementNode();
 	newNodeMap[0] = htmlDocument;
@@ -462,15 +461,15 @@ const pretty = node => {
 };
 
 // @ts-ignore
-Object.prototype.pretty = function () {
-	return JSON.stringify(
-		this.children.map(pretty),
-		(k, v) => {
-			return v === undefined ? null : v;
-		},
-		2
-	);
-};
+// Object.prototype.pretty = function () {
+// 	return JSON.stringify(
+// 		this.children.map(pretty),
+// 		(k, v) => {
+// 			return v === undefined ? null : v;
+// 		},
+// 		2
+// 	);
+// };
 
 // const testCase = {
 // 	previousDom: '<!DOCTYPE html>',
@@ -491,6 +490,6 @@ Object.prototype.pretty = function () {
 // parsedH1.pretty(); // ?
 // parsedH2.pretty(); // ?
 
-parseHtml(`<!doctype html>
+// parseHtml(`<!doctype html>
 
-`); // ?
+// `); // ?

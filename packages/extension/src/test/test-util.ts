@@ -19,7 +19,8 @@ export interface TestCase {
 }
 
 export async function createTestFile(fileName: string, content: string = ''): Promise<vscode.Uri> {
-	const filePath = path.join(__dirname, fileName);
+	const workspaceFolder = vscode.workspace.workspaceFolders[0].uri.fsPath;
+	const filePath = path.join(workspaceFolder, fileName);
 	fs.writeFileSync(filePath, content);
 	const uri = vscode.Uri.file(filePath);
 	await vscode.window.showTextDocument(uri);

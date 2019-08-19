@@ -3,7 +3,8 @@ const path = require('path');
 const {toJson} = require('really-relaxed-json');
 const {validate} = require('jsonschema');
 
-const headless = true;
+const headless = false;
+// TODO figure out why puppeteer doesn't fire the networkidle2 event in headless mode
 
 const failing = [
 	'replace-element-with-text.test.txt',
@@ -59,8 +60,8 @@ const testFileNames = [
 	'attribute-value-insertion-at-the-end.test.txt',
 	'attribute-value-replacement.test.txt',
 	'replace-text-with-element.test.txt',
-	'basic-replace-text-#1.test.txt',
-	'basic-replace-text-#2.test.txt',
+	'basic-replace-text-1.test.txt',
+	'basic-replace-text-2.test.txt',
 	'replace-element-with-text.test.txt',
 	'replace-text-inside-element-with-attributes.test.txt',
 	'delete-first-element-node.test.txt',
@@ -177,7 +178,10 @@ function waitForUpdateStart(page){
 	})
 }
 function waitForUpdateEnd(page){
-	return new Promise(resolve=>{
+	return new Promise((resolve, reject)=>{
+		setTimeout(() => {
+			reject(new Error('no update received'));
+		}, 100);
 		if(received){
 			resolve()
 		} else{
@@ -199,7 +203,8 @@ test('${testCaseName}', async () => {
   const browser = await getBrowser()
   const page = await browser.newPage()
   await vscode.commands.executeCommand('htmlPreview.openPreview')
-  await page.goto('http://localhost:3000', {waitUntil: 'networkidle2'})
+  await page.goto('http://localhost:3000/${testCaseName}.html', {waitUntil: 'networkidle2'})
+  //await page.goto('http://localhost:3000/${testCaseName}.html')
 	${singles.join('\n')}
 	await browser.close()
 	await vscode.commands.executeCommand('workbench.action.closeActiveEditor')

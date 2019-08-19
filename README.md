@@ -18,10 +18,9 @@
 
 ## Settings
 
-| Property              | Description                                                         | Default     |
-| --------------------- | ------------------------------------------------------------------- | ----------- |
-| htmlPreview.browser   | The browser to open the preview with                                | `"default"` |
-| htmlPreview.highlight | Highlight elements in the browser when they are selected in VSCode. | `false`     |
+| Property              | Description                                                         | Default |
+| --------------------- | ------------------------------------------------------------------- | ------- |
+| htmlPreview.highlight | Highlight elements in the browser when they are selected in VSCode. | `false` |
 
 <!-- TODO bug: type <h1>a</h1>, select a , type b, $node is undefined -->
 
@@ -79,3 +78,8 @@ error: prefixSum or nodeMap is invalid because node is not found
 <!-- TODO inconsistent test result in ci (sometimes passing, sometimes not) -->
 <!-- TODO different file (index.html, about.html etc.) -->
 <!-- TODO fix redirect plugin -->
+<!-- TODO create vscode.workspace.createfilesystemwatcher -->
+<!-- TODO adjust serve so that is can serve about etc. -->
+<!-- TODO inject dataid into new server -->
+<!-- TODO pretty urls when opening, e.g. localhost:3000 instead of localhost:3000/index.html -->
+<!-- TODO figure out whats best when another application is blocking the port (killing it or using another port) -->

@@ -32,7 +32,7 @@
     "live"
   ],
   "activationEvents": [
-    "onLanguage:html",
+    "*",
     "onCommand:htmlPreview.openPreview",
     "onCommand:htmlPreview.openWithHtmlPreview",
     "onCommand:htmlPreview.closePreview"
@@ -85,16 +85,6 @@
           "type": "boolean",
           "default": false,
           "description": "Highlight elements in the browser when they are selected in VSCode."
-        },
-        "htmlPreview.browser": {
-          "default": "default",
-          "description": "The browser to open the preview with.",
-          "type": "string",
-          "enum": [
-            "default",
-            "chrome",
-            "firefox"
-          ]
         }
       }
     }
@@ -105,8 +95,7 @@
   },
   "main": "dist/extensionMain.js",
   "dependencies": {
-    "html-preview-service": "^0.0.0-development",
-    "open": "^6.4.0"
+    "html-preview-service": "^0.0.0-development"
   },
   "devDependencies": {
     "@types/fs-extra": "^8.0.0",
@@ -116,7 +105,7 @@
     "cross-env": "^5.2.0",
     "fs-extra": "^8.1.0",
     "mocha": "^6.2.0",
-    "puppeteer": "^1.19.0",
+    "puppeteer": "^1.18.0",
     "vscode-test": "^1.2.0"
   }
 }

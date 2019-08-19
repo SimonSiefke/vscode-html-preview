@@ -1,0 +1,24 @@
+{
+  "name": "serve-static",
+  "version": "1.0.0",
+  "description": "",
+  "main": "serveStaticOriginal.js",
+  "scripts": {
+    "dev": "nodemon --exec ts-node src/example.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/event-stream": "^3.3.34",
+    "@types/send": "^0.14.4",
+    "ts-node": "^8.3.0",
+    "typescript": "^3.5.3"
+  },
+  "dependencies": {
+    "es": "^0.7.3",
+    "event-stream": "^4.0.1",
+    "puppeteer": "^1.19.0",
+    "send": "^0.17.1"
+  }
+}

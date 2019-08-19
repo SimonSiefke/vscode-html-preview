@@ -416,35 +416,35 @@ Array.prototype.pretty = function () {
 };
 
 // @ts-ignore
-Object.prototype.pretty = function () {
-	return JSON.stringify(
-		this.children.map(pretty),
-		(k, v) => {
-			return v === undefined ? null : v;
-		},
-		2
-	);
-};
+// Object.prototype.pretty = function () {
+// 	return JSON.stringify(
+// 		this.children.map(pretty),
+// 		(k, v) => {
+// 			return v === undefined ? null : v;
+// 		},
+// 		2
+// 	);
+// };
 
-const testCase = {
-	previousDom: '<!doctype html>\n',
+// const testCase = {
+// 	previousDom: '<!doctype html>\n',
 
-	nextDom: '<!doctype html>'
-};
-const parser = createParser();
-const parsedH1 = parser.parse(testCase.previousDom);
-const oldNodeMap = parser.nodeMap; // ?
-const parsedH2 = parser.edit(testCase.nextDom, [
-	{
-		rangeOffset: 15,
-		rangeLength: 1,
-		text: ''
-	}
-]);
-const newNodeMap = parser.nodeMap; // ?
-parsedH1.pretty(); // ?
-parsedH2.pretty(); // ?
-diff(parsedH1, parsedH2, {
-	oldNodeMap,
-	newNodeMap
-}); // ?
+// 	nextDom: '<!doctype html>'
+// };
+// const parser = createParser();
+// const parsedH1 = parser.parse(testCase.previousDom);
+// const oldNodeMap = parser.nodeMap; // ?
+// const parsedH2 = parser.edit(testCase.nextDom, [
+// 	{
+// 		rangeOffset: 15,
+// 		rangeLength: 1,
+// 		text: ''
+// 	}
+// ]);
+// const newNodeMap = parser.nodeMap; // ?
+// parsedH1.pretty(); // ?
+// parsedH2.pretty(); // ?
+// diff(parsedH1, parsedH2, {
+// 	oldNodeMap,
+// 	newNodeMap
+// }); // ?
