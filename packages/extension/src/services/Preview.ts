@@ -40,7 +40,6 @@ const htmlPreviewJs = fs.readFileSync(path.join(packagesRoot, 'injected-code/dis
 const htmlPreviewJsMap = fs.readFileSync(
 	path.join(packagesRoot, 'injected-code/dist/html-preview.js.map')
 );
-
 const httpMiddlewareSendHtml = (api: PreviewApi) => async (
 	req: http.IncomingMessage,
 	res: http.ServerResponse,
@@ -57,6 +56,27 @@ const httpMiddlewareSendHtml = (api: PreviewApi) => async (
 		return next();
 	}
 
+	const matchingTextEditor = vscode.window.visibleTextEditors.find(
+		textEditor => vscode.workspace.asRelativePath(textEditor.document.uri) === relativePath.slice(1)
+	);
+	if (matchingTextEditor) {
+		const text = matchingTextEditor.document.getText();
+		let dom = genDom(text);
+		const bodyIndex = dom.lastIndexOf('</body');
+		const $script = '<script type="module" src="html-preview.js"></script>';
+
+		if (bodyIndex !== -1) {
+			dom = dom.slice(0, bodyIndex) + $script + dom.slice(bodyIndex);
+		} else {
+			dom += $script;
+		}
+
+		res.writeHead(200, {'Content-Type': 'text/html'});
+		res.write(dom);
+		res.end();
+		return;
+	}
+
 	// TODO add cache with parser and urls
 	const diskPath = path.join(vscode.workspace.workspaceFolders[0].uri.fsPath, relativePath);
 	const uri = vscode.Uri.file(diskPath);
@@ -66,11 +86,10 @@ const httpMiddlewareSendHtml = (api: PreviewApi) => async (
 		let dom = genDom(file);
 		const bodyIndex = dom.lastIndexOf('</body');
 		const $script = '<script type="module" src="html-preview.js"></script>';
-		const $inner = $script;
 		if (bodyIndex !== -1) {
-			dom = dom.slice(0, bodyIndex) + $inner + dom.slice(bodyIndex);
+			dom = dom.slice(0, bodyIndex) + $script + dom.slice(bodyIndex);
 		} else {
-			dom += $inner;
+			dom += $script;
 		}
 
 		res.write(dom);
@@ -100,8 +119,8 @@ const httpMiddlewareSendInjectedCode = (api: PreviewApi) => (
 	}
 
 	if (req.url === '/html-preview.js.map') {
+		res.writeHead(200);
 		res.write(htmlPreviewJsMap);
-		res.writeHead(200, {'Content-Type': 'text/plain'});
 		return res.end();
 	}
 

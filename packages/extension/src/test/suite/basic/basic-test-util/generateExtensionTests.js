@@ -3,7 +3,7 @@ const path = require('path');
 const {toJson} = require('really-relaxed-json');
 const {validate} = require('jsonschema');
 
-const headless = false;
+const headless = true;
 // TODO figure out why puppeteer doesn't fire the networkidle2 event in headless mode
 
 const failing = [
@@ -181,7 +181,7 @@ function waitForUpdateEnd(page){
 	return new Promise((resolve, reject)=>{
 		setTimeout(() => {
 			reject(new Error('no update received'));
-		}, 100);
+		}, 50);
 		if(received){
 			resolve()
 		} else{
@@ -203,7 +203,7 @@ test('${testCaseName}', async () => {
   const browser = await getBrowser()
   const page = await browser.newPage()
   await vscode.commands.executeCommand('htmlPreview.openPreview')
-  await page.goto('http://localhost:3000/${testCaseName}.html', {waitUntil: 'networkidle2'})
+  await page.goto('http://localhost:3000/${testCaseName}.html', {waitUntil: 'networkidle2', timeout: 1200})
   //await page.goto('http://localhost:3000/${testCaseName}.html')
 	${singles.join('\n')}
 	await browser.close()

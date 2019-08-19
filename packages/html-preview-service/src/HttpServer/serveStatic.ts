@@ -15,6 +15,14 @@ function file(filepath: string) {
 	isHtml = true;
 }
 
+export const inject = (injectedCode:string)=>(file:string)=>{
+	const bodyIndex = file.lastIndexOf('</body>')
+	if(bodyIndex===-1){
+		return file + injectedCode
+	}
+	return file.slice(0, bodyIndex) + injectedCode + file.slice(bodyIndex)
+}
+
 const injectCode = (injectedCode: string, stream: any, res: http.ServerResponse) => {
 	if (!isHtml) {
 		return;

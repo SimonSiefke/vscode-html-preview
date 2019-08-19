@@ -6,7 +6,6 @@ import {connection} from './plugins/remote-plugin-connection/remote-plugin-conne
 
 const $script = document.querySelector('script[src="html-preview.js"]') as HTMLScriptElement;
 $script.remove();
-// $script.parentNode!.removeChild($script);
 
 function walk(dom, fn, childrenFirst = false) {
 	if (Array.isArray(dom)) {
@@ -36,7 +35,7 @@ function validate(node: any, $actualNode: Node) {
 				// special case: check for new line because the html-preview script is inserted together with a new line and the new line becomes part of the previous text node inside the body
 				($actualNode as Text).data !== node.text + '\n'))
 	) {
-		console.log('expected text node, got');
+		console.log(`expected text node with text ${node.text}, got`);
 		console.error('(1) invalid', $actualNode);
 		alert('error, failed to hydrate dom (1)');
 	} else if (

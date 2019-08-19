@@ -1,10 +1,9 @@
 import {activateExtension} from '../../../test-util';
 import * as puppeteer from 'puppeteer';
 import * as vscode from 'vscode';
-import * as assert from 'assert';
 import * as path from 'path';
 
-const headless = false;
+const headless = true;
 
 function getBrowser() {
 	return puppeteer.launch({headless, args: ['--no-sandbox']});

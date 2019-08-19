@@ -8,7 +8,7 @@ import * as puppeteer from 'puppeteer';
 import * as vscode from 'vscode';
 import * as path from 'path';
 
-const headless = false;
+const headless = true;
 
 function getBrowser() {
 	return puppeteer.launch({headless, args: ['--no-sandbox']});
@@ -54,7 +54,6 @@ test('checkbox stays checked', async () => {
 		edit.text
 	);
 	await vscode.workspace.applyEdit(vscodeEdit);
-	console.log(vscode.window.activeTextEditor.document.getText());
 	await page.evaluate(() => {
 		// @ts-ignore
 		const $checkbox = document.querySelector('input[type="checkbox"]');
