@@ -12,11 +12,11 @@
     "open": "^6.4.0",
     "send": "^0.17.1",
     "virtual-dom": "^0.0.0-development",
-    "ws": "^7.1.1"
+    "ws": "^7.1.2"
   },
   "devDependencies": {
     "@types/event-stream": "^3.3.34",
-    "@types/send": "^0.14.4",
+    "@types/send": "^0.14.5",
     "@types/ws": "^6.0.2"
   }
 }

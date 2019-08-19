@@ -15,6 +15,7 @@ pkg.main = `./packages/extension/${pkg.main}`;
 delete pkg.dependencies;
 delete pkg.devDependencies;
 delete pkg.enableProposedApi;
+delete pkg.scripts;
 pkg.activationEvents = pkg.activationEvents.filter(
 	event => event !== 'onLanguage:html' && event !== '*'
 );
