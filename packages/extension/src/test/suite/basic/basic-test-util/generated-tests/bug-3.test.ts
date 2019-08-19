@@ -71,8 +71,8 @@ ddd`)
   )
 	waitForUpdateStart(page)
 	await vscode.workspace.applyEdit(vscodeEdit)
-	const html = await page.content()
 	await waitForUpdateEnd(page)
+	const html = await page.content()
 	assert.equal(adjust(html), `<html><head></head><body><h1>hello world</h1>
 dddd</body></html>`);
 	

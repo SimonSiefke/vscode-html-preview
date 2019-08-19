@@ -70,8 +70,8 @@ test('replace-text-with-element', async () => {
   )
 	waitForUpdateStart(page)
 	await vscode.workspace.applyEdit(vscodeEdit)
-	const html = await page.content()
 	await waitForUpdateEnd(page)
+	const html = await page.content()
 	assert.equal(adjust(html), `<html><head></head><body><h1></h1></body></html>`);
 	
 		}

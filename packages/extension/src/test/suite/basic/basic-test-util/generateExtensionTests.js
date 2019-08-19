@@ -147,8 +147,8 @@ function genSingle(testCase) {
 		'await new Promise(resolve=>setTimeout(resolve, 100))'
 }
 	await vscode.workspace.applyEdit(vscodeEdit)
-	const html = await page.content()
 	${waitForEdits ? 'await waitForUpdateEnd(page)' : ''}
+	const html = await page.content()
 	assert.equal(adjust(html), \`${testCase.expectedDom}\`);
 	
 		}`;

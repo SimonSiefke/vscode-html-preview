@@ -70,8 +70,8 @@ test('delete-text-after-text', async () => {
   )
 	waitForUpdateStart(page)
 	await vscode.workspace.applyEdit(vscodeEdit)
-	const html = await page.content()
 	await waitForUpdateEnd(page)
+	const html = await page.content()
 	assert.equal(adjust(html), `<html><head></head><body>a</body></html>`);
 	
 		}

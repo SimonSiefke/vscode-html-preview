@@ -70,8 +70,8 @@ test('insert-000-insert-text-between-text-and-text', async () => {
   )
 	waitForUpdateStart(page)
 	await vscode.workspace.applyEdit(vscodeEdit)
-	const html = await page.content()
 	await waitForUpdateEnd(page)
+	const html = await page.content()
 	assert.equal(adjust(html), `<html><head></head><body>abc</body></html>`);
 	
 		}

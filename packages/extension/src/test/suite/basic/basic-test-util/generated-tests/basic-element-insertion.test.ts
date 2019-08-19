@@ -70,8 +70,8 @@ test('basic-element-insertion', async () => {
   )
 	waitForUpdateStart(page)
 	await vscode.workspace.applyEdit(vscodeEdit)
-	const html = await page.content()
 	await waitForUpdateEnd(page)
+	const html = await page.content()
 	assert.equal(adjust(html), `<html><head></head><body><h1><p>ok</p><p>ok</p></h1></body></html>`);
 	
 		}

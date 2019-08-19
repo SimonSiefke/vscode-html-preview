@@ -80,8 +80,8 @@ test('copy-paste-entire-document', async () => {
   )
 	await new Promise(resolve=>setTimeout(resolve, 100))
 	await vscode.workspace.applyEdit(vscodeEdit)
-	const html = await page.content()
 	
+	const html = await page.content()
 	assert.equal(adjust(html), `<!DOCTYPE html><html><head>
     <meta charset="utf-8">
     <title>Live Preview</title>
