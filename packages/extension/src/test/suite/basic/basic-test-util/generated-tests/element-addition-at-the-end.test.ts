@@ -49,7 +49,7 @@ test('element-addition-at-the-end', async () => {
   const browser = await getBrowser()
   const page = await browser.newPage()
   await vscode.commands.executeCommand('htmlPreview.openPreview')
-  await page.goto('http://localhost:3000/element-addition-at-the-end.html', {waitUntil: 'networkidle2', timeout: 1200})
+  await page.goto('http://localhost:3000/element-addition-at-the-end.html', {waitUntil: 'networkidle2', timeout: 2000})
   //await page.goto('http://localhost:3000/element-addition-at-the-end.html')
 	
 	{
