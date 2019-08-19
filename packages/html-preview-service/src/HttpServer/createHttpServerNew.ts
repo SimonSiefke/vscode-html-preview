@@ -49,7 +49,6 @@ export function createHttpServerNew(): HttpServer {
 			middlewares.push(serveStatic({directory, injectedCode}));
 			return new Promise((resolve, reject) => {
 				const requestListener = (req: http.IncomingMessage, res: http.ServerResponse) => {
-					console.log(req.url);
 					// TODO dynamic
 					middlewares[0](req, res, () =>
 						middlewares[1](req, res, () => {
