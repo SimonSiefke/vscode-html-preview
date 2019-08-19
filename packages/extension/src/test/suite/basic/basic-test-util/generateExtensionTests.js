@@ -106,7 +106,8 @@ const testFileNames = [
 	'insert-100-insert-element-between-text-and-text.test.txt',
 	'insert-100-insert-element-between-text-and-text.test.txt',
 	'copy-paste-entire-document.test.txt',
-	'h1-to-h3.test.txt'
+	'h1-to-h3.test.txt',
+	'bug-3.test.txt'
 ].filter(t => !failing.includes(t));
 // .filter(x => x === 'h1-to-h6.test.txt');
 

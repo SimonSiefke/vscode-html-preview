@@ -92,7 +92,7 @@ async function fetchNodeMap() {
 	const nodeMap = {0: document};
 	const virtualDom = await fetch('/virtual-dom.json').then(res => res.json());
 	let domIndex = 0;
-	const inBody = false;
+	let inBody = false;
 	let hasBody = false;
 	let hasHtml = false;
 	let hasHead = false;
@@ -180,7 +180,8 @@ async function fetchNodeMap() {
 			}
 		}
 
-		if (node.type === 'TextNode' && !hasBody && !hasHtml && !inBody) {
+		if (node.type !== 'CommentNode' && !hasBody && !hasHtml && !inBody) {
+			inBody = true;
 			$root = document.body;
 			domIndex = 0;
 		}

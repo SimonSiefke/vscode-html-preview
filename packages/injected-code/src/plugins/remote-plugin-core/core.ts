@@ -1,7 +1,6 @@
 import {RemotePlugin, mergePlugins} from '../remotePluginApi';
 
 function fixAttributeValue(value: string | null) {
-	console.log(value);
 	if (value === null) {
 		return '';
 	}
@@ -18,9 +17,11 @@ function fixAttributeValue(value: string | null) {
 
 const textReplace: RemotePlugin = api => {
 	api.webSocket.onMessage('textReplace', payload => {
-		const $node = api.nodeMap[payload.id] as Comment;
+		const $node = api.nodeMap[payload.id] as Comment | Text;
 		if ($node === undefined) {
+			console.error(`node ${payload.id} is undefined`);
 			debugger;
+			return;
 		}
 
 		$node.data = payload.text;
