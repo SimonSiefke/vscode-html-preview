@@ -3,6 +3,7 @@ import {error} from './plugins/remote-plugin-error/error';
 import {highlight} from './plugins/remote-plugin-highlight/highlight';
 import {RemotePluginApi} from './plugins/remotePluginApi';
 import {connection} from './plugins/remote-plugin-connection/remote-plugin-connection';
+import {redirect} from './plugins/remote-plugin-redirect/redirect';
 
 const $script = document.querySelector('script[src="html-preview.js"]') as HTMLScriptElement;
 $script.remove();
@@ -245,6 +246,7 @@ async function fetchNodeMap() {
 			if (command in listeners) {
 				listeners[command].forEach(listener => listener(payload));
 			} else {
+				console.log(listeners);
 				// @debug
 				alert(`command "${message.command}" does not exist`);
 			}
@@ -254,7 +256,7 @@ async function fetchNodeMap() {
 		}
 	};
 
-	const listeners: {[key: string]: Array<(payload) => void>} = {};
+	const listeners: {[key: string]: Array<(payload: any) => void>} = {};
 
 	const remotePluginApi: RemotePluginApi = {
 		nodeMap,
@@ -277,4 +279,5 @@ async function fetchNodeMap() {
 	error(remotePluginApi);
 	highlight(remotePluginApi);
 	connection(remotePluginApi);
+	redirect(remotePluginApi);
 })();

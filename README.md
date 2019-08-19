@@ -70,9 +70,6 @@ error: prefixSum or nodeMap is invalid because node is not found
 <!-- TODO htm -->
 <!-- TODO proxy? -->
 <!-- TODO cors -->
-<!-- TODO browser ie -->
-<!-- TODO browser new ie (safari) -->
-<!-- TODO browser egde -->
 <!-- TODO elment moves https://trello.com/c/yMmDFqdq/928-live-html-support-moves -->
 <!-- TODO better highlight position matching -->
 <!-- TODO inconsistent test result in ci (sometimes passing, sometimes not) -->
@@ -83,3 +80,4 @@ error: prefixSum or nodeMap is invalid because node is not found
 <!-- TODO inject dataid into new server -->
 <!-- TODO pretty urls when opening, e.g. localhost:3000 instead of localhost:3000/index.html -->
 <!-- TODO figure out whats best when another application is blocking the port (killing it or using another port) -->
+<!-- TODO live css -->
