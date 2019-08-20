@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-// import {openInBrowser} from 'html-preview-service';
+import {parse as parseUrl} from 'url';
 import * as fs from 'fs';
 import * as path from 'path';
 import {config} from '../config';
@@ -27,6 +27,12 @@ export interface PreviewApi {
 		}
 		workspace: {
 			onDidChangeTextDocument: (listener: (event: vscode.TextDocumentChangeEvent) => void) => void
+			createFileSystemWatcher: (
+				globPattern: vscode.GlobPattern,
+				ignoreCreateEvents?: boolean,
+				ignoreChangeEvents?: boolean,
+				ignoreDeleteEvents?: boolean
+			) => vscode.FileSystemWatcher
 		}
 	}
 	parser: any
@@ -40,6 +46,43 @@ const htmlPreviewJs = fs.readFileSync(path.join(packagesRoot, 'injected-code/dis
 const htmlPreviewJsMap = fs.readFileSync(
 	path.join(packagesRoot, 'injected-code/dist/html-preview.js.map')
 );
+
+const httpMiddlewareSendCss = (api: PreviewApi) => async (
+	req: http.IncomingMessage,
+	res: http.ServerResponse,
+	next: any
+) => {
+	const url = parseUrl(req.url);
+	if (!url.pathname.endsWith('.css')) {
+		return next();
+	}
+
+	console.log(url.pathname);
+
+	const matchingTextEditor = vscode.window.visibleTextEditors.find(
+		textEditor => vscode.workspace.asRelativePath(textEditor.document.uri) === url.pathname.slice(1)
+	);
+	if (matchingTextEditor) {
+		const css = matchingTextEditor.document.getText();
+		res.writeHead(200, {'Content-Type': 'text/css'});
+		res.write(css);
+		res.end();
+		return;
+	}
+
+	try {
+		const diskPath = path.join(vscode.workspace.workspaceFolders[0].uri.fsPath, url.pathname);
+		const uri = vscode.Uri.file(diskPath);
+		const css = (await vscode.workspace.fs.readFile(uri)).toString();
+		res.writeHead(200, {'Content-Type': 'text/css'});
+		res.write(css);
+	} catch (error) {
+		res.statusCode = 404;
+	} finally {
+		res.end();
+	}
+};
+
 const httpMiddlewareSendHtml = (api: PreviewApi) => async (
 	req: http.IncomingMessage,
 	res: http.ServerResponse,
@@ -155,6 +198,7 @@ const doOpen = async (api: PreviewApi): Promise<void> => {
 	api.httpServer = createHttpServer();
 	api.httpServer.use(httpMiddlewareSendHtml(api));
 	api.httpServer.use(httpMiddlewareSendInjectedCode(api));
+	api.httpServer.use(httpMiddlewareSendCss(api));
 	try {
 		await api.httpServer.start({
 			injectedCode: '<script type="module" src="html-preview.js"></script>',
@@ -167,6 +211,42 @@ const doOpen = async (api: PreviewApi): Promise<void> => {
 	}
 
 	api.webSocketServer = createWebSocketServer(api.httpServer);
+
+	// CSS live edit
+	api.vscode.workspace.onDidChangeTextDocument(event => {
+		if (event.document.languageId !== 'css') {
+			return;
+		}
+
+		if (event.contentChanges.length === 0) {
+			return;
+		}
+
+		api.webSocketServer.broadcast([
+			{
+				command: 'updateCss',
+				payload: {}
+			}
+		]);
+	});
+	// this might be useful later when using sass
+	// const fileSystemWatcher = api.vscode.workspace.createFileSystemWatcher(
+	// 	new vscode.RelativePattern(vscode.workspace.workspaceFolders[0], '**/*.*')
+	// );
+	// fileSystemWatcher.onDidChange(event => {
+	// 	if (event.fsPath.endsWith('.html')) {
+	// 		return;
+	// 	}
+
+	// 	if (event.fsPath.endsWith('.css')) {
+	// 		api.webSocketServer.broadcast([
+	// 			{
+	// 				command: 'update-css',
+	// 				payload: {}
+	// 			}
+	// 		]);
+	// 	}
+	// });
 };
 
 const doDispose = async (api: PreviewApi): Promise<void> => {
@@ -207,7 +287,8 @@ export const Preview = (() => {
 				onDidChangeTextEditorSelection: vscode.window.onDidChangeTextEditorSelection
 			},
 			workspace: {
-				onDidChangeTextDocument: vscode.workspace.onDidChangeTextDocument
+				onDidChangeTextDocument: vscode.workspace.onDidChangeTextDocument,
+				createFileSystemWatcher: vscode.workspace.createFileSystemWatcher
 			}
 		},
 		httpServer: undefined,

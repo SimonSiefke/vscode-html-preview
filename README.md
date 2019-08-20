@@ -6,7 +6,7 @@
 
 ## Features
 
-- Live editing of html files (currently there are still some bugs)
+- Live editing of HTML and CSS (currently there are still some bugs)
 - Highlighting of html elements inside the browser (there are still a lot of bugs)
 
 ## TODO
@@ -78,3 +78,8 @@ error: prefixSum or nodeMap is invalid because node is not found
 <!-- TODO figure out whats best when another application is blocking the port (killing it or using another port) -->
 <!-- TODO live css -->
 <!-- TODO dispose listeners in live preview -->
+<!-- TODO test when index.html is created or deleted, same for related files -->
+<!-- TODO maybe use webworker when there is actually a lot of processing on the client -->
+<!-- TODO test when css is deleted/created -->
+<!-- TODO multiple files at the same time, only reload index.html and not about.html when index.html is changed -->
+<!-- test quries for html and css -->

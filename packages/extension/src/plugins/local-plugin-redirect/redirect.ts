@@ -3,7 +3,10 @@ import * as vscode from 'vscode';
 
 export const redirect: LocalPlugin = api => {
 	api.vscode.window.onDidChangeActiveTextEditor(event => {
-		// event.document.uri.
+		if (event.document.languageId !== 'html') {
+			return;
+		}
+
 		api.webSocketServer.broadcast(
 			[
 				{

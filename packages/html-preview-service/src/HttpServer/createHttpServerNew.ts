@@ -53,7 +53,9 @@ export function createHttpServerNew(): HttpServer {
 					middlewares[0](req, res, () =>
 						middlewares[1](req, res, () => {
 							middlewares[2](req, res, () => {
-								throw new Error('no handler');
+								middlewares[3](req, res, () => {
+									throw new Error('no handler');
+								});
 							});
 						})
 					);

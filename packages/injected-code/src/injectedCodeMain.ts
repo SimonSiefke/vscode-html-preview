@@ -4,6 +4,8 @@ import {highlight} from './plugins/remote-plugin-highlight/highlight';
 import {RemotePluginApi} from './plugins/remotePluginApi';
 import {connection} from './plugins/remote-plugin-connection/remote-plugin-connection';
 import {redirect} from './plugins/remote-plugin-redirect/redirect';
+import { reload } from './plugins/remote-plugin-reload/reload';
+import { updateCss } from './plugins/remote-plugin-update-css/updateCss';
 
 const $script = document.querySelector('script[src="html-preview.js"]') as HTMLScriptElement;
 $script.remove();
@@ -280,4 +282,6 @@ async function fetchNodeMap() {
 	highlight(remotePluginApi);
 	connection(remotePluginApi);
 	redirect(remotePluginApi);
+	reload(remotePluginApi);
+	updateCss(remotePluginApi)
 })();
