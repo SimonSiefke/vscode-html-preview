@@ -9,12 +9,17 @@
 - Live editing of html files (currently there are still some bugs)
 - Highlighting of html elements inside the browser (there are still a lot of bugs)
 
+## TODO
+
+- live editing of css files
+- reload page when external resources (e.g. images, javascript) change
+
 ## Commands
 
-| Command            | Keybinding   |
-| ------------------ | ------------ |
-| Html Preview: Open | `ctrl+alt+p` |
-| Html Preview: Stop | none         |
+| Command                            | Keybinding   |
+| ---------------------------------- | ------------ |
+| Html Preview: Open                 | `ctrl+alt+p` |
+| Html Preview: Close Preview Server | none         |
 
 ## Settings
 
@@ -58,13 +63,9 @@ error: prefixSum or nodeMap is invalid because node is not found
 
 <!-- TODO http caching -->
 
-<!-- TODO always bundle injected code, inline sourcemap?, inline code? -->
-
 <!-- TODO stop probably not necessary because we can just disconnect when there are no more open sockets (meaning the user has closed the browser and probably wants to close the preview anyway, also he can just reopen the preview) -->
 
 <!-- TODO when opening preview, open new files to the left -->
-
-<!-- TODO why is html preview not closing -->
 
 <!-- TODO shtml -->
 <!-- TODO htm -->
@@ -72,12 +73,7 @@ error: prefixSum or nodeMap is invalid because node is not found
 <!-- TODO cors -->
 <!-- TODO elment moves https://trello.com/c/yMmDFqdq/928-live-html-support-moves -->
 <!-- TODO better highlight position matching -->
-<!-- TODO inconsistent test result in ci (sometimes passing, sometimes not) -->
-<!-- TODO different file (index.html, about.html etc.) -->
-<!-- TODO fix redirect plugin -->
 <!-- TODO create vscode.workspace.createfilesystemwatcher -->
-<!-- TODO adjust serve so that is can serve about etc. -->
-<!-- TODO inject dataid into new server -->
 <!-- TODO pretty urls when opening, e.g. localhost:3000 instead of localhost:3000/index.html -->
 <!-- TODO figure out whats best when another application is blocking the port (killing it or using another port) -->
 <!-- TODO live css -->
