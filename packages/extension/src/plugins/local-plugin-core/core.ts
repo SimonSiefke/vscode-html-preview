@@ -9,6 +9,10 @@ export const core: LocalPlugin = api => {
 	api.parser = createParser();
 	let previousDom = api.parser.parse(previousText) as {children: any[]};
 	api.vscode.window.onDidChangeActiveTextEditor(event => {
+		if (event.document.languageId !== 'html') {
+			return;
+		}
+
 		previousText = event.document.getText();
 		api.parser = createParser();
 		previousDom = api.parser.parse(previousText) as {children: any[]};
