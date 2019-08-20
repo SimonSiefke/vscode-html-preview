@@ -157,12 +157,12 @@
   "bundlesize": [
     {
       "path": "./dist/packages/extension/dist/extensionMain.js",
-      "maxSize": "135.0 kB",
+      "maxSize": "140.0 kB",
       "compression": "none"
     },
     {
       "path": "./dist/packages/injected-code/dist/html-preview.js",
-      "maxSize": "15 kB",
+      "maxSize": "16 kB",
       "compression": "none"
     }
   ]
