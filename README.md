@@ -81,4 +81,4 @@ error: prefixSum or nodeMap is invalid because node is not found
 <!-- TODO maybe use webworker when there is actually a lot of processing on the client -->
 <!-- TODO test when css is deleted/created -->
 <!-- TODO multiple files at the same time, only reload index.html and not about.html when index.html is changed -->
-<!-- test quries for html and css -->
+<!-- TODO like brackets: when no html file is opened, find the closest html file and open it -->
