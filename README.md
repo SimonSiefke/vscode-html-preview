@@ -77,3 +77,4 @@ error: prefixSum or nodeMap is invalid because node is not found
 <!-- TODO pretty urls when opening, e.g. localhost:3000 instead of localhost:3000/index.html -->
 <!-- TODO figure out whats best when another application is blocking the port (killing it or using another port) -->
 <!-- TODO live css -->
+<!-- TODO dispose listeners in live preview -->
