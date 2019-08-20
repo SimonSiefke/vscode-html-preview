@@ -11,7 +11,6 @@
 
 ## TODO
 
-- live editing of css files
 - reload page when external resources (e.g. images, javascript) change
 
 ## Commands
