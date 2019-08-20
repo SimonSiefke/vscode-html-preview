@@ -96,6 +96,7 @@
     ],
     "testPathIgnorePatterns": [
       "/node_modules/",
+      ".vscode-test",
       "/dist/",
       "extension/src/test"
     ]

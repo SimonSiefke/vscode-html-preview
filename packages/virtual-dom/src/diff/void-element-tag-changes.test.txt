@@ -1,0 +1,33 @@
+previousText:
+<img alt="A screenshot showing CSS Quick Edit" src="screenshots/brackets-quick-edit.png" />
+
+edits:
+[
+  {
+    rangeOffset: 1
+    rangeLength: 3
+    text: br
+  }
+]
+
+nextText:
+<br alt="A screenshot showing CSS Quick Edit" src="screenshots/brackets-quick-edit.png" />
+
+expectedEdits:
+[
+  {
+    command: elementDelete
+    payload: {}
+  }
+  {
+    command: elementInsert
+    payload: {
+      nodeType: ElementNode
+      tag: br
+      attributes: {
+        alt: "A screenshot showing CSS Quick Edit"
+        src: "screenshots/brackets-quick-edit.png"
+      }
+    }
+  }
+]

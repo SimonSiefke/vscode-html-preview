@@ -1,0 +1,31 @@
+previousText:
+<p>
+    hello world
+</p>
+
+edits:
+[
+  {
+    rangeOffset: 1
+    rangeLength: 1
+    text: div
+  }
+  {
+    rangeOffset: ?
+    rangeLength: 1
+    text: div
+  }
+]
+
+nextText:
+<div>
+    hello world
+</div>
+
+expectedEdits:
+[
+  {
+    command: elementDelete
+    payload: {}
+  }
+]

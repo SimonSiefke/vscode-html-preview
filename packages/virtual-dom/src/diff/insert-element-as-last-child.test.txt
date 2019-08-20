@@ -1,0 +1,36 @@
+previousText:
+<a>
+  <img />
+</a>
+
+edits:
+[
+  {
+    rangeOffset: ?
+    rangeLength: 0
+    text: "<strong>New Content</strong>"
+  }
+]
+
+nextText:
+<a>
+  <img />
+<strong>New Content</strong></a>
+
+expectedEdits:
+[
+  {
+    command: elementInsert
+    payload: {
+      nodeType: ElementNode
+      tag: strong
+    }
+  }
+  {
+    command: elementInsert
+    payload: {
+      nodeType: TextNode
+      text: "New Content"
+    }
+  }
+]

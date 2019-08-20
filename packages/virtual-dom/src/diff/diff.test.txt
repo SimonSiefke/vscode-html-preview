@@ -443,11 +443,11 @@ nextText:
 expectedEdits:
 [
   {
-     command: attributeAdd
-     payload: {
-       attribute: class
-       value: '"big"'
-     }
+    command: attributeAdd
+    payload: {
+      attribute: class
+      value: '"big"'
+    }
   }
 ]
 
@@ -673,7 +673,7 @@ nextText:
 
 expectedEdits:
 [
-   {
+  {
      command: elementDelete
      payload: {}
   }

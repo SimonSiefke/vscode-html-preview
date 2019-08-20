@@ -1,0 +1,43 @@
+previousText:
+<html></html>
+
+edits:
+[
+  {
+    rangeOffset: 6
+    rangeLength: 0
+    text: <head></head
+  }
+]
+
+nextText:
+<html><head></head</html>
+
+invalid:
+true
+
+previousText:
+<html><head></head</html>
+
+edits:
+[
+  {
+    rangeOffset: 18
+    rangeLength: 0
+    text: >
+  }
+]
+
+nextText:
+<html><head></head></html>
+
+expectedEdits:
+[
+  {
+    command: elementInsert
+    payload: {
+      nodeType: ElementNode
+      tag: head
+    }
+  }
+]

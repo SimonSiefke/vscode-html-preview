@@ -1,0 +1,215 @@
+previousText:
+<p>some text</p>
+
+edits:
+[
+  {
+    rangeOffset: 2
+    rangeLength: 0
+    text: " "
+  }
+]
+
+nextText:
+<p >some text</p>
+
+expectedEdits:
+[]
+
+previousText:
+<p >some text</p>
+
+edits:
+[
+  {
+    rangeOffset: 3
+    rangeLength: 0
+    text: "c"
+  }
+]
+
+nextText:
+<p c>some text</p>
+
+expectedEdits:
+[
+  {
+    command: attributeAdd
+    payload: {
+      attribute: c
+      value: null
+    }
+  }
+]
+
+previousText:
+<p c>some text</p>
+
+edits:
+[
+  {
+    rangeOffset: 4
+    rangeLength: 0
+    text: l
+  }
+]
+
+nextText:
+<p cl>some text</p>
+
+expectedEdits:
+[
+  {
+    command: attributeAdd
+    payload: {
+      attribute: cl
+      value: null
+    }
+  }
+  {
+    command: attributeDelete
+    payload: {
+      attribute: c
+    }
+  }
+]
+
+previousText:
+<p cl>some text</p>
+
+edits:
+[
+  {
+    rangeOffset: 5
+    rangeLength: 0
+    text: a
+  }
+]
+
+nextText:
+<p cla>some text</p>
+
+expectedEdits:
+[
+  {
+    command: attributeAdd
+    payload: {
+      attribute: cla
+      value: null
+    }
+  }
+  {
+    command: attributeDelete
+    payload: {
+      attribute: cl
+    }
+  }
+]
+
+previousText:
+<p cla>some text</p>
+
+edits:
+[
+  {
+    rangeOffset: 6
+    rangeLength: 0
+    text: s
+  }
+]
+
+nextText:
+<p clas>some text</p>
+
+expectedEdits:
+[
+  {
+    command: attributeAdd
+    payload: {
+      attribute: clas
+      value: null
+    }
+  }
+  {
+    command: attributeDelete
+    payload: {
+      attribute: cla
+    }
+  }
+]
+
+previousText:
+<p clas>some text</p>
+
+edits:
+[
+  {
+    rangeOffset: 7
+    rangeLength: 0
+    text: s
+  }
+]
+
+nextText:
+<p class>some text</p>
+
+expectedEdits:
+[
+  {
+    command: attributeAdd
+    payload: {
+      attribute: class
+      value: null
+    }
+  }
+  {
+    command: attributeDelete
+    payload: {
+      attribute: clas
+    }
+  }
+]
+
+previousText:
+<p class>some text</p>
+
+edits:
+[
+  {
+    rangeOffset: 8
+    rangeLength: 0
+    text: "='myclass"
+  }
+]
+
+nextText:
+<p class='myclass>some text</p>
+
+invalid:
+true
+
+previousText:
+<p class='myclass>some text</p>
+
+edits:
+[
+  {
+    rangeOffset: 8
+    rangeLength: 0
+    text: "'"
+  }
+]
+
+nextText:
+<p class='myclass'>some text</p>
+
+expectedEdits:
+[
+  {
+    command: attributeChange
+    payload: {
+      attribute: class
+      value: "'myclass'"
+    }
+  }
+]

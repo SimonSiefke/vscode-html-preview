@@ -1,0 +1,53 @@
+previousText:
+
+edits:
+[
+  {
+    rangeOffset: 0
+    rangeLength: 0
+    text: "<div>New <em>Awesome</em> Content</div>"
+  }
+]
+
+nextText:
+<div>New <em>Awesome</em> Content</div>
+
+expectedEdits:
+[
+  {
+    command: elementInsert
+    payload: {
+      nodeType: ElementNode
+      tag: div
+      attributes: {}
+    }
+  }
+  {
+    command: elementInsert
+    payload: {
+      nodeType: TextNode
+      text: "New "
+    }
+  }
+  {
+    command: elementInsert
+    payload: {
+      nodeType: ElementNode
+      tag: em
+    }
+  }
+  {
+    command: elementInsert
+    payload: {
+      nodeType: TextNode
+      text: " Content"
+    }
+  }
+  {
+    command: elementInsert
+    payload: {
+      nodeType: TextNode
+      text: Awesome
+    }
+  }
+]

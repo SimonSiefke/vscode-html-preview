@@ -1,0 +1,34 @@
+previousText:
+<body>
+</body>
+
+edits:
+[
+  {
+    rangeOffset: 6
+    rangeLength: 0
+    text: "<div>New Content</div>"
+  }
+]
+
+nextText:
+<body><div>New Content</div>
+</body>
+
+expectedEdits:
+[
+  {
+    command: elementInsert
+    payload: {
+      nodeType: ElementNode
+      tag: div
+    }
+  }
+  {
+    command: elementInsert
+    payload: {
+      nodeType: TextNode
+      text: "New Content"
+    }
+  }
+]

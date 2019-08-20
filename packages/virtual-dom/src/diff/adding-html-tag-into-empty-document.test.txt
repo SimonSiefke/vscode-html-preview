@@ -1,0 +1,42 @@
+previousText:
+
+edits:
+[
+  {
+    rangeOffset: 0
+    rangeLength: 0
+    text: <html
+  }
+]
+
+nextText:
+<html
+
+invalid:
+true
+
+previousText:
+<html
+
+edits:
+[
+  {
+    rangeOffset: 5
+    rangeLength: 0
+    text: ></html>
+  }
+]
+
+nextText:
+<html></html>
+
+expectedEdits:
+[
+  {
+    command: elementInsert
+    payload: {
+      nodeType: ElementNode
+      tag: html
+    }
+  }
+]

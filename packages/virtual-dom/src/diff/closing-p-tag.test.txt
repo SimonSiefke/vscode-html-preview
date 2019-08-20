@@ -1,0 +1,17 @@
+previousText:
+<p>
+
+edits:
+[
+  {
+    rangeOffset: 4
+    rangeLength: 0
+    text: "</p>"
+  }
+]
+
+nextText:
+<p></p>
+
+expectedEdits:
+[]

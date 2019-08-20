@@ -1,0 +1,44 @@
+previousText:
+<h1>before<strong>Strong</strong>Hello<em>Emphasized</em>after</h1>
+
+edits:
+[
+  {
+    rangeOffset: 10
+    rangeLength: 47
+    text: <i>Italic</i>
+  }
+]
+
+nextText: 
+<h1>before<i>Italic</i>after</h1>
+
+expectedEdits:
+[
+  {
+    command: elementDelete
+    payload: {}
+  }
+  {
+    command: elementDelete
+    payload: {}
+  }
+  {
+    command: elementDelete
+    payload: {}
+  }
+  {
+    command: elementInsert
+    payload: {
+      nodeType: ElementNode
+      tag: i
+    }
+  }
+  {
+    command: elementInsert
+    payload: {
+      nodeType: TextNode
+      text: Italic
+    }
+  }
+]

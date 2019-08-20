@@ -1,0 +1,73 @@
+previousText:
+<p>some text</p>
+
+edits:
+[
+  {
+    rangeOffset: 3
+    rangeLength: 0
+    text: <span>
+  }
+]
+
+nextText:
+<p><span>some text</p>
+
+invalid:
+true
+
+previousText:
+<p><span>some text</p>
+
+edits:
+[
+  {
+    rangeOffset: 18
+    rangeLength: 0
+    text: </span
+  }
+]
+
+nextText:
+<p><span>some text</span</p>
+
+invalid:
+true
+
+previousText:
+<p><span>some text</span</p>
+
+edits:
+[
+  {
+    rangeOffset: 24
+    rangeLength: 0
+    text: >
+  }
+]
+
+nextText:
+<p><span>some text</span></p>
+
+expectedEdits:
+[
+  {
+    command: elementDelete
+    payload: {}
+  }
+  {
+    command: elementInsert
+    payload: {
+      nodeType: ElementNode
+      tag: span
+      attributes: {}
+    }
+  }
+  {
+    command: elementInsert
+    payload: {
+      nodeType: TextNode
+      text: "some text"
+    }
+  }
+]

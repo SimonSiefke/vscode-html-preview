@@ -1,0 +1,38 @@
+previousText:
+<h1>hello world</h1>
+
+edits:
+[
+  {
+    rangeOffset: 9
+    rangeLength: 0
+    text: <img>
+  }
+]
+
+nextText:
+<h1>hello<img> world</h1>
+
+expectedEdits:
+[
+  {
+    command: textReplace
+    payload: {
+      text: hello
+    }
+  }
+  {
+    command: elementInsert
+    payload: {
+      nodeType: ElementNode
+      tag: img
+    }
+  }
+  {
+    command: elementInsert
+    payload: {
+      nodeType: TextNode
+      tag: " world"
+    }
+  }
+]

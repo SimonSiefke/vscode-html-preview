@@ -1,0 +1,61 @@
+previousText:
+<h1><strong>Emphasized</strong> Hello </h1>
+
+edits:
+[
+  {
+    rangeOffset: 4
+    rangeLength: 27
+    text: "<em>Foo</em> bar <strong>Baz!</strong>"
+  }
+]
+
+nextText:
+<h1><em>Foo</em> bar <strong>Baz!</strong> Hello </h1>
+
+expectedEdits:
+[
+  {
+    command: elementDelete
+    payload: {}
+  }
+  {
+    command: elementDelete
+    payload: {}
+  }
+  {
+    command: elementInsert
+    payload: {
+      nodeType: ElementNode
+      tag: em
+    }
+  }
+  {
+    command: elementInsert
+    payload: {
+      nodeType: TextNode
+      text: Foo
+    }
+  }
+  {
+    command: elementInsert
+    payload: {
+      nodeType: TextNode
+      text: " bar "
+    }
+  }
+  {
+    command: elementInsert
+    payload: {
+      nodeType: ElementNode
+      tag: strong
+    }
+  }
+  {
+    command: elementInsert
+    payload: {
+      nodeType: TextNode
+      text: Baz!
+    }
+  }
+]

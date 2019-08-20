@@ -1,0 +1,40 @@
+previousText:
+<div><b>delete me</b>{{0}}</div>
+
+edits:
+[
+  {
+    rangeOffset: 6
+    rangeLength: 15
+    text: ""
+  }
+]
+
+nextText: 
+<div><</div>
+
+invalid:
+true
+
+previousText:
+<div><</div>
+
+edits:
+[
+  {
+    rangeOffset: 5
+    rangeLength: 1
+    text: ""
+  }
+]
+
+nextText: 
+<div></div>
+
+expectedEdits:
+[
+  {
+    command: elementDelete
+    payload: {}
+  }
+]

@@ -1,0 +1,22 @@
+previousText:
+<p><br>X<br></p>
+
+edits:
+[
+  {
+    rangeOffset: 7
+    rangeLength: 1
+    text: ""
+  }
+]
+
+nextText:
+<p><br><br></p>
+
+expectedEdits:
+[
+  {
+     command: elementDelete
+     payload: {}
+  }
+]

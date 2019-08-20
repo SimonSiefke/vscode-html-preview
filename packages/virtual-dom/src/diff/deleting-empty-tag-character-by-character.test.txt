@@ -1,0 +1,40 @@
+previousText:
+<p><img></p>
+
+edits:
+[
+  {
+    rangeOffset: 4
+    rangeLength: 4
+    text: ""
+  }
+]
+
+nextText:
+<p><</p>
+
+invalid:
+true
+
+previousText:
+<p><</p>
+
+edits:
+[
+  {
+    rangeOffset: 3
+    rangeLength: 1
+    text: ""
+  }
+]
+
+nextText:
+<p></p>
+
+expectedEdits:
+[
+  {
+    command: ElementDelete
+    payload: {}
+  }
+]
