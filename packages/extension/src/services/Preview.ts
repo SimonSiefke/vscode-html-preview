@@ -88,11 +88,12 @@ const httpMiddlewareSendHtml = (api: PreviewApi) => async (
 	res: http.ServerResponse,
 	next: any
 ) => {
+	const url = parseUrl(req.url);
 	let relativePath: string | undefined;
-	if (req.url.endsWith('.html')) {
-		relativePath = req.url;
-	} else if (req.url.endsWith('/')) {
-		relativePath = req.url + 'index.html';
+	if (url.pathname.endsWith('.html')) {
+		relativePath = url.pathname;
+	} else if (url.pathname.endsWith('/')) {
+		relativePath = url.pathname + 'index.html';
 	}
 
 	if (!relativePath) {

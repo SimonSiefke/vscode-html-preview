@@ -48,6 +48,10 @@ const tests: Test[] = [
 	{
 		workspace: 'advanced/with-external-assets/with-external-assets-workspace',
 		testPath: 'suite/advanced/with-external-assets/run'
+	},
+	{
+		workspace: 'advanced/with-query-string/with-query-string-workspace',
+		testPath: 'suite/advanced/with-query-string/run'
 	}
 ];
 (async () => {
