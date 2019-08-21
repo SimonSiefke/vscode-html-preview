@@ -15,7 +15,7 @@ function createElementNode() {
 	return {
 		attributes: {},
 		children: [] as any,
-		type: 'ElementNode',
+		nodeType: 'ElementNode',
 		parent: undefined
 	};
 }
@@ -26,7 +26,7 @@ function createElementNode() {
 function createCommentNode() {
 	return {
 		text: '',
-		type: 'CommentNode',
+		nodeType: 'CommentNode',
 		parent: undefined
 	};
 }
@@ -37,7 +37,7 @@ function createCommentNode() {
  */
 function createTextNode(text) {
 	return {
-		type: 'TextNode',
+		nodeType: 'TextNode',
 		text,
 		parent: undefined
 	};
@@ -48,7 +48,13 @@ function createIdGenerator() {
 	return () => id++;
 }
 
-let d = 0;
+const d = 0;
+
+type ParsingError = {
+	type: 'invalid' | 'soft-invalid'
+	message: string
+	offset: number
+};
 
 /**
  *
@@ -62,7 +68,7 @@ function parse(
 		nodeMap = {},
 		newNodeMap = {}
 	} = {}
-) {
+): {error: ParsingError | null; htmlDocument?: any} {
 	const scanner = createScanner(text);
 	const htmlDocument = createElementNode();
 	newNodeMap[0] = htmlDocument;
@@ -72,14 +78,7 @@ function parse(
 	let endTagName: string | undefined;
 	let pendingAttribute: string | undefined;
 	let token = scanner.scan();
-
-	d++;
-	let id;
-	if (d === 1) {
-		prefixSums;
-	} else {
-		prefixSums;
-	}
+	let error: {type: 'soft-invalid' | 'invalid'; message: string; offset: number} | null = null;
 
 	const addNode = node => {
 		// If (d === 1 && scanner.getTokenOffset() > 250) {
@@ -101,10 +100,12 @@ function parse(
 		// 	scanner.getTokenText(); // ?
 		// }
 
+		let id: number;
+
 		nextId: if (prefixSums[scanner.getTokenOffset()]) {
 			id = prefixSums[scanner.getTokenOffset()];
 		} else {
-			if (node.type === 'TextNode') {
+			if (node.nodeType === 'TextNode') {
 				// Merge text nodes
 				// e.g. <h1>|world</h1>, insert hello, text node will be merged with world text node
 				// <h1>|<p>world</p></h1>, insert hello, text node will not be merged with <p>world</p>
@@ -115,7 +116,7 @@ function parse(
 				) {
 					if (prefixSums[i]) {
 						const nextNode = nodeMap[prefixSums[i]]; // ?
-						if (nextNode && nextNode.type === 'TextNode') {
+						if (nextNode && nextNode.nodeType === 'TextNode') {
 							id = parseInt(prefixSums[i], 10);
 							delete prefixSums[i];
 							prefixSums[scanner.getTokenOffset()] = id;
@@ -129,23 +130,6 @@ function parse(
 			// PrefixSums;
 			prefixSums[scanner.getTokenOffset()] = id;
 			// PrefixSums;
-			if (d === 2) {
-				id;
-				scanner.getTokenText().length; // ?
-				scanner.getTokenOffset(); // ?
-			}
-		}
-
-		if (d === 1) {
-			scanner.getTokenOffset(); // ?
-			id;
-			node;
-			prefixSums;
-		} else {
-			prefixSums;
-			scanner.getTokenOffset(); // ?
-			id;
-			node;
 		}
 
 		newNodeMap[id] = node;
@@ -160,6 +144,10 @@ function parse(
 
 	while (token !== 'eos') {
 		switch (token) {
+			case 'error':
+				return {
+					error: scanner.getError()
+				};
 			case 'content':
 				addNode(createTextNode(scanner.getTokenText()));
 				curr = curr.parent;
@@ -192,21 +180,18 @@ function parse(
 				break;
 			case 'end-tag-close':
 				if (endTagName) {
-					let node = curr;
-					// See if we can find a matching tag
-					while (node.tag !== endTagName && node.parent) {
-						node = node.parent;
+					if (curr.tag !== endTagName) {
+						return {
+							error: {
+								type: 'invalid',
+								message: 'wrong end tag',
+								offset: scanner.getTokenOffset()
+							}
+						};
 					}
 
-					if (node.parent) {
-						while (curr !== node) {
-							curr.closed = false;
-							curr = curr.parent;
-						}
-
-						curr.closed = true;
-						curr = curr.parent;
-					}
+					curr.closed = true;
+					curr = curr.parent;
 				}
 
 				break;
@@ -254,14 +239,31 @@ function parse(
 		token = scanner.scan();
 	}
 
+	if (scanner.state !== 'within-content') {
+		error = {
+			type: 'invalid',
+			message: 'invalid end tag',
+			offset: scanner.getTokenOffset()
+		};
+		return {error};
+	}
+
 	while (curr.parent) {
+		if (!error) {
+			error = {
+				type: 'soft-invalid',
+				message: 'missing closing tag',
+				offset: scanner.getTokenOffset()
+			};
+		}
+
 		// @ts-ignore
 		curr.closed = false;
 		// @ts-ignore
 		curr = curr.parent;
 	}
 
-	return htmlDocument;
+	return {htmlDocument, error};
 }
 
 const i = 0;
@@ -278,19 +280,24 @@ export const parseHtml = (
 	prefixSums;
 	// Let id = 1;
 
-	const result = parse(html, {nextId, nodeMap, prefixSums, newNodeMap});
-	const withoutParent = walk(result, dom => {
+	const {htmlDocument, error} = parse(html, {nextId, nodeMap, prefixSums, newNodeMap});
+	if (error && error.type === 'invalid') {
+		return {error};
+	}
+
+	const withoutParent = walk(htmlDocument, dom => {
 		delete dom.parent;
 		delete dom.closed;
 	});
+	// return {htmlDocument: withoutParent, error};
 	// Const withId = walk(withoutParent, dom => {
 	// 	dom.id = id++;
 	// }); // ?
 	const withSignature = walk(withoutParent, updateSignature, true);
-	return withSignature;
+	return {htmlDocument: withSignature, error};
 };
 
-// Const result = parse('<h1 class="red"></h1>'); // ?
+// Const result = parse('<h1 class="big"></h1>'); // ?
 
 // // JSON.stringify(result, null, 2);
 // const id = 0;
@@ -337,7 +344,7 @@ function walk(dom, fn, childrenFirst = false) {
  * @param {{type:'ElementNode', attributeSignature:string,children:import('../types').Node[]}} node
  */
 function updateSignature(node) {
-	if (node.type === 'ElementNode') {
+	if (node.nodeType === 'ElementNode') {
 		node.attributes; // ?
 		node.attributeSignature = hash(
 			JSON.stringify(node.attributes, (key, value) => (value === undefined ? null : value))
@@ -346,7 +353,7 @@ function updateSignature(node) {
 		let subtreeSignature = '';
 		let childSignatures = '';
 		for (const child of node.children) {
-			if (child.type === 'ElementNode') {
+			if (child.nodeType === 'ElementNode') {
 				childSignatures += String(child.id);
 				subtreeSignature += String(child.id) + child.attributeSignature + child.subtreeSignature;
 			} else {
@@ -357,7 +364,7 @@ function updateSignature(node) {
 
 		node.childSignature = hash(childSignatures);
 		node.subtreeSignature = hash(subtreeSignature);
-	} else if (node.type === 'CommentNode' || node.type === 'TextNode') {
+	} else if (node.nodeType === 'CommentNode' || node.nodeType === 'TextNode') {
 		node.textSignature = hash(node.text);
 	}
 }
@@ -410,7 +417,7 @@ export function createParser() {
 				// TODO something is wrong here
 				// rangelength > 0 error: enter does not work <h1>a</h1>|\n
 				// rangelength = 0 error: replace not working <h1>||a</h1>
-				// movement style does not work<h1 | >a</h1> -> <h1 style="background:red">||a</h1>
+				// movement style does not work<h1 | >a</h1> -> <h1 style="font-size:10px">||a</h1>
 				if (prefixSum < rangeOffset) {
 					// If (parsedPrefixSum <= rangeOffset) {
 					// Is before
@@ -430,21 +437,25 @@ export function createParser() {
 			}
 
 			const newNodeMap = {};
-			const result = parseHtml(text, {
+			const {htmlDocument, error} = parseHtml(text, {
 				prefixSums,
 				nextId,
 				nodeMap,
 				newNodeMap
 			});
+			if (error) {
+				return {error};
+			}
+
 			nodeMap = newNodeMap;
-			dom = result;
-			return result;
+			dom = htmlDocument;
+			return {htmlDocument};
 		}
 	};
 }
 
 const pretty = node => {
-	if (node.type === 'ElementNode') {
+	if (node.nodeType === 'ElementNode') {
 		return {
 			tag: node.tag,
 			children: node.children.map(pretty),
@@ -454,7 +465,7 @@ const pretty = node => {
 	}
 
 	return {
-		type: node.type,
+		nodeType: node.nodeType,
 		text: node.text,
 		id: node.id
 	};
@@ -471,13 +482,12 @@ const pretty = node => {
 // 	);
 // };
 
-// const testCase = {
-// 	previousDom: '<!DOCTYPE html>',
+const testCase = {
+	previousDom: '<h1 class="big"></h1>'
+};
+const parser = createParser();
+const parsedH1 = parser.parse(testCase.previousDom).htmlDocument.children; // ?
 
-// 	nextDom: '<h1>a</h1>\n<h1>a</h1>'
-// };
-// const parser = createParser();
-// const parsedH1 = parser.parse(testCase.previousDom);
 // const oldNodeMap = parser.nodeMap; // ?
 // const parsedH2 = parser.edit(testCase.nextDom, [
 // 	{

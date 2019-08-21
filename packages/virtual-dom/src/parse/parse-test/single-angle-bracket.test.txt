@@ -1,0 +1,12 @@
+name: 
+single angle bracket
+
+text: 
+<
+
+error:
+{
+  type: invalid
+  message: "expected start or end tag"
+  offset: 0
+}

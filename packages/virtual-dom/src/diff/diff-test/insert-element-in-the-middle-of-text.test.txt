@@ -1,36 +1,38 @@
 previousText:
-<a>
-  <img />
-</a>
+<h1>hello world</h1>
 
 edits:
 [
   {
-    rangeOffset: ?
+    rangeOffset: 9
     rangeLength: 0
-    text: "<strong>New Content</strong>"
+    text: <img>
   }
 ]
 
 nextText:
-<a>
-  <img />
-<strong>New Content</strong></a>
+<h1>hello<img> world</h1>
 
 expectedEdits:
 [
   {
+    command: textReplace
+    payload: {
+      text: hello
+    }
+  }
+  {
     command: elementInsert
     payload: {
       nodeType: ElementNode
-      tag: strong
+      tag: img
     }
   }
   {
     command: elementInsert
     payload: {
       nodeType: TextNode
-      text: "New Content"
+      text: " world"
     }
   }
 ]

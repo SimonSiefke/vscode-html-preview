@@ -1,0 +1,41 @@
+name:
+double quotes
+
+text:
+<h1 class="big"></h1>
+
+expectedTree:
+[
+  {
+    nodeType: ElementNode
+    tag: h1
+    attributes: {
+      class: '"big"'
+    }
+    children: []
+  }
+]
+
+error:
+null
+
+name:
+single quotes
+
+text:
+<h1 class='big'></h1>
+
+expectedTree:
+[
+  {
+    nodeType: ElementNode
+    tag: h1
+    attributes: {
+      class: "'big'"
+    }
+    children: []
+  }
+]
+
+error:
+null

@@ -1,0 +1,244 @@
+previousText:
+
+
+edits:
+[
+  {
+    rangeOffset: 0
+    rangeLength: 0
+    text: <
+  }
+]
+
+nextText:
+<
+
+expectedEdits:
+[
+  {
+    command: elementInsert
+    payload: {
+      nodeType: TextNode
+      text: <
+    }
+  }
+]
+
+previousText:
+<
+
+edits:
+[
+  {
+    rangeOffset: 1
+    rangeLength: 0
+    text: h
+  }
+]
+
+nextText: <h
+
+parserState:
+invalid
+
+expectedEdits:
+[]
+
+previousText:
+<h
+
+edits:
+[
+  {
+    rangeOffset: 2
+    rangeLength: 0
+    text: 1
+  }
+]
+
+nextText: 
+<h1
+
+parserState:
+invalid
+
+expectedEdits:
+[]
+
+previousText:
+<h1
+
+edits:
+[
+  {
+    rangeOffset: 3
+    rangeLength: 0
+    text: >
+  }
+]
+
+nextText: 
+<h1>
+
+parserState:
+soft-invalid
+
+expectedEdits:
+[
+  {
+    command: elementDelete
+    payload: {}
+  }
+  {
+    command: elementInsert
+    payload: {
+      nodeType: ElementNode
+      tag: h1
+    }
+  }
+]
+
+previousText:
+<h1>
+
+edits:
+[
+  {
+    rangeOffset: 4
+    rangeLength: 0
+    text: "hello world"
+  }
+]
+
+nextText: 
+<h1>hello world
+
+parserState:
+soft-invalid
+
+expectedEdits:
+[
+  {
+    command: elementInsert
+    payload: {
+      nodeType: TextNode
+      text: "hello world"
+    }
+  }
+]
+
+previousText:
+<h1>hello world
+
+edits:
+[
+  {
+    rangeOffset: 15
+    rangeLength: 0
+    text: <
+  }
+]
+
+nextText: 
+<h1>hello world<
+
+parserState:
+soft-invalid
+
+expectedEdits:
+[
+  {
+    command: textReplace
+    payload: {
+      text: "hello world<"
+    }
+  }
+]
+
+previousText:
+<h1>hello world<
+
+edits:
+[
+  {
+    rangeOffset: 16
+    rangeLength: 0
+    text: /
+  }
+]
+
+nextText: 
+<h1>hello world</
+
+parserState:
+soft-invalid
+
+expectedEdits:
+[
+  {
+    command: textReplace
+    payload: {
+      text: "hello world</"
+    }
+  }
+]
+
+previousText:
+<h1>hello world</
+
+edits:
+[
+  {
+    rangeOffset: 17
+    rangeLength: 0
+    text: h
+  }
+]
+
+nextText: 
+<h1>hello world</h
+
+parserState:
+invalid
+
+expectedEdits:
+[]
+
+previousText:
+<h1>hello world</h
+
+edits:
+[
+  {
+    rangeOffset: 17
+    rangeLength: 0
+    text: 1
+  }
+]
+
+nextText: 
+<h1>hello world</h1
+
+parserState:
+invalid
+
+expectedEdits:
+[]
+
+previousText:
+<h1>hello world</h1
+
+edits:
+[
+  {
+    rangeOffset: 18
+    rangeLength: 0
+    text: >
+  }
+]
+
+nextText: 
+<h1>hello world</h1>
+
+expectedEdits:
+[]

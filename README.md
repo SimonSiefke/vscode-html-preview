@@ -82,3 +82,5 @@ error: prefixSum or nodeMap is invalid because node is not found
 <!-- TODO test when css is deleted/created -->
 <!-- TODO multiple files at the same time, only reload index.html and not about.html when index.html is changed -->
 <!-- TODO like brackets: when no html file is opened, find the closest html file and open it -->
+
+<!-- TODO html preview inside vscode (webview or browserpreview extension or both)-->

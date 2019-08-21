@@ -62,7 +62,7 @@ function elementDelete(node: {id: any}) {
 
 function elementInsert(
 	node: {
-	type: string
+	nodeType: string
 	id: any
 	tag: any
 	attributes: any
@@ -76,13 +76,13 @@ function elementInsert(
 	const beforeElement = nodeMap[parentId].children[index - 1];
 
 	const beforeElementId = (beforeElement && beforeElement.id) || 0;
-	if (node.type === 'ElementNode') {
+	if (node.nodeType === 'ElementNode') {
 		return [
 			{
 				command: 'elementInsert',
 				payload: {
 					id: node.id,
-					nodeType: node.type,
+					nodeType: node.nodeType,
 					tag: node.tag,
 					parentId,
 					beforeId: beforeElementId,
@@ -96,12 +96,12 @@ function elementInsert(
 		];
 	}
 
-	if (node.type === 'TextNode' || node.type === 'CommentNode') {
+	if (node.nodeType === 'TextNode' || node.nodeType === 'CommentNode') {
 		return [
 			{
 				command: 'elementInsert',
 				payload: {
-					nodeType: node.type,
+					nodeType: node.nodeType,
 					id: node.id,
 					text: node.text,
 					parentId,
@@ -128,29 +128,34 @@ function textReplace(node: {id: any; text: any}) {
 }
 
 /**
- * Generate a list of edits that will mutate oldNode to look like newNode.
- * Currently, there are the following possible edit operations:
+ * Generate a list of edits that will mutate oldNodes to look like newNodes.
  *
- * * elementInsert
- * * elementDelete
- * * elementMove
- * * textInsert
- * * textDelete
- * * textReplace
- * * attrDelete
- * * attrChange
- * * attrAdd
- * * rememberNodes (a special instruction that reflects the need to hang on to moved nodes)
- *
- * @param {Object} oldNode SimpleDOM node with the original content
- * @param {Object} newNode SimpleDOM node with the new content
- * @return {Array<Object>} list of edit operations
  */
 export function diff(
 	oldNodes: any[],
 	newNodes: any[],
-	{parentId = 0, oldNodeMap = {}, newNodeMap = {}} = {}
-) {
+	{
+		parentId = 0,
+		oldNodeMap = {},
+		newNodeMap = {},
+		oldParserState = 'valid',
+		newParserState = 'valid'
+	}: {
+	parentId?: number
+	oldNodeMap?: any
+	newNodeMap?: any
+	oldParserState?: any
+	newParserState?: any
+	} = {}
+): any[] {
+	if (oldParserState === 'invalid') {
+		throw new Error('old parser state must be valid or soft-invalid');
+	}
+
+	if (newParserState === 'invalid') {
+		return [];
+	}
+
 	let oldIndex: number = 0;
 	let newIndex: number = 0;
 	let edits: any[] = [];
@@ -162,12 +167,12 @@ export function diff(
 		const newNode = newNodes[newIndex];
 		const oldNode = oldNodes[oldIndex];
 
-		oldNode.type; // ?
-		newNode.type; // ?
+		oldNode.nodeType; // ?
+		newNode.nodeType; // ?
 		oldNode.subtreeSignature; // ?
 		newNode.subtreeSignature; // ?
 
-		if (newNode.type === 'ElementNode' && oldNode.type === 'ElementNode') {
+		if (newNode.nodeType === 'ElementNode' && oldNode.nodeType === 'ElementNode') {
 			if (newNode.id === oldNode.id) {
 				if (newNode.attributeSignature !== oldNode.attributeSignature) {
 					edits = [...edits, ...attributeEdits(oldNode, newNode)];
@@ -223,7 +228,7 @@ export function diff(
 			newIndex++;
 		}
 
-		if (newNode.type === 'ElementNode' && oldNode.type !== 'ElementNode') {
+		if (newNode.nodeType === 'ElementNode' && oldNode.nodeType !== 'ElementNode') {
 			if (!newNodeMap[oldNode.id]) {
 				edits = [...edits, elementDelete(oldNode)];
 				oldIndex++;
@@ -256,7 +261,7 @@ export function diff(
 			continue;
 		}
 
-		if (newNode.type !== 'ElementNode' && oldNode.type === 'ElementNode') {
+		if (newNode.nodeType !== 'ElementNode' && oldNode.nodeType === 'ElementNode') {
 			if (newNodeMap[oldNode.id]) {
 				edits = [...edits, ...elementInsert(newNode, parentId, newIndex, newNodeMap)];
 				newIndex++;
@@ -270,7 +275,7 @@ export function diff(
 			continue;
 		}
 
-		if (newNode.type !== oldNode.type) {
+		if (newNode.nodeType !== oldNode.nodeType) {
 			if (oldNode.id === newNode.id) {
 				edits = [...edits, textReplace(newNode)];
 				oldIndex++;
@@ -298,8 +303,8 @@ export function diff(
 		}
 
 		if (
-			((newNode.type === 'TextNode' && oldNode.type === 'TextNode') ||
-				(newNode.type === 'CommentNode' && oldNode.type === 'CommentNode')) &&
+			((newNode.nodeType === 'TextNode' && oldNode.nodeType === 'TextNode') ||
+				(newNode.nodeType === 'CommentNode' && oldNode.nodeType === 'CommentNode')) &&
 			newNode.textSignature !== oldNode.textSignature
 		) {
 			if (oldNode.id === newNode.id) {
@@ -359,7 +364,7 @@ export function diff(
 }
 
 const pretty = (node: {
-type: string
+nodeType: string
 tag: any
 children: {
 map: (
@@ -388,7 +393,7 @@ id: any
 attributes: any
 text: any
 }) => {
-	if (node.type === 'ElementNode') {
+	if (node.nodeType === 'ElementNode') {
 		return {
 			tag: node.tag,
 			children: node.children.map(pretty),
@@ -398,7 +403,7 @@ text: any
 	}
 
 	return {
-		type: node.type,
+		type: node.nodeType,
 		text: node.text,
 		id: node.id
 	};
@@ -426,25 +431,25 @@ Array.prototype.pretty = function () {
 // 	);
 // };
 
-// const testCase = {
-// 	previousDom: '<!doctype html>\n',
+const testCase = {
+	previousDom: '<h1>hello world</h1>',
 
-// 	nextDom: '<!doctype html>'
-// };
-// const parser = createParser();
-// const parsedH1 = parser.parse(testCase.previousDom);
-// const oldNodeMap = parser.nodeMap; // ?
-// const parsedH2 = parser.edit(testCase.nextDom, [
-// 	{
-// 		rangeOffset: 15,
-// 		rangeLength: 1,
-// 		text: ''
-// 	}
-// ]);
-// const newNodeMap = parser.nodeMap; // ?
+	nextDom: '<h1>hello</h1>'
+};
+const parser = createParser();
+const {htmlDocument: parsedH1} = parser.parse(testCase.previousDom);
+const oldNodeMap = parser.nodeMap; // ?
+const {htmlDocument: parsedH2} = parser.edit(testCase.nextDom, [
+	{
+		rangeOffset: 15,
+		rangeLength: 1,
+		text: ''
+	}
+]);
+const newNodeMap = parser.nodeMap; // ?
 // parsedH1.pretty(); // ?
 // parsedH2.pretty(); // ?
-// diff(parsedH1, parsedH2, {
-// 	oldNodeMap,
-// 	newNodeMap
-// }); // ?
+diff(parsedH1.children, parsedH2.children, {
+	oldNodeMap,
+	newNodeMap
+}); // ?

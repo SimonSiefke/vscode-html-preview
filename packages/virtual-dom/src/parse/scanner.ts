@@ -74,6 +74,8 @@ export function createScanner(
 	} = {}
 ) {
 	const stream = createMultiLineStream(input, initialOffset);
+	let error: {type: 'invalid' | 'soft-invalid'; message: string; offset: number} | null = null;
+	let count = 0; // for preventing endless loops TODO: remove once stable
 	/**
 	 * @type {import('./types').ScannerState}
 	 */
@@ -126,6 +128,10 @@ export function createScanner(
 	 * @return {any}
 	 */
 	function scan() {
+		if (count++ > 1000) {
+			throw new Error('endless loop detected');
+		}
+
 		tokenOffset = stream.position;
 		/**
 		 * @type{string|undefined}
@@ -160,25 +166,44 @@ export function createScanner(
 					return 'start-comment-tag';
 				}
 
-				if (stream.advanceIfChars('<')) {
-					state = 'after-opening-start-tag';
-					return 'start-tag-open';
+				// console.log(stream.peekRight(), stream.peekRight(1));
+				if (stream.peekRight() === '<') {
+					stream.advance(1);
+					if (/[a-zA-Z]/.test(stream.peekRight())) {
+						state = 'after-opening-start-tag';
+						return 'start-tag-open';
+					}
+
+					error = {
+						type: 'invalid',
+						message: 'expected start or end tag',
+						offset: tokenOffset
+					};
+					stream.goToEnd();
+					return 'error';
 				}
 
 				stream.advanceUntilChar('<');
 				return 'content';
 			case 'after-opening-end-tag':
 				const tagName = nextElementName();
+
 				if (tagName) {
 					state = 'within-end-tag';
 					return 'end-tag';
 				}
 
-				if (stream.peekRight(0) === '>') {
-					console.log('self close');
-					state = 'within-end-tag';
-					return 'end-tag';
-				}
+				error = {
+					type: 'invalid',
+					message: 'invalid end tag',
+					offset: tokenOffset
+				};
+				return 'error';
+				// if (stream.peekRight(0) === '>') {
+				// 	console.log('self close');
+				// 	state = 'within-end-tag';
+				// 	return 'end-tag';
+				// }
 
 				// TODO error
 				console.error('error 1111');
@@ -194,13 +219,16 @@ export function createScanner(
 					return 'end-tag-close';
 				}
 
-				// Error at this point
-				console.error('error 2');
+				error = {
+					type: 'invalid',
+					message: 'invalid end tag',
+					offset: tokenOffset
+				};
+				return 'error';
+
 				break;
 			case 'after-opening-start-tag':
 				lastTagName = nextElementName();
-				lastTagName;
-				// Console.log(lastTagName)
 				if (lastTagName) {
 					if (embeddedContentTags.includes(lastTagName)) {
 						embeddedContent = true;
@@ -284,10 +312,14 @@ export function createScanner(
 					stream.advance(1); // Consume opening quote
 					if (stream.advanceUntilChar(char)) {
 						stream.advance(1); // Consume closing quote
+					} else {
+						error = {
+							type: 'invalid',
+							message: 'missing closing quote in attribute value',
+							offset: tokenOffset
+						};
+						return 'error';
 					}
-
-					state = 'within-start-tag';
-					return 'attribute-value';
 				}
 
 				// TODO error
@@ -302,6 +334,9 @@ export function createScanner(
 	return {
 		scan,
 		stream,
+		getError() {
+			return error;
+		},
 		getTokenOffset() {
 			return tokenOffset;
 		},
@@ -320,7 +355,7 @@ export function createScanner(
 	};
 }
 
-const scanner = createScanner('<head></head><body></body>');
+const scanner = createScanner('<p>hello');
 
 scanner.scan(); // ?
 scanner.getTokenText(); // ?

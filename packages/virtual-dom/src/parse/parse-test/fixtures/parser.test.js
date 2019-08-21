@@ -1,5 +1,5 @@
 const parserTestCases = require('./fixtures/parserTestCases.json');
-import {parse} from './parse';
+import {parse} from '../../parse';
 
 function withDefaults(expectedNode) {
 	if (expectedNode.type === 'ElementNode') {

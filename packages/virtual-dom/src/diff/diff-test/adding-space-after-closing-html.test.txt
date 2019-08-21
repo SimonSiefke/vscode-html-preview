@@ -4,7 +4,7 @@ previousText:
 edits:
 [
   {
-    rangeOffset: ?
+    rangeOffset: 13
     rangeLength: 0
     text: " "
   }
@@ -16,7 +16,7 @@ nextText:
 expectedEdits:
 [
   {
-    command: ElementInsert
+    command: elementInsert
     payload: {
       nodeType: TextNode
       text: " "

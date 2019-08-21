@@ -1,0 +1,117 @@
+name:
+missing closing tag
+
+text:
+<h1>hello world
+
+expectedTree:
+[
+  {
+    nodeType: ElementNode
+    tag: h1
+    children: [
+      {
+        nodeType: TextNode
+        text: "hello world"
+      }
+    ]
+  }
+]
+
+error:
+{
+  type: soft-invalid
+  message: "missing closing tag"
+  offset: 15
+}
+
+name:
+partial closing tag #1
+
+text:
+<h1>hello world<
+
+error:
+{
+  type: invalid
+  message: "expected start or end tag"
+  offset: 15
+}
+
+name:
+partial closing tag #2
+
+text:
+<h1>hello world</
+
+error:
+{
+  type: invalid
+  message: "invalid end tag"
+  offset: 17
+}
+
+name:
+partial closing tag #3
+
+text:
+<h1>hello world</h
+
+error:
+{
+  type: invalid
+  message: "invalid end tag"
+  offset: 18
+}
+
+name:
+partial closing tag #4
+
+text:
+<h1>hello world</h1
+
+error:
+{
+  type: invalid
+  message: "invalid end tag"
+  offset: 19
+}
+
+name:
+wrong closing tag
+
+text:
+<h1>hello world</h>
+
+error:
+{
+  type: invalid
+  message: "wrong end tag"
+  offset: 18
+}
+
+name:
+fragment tag
+
+text:
+<br>hi</>
+
+error:
+{
+  type: invalid
+  message: "invalid end tag"
+  offset: 8
+}
+
+name:
+closing self-closed element
+
+text:
+<br>hi</br>
+
+error:
+{
+  type: invalid
+  message: "wrong end tag"
+  offset: 10
+}

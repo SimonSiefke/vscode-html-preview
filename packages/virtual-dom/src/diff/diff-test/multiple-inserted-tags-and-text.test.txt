@@ -20,17 +20,6 @@ expectedEdits:
     payload: {}
   }
   {
-    command: elementDelete
-    payload: {}
-  }
-  {
-    command: elementInsert
-    payload: {
-      nodeType: ElementNode
-      tag: em
-    }
-  }
-  {
     command: elementInsert
     payload: {
       nodeType: TextNode

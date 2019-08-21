@@ -40,14 +40,14 @@ expectedEdits:
     command: elementInsert
     payload: {
       nodeType: TextNode
-      text: " Content"
+      text: Awesome
     }
   }
   {
     command: elementInsert
     payload: {
       nodeType: TextNode
-      text: Awesome
+      text: " Content"
     }
   }
 ]

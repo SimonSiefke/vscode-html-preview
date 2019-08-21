@@ -1,5 +1,6 @@
 previousText:
 
+
 edits:
 [
   {
@@ -12,7 +13,7 @@ edits:
 nextText:
 <html
 
-invalid:
+error:
 true
 
 previousText:
