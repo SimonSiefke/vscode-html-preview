@@ -28,23 +28,31 @@ test(`delete-single-character-between-two-elements.test.txt`, () => {
 
   previousDom = parser.parse("<p><br>X<br></p>").htmlDocument
   const oldNodeMap = parser.nodeMap
-  const {htmlDocument:nextDom} = parser.edit(`<p><br><br></p>`, [
+  const {htmlDocument:nextDom, error} = parser.edit(`<p><br><br></p>`, [
     {
       "rangeOffset": 7,
       "rangeLength": 1,
       "text": ""
     }
   ])
-  const newNodeMap = parser.nodeMap
-  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
-  const expectedEdits = [
+	const expectedError = undefined;
+	if(error && !expectedError){
+		throw new Error('did not expect error')
+	} else if(expectedError && !error){
+		throw new Error('expected error')
+	} else if(!expectedError && !error){
+
+		const newNodeMap = parser.nodeMap
+		const edits = diff((previousDom && previousDom.children) || [], nextDom.children, {oldNodeMap, newNodeMap})
+		const expectedEdits = [
     {
       "command": "elementDelete",
       "payload": {}
     }
   ]
-	expect(adjustEdits(edits)).toEqual(adjustExpectedEdits(expectedEdits))
-	previousDom = nextDom
+			expect(adjustEdits(edits)).toEqual(adjustExpectedEdits(expectedEdits))
+			previousDom = nextDom
+		}
 	
   }
 })

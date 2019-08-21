@@ -28,16 +28,23 @@ test(`insert-element-in-the-middle-of-text.test.txt`, () => {
 
   previousDom = parser.parse("<h1>hello world</h1>").htmlDocument
   const oldNodeMap = parser.nodeMap
-  const {htmlDocument:nextDom} = parser.edit(`<h1>hello<img> world</h1>`, [
+  const {htmlDocument:nextDom, error} = parser.edit(`<h1>hello<img> world</h1>`, [
     {
       "rangeOffset": 9,
       "rangeLength": 0,
       "text": "<img>"
     }
   ])
-  const newNodeMap = parser.nodeMap
-  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
-  const expectedEdits = [
+	const expectedError = undefined;
+	if(error && !expectedError){
+		throw new Error('did not expect error')
+	} else if(expectedError && !error){
+		throw new Error('expected error')
+	} else if(!expectedError && !error){
+
+		const newNodeMap = parser.nodeMap
+		const edits = diff((previousDom && previousDom.children) || [], nextDom.children, {oldNodeMap, newNodeMap})
+		const expectedEdits = [
     {
       "command": "textReplace",
       "payload": {
@@ -59,8 +66,9 @@ test(`insert-element-in-the-middle-of-text.test.txt`, () => {
       }
     }
   ]
-	expect(adjustEdits(edits)).toEqual(adjustExpectedEdits(expectedEdits))
-	previousDom = nextDom
+			expect(adjustEdits(edits)).toEqual(adjustExpectedEdits(expectedEdits))
+			previousDom = nextDom
+		}
 	
   }
 })

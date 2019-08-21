@@ -1,0 +1,122 @@
+previousText:
+<h1>
+
+edits:
+[
+  {
+    rangeOffset: 4
+    rangeLength: 0
+    text: "hello world"
+  }
+]
+
+nextText:
+<h1>hello world
+
+error:
+true
+
+previousText:
+<h1>hello world
+
+edits:
+[
+  {
+    rangeOffset: 15
+    rangeLength: 0
+    text: <
+  }
+]
+
+nextText:
+<h1>hello world<
+
+error:
+true
+
+previousText:
+<h1>hello world<
+
+edits:
+[
+  {
+    rangeOffset: 16
+    rangeLength: 0
+    text: "/"
+  }
+]
+
+nextText:
+<h1>hello world</
+
+error:
+true
+
+previousText:
+<h1>hello world</
+
+edits:
+[
+  {
+    rangeOffset: 17
+    rangeLength: 0
+    text: h
+  }
+]
+
+nextText:
+<h1>hello world</h
+
+error:
+true
+
+previousText:
+<h1>hello world</h
+
+edits:
+[
+  {
+    rangeOffset: 18
+    rangeLength: 0
+    text: "1"
+  }
+]
+
+nextText:
+<h1>hello world</h1
+
+error:
+true
+
+previousText:
+<h1>hello world</h1
+
+edits:
+[
+  {
+    rangeOffset: 19
+    rangeLength: 0
+    text: >
+  }
+]
+
+nextText:
+<h1>hello world</h1>
+
+expectedEdits:
+[
+  {
+    command: elementInsert
+    payload: {
+      nodeType: ElementNode
+      tag: h1
+    }
+  }
+  {
+    command: elementInsert
+    payload: {
+      nodeType: TextNode
+      text: "hello world"
+    }
+  }
+]

@@ -432,7 +432,7 @@ Array.prototype.pretty = function () {
 // };
 
 const testCase = {
-	previousDom: '<h1>hello world</h1>',
+	previousDom: '<h1></h1>',
 
 	nextDom: '<h1>hello</h1>'
 };
@@ -441,9 +441,9 @@ const {htmlDocument: parsedH1} = parser.parse(testCase.previousDom);
 const oldNodeMap = parser.nodeMap; // ?
 const {htmlDocument: parsedH2} = parser.edit(testCase.nextDom, [
 	{
-		rangeOffset: 15,
-		rangeLength: 1,
-		text: ''
+		rangeOffset: 4,
+		rangeLength: 0,
+		text: 'hello'
 	}
 ]);
 const newNodeMap = parser.nodeMap; // ?

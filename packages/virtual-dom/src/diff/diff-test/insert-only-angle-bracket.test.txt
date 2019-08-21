@@ -1,0 +1,17 @@
+previousText:
+
+
+edits:
+[
+  {
+    rangeOffset: 0
+    rangeLength: 0
+    text: <
+  }
+]
+
+nextText:
+<
+
+error:
+true

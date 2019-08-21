@@ -3,7 +3,7 @@ import * as path from 'path';
 import {toJson} from 'really-relaxed-json';
 import {validate} from 'jsonschema';
 
-const failingTests = ['adding-html-tag-into-empty-document.test.txt'];
+const failingTests = [];
 
 const diffTestFiles = [
 	'closing-p-tag.test.txt',
@@ -17,7 +17,13 @@ const diffTestFiles = [
 	'inserting-element-as-first-child.test.txt',
 	'adding-space-after-closing-html.test.txt',
 	'delete-single-character-between-two-elements.test.txt',
-	'adding-html-tag-into-empty-document.test.txt'
+	'adding-html-tag-into-empty-document.test.txt',
+	'basic.test.txt',
+	'basic-element-insertion.test.txt',
+	'insert-only-angle-bracket.test.txt',
+	'text-from-scratch.test.txt',
+	'h1-to-h3.test.txt',
+	'h1.test.txt'
 ].filter(x => !failingTests.includes(x));
 
 diffTestFiles.forEach(generateTest);
@@ -250,23 +256,35 @@ function generateTest(fileName) {
 		return `
 
   ${
-	testIndex === 0 ?
+	testIndex === 0 && !tests[0].error ?
 		'previousDom = parser.parse(' + JSON.stringify(previousText) + ').htmlDocument' :
 		''
 }
   const oldNodeMap = parser.nodeMap
-  const {htmlDocument:nextDom} = parser.edit(\`${nextText}\`, ${JSON.stringify(edits, null, 2)
+  const {htmlDocument:nextDom, error} = parser.edit(\`${nextText}\`, ${JSON.stringify(
+	edits,
+	null,
+	2
+)
 	.split('\n')
 	.map((x, index) => (index === 0 ? x : '  ' + x))
 	.join('\n')})
-  const newNodeMap = parser.nodeMap
-  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
-  const expectedEdits = ${JSON.stringify(expectedEdits, null, 2)
+	const expectedError = ${test.error};
+	if(error && !expectedError){
+		throw new Error('did not expect error')
+	} else if(expectedError && !error){
+		throw new Error('expected error')
+	} else if(!expectedError && !error){
+
+		const newNodeMap = parser.nodeMap
+		const edits = diff((previousDom && previousDom.children) || [], nextDom.children, {oldNodeMap, newNodeMap})
+		const expectedEdits = ${JSON.stringify(expectedEdits, null, 2)
 		.split('\n')
 		.map((x, index) => (index === 0 ? x : '  ' + x))
 		.join('\n')}
-	expect(adjustEdits(edits)).toEqual(adjustExpectedEdits(expectedEdits))
-	${testIndex === 0 ? 'previousDom = nextDom' : ''}
+			expect(adjustEdits(edits)).toEqual(adjustExpectedEdits(expectedEdits))
+			previousDom = nextDom
+		}
 	`; // ?
 	});
 	const outerCode = outer(inners);

@@ -28,7 +28,7 @@ test(`inserting-element-as-first-child.test.txt`, () => {
 
   previousDom = parser.parse("<body>\n</body>").htmlDocument
   const oldNodeMap = parser.nodeMap
-  const {htmlDocument:nextDom} = parser.edit(`<body><div>New Content</div>
+  const {htmlDocument:nextDom, error} = parser.edit(`<body><div>New Content</div>
 </body>`, [
     {
       "rangeOffset": 6,
@@ -36,9 +36,16 @@ test(`inserting-element-as-first-child.test.txt`, () => {
       "text": "<div>New Content</div>"
     }
   ])
-  const newNodeMap = parser.nodeMap
-  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
-  const expectedEdits = [
+	const expectedError = undefined;
+	if(error && !expectedError){
+		throw new Error('did not expect error')
+	} else if(expectedError && !error){
+		throw new Error('expected error')
+	} else if(!expectedError && !error){
+
+		const newNodeMap = parser.nodeMap
+		const edits = diff((previousDom && previousDom.children) || [], nextDom.children, {oldNodeMap, newNodeMap})
+		const expectedEdits = [
     {
       "command": "elementInsert",
       "payload": {
@@ -54,8 +61,9 @@ test(`inserting-element-as-first-child.test.txt`, () => {
       }
     }
   ]
-	expect(adjustEdits(edits)).toEqual(adjustExpectedEdits(expectedEdits))
-	previousDom = nextDom
+			expect(adjustEdits(edits)).toEqual(adjustExpectedEdits(expectedEdits))
+			previousDom = nextDom
+		}
 	
   }
 })

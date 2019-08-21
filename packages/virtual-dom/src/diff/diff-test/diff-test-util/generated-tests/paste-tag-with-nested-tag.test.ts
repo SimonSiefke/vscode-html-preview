@@ -28,16 +28,23 @@ test(`paste-tag-with-nested-tag.test.txt`, () => {
 
   previousDom = parser.parse("").htmlDocument
   const oldNodeMap = parser.nodeMap
-  const {htmlDocument:nextDom} = parser.edit(`<div>New <em>Awesome</em> Content</div>`, [
+  const {htmlDocument:nextDom, error} = parser.edit(`<div>New <em>Awesome</em> Content</div>`, [
     {
       "rangeOffset": 0,
       "rangeLength": 0,
       "text": "<div>New <em>Awesome</em> Content</div>"
     }
   ])
-  const newNodeMap = parser.nodeMap
-  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
-  const expectedEdits = [
+	const expectedError = undefined;
+	if(error && !expectedError){
+		throw new Error('did not expect error')
+	} else if(expectedError && !error){
+		throw new Error('expected error')
+	} else if(!expectedError && !error){
+
+		const newNodeMap = parser.nodeMap
+		const edits = diff((previousDom && previousDom.children) || [], nextDom.children, {oldNodeMap, newNodeMap})
+		const expectedEdits = [
     {
       "command": "elementInsert",
       "payload": {
@@ -75,8 +82,9 @@ test(`paste-tag-with-nested-tag.test.txt`, () => {
       }
     }
   ]
-	expect(adjustEdits(edits)).toEqual(adjustExpectedEdits(expectedEdits))
-	previousDom = nextDom
+			expect(adjustEdits(edits)).toEqual(adjustExpectedEdits(expectedEdits))
+			previousDom = nextDom
+		}
 	
   }
 })

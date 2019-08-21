@@ -28,7 +28,7 @@ test(`insert-element-as-last-child.test.txt`, () => {
 
   previousDom = parser.parse("<a>\n  <img />\n</a>").htmlDocument
   const oldNodeMap = parser.nodeMap
-  const {htmlDocument:nextDom} = parser.edit(`<a>
+  const {htmlDocument:nextDom, error} = parser.edit(`<a>
   <img />
 <strong>New Content</strong></a>`, [
     {
@@ -37,9 +37,16 @@ test(`insert-element-as-last-child.test.txt`, () => {
       "text": "<strong>New Content</strong>"
     }
   ])
-  const newNodeMap = parser.nodeMap
-  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
-  const expectedEdits = [
+	const expectedError = undefined;
+	if(error && !expectedError){
+		throw new Error('did not expect error')
+	} else if(expectedError && !error){
+		throw new Error('expected error')
+	} else if(!expectedError && !error){
+
+		const newNodeMap = parser.nodeMap
+		const edits = diff((previousDom && previousDom.children) || [], nextDom.children, {oldNodeMap, newNodeMap})
+		const expectedEdits = [
     {
       "command": "elementInsert",
       "payload": {
@@ -55,8 +62,9 @@ test(`insert-element-as-last-child.test.txt`, () => {
       }
     }
   ]
-	expect(adjustEdits(edits)).toEqual(adjustExpectedEdits(expectedEdits))
-	previousDom = nextDom
+			expect(adjustEdits(edits)).toEqual(adjustExpectedEdits(expectedEdits))
+			previousDom = nextDom
+		}
 	
   }
 })

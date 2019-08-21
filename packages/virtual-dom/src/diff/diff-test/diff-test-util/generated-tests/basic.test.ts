@@ -20,19 +20,19 @@ function adjustExpectedEdits(expectedEdits){
   return expectedEdits
 }
 
-test(`closing-p-tag.test.txt`, () => {
+test(`basic.test.txt`, () => {
 	const parser = createParser()
 	let previousDom
 	  {
 
 
-  previousDom = parser.parse("<p>").htmlDocument
+  previousDom = parser.parse("hello").htmlDocument
   const oldNodeMap = parser.nodeMap
-  const {htmlDocument:nextDom, error} = parser.edit(`<p></p>`, [
+  const {htmlDocument:nextDom, error} = parser.edit(`hello world`, [
     {
-      "rangeOffset": 4,
+      "rangeOffset": 5,
       "rangeLength": 0,
-      "text": "</p>"
+      "text": " world"
     }
   ])
 	const expectedError = undefined;
@@ -44,7 +44,14 @@ test(`closing-p-tag.test.txt`, () => {
 
 		const newNodeMap = parser.nodeMap
 		const edits = diff((previousDom && previousDom.children) || [], nextDom.children, {oldNodeMap, newNodeMap})
-		const expectedEdits = []
+		const expectedEdits = [
+    {
+      "command": "textReplace",
+      "payload": {
+        "text": "hello world"
+      }
+    }
+  ]
 			expect(adjustEdits(edits)).toEqual(adjustExpectedEdits(expectedEdits))
 			previousDom = nextDom
 		}

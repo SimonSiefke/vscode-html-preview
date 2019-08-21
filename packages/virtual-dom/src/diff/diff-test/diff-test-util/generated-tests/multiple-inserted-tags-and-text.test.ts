@@ -28,16 +28,23 @@ test(`multiple-inserted-tags-and-text.test.txt`, () => {
 
   previousDom = parser.parse("<h1><strong>Emphasized</strong> Hello </h1>").htmlDocument
   const oldNodeMap = parser.nodeMap
-  const {htmlDocument:nextDom} = parser.edit(`<h1><em>Foo</em> bar <strong>Baz!</strong> Hello </h1>`, [
+  const {htmlDocument:nextDom, error} = parser.edit(`<h1><em>Foo</em> bar <strong>Baz!</strong> Hello </h1>`, [
     {
       "rangeOffset": 4,
       "rangeLength": 27,
       "text": "<em>Foo</em> bar <strong>Baz!</strong>"
     }
   ])
-  const newNodeMap = parser.nodeMap
-  const edits = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap})
-  const expectedEdits = [
+	const expectedError = undefined;
+	if(error && !expectedError){
+		throw new Error('did not expect error')
+	} else if(expectedError && !error){
+		throw new Error('expected error')
+	} else if(!expectedError && !error){
+
+		const newNodeMap = parser.nodeMap
+		const edits = diff((previousDom && previousDom.children) || [], nextDom.children, {oldNodeMap, newNodeMap})
+		const expectedEdits = [
     {
       "command": "elementDelete",
       "payload": {}
@@ -71,8 +78,9 @@ test(`multiple-inserted-tags-and-text.test.txt`, () => {
       }
     }
   ]
-	expect(adjustEdits(edits)).toEqual(adjustExpectedEdits(expectedEdits))
-	previousDom = nextDom
+			expect(adjustEdits(edits)).toEqual(adjustExpectedEdits(expectedEdits))
+			previousDom = nextDom
+		}
 	
   }
 })

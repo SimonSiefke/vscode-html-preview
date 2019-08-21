@@ -20,22 +20,22 @@ function adjustExpectedEdits(expectedEdits){
   return expectedEdits
 }
 
-test(`closing-p-tag.test.txt`, () => {
+test(`insert-only-angle-bracket.test.txt`, () => {
 	const parser = createParser()
 	let previousDom
 	  {
 
 
-  previousDom = parser.parse("<p>").htmlDocument
+  
   const oldNodeMap = parser.nodeMap
-  const {htmlDocument:nextDom, error} = parser.edit(`<p></p>`, [
+  const {htmlDocument:nextDom, error} = parser.edit(`<`, [
     {
-      "rangeOffset": 4,
+      "rangeOffset": 0,
       "rangeLength": 0,
-      "text": "</p>"
+      "text": "<"
     }
   ])
-	const expectedError = undefined;
+	const expectedError = true;
 	if(error && !expectedError){
 		throw new Error('did not expect error')
 	} else if(expectedError && !error){
