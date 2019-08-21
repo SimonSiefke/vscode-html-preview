@@ -1,0 +1,29 @@
+previousText:
+h1
+
+edits:
+[
+  {
+    rangeOffset: 0
+    rangeLength: 2
+    text: <h1></h1>
+  }
+]
+
+nextText:
+<h1></h1>
+
+expectedEdits:
+[
+  {
+     command: elementDelete
+     payload: {}
+  }
+  {
+     command: elementInsert
+     payload: {
+       nodeType: ElementNode
+       tag: h1
+     }
+  }
+]

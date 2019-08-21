@@ -1,0 +1,25 @@
+previousText:
+<h1 class="big">hello world</h1>
+
+edits:
+[
+  {
+    rangeOffset: 11
+    rangeLength: 3
+    text: small
+  }
+]
+
+nextText:
+<h1 class="small">hello world</h1>
+
+expectedEdits:
+[
+  {
+     command: attributeChange
+     payload: {
+       attribute: class
+       value: '"small"'
+     }
+  }
+]

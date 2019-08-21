@@ -1,0 +1,31 @@
+previousText:
+<h1 c>hello world</h1>
+
+edits:
+[
+  {
+    rangeOffset: 5
+    rangeLength: 0
+    text: lass
+  }
+]
+
+nextText:
+<h1 class>hello world</h1>
+
+expectedEdits:
+[
+  {
+     command: attributeAdd
+     payload: {
+       attribute: class
+       value: null
+     }
+  }
+  {
+     command: attributeDelete
+     payload: {
+       attribute: c
+     }
+  }
+]

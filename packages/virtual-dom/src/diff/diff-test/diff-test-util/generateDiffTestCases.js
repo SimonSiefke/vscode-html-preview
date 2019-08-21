@@ -3,7 +3,14 @@ import * as path from 'path';
 import {toJson} from 'really-relaxed-json';
 import {validate} from 'jsonschema';
 
-const failingTests = [];
+const failingTests = [
+	'attribute-change-1.test.txt',
+	'attribute-change-2.test.txt',
+	'insertion-of-attribute-with-value.test.txt',
+	'insertion-of-multiple-elements-and-text-nodes.test.txt',
+	'attribute-value-insertion-at-the-end.test.txt',
+	'attribute-value-replacement.test.txt'
+];
 
 const diffTestFiles = [
 	'closing-p-tag.test.txt',
@@ -23,7 +30,25 @@ const diffTestFiles = [
 	'insert-only-angle-bracket.test.txt',
 	'text-from-scratch.test.txt',
 	'h1-to-h3.test.txt',
-	'h1.test.txt'
+	'h1.test.txt',
+	'attribute-delete-1.test.txt',
+	'useless-whitespace-change-1.test.txt',
+	'useless-whitespace-change-2.test.txt',
+	'attribute-change-1.test.txt',
+	'attribute-change-2.test.txt',
+	'basic-text-insertion.test.txt',
+	'basic-text-replace.test.txt',
+	'basic-text-addition.test.txt',
+	'element-addition-at-the-end.test.txt',
+	'element-addition-at-the-start.test.txt',
+	'text-insertion-in-nested-html.test.txt',
+	'insertion-of-attribute-with-value.test.txt',
+	'insertion-of-attribute-without-value.test.txt',
+	'insertion-of-multiple-elements-and-text-nodes.test.txt',
+	'attribute-name-change.test.txt',
+	'attribute-value-insertion-at-the-end.test.txt',
+	'attribute-value-replacement.test.txt',
+	'replace-text-with-element.test.txt'
 ].filter(x => !failingTests.includes(x));
 
 diffTestFiles.forEach(generateTest);
@@ -55,7 +80,7 @@ function generateTest(fileName) {
 			currentTest = {};
 		}
 
-		currentTest[blockType] = blockContent.join('\n').slice(0, -1); // ?
+		currentTest[blockType] = blockContent.join('\n').slice(0, -1);
 		blockContent = [];
 	}
 
@@ -177,7 +202,7 @@ function generateTest(fileName) {
 		}
 	}
 
-	function validateTestCase(testCase) {
+	function validateTestCase(testCase, fileName) {
 		const expectedNextCode = [];
 		let index = 0;
 		let inserted = 0;
@@ -187,6 +212,8 @@ function generateTest(fileName) {
 				index++;
 			}
 
+			testCase.previousText.split(''); // ?
+			expectedNextCode; // ?
 			index += edit.rangeLength;
 			inserted += edit.text.length;
 			for (let j = 0; j < edit.text.length; j++) {
@@ -225,11 +252,9 @@ function generateTest(fileName) {
 				}
 			}
 
-			throw new Error('testcase is invalid, nextText does not match specified edit');
+			throw new Error(`testcase ${fileName} is invalid, nextText does not match specified edit`);
 		}
 	}
-
-	tests; // ?
 
 	// for (const test of tests) {
 	// 	if (tests.filter(t => t.name === test.name).length >= 2) {
@@ -252,7 +277,7 @@ function generateTest(fileName) {
 		validateEdits(edits);
 		const expectedEdits = parseJson(test.expectedEdits || '[]');
 		validateExpectedEdits(expectedEdits);
-		validateTestCase({previousText, nextText, edits});
+		validateTestCase({previousText, nextText, edits}, fileName);
 		return `
 
   ${

@@ -1,0 +1,71 @@
+previousText:
+<form>
+  First name:<br>
+  <input type="text" name="firstName"><br>
+</form>
+
+edits:
+[
+  {
+    rangeOffset: 68
+    rangeLength: 0
+    text: '  Last name:<br>\n  <input type="text" name="lastName"><br>\n'
+  }
+]
+
+nextText:
+<form>
+  First name:<br>
+  <input type="text" name="firstName"><br>
+  Last name:<br>
+  <input type="text" name="lastName"><br>
+</form>
+
+expectedEdits:
+[
+  {
+     command: textReplace
+     payload: {
+       text: "\n  Last name:"
+     }
+  }
+  {
+    command: elementInsert
+    payload: {
+      nodeType: ElementNode
+      tag: br
+    }
+  }
+  {
+    command: elementInsert
+    payload: {
+      nodeType: TextNode
+      text: "\n  "
+    }
+  }
+  {
+    command: elementInsert
+    payload: {
+      nodeType: ElementNode
+      tag: input
+      attributes: {
+        name: '"lastName"'
+        type: '"text"'
+      }
+    }
+  }
+  {
+    command: elementInsert,
+    payload: {
+      nodeType: ElementNode
+      tag: br
+    }
+  }
+  {
+    command: elementInsert,
+    payload: {
+      nodeType: TextNode
+      text: "\n"
+    }
+  }
+]

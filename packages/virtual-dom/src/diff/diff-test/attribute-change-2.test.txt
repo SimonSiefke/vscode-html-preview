@@ -1,0 +1,25 @@
+previousText:
+<h1 class="gre"></h1>
+
+edits:
+[
+  {
+    rangeOffset: 14
+    rangeLength: 0
+    text: "en"
+  }
+]
+
+nextText:
+<h1 class="green"></h1>
+
+expectedEdits:
+[
+  {
+    command: attributeChange
+    payload: {
+      attribute: class
+      value: '"green"'
+    }
+  }
+]
