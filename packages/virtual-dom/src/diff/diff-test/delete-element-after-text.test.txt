@@ -1,0 +1,22 @@
+previousText:
+a<h1>b</h1>
+
+edits:
+[
+  {
+    rangeOffset: 1
+    rangeLength: 10
+    text: ""
+  }
+]
+
+nextText:
+a
+
+expectedEdits:
+[
+  {
+     command: elementDelete
+     payload: {}
+  }
+]

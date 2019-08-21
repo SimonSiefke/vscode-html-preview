@@ -1,4 +1,4 @@
-import * as fs from 'fs';
+import * as fs from 'fs-extra';
 import * as path from 'path';
 import {toJson} from 'really-relaxed-json';
 import {validate} from 'jsonschema';
@@ -9,47 +9,71 @@ const failingTests = [
 	'insertion-of-attribute-with-value.test.txt',
 	'insertion-of-multiple-elements-and-text-nodes.test.txt',
 	'attribute-value-insertion-at-the-end.test.txt',
-	'attribute-value-replacement.test.txt'
+	'attribute-value-replacement.test.txt',
+	'adding-body-tag-into-document.test.txt',
+	'adding-head-into-document.test.txt',
+	'deleting-an-attribute-character-by-character.test.txt',
+	'deleting-empty-tag-character-by-character.test.txt',
+	'deleting-non-empty-tag-character-by-character.test.txt',
+	'insert-h1-character-by-character.test.txt',
+	'pasting-tag-over-multiple-tags-and-text.test.txt',
+	'simple-tag-insert.test.txt must end with a new line',
+	'simple-tag-insert.test.txt',
+	'tag-changes-with-child-element.test.txt',
+	'typing-of-a-new-attribute-character-by-character.test.txt',
+	'wrapping-a-tag-around-some-text-character-by-character.test.txt',
+	'void-element-tag-changes.test.txt',
+	'diff.test.txt'
 ];
 
-const diffTestFiles = [
-	'closing-p-tag.test.txt',
-	'insert-element-as-last-child.test.txt',
-	'paste-tag-with-nested-tag.test.txt',
-	'text-insert-between-tags-and-after-whitespace.test.txt',
-	'insert-element-in-the-middle-of-text.test.txt',
-	'multiple-inserted-tags-and-text.test.txt',
-	'add-two-tags-at-once.test.txt',
-	'simple-tag-insert-immediately-after-previous-tag-before-text-before-tag.test.txt',
-	'inserting-element-as-first-child.test.txt',
-	'adding-space-after-closing-html.test.txt',
-	'delete-single-character-between-two-elements.test.txt',
-	'adding-html-tag-into-empty-document.test.txt',
-	'basic.test.txt',
-	'basic-element-insertion.test.txt',
-	'insert-only-angle-bracket.test.txt',
-	'text-from-scratch.test.txt',
-	'h1-to-h3.test.txt',
-	'h1.test.txt',
-	'attribute-delete-1.test.txt',
-	'useless-whitespace-change-1.test.txt',
-	'useless-whitespace-change-2.test.txt',
-	'attribute-change-1.test.txt',
-	'attribute-change-2.test.txt',
-	'basic-text-insertion.test.txt',
-	'basic-text-replace.test.txt',
-	'basic-text-addition.test.txt',
-	'element-addition-at-the-end.test.txt',
-	'element-addition-at-the-start.test.txt',
-	'text-insertion-in-nested-html.test.txt',
-	'insertion-of-attribute-with-value.test.txt',
-	'insertion-of-attribute-without-value.test.txt',
-	'insertion-of-multiple-elements-and-text-nodes.test.txt',
-	'attribute-name-change.test.txt',
-	'attribute-value-insertion-at-the-end.test.txt',
-	'attribute-value-replacement.test.txt',
-	'replace-text-with-element.test.txt'
-].filter(x => !failingTests.includes(x));
+const diffTestFiles = fs
+	.readdirSync(path.join(__dirname, '..'))
+	.filter(file => file.endsWith('.test.txt'))
+	// const diffTestFiles = [
+	// 	'closing-p-tag.test.txt',
+	// 	'insert-element-as-last-child.test.txt',
+	// 	'paste-tag-with-nested-tag.test.txt',
+	// 	'text-insert-between-tags-and-after-whitespace.test.txt',
+	// 	'insert-element-in-the-middle-of-text.test.txt',
+	// 	'multiple-inserted-tags-and-text.test.txt',
+	// 	'add-two-tags-at-once.test.txt',
+	// 	'simple-tag-insert-immediately-after-previous-tag-before-text-before-tag.test.txt',
+	// 	'inserting-element-as-first-child.test.txt',
+	// 	'adding-space-after-closing-html.test.txt',
+	// 	'delete-single-character-between-two-elements.test.txt',
+	// 	'adding-html-tag-into-empty-document.test.txt',
+	// 	'basic.test.txt',
+	// 	'basic-element-insertion.test.txt',
+	// 	'insert-only-angle-bracket.test.txt',
+	// 	'text-from-scratch.test.txt',
+	// 	'h1-to-h3.test.txt',
+	// 	'h1.test.txt',
+	// 	'attribute-delete-1.test.txt',
+	// 	'useless-whitespace-change-1.test.txt',
+	// 	'useless-whitespace-change-2.test.txt',
+	// 	'attribute-change-1.test.txt',
+	// 	'attribute-change-2.test.txt',
+	// 	'basic-text-insertion.test.txt',
+	// 	'basic-text-replace.test.txt',
+	// 	'basic-text-addition.test.txt',
+	// 	'element-addition-at-the-end.test.txt',
+	// 	'element-addition-at-the-start.test.txt',
+	// 	'text-insertion-in-nested-html.test.txt',
+	// 	'insertion-of-attribute-with-value.test.txt',
+	// 	'insertion-of-attribute-without-value.test.txt',
+	// 	'insertion-of-multiple-elements-and-text-nodes.test.txt',
+	// 	'attribute-name-change.test.txt',
+	// 	'attribute-value-insertion-at-the-end.test.txt',
+	// 	'attribute-value-replacement.test.txt',
+	// 	'replace-text-with-element.test.txt',
+	// 	'replace-element-with-text.test.txt',
+	// 	'replace-text-inside-element-with-attributes.test.txt'
+	// ]
+
+	.filter(x => !failingTests.includes(x));
+
+// fs.removeSync(path.join(__dirname, 'generated-tests'));
+fs.ensureDirSync(path.join(__dirname, 'generated-tests'));
 
 diffTestFiles.forEach(generateTest);
 
@@ -59,7 +83,7 @@ function generateTest(fileName) {
 	const lines = testFile.split('\n');
 
 	if (lines[lines.length - 1] !== '') {
-		throw new Error('file must end with a new line');
+		throw new Error(`file ${fileName} must end with a new line`);
 	}
 
 	let currentTest = {};
@@ -338,10 +362,6 @@ function generateTest(fileName) {
 }`
 	].join('\n\n');
 	const code = `${importCode}\n\n${functionCode}\n\n${outerCode}`;
-
-	if (!fs.existsSync(path.join(__dirname, 'generated-tests'))) {
-		fs.mkdirSync(path.join(__dirname, 'generated-tests'));
-	}
 
 	fs.writeFileSync(path.join(__dirname, 'generated-tests', fileName.replace('.txt', '.ts')), code);
 }

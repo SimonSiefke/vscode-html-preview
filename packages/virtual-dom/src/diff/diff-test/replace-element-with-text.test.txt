@@ -1,0 +1,29 @@
+previousText:
+<h1>hello world</h1>
+
+edits:
+[
+  {
+    rangeOffset: 0
+    rangeLength: 20
+    text: "hello world"
+  }
+]
+
+nextText:
+hello world
+
+expectedEdits:
+[
+   {
+     command: elementInsert
+     payload: {
+       nodeType: TextNode
+       text: "hello world"
+     }
+  }
+  {
+    command: elementDelete
+    payload: {}
+  }
+]

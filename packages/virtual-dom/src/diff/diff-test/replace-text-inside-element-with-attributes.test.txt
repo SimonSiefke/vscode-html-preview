@@ -1,0 +1,24 @@
+previousText:
+<h1 style="background:orange">a</h1>
+
+edits:
+[
+  {
+    rangeOffset: 30
+    rangeLength: 1
+    text: b
+  }
+]
+
+nextText:
+<h1 style="background:orange">b</h1>
+
+expectedEdits:
+[
+   {
+     command: textReplace
+     payload: {
+       text: b
+     }
+  }
+]

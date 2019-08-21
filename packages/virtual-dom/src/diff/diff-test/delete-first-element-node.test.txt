@@ -1,0 +1,27 @@
+previousText:
+<h1>hello</h1>
+<button>button</button>
+
+edits:
+[
+  {
+    rangeOffset: 0
+    rangeLength: 15
+    text: ""
+  }
+]
+
+nextText:
+<button>button</button>
+
+expectedEdits:
+[
+  {
+     command: elementDelete
+     payload: {}
+  }
+  {
+     command: elementDelete
+     payload: {}
+  }
+]

@@ -1,0 +1,24 @@
+previousText:
+abc
+
+edits:
+[
+  {
+    rangeOffset: 1
+    rangeLength: 1
+    text: ""
+  }
+]
+
+nextText:
+ac
+
+expectedEdits:
+[
+  {
+     command: textReplace
+     payload: {
+       text: ac
+     }
+  }
+]

@@ -1,0 +1,22 @@
+previousText:
+a<!--b--><!--c-->
+
+edits:
+[
+  {
+    rangeOffset: 1
+    rangeLength: 8
+    text: ""
+  }
+]
+
+nextText:
+a<!--c-->
+
+expectedEdits:
+[
+  {
+    command: elementDelete
+    payload: {}
+  }
+]
