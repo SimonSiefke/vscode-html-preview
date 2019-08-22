@@ -217,7 +217,8 @@ async function fetchNodeMap() {
 			alert('error, failed to hydrate dom (2)');
 		}
 
-		// $node.removeAttribute('data-id'); // TODO enable this again later
+		$node.removeAttribute('data-id'); // TODO remove this while debugging
+
 		nodeMap[node.id] = $node;
 		const $children = $node.childNodes;
 		for (let i = 0; i < node.children.length; i++) {
