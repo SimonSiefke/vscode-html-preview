@@ -1,0 +1,40 @@
+previousText:
+<div>
+  <h1>hello world</h1>
+</div>
+
+edits:
+[
+  {
+    rangeOffset: 8
+    rangeLength: 20
+    text: "<button>hello world</button>"
+  }
+]
+
+nextText:
+<div>
+  <button>hello world</button>
+</div>
+
+expectedEdits:
+[
+  {
+     command: elementDelete
+     payload: {}
+  }
+  {
+     command: elementInsert
+     payload: {
+       nodeType: ElementNode
+       tag: button
+     }
+  }
+  {
+     command: elementInsert
+     payload: {
+       nodeType: TextNode
+       text: "hello world"
+     }
+  }
+]

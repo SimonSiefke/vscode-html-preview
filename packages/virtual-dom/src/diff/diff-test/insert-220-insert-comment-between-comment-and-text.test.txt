@@ -1,0 +1,25 @@
+previousText:
+<!--a-->c
+
+edits:
+[
+  {
+    rangeOffset: 8
+    rangeLength: 0
+    text: <!--b-->
+  }
+]
+
+nextText:
+<!--a--><!--b-->c
+
+expectedEdits:
+[
+  {
+    command: elementInsert
+    payload: {
+      nodeType: CommentNode
+      text: b
+    }
+  }
+]

@@ -1,0 +1,51 @@
+previousText:
+<html>
+
+<head>
+  <title>Document</title>
+  <style>
+    }
+  </style>
+</head>
+
+<body>
+  <h1 style="height:1000px">hello world!!!!!</h1>
+  <p>hello world!!!</p>
+</body>
+
+</html>
+
+edits:
+[
+  {
+    rangeOffset: 52
+    rangeLength: 6
+    text: ""
+  }
+]
+
+nextText:
+<html>
+
+<head>
+  <title>Document</title>
+  <style>
+  </style>
+</head>
+
+<body>
+  <h1 style="height:1000px">hello world!!!!!</h1>
+  <p>hello world!!!</p>
+</body>
+
+</html>
+
+expectedEdits:
+[
+  {
+     command: textReplace
+     payload: {
+       text: "\n  "
+     }
+  }
+]

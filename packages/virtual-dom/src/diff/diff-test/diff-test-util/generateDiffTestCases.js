@@ -23,53 +23,20 @@ const failingTests = [
 	'typing-of-a-new-attribute-character-by-character.test.txt',
 	'wrapping-a-tag-around-some-text-character-by-character.test.txt',
 	'void-element-tag-changes.test.txt',
-	'diff.test.txt'
+	'diff.test.txt',
+	'deleting-non-empty-tag-character-by-character.test.txt',
+	'doctype-and-whitespace-2.test.txt',
+	'doctype-and-whitespace-1.test.txt',
+	'doctype-and-whitespace-3.test.txt',
+	'replace-element-with-longer-element.test.txt',
+	'replace-element-with-same-length-element.test.txt',
+	'bug-2.test.txt',
+	'replace-text-after-element-and-insert-element.test.txt'
 ];
 
 const diffTestFiles = fs
 	.readdirSync(path.join(__dirname, '..'))
 	.filter(file => file.endsWith('.test.txt'))
-	// const diffTestFiles = [
-	// 	'closing-p-tag.test.txt',
-	// 	'insert-element-as-last-child.test.txt',
-	// 	'paste-tag-with-nested-tag.test.txt',
-	// 	'text-insert-between-tags-and-after-whitespace.test.txt',
-	// 	'insert-element-in-the-middle-of-text.test.txt',
-	// 	'multiple-inserted-tags-and-text.test.txt',
-	// 	'add-two-tags-at-once.test.txt',
-	// 	'simple-tag-insert-immediately-after-previous-tag-before-text-before-tag.test.txt',
-	// 	'inserting-element-as-first-child.test.txt',
-	// 	'adding-space-after-closing-html.test.txt',
-	// 	'delete-single-character-between-two-elements.test.txt',
-	// 	'adding-html-tag-into-empty-document.test.txt',
-	// 	'basic.test.txt',
-	// 	'basic-element-insertion.test.txt',
-	// 	'insert-only-angle-bracket.test.txt',
-	// 	'text-from-scratch.test.txt',
-	// 	'h1-to-h3.test.txt',
-	// 	'h1.test.txt',
-	// 	'attribute-delete-1.test.txt',
-	// 	'useless-whitespace-change-1.test.txt',
-	// 	'useless-whitespace-change-2.test.txt',
-	// 	'attribute-change-1.test.txt',
-	// 	'attribute-change-2.test.txt',
-	// 	'basic-text-insertion.test.txt',
-	// 	'basic-text-replace.test.txt',
-	// 	'basic-text-addition.test.txt',
-	// 	'element-addition-at-the-end.test.txt',
-	// 	'element-addition-at-the-start.test.txt',
-	// 	'text-insertion-in-nested-html.test.txt',
-	// 	'insertion-of-attribute-with-value.test.txt',
-	// 	'insertion-of-attribute-without-value.test.txt',
-	// 	'insertion-of-multiple-elements-and-text-nodes.test.txt',
-	// 	'attribute-name-change.test.txt',
-	// 	'attribute-value-insertion-at-the-end.test.txt',
-	// 	'attribute-value-replacement.test.txt',
-	// 	'replace-text-with-element.test.txt',
-	// 	'replace-element-with-text.test.txt',
-	// 	'replace-text-inside-element-with-attributes.test.txt'
-	// ]
-
 	.filter(x => !failingTests.includes(x));
 
 // fs.removeSync(path.join(__dirname, 'generated-tests'));

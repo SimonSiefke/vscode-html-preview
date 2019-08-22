@@ -1,0 +1,52 @@
+previousText:
+<head>
+  <meta charset="utf-8" />
+</head>
+
+<body>
+  <p>dddddddddddd</p>
+</body>
+
+edits:
+[
+  {
+    rangeOffset: 71
+    rangeLength: 0
+    text: "\n  <p>dddddddddddd</p>"
+  }
+]
+
+nextText:
+<head>
+  <meta charset="utf-8" />
+</head>
+
+<body>
+  <p>dddddddddddd</p>
+  <p>dddddddddddd</p>
+</body>
+
+expectedEdits:
+[
+  {
+     command: elementInsert
+     payload: {
+       nodeType: TextNode
+       text: "\n  "
+     }
+  }
+  {
+    command: elementInsert
+    payload:{
+      nodeType: ElementNode
+      tag: p
+    }
+  }
+  {
+    command: elementInsert
+    payload:{
+      nodeType: TextNode
+      text: dddddddddddd
+    }
+  }
+]

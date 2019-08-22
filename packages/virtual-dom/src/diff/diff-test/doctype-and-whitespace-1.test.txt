@@ -1,0 +1,26 @@
+previousText:
+<!DOCTYPE html>
+
+edits:
+[
+  {
+    rangeOffset: 15
+    rangeLength: 0
+    text: "\n"
+  }
+]
+
+nextText:
+<!DOCTYPE html>
+
+
+expectedEdits:
+[
+  {
+    command: elementInsert
+    payload: {
+      nodeType: TextNode
+      text: "\n"
+    }
+  }
+]

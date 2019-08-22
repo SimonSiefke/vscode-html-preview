@@ -1,0 +1,24 @@
+previousText:
+a<!--c-->
+
+edits:
+[
+  {
+    rangeOffset: 1
+    rangeLength: 0
+    text: b
+  }
+]
+
+nextText:
+ab<!--c-->
+
+expectedEdits:
+[
+  {
+     command: textReplace
+     payload: {
+       text: ab
+     }
+  }
+]

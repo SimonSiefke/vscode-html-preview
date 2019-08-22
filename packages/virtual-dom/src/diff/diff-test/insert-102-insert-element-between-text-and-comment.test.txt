@@ -1,0 +1,32 @@
+previousText:
+a<!--c-->
+
+edits:
+[
+  {
+    rangeOffset: 1
+    rangeLength: 0
+    text: <h1>b</h1>
+  }
+]
+
+nextText:
+a<h1>b</h1><!--c-->
+
+expectedEdits:
+[
+  {
+    command: elementInsert
+    payload: {
+      nodeType: ElementNode
+      tag: h1
+    }
+  }
+  {
+    command: elementInsert
+    payload: {
+      nodeType: TextNode
+      text: b
+    }
+  }
+]

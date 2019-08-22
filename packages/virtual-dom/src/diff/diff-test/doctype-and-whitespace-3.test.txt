@@ -1,0 +1,23 @@
+previousText:
+<!doctype html>
+
+
+edits:
+[
+  {
+    rangeOffset: 15
+    rangeLength: 1
+    text: ""
+  }
+]
+
+nextText:
+<!doctype html>
+
+expectedEdits:
+[
+  {
+    command: elementDelete,
+    payload: {}
+  }
+]

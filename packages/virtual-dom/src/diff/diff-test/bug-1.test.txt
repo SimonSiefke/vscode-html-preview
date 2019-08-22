@@ -1,0 +1,48 @@
+previousText:
+<html>
+
+<head>
+  <title>Document</title>
+  <style>
+  </style>
+</head>
+
+<body>
+
+</body>
+
+</html>
+
+edits:
+[
+  {
+    rangeOffset: 53
+    rangeLength: 0
+    text: "  "
+  }
+]
+
+nextText:
+<html>
+
+<head>
+  <title>Document</title>
+  <style>
+    </style>
+</head>
+
+<body>
+
+</body>
+
+</html>
+
+expectedEdits:
+[
+  {
+     command: textReplace
+     payload: {
+       text: "\n    "
+     }
+  }
+]
