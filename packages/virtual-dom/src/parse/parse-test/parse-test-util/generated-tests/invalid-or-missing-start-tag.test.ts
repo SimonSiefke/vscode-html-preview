@@ -10,6 +10,10 @@ import { parseHtml } from '../../../parse'
 		}
 		delete htmlDocument.id
 		delete htmlDocument.start
+		delete htmlDocument.childSignature
+		delete htmlDocument.attributeSignature
+		delete htmlDocument.subtreeSignature
+		delete htmlDocument.textSignature
 		if(htmlDocument.nodeType==="ElementNode"){
 			htmlDocument.children = htmlDocument.children.map(adjustHtmlDocument)
 		}
@@ -106,7 +110,7 @@ test(`missing angle bracket at the end of start tag`, () => {
 </div>`)
 	const expectedError = {
     "type": "invalid",
-    "message": "wrong end tag",
+    "message": "wrong end tag (expected div, got button)",
     "offset": 25
   }
 		expect(error).toEqual(expectedError)

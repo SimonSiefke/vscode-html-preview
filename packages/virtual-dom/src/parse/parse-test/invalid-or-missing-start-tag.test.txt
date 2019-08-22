@@ -82,6 +82,6 @@ text:
 error:
 {
   type: invalid
-  message: "wrong end tag"
+  message: "wrong end tag (expected div, got button)"
   offset: 25
 }

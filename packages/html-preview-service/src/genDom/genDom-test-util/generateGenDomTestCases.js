@@ -72,7 +72,7 @@ function validateName(name) {
 }
 
 const jestCases = tests.map(test => {
-	let {input} = test;
+	let input = test.input.replace(/\\/g, '\\\\');
 	validateInput(input);
 	input = input.replace(/`/g, '\\`');
 	let {expectedOutput} = test;

@@ -1,0 +1,324 @@
+
+        
+            {
+            
+             "children": Array [
+                {
+                 "nodeType": "TextNode",
+                 "text": "
+       ",
+               },
+                {
+                 "attributes":  {
+                   "charset": "\"utf-8\"",
+                 },
+                 "children": Array [],
+                 "nodeType": "ElementNode",
+                 "tag": "meta",
+               },
+                {
+                 "nodeType": "TextNode",
+                 "text": "
+       ",
+               },
+                {
+                 "attributes":  {},
+                 "children": Array [],
+                 "nodeType": "ElementNode",
+                 "tag": "title",
+               },
+                {
+                 "nodeType": "TextNode",
+                 "text": "
+       ",
+               },
+                {
+                 "attributes":  {
+                   "content": "\"\"",
+                   "name": "\"description\"",
+                 },
+                 "children": Array [],
+                 "nodeType": "ElementNode",
+                 "tag": "meta",
+               },
+                {
+                 "nodeType": "TextNode",
+                 "text": "
+       ",
+               },
+                {
+                 "attributes":  {
+                   "content": "\"width=device-width, initial-scale=1\"",
+                   "name": "\"viewport\"",
+                 },
+                 "children": Array [],
+                 "nodeType": "ElementNode",
+                 "tag": "meta",
+               },
+                {
+                 "nodeType": "TextNode",
+                 "text": "
+     
+       ",
+               },
+                {
+                 "attributes":  {
+                   "href": "\"site.webmanifest\"",
+                   "rel": "\"manifest\"",
+                 },
+                 "children": Array [],
+                 "nodeType": "ElementNode",
+                 "tag": "link",
+               },
+                {
+                 "nodeType": "TextNode",
+                 "text": "
+       ",
+               },
+                {
+                 "attributes":  {
+                   "href": "\"icon.png\"",
+                   "rel": "\"apple-touch-icon\"",
+                 },
+                 "children": Array [],
+                 "nodeType": "ElementNode",
+                 "tag": "link",
+               },
+                {
+                 "nodeType": "TextNode",
+                 "text": "
+       ",
+               },
+                {
+                 "nodeType": "CommentNode",
+                 "text": " Place favicon.ico in the root directory ",
+               },
+                {
+                 "nodeType": "TextNode",
+                 "text": "
+     
+       ",
+               },
+                {
+                 "attributes":  {
+                   "href": "\"css/normalize.css\"",
+                   "rel": "\"stylesheet\"",
+                 },
+                 "children": Array [],
+                 "nodeType": "ElementNode",
+                 "tag": "link",
+               },
+                {
+                 "nodeType": "TextNode",
+                 "text": "
+       ",
+               },
+                {
+                 "attributes":  {
+                   "href": "\"css/main.css\"",
+                   "rel": "\"stylesheet\"",
+                 },
+                 "children": Array [],
+                 "nodeType": "ElementNode",
+                 "tag": "link",
+               },
+                {
+                 "nodeType": "TextNode",
+                 "text": "
+     
+       ",
+               },
+                {
+                 "attributes":  {
+                   "content": "\"#fafafa\"",
+                   "name": "\"theme-color\"",
+                 },
+                 "children": Array [],
+                 "nodeType": "ElementNode",
+                 "tag": "meta",
+               },
+                {
+                 "nodeType": "TextNode",
+                 "text": "
+     ",
+               },
+             ],
+            
+           },
+            {
+             "nodeType": "TextNode",
+             "text": "
+     
+     ",
+           },
+            {
+             "attributes":  {},
+             "children": Array [
+                {
+                 "nodeType": "TextNode",
+                 "text": "
+       ",
+               },
+                {
+                 "nodeType": "CommentNode",
+                 "text": "[if IE]>
+         <p class=\"browserupgrade\">You are using an <strong>outdated</strong> browser. Please <a href=\"https://browsehappy.com/\">upgrade your browser</a> to improve your experience and security.</p>
+       <![endif]",
+               },
+                {
+                 "nodeType": "TextNode",
+                 "text": "
+     
+       ",
+               },
+                {
+                 "nodeType": "CommentNode",
+                 "text": " Add your site or application content here ",
+               },
+                {
+                 "nodeType": "TextNode",
+                 "text": "
+       ",
+               },
+               {
+                "attributes":  {},
+                "children": Array [
+                   {
+                    "nodeType": "TextNode",
+                    "text": "Hello world! This is HTML5 Boilerplate.",
+                  },
+                ],
+                "nodeType": "ElementNode",
+                "tag": "p",
+              },
+                {
+                 "nodeType": "TextNode",
+                 "text": "
+       ",
+               },
+                {
+                 "attributes":  {
+                   "src": "\"js/vendor/modernizr-3.7.1.min.js\"",
+                 },
+                 "children": Array [],
+                 "nodeType": "ElementNode",
+                 "tag": "script",
+               },
+                {
+                 "nodeType": "TextNode",
+                 "text": "
+       ",
+               },
+                {
+                 "attributes":  {
+                   "crossorigin": "\"anonymous\"",
+                   "integrity": "\"sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=\"",
+                   "src": "\"https://code.jquery.com/jquery-3.4.1.min.js\"",
+                 },
+                 "children": Array [],
+                 "nodeType": "ElementNode",
+                 "tag": "script",
+               },
+                {
+                 "nodeType": "TextNode",
+                 "text": "
+       ",
+               },
+                {
+                 "attributes":  {},
+                 "children": Array [
+                    {
+                     "nodeType": "TextNode",
+                     "text": "window.jQuery || document.write('<script src=\"js/vendor/jquery-3.4.1.min.js\"><\\/script>')",
+                   },
+                 ],
+                 "nodeType": "ElementNode",
+                 "tag": "script",
+               },
+                {
+                 "nodeType": "TextNode",
+                 "text": "
+       ",
+               },
+                {
+                 "attributes":  {
+                   "src": "\"js/plugins.js\"",
+                 },
+                 "children": Array [],
+                 "nodeType": "ElementNode",
+                 "tag": "script",
+               },
+                {
+                 "nodeType": "TextNode",
+                 "text": "
+       ",
+               },
+                {
+                 "attributes":  {
+                   "src": "\"js/main.js\"",
+                 },
+                 "children": Array [],
+                 "nodeType": "ElementNode",
+                 "tag": "script",
+               },
+                {
+                 "nodeType": "TextNode",
+                 "text": "
+     
+       ",
+               },
+                {
+                 "nodeType": "CommentNode",
+                 "text": " Google Analytics: change UA-XXXXX-Y to be your site's ID. ",
+               },
+                {
+                 "nodeType": "TextNode",
+                 "text": "
+       ",
+               },
+                {
+                 "attributes":  {},
+                 "children": Array [
+                    {
+                     "nodeType": "TextNode",
+                     "text": "
+         window.ga = function () { ga.q.push(arguments) }; ga.q = []; ga.l = +new Date;
+         ga('create', 'UA-XXXXX-Y', 'auto'); ga('set','transport','beacon'); ga('send', 'pageview')
+       ",
+                   },
+                 ],
+                 "nodeType": "ElementNode",
+                 "tag": "script",
+               },
+                {
+                 "nodeType": "TextNode",
+                 "text": "
+       ",
+               },
+                {
+                 "attributes":  {
+                   "async": null,
+                   "src": "\"https://www.google-analytics.com/analytics.js\"",
+                 },
+                 "children": Array [],
+                 "nodeType": "ElementNode",
+                 "tag": "script",
+               },
+                {
+                 "nodeType": "TextNode",
+                 "text": "
+     ",
+               },
+             ],
+             "nodeType": "ElementNode",
+             "tag": "body",
+           },
+            {
+             "nodeType": "TextNode",
+             "text": "
+     
+     ",
+           },
+         ],
+        
+       },

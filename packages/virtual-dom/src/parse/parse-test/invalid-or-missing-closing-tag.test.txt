@@ -86,7 +86,7 @@ text:
 error:
 {
   type: invalid
-  message: "wrong end tag"
+  message: "wrong end tag (expected h1, got h)"
   offset: 18
 }
 
@@ -112,6 +112,6 @@ text:
 error:
 {
   type: invalid
-  message: "wrong end tag"
+  message: "wrong end tag (expected undefined, got br)"
   offset: 10
 }

@@ -10,6 +10,10 @@ import { parseHtml } from '../../../parse'
 		}
 		delete htmlDocument.id
 		delete htmlDocument.start
+		delete htmlDocument.childSignature
+		delete htmlDocument.attributeSignature
+		delete htmlDocument.subtreeSignature
+		delete htmlDocument.textSignature
 		if(htmlDocument.nodeType==="ElementNode"){
 			htmlDocument.children = htmlDocument.children.map(adjustHtmlDocument)
 		}
@@ -110,7 +114,7 @@ test(`wrong closing tag`, () => {
   const {error, htmlDocument} = parseHtml(`<h1>hello world</h>`)
 	const expectedError = {
     "type": "invalid",
-    "message": "wrong end tag",
+    "message": "wrong end tag (expected h1, got h)",
     "offset": 18
   }
 		expect(error).toEqual(expectedError)
@@ -134,7 +138,7 @@ test(`closing self-closed element`, () => {
   const {error, htmlDocument} = parseHtml(`<br>hi</br>`)
 	const expectedError = {
     "type": "invalid",
-    "message": "wrong end tag",
+    "message": "wrong end tag (expected undefined, got br)",
     "offset": 10
   }
 		expect(error).toEqual(expectedError)

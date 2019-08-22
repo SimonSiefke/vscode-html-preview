@@ -169,7 +169,12 @@ export function createScanner(
 				// console.log(stream.peekRight(), stream.peekRight(1));
 				if (stream.peekRight() === '<') {
 					stream.advance(1);
-					if (/[a-zA-Z!]/.test(stream.peekRight())) {
+					if (/[a-zA-Z]/.test(stream.peekRight())) {
+						state = 'after-opening-start-tag';
+						return 'start-tag-open';
+					}
+
+					if (stream.nextChars(8).toLowerCase() === '!doctype') {
 						state = 'after-opening-start-tag';
 						return 'start-tag-open';
 					}

@@ -11,7 +11,8 @@ const testFileNames = [
 	'single-angle-bracket.test.txt',
 	'invalid-or-missing-start-tag.test.txt',
 	'empty-fragment.test.txt',
-	'comment.test.txt'
+	'comment.test.txt',
+	'html5-boilerplate.test.txt'
 ].filter(x => !failing.includes(x));
 
 testFileNames.forEach(generateTest);
@@ -144,6 +145,10 @@ function jestCases(tests, fileName) {
 		}
 		delete htmlDocument.id
 		delete htmlDocument.start
+		delete htmlDocument.childSignature
+		delete htmlDocument.attributeSignature
+		delete htmlDocument.subtreeSignature
+		delete htmlDocument.textSignature
 		if(htmlDocument.nodeType==="ElementNode"){
 			htmlDocument.children = htmlDocument.children.map(adjustHtmlDocument)
 		}
@@ -180,7 +185,7 @@ function jestCases(tests, fileName) {
 }
 
 function jestCase(test) {
-	const {text} = test;
+	const text = test.text.replace(/\\/g, '\\\\'); // need to escape single backslash
 	validateText(text);
 
 	const error = parseJson(test.error || 'null');

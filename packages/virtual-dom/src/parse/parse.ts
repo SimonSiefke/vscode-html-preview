@@ -214,7 +214,7 @@ function parse(
 						return {
 							error: {
 								type: 'invalid',
-								message: 'wrong end tag',
+								message: `wrong end tag (expected ${curr.tag}, got ${endTagName})`,
 								offset: scanner.getTokenOffset()
 							}
 						};

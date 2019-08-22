@@ -259,9 +259,9 @@ input:
 
   <!-- Add your site or application content here -->
   <p>Hello world! This is HTML5 Boilerplate.</p>
-  <script src="js/vendor/modernizr-{{MODERNIZR_VERSION}}.min.js"></script>
-  <script src="https://code.jquery.com/jquery-{{JQUERY_VERSION}}.min.js" integrity="{{JQUERY_SRI_HASH}}" crossorigin="anonymous"></script>
-  <script>window.jQuery || document.write('<script src="js/vendor/jquery-{{JQUERY_VERSION}}.min.js"></script>')</script>
+  <script src="js/vendor/modernizr-3.7.1.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+  <script>window.jQuery || document.write('<script src="js/vendor/jquery-3.4.1.min.js"><\/script>')</script>
   <script src="js/plugins.js"></script>
   <script src="js/main.js"></script>
 
@@ -302,18 +302,18 @@ expectedOutput:
 
   <!-- Add your site or application content here -->
   <p data-id="34">Hello world! This is HTML5 Boilerplate.</p>
-  <script data-id="37" src="js/vendor/modernizr-{{MODERNIZR_VERSION}}.min.js"></script>
-  <script data-id="39" src="https://code.jquery.com/jquery-{{JQUERY_VERSION}}.min.js" integrity="{{JQUERY_SRI_HASH}}" crossorigin="anonymous"></script>
-  <script data-id="41">window.jQuery || document.write('<script src="js/vendor/jquery-{{JQUERY_VERSION}}.min.js"></script>')</script>
-  <script data-id="45" src="js/plugins.js"></script>
-  <script data-id="47" src="js/main.js"></script>
+  <script data-id="37" src="js/vendor/modernizr-3.7.1.min.js"></script>
+  <script data-id="39" src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+  <script data-id="41">window.jQuery || document.write('<script src="js/vendor/jquery-3.4.1.min.js"><\\/script>')</script>
+  <script data-id="44" src="js/plugins.js"></script>
+  <script data-id="46" src="js/main.js"></script>
 
   <!-- Google Analytics: change UA-XXXXX-Y to be your site's ID. -->
-  <script data-id="51">
+  <script data-id="50">
     window.ga = function () { ga.q.push(arguments) }; ga.q = []; ga.l = +new Date;
     ga('create', 'UA-XXXXX-Y', 'auto'); ga('set','transport','beacon'); ga('send', 'pageview')
   </script>
-  <script data-id="54" src="https://www.google-analytics.com/analytics.js" async></script>
+  <script data-id="53" src="https://www.google-analytics.com/analytics.js" async></script>
 </body>
 
 </html>

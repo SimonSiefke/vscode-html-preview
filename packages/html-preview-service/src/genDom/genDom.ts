@@ -4,7 +4,10 @@ export function genDom(orig) {
 	let gen = '';
 	let lastIndex = 0;
 	// @ts-ignore
-	const {htmlDocument: dom} = parseHtml(orig); // ?
+	const {htmlDocument: dom, error} = parseHtml(orig); // ?
+	if (error) {
+		throw error;
+	}
 
 	// Walk through the dom nodes and insert the 'data-brackets-id' attribute at the
 	// end of the open tag
