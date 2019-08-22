@@ -174,18 +174,26 @@ export function diff(
 
 		if (newNode.nodeType === 'ElementNode' && oldNode.nodeType === 'ElementNode') {
 			if (newNode.id === oldNode.id) {
-				if (newNode.attributeSignature !== oldNode.attributeSignature) {
-					edits = [...edits, ...attributeEdits(oldNode, newNode)];
-				}
+				if (oldNode.tag === newNode.tag) {
+					if (newNode.attributeSignature !== oldNode.attributeSignature) {
+						edits = [...edits, ...attributeEdits(oldNode, newNode)];
+					}
 
-				if (newNode.subtreeSignature !== oldNode.subtreeSignature) {
+					if (newNode.subtreeSignature !== oldNode.subtreeSignature) {
+						edits = [
+							...edits,
+							...diff(oldNode.children, newNode.children, {
+								parentId: newNode.id,
+								oldNodeMap,
+								newNodeMap
+							})
+						];
+					}
+				} else {
 					edits = [
 						...edits,
-						...diff(oldNode.children, newNode.children, {
-							parentId: newNode.id,
-							oldNodeMap,
-							newNodeMap
-						})
+						elementDelete(oldNode),
+						...elementInsert(newNode, parentId, newIndex, newNodeMap)
 					];
 				}
 
@@ -431,19 +439,45 @@ Array.prototype.pretty = function () {
 // 	);
 // };
 
-const testCase = {
-	previousDom: '<h1></h1>',
+// const testCase = {
+// 	previousDom: '<h1></h1>',
 
-	nextDom: '<h1>hello</h1>'
+// 	nextDom: '<h2>hello</h2>'
+// };
+// const parser = createParser();
+// const {htmlDocument: parsedH1} = parser.parse(testCase.previousDom);
+// const oldNodeMap = parser.nodeMap; // ?
+// const {htmlDocument: parsedH2} = parser.edit(testCase.nextDom, [
+// 	{
+// 		rangeOffset: 0,
+// 		rangeLength: 9,
+// 		text: '<h2>hello</h2>'
+// 	}
+// ]);
+// const newNodeMap = parser.nodeMap; // ?
+// // parsedH1.pretty(); // ?
+// // parsedH2.pretty(); // ?
+// diff(parsedH1.children, parsedH2.children, {
+// 	oldNodeMap,
+// 	newNodeMap
+// }); // ?
+const testCase = {
+	previousDom: `<div>
+  <h1>hello world</h1>
+</div>`,
+
+	nextDom: `<div>
+  <h2>hello world</h2>
+</div>`
 };
 const parser = createParser();
 const {htmlDocument: parsedH1} = parser.parse(testCase.previousDom);
 const oldNodeMap = parser.nodeMap; // ?
 const {htmlDocument: parsedH2} = parser.edit(testCase.nextDom, [
 	{
-		rangeOffset: 4,
-		rangeLength: 0,
-		text: 'hello'
+		rangeOffset: 8,
+		rangeLength: 20,
+		text: '<h2>hello world</h2>'
 	}
 ]);
 const newNodeMap = parser.nodeMap; // ?

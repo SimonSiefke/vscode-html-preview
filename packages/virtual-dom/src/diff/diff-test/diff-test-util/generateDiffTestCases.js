@@ -28,8 +28,6 @@ const failingTests = [
 	'doctype-and-whitespace-2.test.txt',
 	'doctype-and-whitespace-1.test.txt',
 	'doctype-and-whitespace-3.test.txt',
-	'replace-element-with-longer-element.test.txt',
-	'replace-element-with-same-length-element.test.txt',
 	'bug-2.test.txt',
 	'replace-text-after-element-and-insert-element.test.txt'
 ];

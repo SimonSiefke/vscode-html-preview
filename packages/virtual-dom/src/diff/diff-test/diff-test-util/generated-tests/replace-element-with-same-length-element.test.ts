@@ -20,19 +20,21 @@ function adjustExpectedEdits(expectedEdits){
   return expectedEdits
 }
 
-test(`multiple-inserted-tags-and-text.test.txt`, () => {
+test(`replace-element-with-same-length-element.test.txt`, () => {
 	const parser = createParser()
 	let previousDom
 	  {
 
 
-  previousDom = parser.parse("<h1><strong>Emphasized</strong> Hello </h1>").htmlDocument
+  previousDom = parser.parse("<div>\n  <h1>hello world</h1>\n</div>").htmlDocument
   const oldNodeMap = parser.nodeMap
-  const {htmlDocument:nextDom, error} = parser.edit(`<h1><em>Foo</em> bar <strong>Baz!</strong> Hello </h1>`, [
+  const {htmlDocument:nextDom, error} = parser.edit(`<div>
+  <h2>hello world</h2>
+</div>`, [
     {
-      "rangeOffset": 4,
-      "rangeLength": 27,
-      "text": "<em>Foo</em> bar <strong>Baz!</strong>"
+      "rangeOffset": 8,
+      "rangeLength": 20,
+      "text": "<h2>hello world</h2>"
     }
   ])
 	const expectedError = undefined;
@@ -53,35 +55,14 @@ test(`multiple-inserted-tags-and-text.test.txt`, () => {
       "command": "elementInsert",
       "payload": {
         "nodeType": "ElementNode",
-        "tag": "em"
+        "tag": "h2"
       }
     },
     {
       "command": "elementInsert",
       "payload": {
         "nodeType": "TextNode",
-        "text": "Foo"
-      }
-    },
-    {
-      "command": "elementInsert",
-      "payload": {
-        "nodeType": "TextNode",
-        "text": " bar "
-      }
-    },
-    {
-      "command": "elementInsert",
-      "payload": {
-        "nodeType": "ElementNode",
-        "tag": "strong"
-      }
-    },
-    {
-      "command": "elementInsert",
-      "payload": {
-        "nodeType": "TextNode",
-        "text": "Baz!"
+        "text": "hello world"
       }
     }
   ]

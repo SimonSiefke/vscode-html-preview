@@ -104,6 +104,16 @@ function parse(
 
 		nextId: if (prefixSums[scanner.getTokenOffset()]) {
 			id = prefixSums[scanner.getTokenOffset()];
+			const previousNode = nodeMap[id];
+			// when there was a different element, use a new id
+			// if (
+			// 	previousNode.nodeType === 'ElementNode' &&
+			// 	node.nodeType === 'ElementNode' &&
+			// 	previousNode.tag !== node.tag
+			// ) {
+			// 	console.log('not same tag', previousNode.tag, node.tag);
+			// 	id = nextId();
+			// }
 		} else {
 			if (node.nodeType === 'TextNode') {
 				// Merge text nodes
@@ -355,7 +365,8 @@ function updateSignature(node) {
 		for (const child of node.children) {
 			if (child.nodeType === 'ElementNode') {
 				childSignatures += String(child.id);
-				subtreeSignature += String(child.id) + child.attributeSignature + child.subtreeSignature;
+				subtreeSignature +=
+					String(child.id) + child.attributeSignature + child.subtreeSignature + child.tag;
 			} else {
 				childSignatures += child.textSignature;
 				subtreeSignature += child.textSignature;
