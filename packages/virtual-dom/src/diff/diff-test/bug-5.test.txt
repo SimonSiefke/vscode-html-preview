@@ -1,0 +1,41 @@
+previousText:
+<h1>hello world</h1>
+
+<input type="checkbox" />
+<br />
+<input type="checkbox" />
+<br />
+<input type="checkbox" />
+<br />
+this is text
+
+edits:
+[
+  {
+    rangeOffset: 21
+    rangeLength: 26
+    text: ""
+  }
+]
+
+nextText:
+<h1>hello world</h1>
+
+<br />
+<input type="checkbox" />
+<br />
+<input type="checkbox" />
+<br />
+this is text
+
+expectedEdits:
+[
+  {
+    command: elementDelete
+    payload: {}
+  }
+  {
+    command: elementDelete
+    payload: {}
+  }
+]

@@ -8,6 +8,7 @@ const failingTests = [
 	// 'wrapping-a-tag-around-some-text-character-by-character.test.txt',
 	'diff.test.txt',
 	'bug-2.test.txt',
+	'bug-5.test.txt',
 	'replace-text-after-element-and-insert-element.test.txt'
 ];
 
