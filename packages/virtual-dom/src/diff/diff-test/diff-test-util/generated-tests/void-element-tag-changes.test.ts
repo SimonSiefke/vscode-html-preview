@@ -37,9 +37,10 @@ test(`void-element-tag-changes.test.txt`, () => {
   ])
 	const expectedError = undefined;
 	if(error && !expectedError){
+		console.error(error)
 		throw new Error('did not expect error')
 	} else if(expectedError && !error){
-		throw new Error('expected error')
+		throw new Error(`expected error for <br alt="A screenshot showing CSS Quick Edit" src="screenshots/brackets-quick-edit.png" />`)
 	} else if(!expectedError && !error){
 
 		const newNodeMap = parser.nodeMap

@@ -13,7 +13,7 @@ edits:
 nextText:
 <p><span>some text</p>
 
-invalid:
+error:
 true
 
 previousText:
@@ -31,7 +31,7 @@ edits:
 nextText:
 <p><span>some text</span</p>
 
-invalid:
+error:
 true
 
 previousText:
@@ -52,10 +52,6 @@ nextText:
 expectedEdits:
 [
   {
-    command: elementDelete
-    payload: {}
-  }
-  {
     command: elementInsert
     payload: {
       nodeType: ElementNode
@@ -69,5 +65,9 @@ expectedEdits:
       nodeType: TextNode
       text: "some text"
     }
+  }
+  {
+    command: elementDelete
+    payload: {}
   }
 ]

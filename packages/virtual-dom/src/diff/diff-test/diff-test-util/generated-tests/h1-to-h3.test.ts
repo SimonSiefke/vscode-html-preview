@@ -37,9 +37,10 @@ test(`h1-to-h3.test.txt`, () => {
   ])
 	const expectedError = undefined;
 	if(error && !expectedError){
+		console.error(error)
 		throw new Error('did not expect error')
 	} else if(expectedError && !error){
-		throw new Error('expected error')
+		throw new Error(`expected error for h1`)
 	} else if(!expectedError && !error){
 
 		const newNodeMap = parser.nodeMap
@@ -72,9 +73,10 @@ test(`h1-to-h3.test.txt`, () => {
   ])
 	const expectedError = undefined;
 	if(error && !expectedError){
+		console.error(error)
 		throw new Error('did not expect error')
 	} else if(expectedError && !error){
-		throw new Error('expected error')
+		throw new Error(`expected error for <h1></h1>`)
 	} else if(!expectedError && !error){
 
 		const newNodeMap = parser.nodeMap
@@ -111,9 +113,10 @@ test(`h1-to-h3.test.txt`, () => {
   ])
 	const expectedError = undefined;
 	if(error && !expectedError){
+		console.error(error)
 		throw new Error('did not expect error')
 	} else if(expectedError && !error){
-		throw new Error('expected error')
+		throw new Error(`expected error for <h1>first heading</h1>`)
 	} else if(!expectedError && !error){
 
 		const newNodeMap = parser.nodeMap
@@ -147,9 +150,11 @@ test(`h1-to-h3.test.txt`, () => {
   ])
 	const expectedError = undefined;
 	if(error && !expectedError){
+		console.error(error)
 		throw new Error('did not expect error')
 	} else if(expectedError && !error){
-		throw new Error('expected error')
+		throw new Error(`expected error for <h1>first heading</h1>
+`)
 	} else if(!expectedError && !error){
 
 		const newNodeMap = parser.nodeMap
@@ -183,9 +188,11 @@ h2`, [
   ])
 	const expectedError = undefined;
 	if(error && !expectedError){
+		console.error(error)
 		throw new Error('did not expect error')
 	} else if(expectedError && !error){
-		throw new Error('expected error')
+		throw new Error(`expected error for <h1>first heading</h1>
+h2`)
 	} else if(!expectedError && !error){
 
 		const newNodeMap = parser.nodeMap
@@ -218,9 +225,11 @@ h2`, [
   ])
 	const expectedError = undefined;
 	if(error && !expectedError){
+		console.error(error)
 		throw new Error('did not expect error')
 	} else if(expectedError && !error){
-		throw new Error('expected error')
+		throw new Error(`expected error for <h1>first heading</h1>
+<h2></h2>`)
 	} else if(!expectedError && !error){
 
 		const newNodeMap = parser.nodeMap
@@ -260,9 +269,11 @@ h2`, [
   ])
 	const expectedError = undefined;
 	if(error && !expectedError){
+		console.error(error)
 		throw new Error('did not expect error')
 	} else if(expectedError && !error){
-		throw new Error('expected error')
+		throw new Error(`expected error for <h1>first heading</h1>
+<h2>second heading</h2>`)
 	} else if(!expectedError && !error){
 
 		const newNodeMap = parser.nodeMap
@@ -297,9 +308,12 @@ h2`, [
   ])
 	const expectedError = undefined;
 	if(error && !expectedError){
+		console.error(error)
 		throw new Error('did not expect error')
 	} else if(expectedError && !error){
-		throw new Error('expected error')
+		throw new Error(`expected error for <h1>first heading</h1>
+<h2>second heading</h2>
+`)
 	} else if(!expectedError && !error){
 
 		const newNodeMap = parser.nodeMap
@@ -334,9 +348,12 @@ h3`, [
   ])
 	const expectedError = undefined;
 	if(error && !expectedError){
+		console.error(error)
 		throw new Error('did not expect error')
 	} else if(expectedError && !error){
-		throw new Error('expected error')
+		throw new Error(`expected error for <h1>first heading</h1>
+<h2>second heading</h2>
+h3`)
 	} else if(!expectedError && !error){
 
 		const newNodeMap = parser.nodeMap
@@ -370,9 +387,12 @@ h3`, [
   ])
 	const expectedError = undefined;
 	if(error && !expectedError){
+		console.error(error)
 		throw new Error('did not expect error')
 	} else if(expectedError && !error){
-		throw new Error('expected error')
+		throw new Error(`expected error for <h1>first heading</h1>
+<h2>second heading</h2>
+<h3></h3>`)
 	} else if(!expectedError && !error){
 
 		const newNodeMap = parser.nodeMap
@@ -413,9 +433,12 @@ h3`, [
   ])
 	const expectedError = undefined;
 	if(error && !expectedError){
+		console.error(error)
 		throw new Error('did not expect error')
 	} else if(expectedError && !error){
-		throw new Error('expected error')
+		throw new Error(`expected error for <h1>first heading</h1>
+<h2>second heading</h2>
+<h3>third heading</h3>`)
 	} else if(!expectedError && !error){
 
 		const newNodeMap = parser.nodeMap

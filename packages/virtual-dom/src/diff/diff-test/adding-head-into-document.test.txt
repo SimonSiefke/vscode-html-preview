@@ -13,7 +13,7 @@ edits:
 nextText:
 <html><head></head</html>
 
-invalid:
+error:
 true
 
 previousText:

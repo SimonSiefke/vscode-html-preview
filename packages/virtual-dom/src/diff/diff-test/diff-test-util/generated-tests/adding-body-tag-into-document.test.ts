@@ -37,9 +37,10 @@ test(`adding-body-tag-into-document.test.txt`, () => {
   ])
 	const expectedError = true;
 	if(error && !expectedError){
+		console.error(error)
 		throw new Error('did not expect error')
 	} else if(expectedError && !error){
-		throw new Error('expected error')
+		throw new Error(`expected error for <html><head></head><body</html>`)
 	} else if(!expectedError && !error){
 
 		const newNodeMap = parser.nodeMap
@@ -64,9 +65,10 @@ test(`adding-body-tag-into-document.test.txt`, () => {
   ])
 	const expectedError = undefined;
 	if(error && !expectedError){
+		console.error(error)
 		throw new Error('did not expect error')
 	} else if(expectedError && !error){
-		throw new Error('expected error')
+		throw new Error(`expected error for <html><head></head><body></body></html>`)
 	} else if(!expectedError && !error){
 
 		const newNodeMap = parser.nodeMap

@@ -38,9 +38,11 @@ test(`simple-tag-insert-immediately-after-previous-tag-before-text-before-tag.te
   ])
 	const expectedError = undefined;
 	if(error && !expectedError){
+		console.error(error)
 		throw new Error('did not expect error')
 	} else if(expectedError && !error){
-		throw new Error('expected error')
+		throw new Error(`expected error for <h1>a</h1><div>New Content</div>
+<h2>b</h2>`)
 	} else if(!expectedError && !error){
 
 		const newNodeMap = parser.nodeMap

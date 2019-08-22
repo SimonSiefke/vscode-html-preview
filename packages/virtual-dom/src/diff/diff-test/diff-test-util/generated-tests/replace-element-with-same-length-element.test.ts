@@ -39,9 +39,12 @@ test(`replace-element-with-same-length-element.test.txt`, () => {
   ])
 	const expectedError = undefined;
 	if(error && !expectedError){
+		console.error(error)
 		throw new Error('did not expect error')
 	} else if(expectedError && !error){
-		throw new Error('expected error')
+		throw new Error(`expected error for <div>
+  <h2>hello world</h2>
+</div>`)
 	} else if(!expectedError && !error){
 
 		const newNodeMap = parser.nodeMap

@@ -37,9 +37,10 @@ test(`delete-120-delete-element-between-comment-and-text.test.txt`, () => {
   ])
 	const expectedError = undefined;
 	if(error && !expectedError){
+		console.error(error)
 		throw new Error('did not expect error')
 	} else if(expectedError && !error){
-		throw new Error('expected error')
+		throw new Error(`expected error for <!--a-->c`)
 	} else if(!expectedError && !error){
 
 		const newNodeMap = parser.nodeMap

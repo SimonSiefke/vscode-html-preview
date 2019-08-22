@@ -41,9 +41,14 @@ test(`add-two-tags-at-once.test.txt`, () => {
   ])
 	const expectedError = undefined;
 	if(error && !expectedError){
+		console.error(error)
 		throw new Error('did not expect error')
 	} else if(expectedError && !error){
-		throw new Error('expected error')
+		throw new Error(`expected error for <body>
+  <main>
+    <div>New Content</div><div>More new content</div>
+  </main>
+</body>`)
 	} else if(!expectedError && !error){
 
 		const newNodeMap = parser.nodeMap

@@ -13,7 +13,7 @@ edits:
 nextText:
 <p class=>some text</p>
 
-invalid:
+error:
 true
 
 previousText:

@@ -37,9 +37,10 @@ test(`insert-only-angle-bracket.test.txt`, () => {
   ])
 	const expectedError = true;
 	if(error && !expectedError){
+		console.error(error)
 		throw new Error('did not expect error')
 	} else if(expectedError && !error){
-		throw new Error('expected error')
+		throw new Error(`expected error for <`)
 	} else if(!expectedError && !error){
 
 		const newNodeMap = parser.nodeMap

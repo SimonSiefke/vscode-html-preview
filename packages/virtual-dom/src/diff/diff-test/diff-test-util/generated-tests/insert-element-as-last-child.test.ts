@@ -39,9 +39,12 @@ test(`insert-element-as-last-child.test.txt`, () => {
   ])
 	const expectedError = undefined;
 	if(error && !expectedError){
+		console.error(error)
 		throw new Error('did not expect error')
 	} else if(expectedError && !error){
-		throw new Error('expected error')
+		throw new Error(`expected error for <a>
+  <img />
+<strong>New Content</strong></a>`)
 	} else if(!expectedError && !error){
 
 		const newNodeMap = parser.nodeMap

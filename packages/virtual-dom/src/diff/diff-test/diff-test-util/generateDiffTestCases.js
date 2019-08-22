@@ -4,19 +4,9 @@ import {toJson} from 'really-relaxed-json';
 import {validate} from 'jsonschema';
 
 const failingTests = [
-	'adding-head-into-document.test.txt',
-	'deleting-an-attribute-character-by-character.test.txt',
-	// 'deleting-empty-tag-character-by-character.test.txt',
-	'deleting-non-empty-tag-character-by-character.test.txt',
-	'pasting-tag-over-multiple-tags-and-text.test.txt',
 	'tag-changes-with-child-element.test.txt',
-	'typing-of-a-new-attribute-character-by-character.test.txt',
-	'wrapping-a-tag-around-some-text-character-by-character.test.txt',
+	// 'wrapping-a-tag-around-some-text-character-by-character.test.txt',
 	'diff.test.txt',
-	'deleting-non-empty-tag-character-by-character.test.txt',
-	'doctype-and-whitespace-1.test.txt',
-	'doctype-and-whitespace-2.test.txt',
-	'doctype-and-whitespace-3.test.txt',
 	'bug-2.test.txt',
 	'replace-text-after-element-and-insert-element.test.txt'
 ];
@@ -280,9 +270,10 @@ function generateTest(fileName) {
 	.join('\n')})
 	const expectedError = ${test.error};
 	if(error && !expectedError){
+		console.error(error)
 		throw new Error('did not expect error')
 	} else if(expectedError && !error){
-		throw new Error('expected error')
+		throw new Error(\`expected error for ${nextText}\`)
 	} else if(!expectedError && !error){
 
 		const newNodeMap = parser.nodeMap

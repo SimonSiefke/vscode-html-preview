@@ -20,14 +20,6 @@ expectedEdits:
     payload: {}
   }
   {
-    command: elementDelete
-    payload: {}
-  }
-  {
-    command: elementDelete
-    payload: {}
-  }
-  {
     command: elementInsert
     payload: {
       nodeType: ElementNode
@@ -40,5 +32,13 @@ expectedEdits:
       nodeType: TextNode
       text: Italic
     }
+  }
+  {
+    command: elementDelete
+    payload: {}
+  }
+  {
+    command: elementDelete
+    payload: {}
   }
 ]

@@ -37,9 +37,10 @@ test(`delete-single-character-between-two-elements.test.txt`, () => {
   ])
 	const expectedError = undefined;
 	if(error && !expectedError){
+		console.error(error)
 		throw new Error('did not expect error')
 	} else if(expectedError && !error){
-		throw new Error('expected error')
+		throw new Error(`expected error for <p><br><br></p>`)
 	} else if(!expectedError && !error){
 
 		const newNodeMap = parser.nodeMap

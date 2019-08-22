@@ -494,10 +494,12 @@ const pretty = node => {
 // };
 
 const testCase = {
-	previousDom: '<h1 class="big"></h1>'
+	previousDom: '<p class=>some text</p>'
 };
 const parser = createParser();
-const parsedH1 = parser.parse(testCase.previousDom).htmlDocument.children; // ?
+const parsedH1 = parser.parse(testCase.previousDom);
+
+parsedH1 && parsedH1.htmlDocument && parsedH1.htmlDocument.children; // ?
 
 // const oldNodeMap = parser.nodeMap; // ?
 // const parsedH2 = parser.edit(testCase.nextDom, [

@@ -37,9 +37,10 @@ test(`attribute-value-insertion-at-the-end.test.txt`, () => {
   ])
 	const expectedError = undefined;
 	if(error && !expectedError){
+		console.error(error)
 		throw new Error('did not expect error')
 	} else if(expectedError && !error){
-		throw new Error('expected error')
+		throw new Error(`expected error for <h1 class="bigger">hello world</h1>`)
 	} else if(!expectedError && !error){
 
 		const newNodeMap = parser.nodeMap

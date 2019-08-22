@@ -37,9 +37,10 @@ test(`delete-element-before-text.test.txt`, () => {
   ])
 	const expectedError = undefined;
 	if(error && !expectedError){
+		console.error(error)
 		throw new Error('did not expect error')
 	} else if(expectedError && !error){
-		throw new Error('expected error')
+		throw new Error(`expected error for b`)
 	} else if(!expectedError && !error){
 
 		const newNodeMap = parser.nodeMap

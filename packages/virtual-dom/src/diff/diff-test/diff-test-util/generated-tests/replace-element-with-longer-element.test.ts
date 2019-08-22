@@ -39,9 +39,12 @@ test(`replace-element-with-longer-element.test.txt`, () => {
   ])
 	const expectedError = undefined;
 	if(error && !expectedError){
+		console.error(error)
 		throw new Error('did not expect error')
 	} else if(expectedError && !error){
-		throw new Error('expected error')
+		throw new Error(`expected error for <div>
+  <button>hello world</button>
+</div>`)
 	} else if(!expectedError && !error){
 
 		const newNodeMap = parser.nodeMap

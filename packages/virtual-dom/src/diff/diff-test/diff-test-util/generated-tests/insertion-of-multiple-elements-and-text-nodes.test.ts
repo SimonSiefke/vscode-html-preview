@@ -42,9 +42,15 @@ test(`insertion-of-multiple-elements-and-text-nodes.test.txt`, () => {
   ])
 	const expectedError = undefined;
 	if(error && !expectedError){
+		console.error(error)
 		throw new Error('did not expect error')
 	} else if(expectedError && !error){
-		throw new Error('expected error')
+		throw new Error(`expected error for <form>
+  First name:<br>
+  <input type="text" name="firstName"><br>
+  Last name:<br>
+  <input type="text" name="lastName"><br>
+</form>`)
 	} else if(!expectedError && !error){
 
 		const newNodeMap = parser.nodeMap

@@ -169,7 +169,7 @@ export function createScanner(
 				// console.log(stream.peekRight(), stream.peekRight(1));
 				if (stream.peekRight() === '<') {
 					stream.advance(1);
-					if (/[a-zA-Z]/.test(stream.peekRight())) {
+					if (/[a-zA-Z!]/.test(stream.peekRight())) {
 						state = 'after-opening-start-tag';
 						return 'start-tag-open';
 					}
@@ -329,9 +329,12 @@ export function createScanner(
 					return 'error';
 				}
 
-				// TODO error
-				state = 'within-start-tag';
-				return scan();
+				error = {
+					type: 'invalid',
+					message: 'missing closing quote in attribute value',
+					offset: tokenOffset
+				};
+				return 'error';
 
 			default:
 				break;
@@ -362,7 +365,7 @@ export function createScanner(
 	};
 }
 
-const scanner = createScanner('<p>hello');
+const scanner = createScanner('<p class=>some text</p>');
 
 scanner.scan(); // ?
 scanner.getTokenText(); // ?

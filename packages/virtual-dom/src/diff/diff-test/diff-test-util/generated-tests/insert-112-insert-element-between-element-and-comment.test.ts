@@ -37,9 +37,10 @@ test(`insert-112-insert-element-between-element-and-comment.test.txt`, () => {
   ])
 	const expectedError = undefined;
 	if(error && !expectedError){
+		console.error(error)
 		throw new Error('did not expect error')
 	} else if(expectedError && !error){
-		throw new Error('expected error')
+		throw new Error(`expected error for <h1>a</h1><h1>b</h1><!--c-->`)
 	} else if(!expectedError && !error){
 
 		const newNodeMap = parser.nodeMap

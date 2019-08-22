@@ -1,5 +1,5 @@
 previousText:
-<div><b>delete me</b>{{0}}</div>
+<div><b>delete me</b></div>
 
 edits:
 [
@@ -13,7 +13,7 @@ edits:
 nextText: 
 <div><</div>
 
-invalid:
+error:
 true
 
 previousText:

@@ -185,7 +185,7 @@ edits:
 nextText:
 <p class='myclass>some text</p>
 
-invalid:
+error:
 true
 
 previousText:
@@ -194,7 +194,7 @@ previousText:
 edits:
 [
   {
-    rangeOffset: 8
+    rangeOffset: 17
     rangeLength: 0
     text: "'"
   }
