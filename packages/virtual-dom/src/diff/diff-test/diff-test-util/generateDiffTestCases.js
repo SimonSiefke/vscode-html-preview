@@ -4,12 +4,6 @@ import {toJson} from 'really-relaxed-json';
 import {validate} from 'jsonschema';
 
 const failingTests = [
-	'attribute-change-1.test.txt',
-	'attribute-change-2.test.txt',
-	'insertion-of-attribute-with-value.test.txt',
-	'insertion-of-multiple-elements-and-text-nodes.test.txt',
-	'attribute-value-insertion-at-the-end.test.txt',
-	'attribute-value-replacement.test.txt',
 	'adding-body-tag-into-document.test.txt',
 	'adding-head-into-document.test.txt',
 	'deleting-an-attribute-character-by-character.test.txt',
@@ -18,11 +12,9 @@ const failingTests = [
 	'insert-h1-character-by-character.test.txt',
 	'pasting-tag-over-multiple-tags-and-text.test.txt',
 	'simple-tag-insert.test.txt must end with a new line',
-	'simple-tag-insert.test.txt',
 	'tag-changes-with-child-element.test.txt',
 	'typing-of-a-new-attribute-character-by-character.test.txt',
 	'wrapping-a-tag-around-some-text-character-by-character.test.txt',
-	'void-element-tag-changes.test.txt',
 	'diff.test.txt',
 	'deleting-non-empty-tag-character-by-character.test.txt',
 	'doctype-and-whitespace-2.test.txt',

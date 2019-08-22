@@ -312,14 +312,16 @@ export function createScanner(
 					stream.advance(1); // Consume opening quote
 					if (stream.advanceUntilChar(char)) {
 						stream.advance(1); // Consume closing quote
-					} else {
-						error = {
-							type: 'invalid',
-							message: 'missing closing quote in attribute value',
-							offset: tokenOffset
-						};
-						return 'error';
+						state = 'within-start-tag';
+						return 'attribute-value';
 					}
+
+					error = {
+						type: 'invalid',
+						message: 'missing closing quote in attribute value',
+						offset: tokenOffset
+					};
+					return 'error';
 				}
 
 				// TODO error

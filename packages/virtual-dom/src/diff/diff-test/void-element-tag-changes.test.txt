@@ -25,8 +25,8 @@ expectedEdits:
       nodeType: ElementNode
       tag: br
       attributes: {
-        alt: "A screenshot showing CSS Quick Edit"
-        src: "screenshots/brackets-quick-edit.png"
+        alt: '"A screenshot showing CSS Quick Edit"'
+        src: '"screenshots/brackets-quick-edit.png"'
       }
     }
   }

@@ -1,4 +1,0 @@
-previousText:
-<div>New Content</div>
-
-edits
