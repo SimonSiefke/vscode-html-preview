@@ -44,7 +44,7 @@ test(`insert-h1-character-by-character.test.txt`, () => {
 	} else if(!expectedError && !error){
 
 		const newNodeMap = parser.nodeMap
-		const edits = diff((previousDom && previousDom.children) || [], nextDom.children, {oldNodeMap, newNodeMap})
+		const edits = diff((previousDom && previousDom.children) || [], nextDom!.children, {oldNodeMap, newNodeMap})
 		const expectedEdits = []
 			expect(adjustEdits(edits)).toEqual(adjustExpectedEdits(expectedEdits))
 			previousDom = nextDom
@@ -72,7 +72,7 @@ test(`insert-h1-character-by-character.test.txt`, () => {
 	} else if(!expectedError && !error){
 
 		const newNodeMap = parser.nodeMap
-		const edits = diff((previousDom && previousDom.children) || [], nextDom.children, {oldNodeMap, newNodeMap})
+		const edits = diff((previousDom && previousDom.children) || [], nextDom!.children, {oldNodeMap, newNodeMap})
 		const expectedEdits = []
 			expect(adjustEdits(edits)).toEqual(adjustExpectedEdits(expectedEdits))
 			previousDom = nextDom
@@ -100,7 +100,7 @@ test(`insert-h1-character-by-character.test.txt`, () => {
 	} else if(!expectedError && !error){
 
 		const newNodeMap = parser.nodeMap
-		const edits = diff((previousDom && previousDom.children) || [], nextDom.children, {oldNodeMap, newNodeMap})
+		const edits = diff((previousDom && previousDom.children) || [], nextDom!.children, {oldNodeMap, newNodeMap})
 		const expectedEdits = []
 			expect(adjustEdits(edits)).toEqual(adjustExpectedEdits(expectedEdits))
 			previousDom = nextDom
@@ -128,7 +128,7 @@ test(`insert-h1-character-by-character.test.txt`, () => {
 	} else if(!expectedError && !error){
 
 		const newNodeMap = parser.nodeMap
-		const edits = diff((previousDom && previousDom.children) || [], nextDom.children, {oldNodeMap, newNodeMap})
+		const edits = diff((previousDom && previousDom.children) || [], nextDom!.children, {oldNodeMap, newNodeMap})
 		const expectedEdits = []
 			expect(adjustEdits(edits)).toEqual(adjustExpectedEdits(expectedEdits))
 			previousDom = nextDom
@@ -156,7 +156,7 @@ test(`insert-h1-character-by-character.test.txt`, () => {
 	} else if(!expectedError && !error){
 
 		const newNodeMap = parser.nodeMap
-		const edits = diff((previousDom && previousDom.children) || [], nextDom.children, {oldNodeMap, newNodeMap})
+		const edits = diff((previousDom && previousDom.children) || [], nextDom!.children, {oldNodeMap, newNodeMap})
 		const expectedEdits = []
 			expect(adjustEdits(edits)).toEqual(adjustExpectedEdits(expectedEdits))
 			previousDom = nextDom
@@ -184,7 +184,7 @@ test(`insert-h1-character-by-character.test.txt`, () => {
 	} else if(!expectedError && !error){
 
 		const newNodeMap = parser.nodeMap
-		const edits = diff((previousDom && previousDom.children) || [], nextDom.children, {oldNodeMap, newNodeMap})
+		const edits = diff((previousDom && previousDom.children) || [], nextDom!.children, {oldNodeMap, newNodeMap})
 		const expectedEdits = []
 			expect(adjustEdits(edits)).toEqual(adjustExpectedEdits(expectedEdits))
 			previousDom = nextDom
@@ -212,7 +212,7 @@ test(`insert-h1-character-by-character.test.txt`, () => {
 	} else if(!expectedError && !error){
 
 		const newNodeMap = parser.nodeMap
-		const edits = diff((previousDom && previousDom.children) || [], nextDom.children, {oldNodeMap, newNodeMap})
+		const edits = diff((previousDom && previousDom.children) || [], nextDom!.children, {oldNodeMap, newNodeMap})
 		const expectedEdits = []
 			expect(adjustEdits(edits)).toEqual(adjustExpectedEdits(expectedEdits))
 			previousDom = nextDom
@@ -240,7 +240,7 @@ test(`insert-h1-character-by-character.test.txt`, () => {
 	} else if(!expectedError && !error){
 
 		const newNodeMap = parser.nodeMap
-		const edits = diff((previousDom && previousDom.children) || [], nextDom.children, {oldNodeMap, newNodeMap})
+		const edits = diff((previousDom && previousDom.children) || [], nextDom!.children, {oldNodeMap, newNodeMap})
 		const expectedEdits = []
 			expect(adjustEdits(edits)).toEqual(adjustExpectedEdits(expectedEdits))
 			previousDom = nextDom
@@ -268,7 +268,7 @@ test(`insert-h1-character-by-character.test.txt`, () => {
 	} else if(!expectedError && !error){
 
 		const newNodeMap = parser.nodeMap
-		const edits = diff((previousDom && previousDom.children) || [], nextDom.children, {oldNodeMap, newNodeMap})
+		const edits = diff((previousDom && previousDom.children) || [], nextDom!.children, {oldNodeMap, newNodeMap})
 		const expectedEdits = []
 			expect(adjustEdits(edits)).toEqual(adjustExpectedEdits(expectedEdits))
 			previousDom = nextDom
@@ -296,7 +296,7 @@ test(`insert-h1-character-by-character.test.txt`, () => {
 	} else if(!expectedError && !error){
 
 		const newNodeMap = parser.nodeMap
-		const edits = diff((previousDom && previousDom.children) || [], nextDom.children, {oldNodeMap, newNodeMap})
+		const edits = diff((previousDom && previousDom.children) || [], nextDom!.children, {oldNodeMap, newNodeMap})
 		const expectedEdits = [
     {
       "command": "elementInsert",

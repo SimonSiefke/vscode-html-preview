@@ -52,7 +52,7 @@ test(`add-two-tags-at-once.test.txt`, () => {
 	} else if(!expectedError && !error){
 
 		const newNodeMap = parser.nodeMap
-		const edits = diff((previousDom && previousDom.children) || [], nextDom.children, {oldNodeMap, newNodeMap})
+		const edits = diff((previousDom && previousDom.children) || [], nextDom!.children, {oldNodeMap, newNodeMap})
 		const expectedEdits = [
     {
       "command": "elementInsert",

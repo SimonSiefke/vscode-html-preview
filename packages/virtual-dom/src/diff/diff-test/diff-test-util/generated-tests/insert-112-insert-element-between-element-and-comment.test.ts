@@ -44,7 +44,7 @@ test(`insert-112-insert-element-between-element-and-comment.test.txt`, () => {
 	} else if(!expectedError && !error){
 
 		const newNodeMap = parser.nodeMap
-		const edits = diff((previousDom && previousDom.children) || [], nextDom.children, {oldNodeMap, newNodeMap})
+		const edits = diff((previousDom && previousDom.children) || [], nextDom!.children, {oldNodeMap, newNodeMap})
 		const expectedEdits = [
     {
       "command": "elementInsert",

@@ -1,13 +1,20 @@
 import {LocalPlugin} from '../localPluginApi';
 import {minimizeEdits} from '../../services/Commands-util/minimizeEdits/minimizeEdits';
-import {createParser, diff} from 'html-preview-service';
+import {createParser, diff, HtmlDocument} from 'html-preview-service';
 import * as vscode from 'vscode';
 
 export const core: LocalPlugin = api => {
 	let previousText =
 		(vscode.window.activeTextEditor && vscode.window.activeTextEditor.document.getText()) || '';
 	api.parser = createParser();
-	let previousDom = api.parser.parse(previousText) as {children: any[]};
+	const parsingResult = api.parser.parse(previousText);
+	let previousDom: HtmlDocument;
+	if (!parsingResult.error) {
+		previousDom = parsingResult.htmlDocument;
+	} else {
+		previousDom = {children: []};
+	}
+
 	api.vscode.window.onDidChangeActiveTextEditor(event => {
 		if (event.document.languageId !== 'html') {
 			return;
@@ -15,7 +22,8 @@ export const core: LocalPlugin = api => {
 
 		previousText = event.document.getText();
 		api.parser = createParser();
-		previousDom = api.parser.parse(previousText) as {children: any[]};
+		const parsingResult = api.parser.parse(previousText);
+		previousDom = parsingResult && parsingResult.htmlDocument;
 	});
 	api.vscode.workspace.onDidChangeTextDocument(event => {
 		if (event.document.languageId !== 'html') {
@@ -39,7 +47,7 @@ export const core: LocalPlugin = api => {
 				console.log(edits[0]);
 				const change = edits[0];
 				const oldNodeMap = api.parser.nodeMap;
-				const nextDom = api.parser.edit(newText, [change]);
+				const {htmlDocument: nextDom} = api.parser.edit(newText, [change]);
 				const newNodeMap = api.parser.nodeMap;
 				const diffs = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap});
 				previousDom = nextDom;

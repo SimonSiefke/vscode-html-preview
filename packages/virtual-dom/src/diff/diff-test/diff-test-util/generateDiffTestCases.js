@@ -277,7 +277,7 @@ function generateTest(fileName) {
 	} else if(!expectedError && !error){
 
 		const newNodeMap = parser.nodeMap
-		const edits = diff((previousDom && previousDom.children) || [], nextDom.children, {oldNodeMap, newNodeMap})
+		const edits = diff((previousDom && previousDom.children) || [], nextDom!.children, {oldNodeMap, newNodeMap})
 		const expectedEdits = ${JSON.stringify(expectedEdits, null, 2)
 		.split('\n')
 		.map((x, index) => (index === 0 ? x : '  ' + x))

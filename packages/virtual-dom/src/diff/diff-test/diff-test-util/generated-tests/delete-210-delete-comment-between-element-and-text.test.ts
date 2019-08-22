@@ -44,7 +44,7 @@ test(`delete-210-delete-comment-between-element-and-text.test.txt`, () => {
 	} else if(!expectedError && !error){
 
 		const newNodeMap = parser.nodeMap
-		const edits = diff((previousDom && previousDom.children) || [], nextDom.children, {oldNodeMap, newNodeMap})
+		const edits = diff((previousDom && previousDom.children) || [], nextDom!.children, {oldNodeMap, newNodeMap})
 		const expectedEdits = [
     {
       "command": "elementDelete",

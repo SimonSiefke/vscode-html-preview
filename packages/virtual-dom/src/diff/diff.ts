@@ -479,7 +479,7 @@ const {htmlDocument: parsedH2} = parser.edit(testCase.nextDom, [
 const newNodeMap = parser.nodeMap; // ?
 // parsedH1.pretty(); // ?
 // parsedH2.pretty(); // ?
-diff(parsedH1.children, parsedH2.children, {
+diff(parsedH1!.children, parsedH2!.children, {
 	oldNodeMap,
 	newNodeMap
 }); // ?

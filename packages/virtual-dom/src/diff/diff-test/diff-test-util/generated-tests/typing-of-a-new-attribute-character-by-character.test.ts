@@ -44,7 +44,7 @@ test(`typing-of-a-new-attribute-character-by-character.test.txt`, () => {
 	} else if(!expectedError && !error){
 
 		const newNodeMap = parser.nodeMap
-		const edits = diff((previousDom && previousDom.children) || [], nextDom.children, {oldNodeMap, newNodeMap})
+		const edits = diff((previousDom && previousDom.children) || [], nextDom!.children, {oldNodeMap, newNodeMap})
 		const expectedEdits = []
 			expect(adjustEdits(edits)).toEqual(adjustExpectedEdits(expectedEdits))
 			previousDom = nextDom
@@ -72,7 +72,7 @@ test(`typing-of-a-new-attribute-character-by-character.test.txt`, () => {
 	} else if(!expectedError && !error){
 
 		const newNodeMap = parser.nodeMap
-		const edits = diff((previousDom && previousDom.children) || [], nextDom.children, {oldNodeMap, newNodeMap})
+		const edits = diff((previousDom && previousDom.children) || [], nextDom!.children, {oldNodeMap, newNodeMap})
 		const expectedEdits = [
     {
       "command": "attributeAdd",
@@ -108,7 +108,7 @@ test(`typing-of-a-new-attribute-character-by-character.test.txt`, () => {
 	} else if(!expectedError && !error){
 
 		const newNodeMap = parser.nodeMap
-		const edits = diff((previousDom && previousDom.children) || [], nextDom.children, {oldNodeMap, newNodeMap})
+		const edits = diff((previousDom && previousDom.children) || [], nextDom!.children, {oldNodeMap, newNodeMap})
 		const expectedEdits = [
     {
       "command": "attributeAdd",
@@ -150,7 +150,7 @@ test(`typing-of-a-new-attribute-character-by-character.test.txt`, () => {
 	} else if(!expectedError && !error){
 
 		const newNodeMap = parser.nodeMap
-		const edits = diff((previousDom && previousDom.children) || [], nextDom.children, {oldNodeMap, newNodeMap})
+		const edits = diff((previousDom && previousDom.children) || [], nextDom!.children, {oldNodeMap, newNodeMap})
 		const expectedEdits = [
     {
       "command": "attributeAdd",
@@ -192,7 +192,7 @@ test(`typing-of-a-new-attribute-character-by-character.test.txt`, () => {
 	} else if(!expectedError && !error){
 
 		const newNodeMap = parser.nodeMap
-		const edits = diff((previousDom && previousDom.children) || [], nextDom.children, {oldNodeMap, newNodeMap})
+		const edits = diff((previousDom && previousDom.children) || [], nextDom!.children, {oldNodeMap, newNodeMap})
 		const expectedEdits = [
     {
       "command": "attributeAdd",
@@ -234,7 +234,7 @@ test(`typing-of-a-new-attribute-character-by-character.test.txt`, () => {
 	} else if(!expectedError && !error){
 
 		const newNodeMap = parser.nodeMap
-		const edits = diff((previousDom && previousDom.children) || [], nextDom.children, {oldNodeMap, newNodeMap})
+		const edits = diff((previousDom && previousDom.children) || [], nextDom!.children, {oldNodeMap, newNodeMap})
 		const expectedEdits = [
     {
       "command": "attributeAdd",
@@ -276,7 +276,7 @@ test(`typing-of-a-new-attribute-character-by-character.test.txt`, () => {
 	} else if(!expectedError && !error){
 
 		const newNodeMap = parser.nodeMap
-		const edits = diff((previousDom && previousDom.children) || [], nextDom.children, {oldNodeMap, newNodeMap})
+		const edits = diff((previousDom && previousDom.children) || [], nextDom!.children, {oldNodeMap, newNodeMap})
 		const expectedEdits = []
 			expect(adjustEdits(edits)).toEqual(adjustExpectedEdits(expectedEdits))
 			previousDom = nextDom
@@ -304,7 +304,7 @@ test(`typing-of-a-new-attribute-character-by-character.test.txt`, () => {
 	} else if(!expectedError && !error){
 
 		const newNodeMap = parser.nodeMap
-		const edits = diff((previousDom && previousDom.children) || [], nextDom.children, {oldNodeMap, newNodeMap})
+		const edits = diff((previousDom && previousDom.children) || [], nextDom!.children, {oldNodeMap, newNodeMap})
 		const expectedEdits = [
     {
       "command": "attributeChange",

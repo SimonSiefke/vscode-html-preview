@@ -4,8 +4,8 @@ import {highlight} from './plugins/remote-plugin-highlight/highlight';
 import {RemotePluginApi} from './plugins/remotePluginApi';
 import {connection} from './plugins/remote-plugin-connection/remote-plugin-connection';
 import {redirect} from './plugins/remote-plugin-redirect/redirect';
-import { reload } from './plugins/remote-plugin-reload/reload';
-import { updateCss } from './plugins/remote-plugin-update-css/updateCss';
+import {reload} from './plugins/remote-plugin-reload/reload';
+import {updateCss} from './plugins/remote-plugin-update-css/updateCss';
 
 const $script = document.querySelector('script[src="html-preview.js"]') as HTMLScriptElement;
 $script.remove();
@@ -32,7 +32,7 @@ function walk(dom, fn, childrenFirst = false) {
 
 function validate(node: any, $actualNode: Node) {
 	if (
-		node.type === 'TextNode' &&
+		node.nodeType === 'TextNode' &&
 		($actualNode.nodeType !== Node.TEXT_NODE ||
 			(($actualNode as Text).data !== node.text &&
 				// special case: check for new line because the html-preview script is inserted together with a new line and the new line becomes part of the previous text node inside the body
@@ -42,7 +42,7 @@ function validate(node: any, $actualNode: Node) {
 		console.error('(1) invalid', $actualNode);
 		alert('error, failed to hydrate dom (1)');
 	} else if (
-		node.type === 'ElementNode' &&
+		node.nodeType === 'ElementNode' &&
 		node.tag.toLowerCase() === '!doctype' &&
 		$actualNode.nodeType !== Node.DOCUMENT_TYPE_NODE
 	) {
@@ -50,7 +50,7 @@ function validate(node: any, $actualNode: Node) {
 		console.error('(2) invalid', $actualNode);
 		alert('error, failed to hydrate dom (2)');
 	} else if (
-		node.type === 'ElementNode' &&
+		node.nodeType === 'ElementNode' &&
 		node.tag.toLowerCase() === 'html' &&
 		$actualNode !== document.documentElement
 	) {
@@ -58,7 +58,7 @@ function validate(node: any, $actualNode: Node) {
 		console.error('(3) invalid', $actualNode);
 		alert('error, failed to hydrate dom (3)');
 	} else if (
-		node.type === 'ElementNode' &&
+		node.nodeType === 'ElementNode' &&
 		node.tag.toLowerCase() === 'body' &&
 		$actualNode !== document.body
 	) {
@@ -66,7 +66,7 @@ function validate(node: any, $actualNode: Node) {
 		console.error('(4) invalid', $actualNode);
 		alert('error, failed to hydrate dom (4)');
 	} else if (
-		node.type === 'ElementNode' &&
+		node.nodeType === 'ElementNode' &&
 		node.tag.toLowerCase() === 'head' &&
 		$actualNode !== document.head
 	) {
@@ -74,7 +74,7 @@ function validate(node: any, $actualNode: Node) {
 		console.error('(5) invalid', $actualNode);
 		alert('error, failed to hydrate dom (5)');
 	} else if (
-		node.type === 'ElementNode' &&
+		node.nodeType === 'ElementNode' &&
 		!['html', 'body', 'head', '!doctype'].includes(node.tag.toLowerCase()) &&
 		$actualNode.nodeType !== Node.ELEMENT_NODE
 	) {
@@ -82,7 +82,7 @@ function validate(node: any, $actualNode: Node) {
 		console.error('(6) invalid', $actualNode);
 		alert('error, failed to hydrate dom (6)');
 	} else if (
-		node.type === 'CommentNode' &&
+		node.nodeType === 'CommentNode' &&
 		($actualNode.nodeType !== Node.COMMENT_NODE || node.text !== ($actualNode as Comment).data)
 	) {
 		console.log('expected comment node, got');
@@ -107,7 +107,7 @@ async function fetchNodeMap() {
 			hasBody = true;
 		} else if (node.tag === 'head') {
 			hasHead = true;
-		} else if (node.type === 'Text' && !node.text.trim()) {
+		} else if (node.nodeType === 'Text' && !node.text.trim()) {
 			hasText = true;
 		}
 	}
@@ -135,7 +135,7 @@ async function fetchNodeMap() {
 			} else {
 				hadHead = true;
 			}
-		} else if (node.type === 'Text' && !node.text.trim()) {
+		} else if (node.nodeType === 'Text' && !node.text.trim()) {
 			if (hasBody || hasHtml) {
 				alert('invalid dom');
 			} else {
@@ -160,12 +160,12 @@ async function fetchNodeMap() {
 			hadBody = true;
 		} else if (node.tag === 'head') {
 			hadHead = true;
-		} else if (node.type === 'Text' && !node.text.trim()) {
+		} else if (node.nodeType === 'Text' && !node.text.trim()) {
 			hadText = true;
 		}
 
 		// must ignore whitespace nodes at top level
-		if (!inBody && node.type === 'TextNode' && (!hadHead || hadBody) && !node.text.trim()) {
+		if (!inBody && node.nodeType === 'TextNode' && (!hadHead || hadBody) && !node.text.trim()) {
 			continue;
 		}
 
@@ -178,14 +178,14 @@ async function fetchNodeMap() {
 			inHtml = true;
 			// const nextNode = virtualDom[i + 1];
 			// special case: whitespace after head is ignored when the next node is a text node
-			// if (nextNode && nextNode.type === 'TextNode') {
+			// if (nextNode && nextNode.nodeType === 'TextNode') {
 			// 	nextNode.text = nextNode.text.trimStart();
 			// }
 		} else if (
 			// comment nodes are allowed between head and body
-			node.type !== 'CommentNode' &&
+			node.nodeType !== 'CommentNode' &&
 			// whitespace text nodes are allowed between head and body
-			!(node.type === 'TextNode' && !node.text.trim()) &&
+			!(node.nodeType === 'TextNode' && !node.text.trim()) &&
 			!hasBody &&
 			!hasHtml &&
 			!inBody
@@ -204,7 +204,7 @@ async function fetchNodeMap() {
 
 	// const ignoredTags
 	walk(virtualDom, node => {
-		if (node.type !== 'ElementNode' || node.tag === '!doctype' || node.tag === '!DOCTYPE') {
+		if (node.nodeType !== 'ElementNode' || node.tag === '!doctype' || node.tag === '!DOCTYPE') {
 			return;
 		}
 
@@ -222,11 +222,11 @@ async function fetchNodeMap() {
 		const $children = $node.childNodes;
 		for (let i = 0; i < node.children.length; i++) {
 			const child = node.children[i];
-			if (child.type === 'TextNode') {
+			if (child.nodeType === 'TextNode') {
 				nodeMap[child.id] = $children[i];
 			}
 
-			if (child.type === 'CommentNode') {
+			if (child.nodeType === 'CommentNode') {
 				nodeMap[child.id] = $children[i];
 			}
 		}
@@ -283,5 +283,5 @@ async function fetchNodeMap() {
 	connection(remotePluginApi);
 	redirect(remotePluginApi);
 	reload(remotePluginApi);
-	updateCss(remotePluginApi)
+	updateCss(remotePluginApi);
 })();

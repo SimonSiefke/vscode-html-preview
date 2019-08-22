@@ -20,19 +20,30 @@ function adjustExpectedEdits(expectedEdits){
   return expectedEdits
 }
 
-test(`insert-element-in-the-middle-of-text.test.txt`, () => {
+test(`replace-text-in-html-document.test.txt`, () => {
 	const parser = createParser()
 	let previousDom
 	  {
 
 
-  previousDom = parser.parse("<h1>hello world</h1>").htmlDocument
+  previousDom = parser.parse("<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"UTF-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <meta http-equiv=\"X-UA-Compatible\" content=\"ie=edge\">\n  <title>Document</title>\n</head>\n<body>\n  hello world\n</body>\n</html>").htmlDocument
   const oldNodeMap = parser.nodeMap
-  const {htmlDocument:nextDom, error} = parser.edit(`<h1>hello<img> world</h1>`, [
+  const {htmlDocument:nextDom, error} = parser.edit(`<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  hello world!
+</body>
+</html>`, [
     {
-      "rangeOffset": 9,
+      "rangeOffset": 248,
       "rangeLength": 0,
-      "text": "<img>"
+      "text": "!"
     }
   ])
 	const expectedError = undefined;
@@ -40,7 +51,18 @@ test(`insert-element-in-the-middle-of-text.test.txt`, () => {
 		console.error(error)
 		throw new Error('did not expect error')
 	} else if(expectedError && !error){
-		throw new Error(`expected error for <h1>hello<img> world</h1>`)
+		throw new Error(`expected error for <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  hello world!
+</body>
+</html>`)
 	} else if(!expectedError && !error){
 
 		const newNodeMap = parser.nodeMap
@@ -49,21 +71,7 @@ test(`insert-element-in-the-middle-of-text.test.txt`, () => {
     {
       "command": "textReplace",
       "payload": {
-        "text": "hello"
-      }
-    },
-    {
-      "command": "elementInsert",
-      "payload": {
-        "nodeType": "ElementNode",
-        "tag": "img"
-      }
-    },
-    {
-      "command": "elementInsert",
-      "payload": {
-        "nodeType": "TextNode",
-        "text": " world"
+        "text": "\n  hello world!\n"
       }
     }
   ]

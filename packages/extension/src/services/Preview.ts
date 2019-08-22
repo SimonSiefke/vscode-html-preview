@@ -9,7 +9,8 @@ import {
 	createWebSocketServer,
 	createHttpServer,
 	openInBrowser,
-	genDom
+	genDom,
+	Parser
 } from 'html-preview-service';
 import {core} from '../plugins/local-plugin-core/core';
 import {redirect} from '../plugins/local-plugin-redirect/redirect';
@@ -35,7 +36,7 @@ export interface PreviewApi {
 			) => vscode.FileSystemWatcher
 		}
 	}
-	parser: any
+	parser: Parser
 	webSocketServer: WebSocketServer | undefined
 	httpServer: HttpServer | undefined
 }
@@ -56,8 +57,6 @@ const httpMiddlewareSendCss = (api: PreviewApi) => async (
 	if (!url.pathname.endsWith('.css')) {
 		return next();
 	}
-
-	console.log(url.pathname);
 
 	const matchingTextEditor = vscode.window.visibleTextEditors.find(
 		textEditor => vscode.workspace.asRelativePath(textEditor.document.uri) === url.pathname.slice(1)

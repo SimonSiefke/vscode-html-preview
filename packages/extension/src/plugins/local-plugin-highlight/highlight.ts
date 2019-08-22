@@ -52,7 +52,7 @@ export const highlight: LocalPlugin = api => {
 			}
 
 			// @ts-ignore
-			const isElementNode = parser.nodeMap[value].type === 'ElementNode';
+			const isElementNode = parser.nodeMap[value].nodeType === 'ElementNode';
 
 			if (parsedKey === offset && isElementNode) {
 				found = value;

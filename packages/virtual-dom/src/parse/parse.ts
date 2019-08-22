@@ -48,13 +48,33 @@ function createIdGenerator() {
 	return () => id++;
 }
 
-const d = 0;
-
 type ParsingError = {
 	type: 'invalid' | 'soft-invalid'
 	message: string
 	offset: number
 };
+
+type ParsingResult = {
+	htmlDocument?: HtmlDocument
+	error?: ParsingError | null // TODO not null but undefined instead
+};
+
+export interface HtmlDocument {
+	children: any[]
+}
+
+export interface Parser {
+	readonly parse: (domString: string) => ParsingResult
+	readonly text: string
+	readonly dom: any
+
+	readonly prefixSums: any
+	readonly nodeMap: any
+	edit: (
+		textWithEdits: string,
+		edits: Array<{rangeLength: number; rangeOffset: number; text: string}>
+	) => ParsingResult
+}
 
 /**
  *
@@ -68,7 +88,7 @@ function parse(
 		nodeMap = {},
 		newNodeMap = {}
 	} = {}
-): {error: ParsingError | null; htmlDocument?: any} {
+): ParsingResult {
 	const scanner = createScanner(text);
 	const htmlDocument = createElementNode();
 	newNodeMap[0] = htmlDocument;
@@ -380,7 +400,7 @@ function updateSignature(node) {
 	}
 }
 
-export function createParser() {
+export function createParser(): Parser {
 	let prefixSums: {[key: number]: number} = {};
 	let nodeMap = {};
 	let nextId = createIdGenerator();
@@ -401,7 +421,7 @@ export function createParser() {
 			walk(result, node => {
 				nodeMap[node.id] = node;
 			});
-			dom = result;
+			dom = result.htmlDocument;
 			return result;
 		},
 		get text() {
