@@ -443,30 +443,30 @@ export function createParser(): Parser {
 			text = textWithEdits;
 			const edit = edits[0];
 			const {rangeOffset, rangeLength, text: editText} = edit;
-			for (const rawPrefixSum of Object.keys(prefixSums).reverse()) {
+			const newPrefixSums = {};
+			for (const rawPrefixSum of Object.keys(prefixSums)) {
 				const prefixSum = parseInt(rawPrefixSum, 10);
 				// TODO something is wrong here
 				// rangelength > 0 error: enter does not work <h1>a</h1>|\n
 				// rangelength = 0 error: replace not working <h1>||a</h1>
 				// movement style does not work<h1 | >a</h1> -> <h1 style="font-size:10px">||a</h1>
 				if (prefixSum < rangeOffset) {
+					newPrefixSums[prefixSum] = prefixSums[prefixSum];
 					// If (parsedPrefixSum <= rangeOffset) {
 					// Is before
 				} else if (prefixSum === rangeOffset && rangeLength > 0) {
+					newPrefixSums[prefixSum] = prefixSums[prefixSum];
 					// Is at edge
 				} else if (prefixSum > rangeOffset && prefixSum < rangeOffset + rangeLength) {
 					// Is in middle
-					// delete nodeMap[prefixSums[prefixSum]]; // TODO
-					delete prefixSums[prefixSum];
-					continue;
 				} else {
 					// Is after
 					const id = prefixSums[prefixSum];
-					delete prefixSums[prefixSum];
-					prefixSums[prefixSum + editText.length - rangeLength] = id;
+					newPrefixSums[prefixSum + editText.length - rangeLength] = id;
 				}
 			}
 
+			prefixSums = newPrefixSums;
 			const newNodeMap = {};
 			const {htmlDocument, error} = parseHtml(text, {
 				prefixSums,

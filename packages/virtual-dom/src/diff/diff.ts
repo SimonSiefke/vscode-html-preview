@@ -462,18 +462,33 @@ Array.prototype.pretty = function () {
 // 	newNodeMap
 // }); // ?
 const testCase = {
-	previousDom: '<h1 class></h1>',
+	previousDom: `<h1>hello world</h1>
 
-	nextDom: '<h1 class="green"></h1>'
+<input type="checkbox" />
+<br />
+<input type="checkbox" />
+<br />
+<input type="checkbox" />
+<br />
+this is text`,
+
+	nextDom: `<h1>hello world</h1>
+
+<br />
+<input type="checkbox" />
+<br />
+<input type="checkbox" />
+<br />
+this is text`
 };
 const parser = createParser();
 const {htmlDocument: parsedH1} = parser.parse(testCase.previousDom);
 const oldNodeMap = parser.nodeMap; // ?
 const {htmlDocument: parsedH2} = parser.edit(testCase.nextDom, [
 	{
-		rangeOffset: 9,
-		rangeLength: 0,
-		text: '="green"'
+		rangeOffset: 21,
+		rangeLength: 26,
+		text: ''
 	}
 ]);
 const newNodeMap = parser.nodeMap; // ?

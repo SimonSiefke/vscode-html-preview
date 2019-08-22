@@ -5,10 +5,8 @@ import {validate} from 'jsonschema';
 
 const failingTests = [
 	'tag-changes-with-child-element.test.txt',
-	// 'wrapping-a-tag-around-some-text-character-by-character.test.txt',
 	'diff.test.txt',
 	'bug-2.test.txt',
-	'bug-5.test.txt',
 	'replace-text-after-element-and-insert-element.test.txt'
 ];
 
