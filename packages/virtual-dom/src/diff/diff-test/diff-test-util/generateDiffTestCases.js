@@ -9,7 +9,6 @@ const failingTests = [
 	'deleting-an-attribute-character-by-character.test.txt',
 	'deleting-empty-tag-character-by-character.test.txt',
 	'deleting-non-empty-tag-character-by-character.test.txt',
-	'insert-h1-character-by-character.test.txt',
 	'pasting-tag-over-multiple-tags-and-text.test.txt',
 	'simple-tag-insert.test.txt must end with a new line',
 	'tag-changes-with-child-element.test.txt',
@@ -24,10 +23,12 @@ const failingTests = [
 	'replace-text-after-element-and-insert-element.test.txt'
 ];
 
+const only = ['insert-h1-character-by-character.test.txt'];
 const diffTestFiles = fs
 	.readdirSync(path.join(__dirname, '..'))
 	.filter(file => file.endsWith('.test.txt'))
-	.filter(x => !failingTests.includes(x));
+	.filter(x => !failingTests.includes(x))
+	.filter(x => (only.length > 0 ? only.includes(x) : true));
 
 // fs.removeSync(path.join(__dirname, 'generated-tests'));
 fs.ensureDirSync(path.join(__dirname, 'generated-tests'));
@@ -254,6 +255,7 @@ function generateTest(fileName) {
 		validatePreviousText(previousText);
 		const {nextText} = test;
 		validateNextText(nextText);
+		test.edits; // ?
 		const edits = parseJson(test.edits);
 		validateEdits(edits);
 		const expectedEdits = parseJson(test.expectedEdits || '[]');

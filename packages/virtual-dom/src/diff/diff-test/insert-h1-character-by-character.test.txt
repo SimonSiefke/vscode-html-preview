@@ -13,16 +13,8 @@ edits:
 nextText:
 <
 
-expectedEdits:
-[
-  {
-    command: elementInsert
-    payload: {
-      nodeType: TextNode
-      text: <
-    }
-  }
-]
+error:
+true
 
 previousText:
 <
@@ -36,13 +28,11 @@ edits:
   }
 ]
 
-nextText: <h
+nextText: 
+<h
 
-parserState:
-invalid
-
-expectedEdits:
-[]
+error:
+true
 
 previousText:
 <h
@@ -52,18 +42,15 @@ edits:
   {
     rangeOffset: 2
     rangeLength: 0
-    text: 1
+    text: "1"
   }
 ]
 
 nextText: 
 <h1
 
-parserState:
-invalid
-
-expectedEdits:
-[]
+error:
+true
 
 previousText:
 <h1
@@ -80,23 +67,8 @@ edits:
 nextText: 
 <h1>
 
-parserState:
-soft-invalid
-
-expectedEdits:
-[
-  {
-    command: elementDelete
-    payload: {}
-  }
-  {
-    command: elementInsert
-    payload: {
-      nodeType: ElementNode
-      tag: h1
-    }
-  }
-]
+error:
+true
 
 previousText:
 <h1>
@@ -113,19 +85,8 @@ edits:
 nextText: 
 <h1>hello world
 
-parserState:
-soft-invalid
-
-expectedEdits:
-[
-  {
-    command: elementInsert
-    payload: {
-      nodeType: TextNode
-      text: "hello world"
-    }
-  }
-]
+error:
+true
 
 previousText:
 <h1>hello world
@@ -142,18 +103,8 @@ edits:
 nextText: 
 <h1>hello world<
 
-parserState:
-soft-invalid
-
-expectedEdits:
-[
-  {
-    command: textReplace
-    payload: {
-      text: "hello world<"
-    }
-  }
-]
+error:
+true
 
 previousText:
 <h1>hello world<
@@ -163,25 +114,15 @@ edits:
   {
     rangeOffset: 16
     rangeLength: 0
-    text: /
+    text: "/"
   }
 ]
 
 nextText: 
 <h1>hello world</
 
-parserState:
-soft-invalid
-
-expectedEdits:
-[
-  {
-    command: textReplace
-    payload: {
-      text: "hello world</"
-    }
-  }
-]
+error:
+true
 
 previousText:
 <h1>hello world</
@@ -198,11 +139,8 @@ edits:
 nextText: 
 <h1>hello world</h
 
-parserState:
-invalid
-
-expectedEdits:
-[]
+error:
+true
 
 previousText:
 <h1>hello world</h
@@ -210,20 +148,17 @@ previousText:
 edits:
 [
   {
-    rangeOffset: 17
+    rangeOffset: 18
     rangeLength: 0
-    text: 1
+    text: "1"
   }
 ]
 
 nextText: 
 <h1>hello world</h1
 
-parserState:
-invalid
-
-expectedEdits:
-[]
+error:
+true
 
 previousText:
 <h1>hello world</h1
@@ -231,7 +166,7 @@ previousText:
 edits:
 [
   {
-    rangeOffset: 18
+    rangeOffset: 19
     rangeLength: 0
     text: >
   }
@@ -241,4 +176,19 @@ nextText:
 <h1>hello world</h1>
 
 expectedEdits:
-[]
+[
+  {
+    command: elementInsert
+    payload: {
+      nodeType: ElementNode
+      tag: h1
+    }
+  }
+  {
+    command: elementInsert
+    payload: {
+      nodeType: TextNode
+      text: "hello world"
+    }
+  }
+]
