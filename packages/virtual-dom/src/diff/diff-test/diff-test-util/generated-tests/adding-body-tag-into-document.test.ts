@@ -20,19 +20,19 @@ function adjustExpectedEdits(expectedEdits){
   return expectedEdits
 }
 
-test(`adding-html-tag-into-empty-document.test.txt`, () => {
+test(`adding-body-tag-into-document.test.txt`, () => {
 	const parser = createParser()
 	let previousDom
 	  {
 
 
-  previousDom = parser.parse("").htmlDocument
+  previousDom = parser.parse("<html><head></head></html>").htmlDocument
   const oldNodeMap = parser.nodeMap
-  const {htmlDocument:nextDom, error} = parser.edit(`<html`, [
+  const {htmlDocument:nextDom, error} = parser.edit(`<html><head></head><body</html>`, [
     {
-      "rangeOffset": 0,
+      "rangeOffset": 19,
       "rangeLength": 0,
-      "text": "<html"
+      "text": "<body"
     }
   ])
 	const expectedError = true;
@@ -55,11 +55,11 @@ test(`adding-html-tag-into-empty-document.test.txt`, () => {
 
   
   const oldNodeMap = parser.nodeMap
-  const {htmlDocument:nextDom, error} = parser.edit(`<html></html>`, [
+  const {htmlDocument:nextDom, error} = parser.edit(`<html><head></head><body></body></html>`, [
     {
-      "rangeOffset": 5,
+      "rangeOffset": 24,
       "rangeLength": 0,
-      "text": "></html>"
+      "text": "></body>"
     }
   ])
 	const expectedError = undefined;
@@ -76,7 +76,7 @@ test(`adding-html-tag-into-empty-document.test.txt`, () => {
       "command": "elementInsert",
       "payload": {
         "nodeType": "ElementNode",
-        "tag": "html"
+        "tag": "body"
       }
     }
   ]

@@ -20,19 +20,19 @@ function adjustExpectedEdits(expectedEdits){
   return expectedEdits
 }
 
-test(`adding-html-tag-into-empty-document.test.txt`, () => {
+test(`deleting-empty-tag-character-by-character.test.txt`, () => {
 	const parser = createParser()
 	let previousDom
 	  {
 
 
-  previousDom = parser.parse("").htmlDocument
+  previousDom = parser.parse("<p><img></p>").htmlDocument
   const oldNodeMap = parser.nodeMap
-  const {htmlDocument:nextDom, error} = parser.edit(`<html`, [
+  const {htmlDocument:nextDom, error} = parser.edit(`<p><</p>`, [
     {
-      "rangeOffset": 0,
-      "rangeLength": 0,
-      "text": "<html"
+      "rangeOffset": 4,
+      "rangeLength": 4,
+      "text": ""
     }
   ])
 	const expectedError = true;
@@ -55,11 +55,11 @@ test(`adding-html-tag-into-empty-document.test.txt`, () => {
 
   
   const oldNodeMap = parser.nodeMap
-  const {htmlDocument:nextDom, error} = parser.edit(`<html></html>`, [
+  const {htmlDocument:nextDom, error} = parser.edit(`<p></p>`, [
     {
-      "rangeOffset": 5,
-      "rangeLength": 0,
-      "text": "></html>"
+      "rangeOffset": 3,
+      "rangeLength": 1,
+      "text": ""
     }
   ])
 	const expectedError = undefined;
@@ -73,11 +73,8 @@ test(`adding-html-tag-into-empty-document.test.txt`, () => {
 		const edits = diff((previousDom && previousDom.children) || [], nextDom.children, {oldNodeMap, newNodeMap})
 		const expectedEdits = [
     {
-      "command": "elementInsert",
-      "payload": {
-        "nodeType": "ElementNode",
-        "tag": "html"
-      }
+      "command": "elementDelete",
+      "payload": {}
     }
   ]
 			expect(adjustEdits(edits)).toEqual(adjustExpectedEdits(expectedEdits))

@@ -277,7 +277,12 @@ export function createScanner(
 				// At this point there is space and no closing tag
 				// E.g. "<div;"
 				stream.advance(1);
-				return 'unknown';
+				error = {
+					type: 'invalid',
+					message: 'unexpected token',
+					offset: tokenOffset
+				};
+				return 'error';
 			case 'after-attribute-name':
 				if (stream.skipWhitespace()) {
 					tokenOffset = stream.position;

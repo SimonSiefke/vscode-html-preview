@@ -26,7 +26,7 @@ test(`insert-h1-character-by-character.test.txt`, () => {
 	  {
 
 
-  
+  previousDom = parser.parse("").htmlDocument
   const oldNodeMap = parser.nodeMap
   const {htmlDocument:nextDom, error} = parser.edit(`<`, [
     {

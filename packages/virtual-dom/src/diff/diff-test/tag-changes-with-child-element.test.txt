@@ -11,7 +11,7 @@ edits:
     text: div
   }
   {
-    rangeOffset: ?
+    rangeOffset: 22
     rangeLength: 1
     text: div
   }

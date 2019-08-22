@@ -26,7 +26,7 @@ test(`insert-only-angle-bracket.test.txt`, () => {
 	  {
 
 
-  
+  previousDom = parser.parse("").htmlDocument
   const oldNodeMap = parser.nodeMap
   const {htmlDocument:nextDom, error} = parser.edit(`<`, [
     {

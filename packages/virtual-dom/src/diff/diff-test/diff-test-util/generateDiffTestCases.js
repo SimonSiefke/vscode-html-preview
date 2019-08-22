@@ -4,26 +4,24 @@ import {toJson} from 'really-relaxed-json';
 import {validate} from 'jsonschema';
 
 const failingTests = [
-	'adding-body-tag-into-document.test.txt',
 	'adding-head-into-document.test.txt',
 	'deleting-an-attribute-character-by-character.test.txt',
-	'deleting-empty-tag-character-by-character.test.txt',
+	// 'deleting-empty-tag-character-by-character.test.txt',
 	'deleting-non-empty-tag-character-by-character.test.txt',
 	'pasting-tag-over-multiple-tags-and-text.test.txt',
-	'simple-tag-insert.test.txt must end with a new line',
 	'tag-changes-with-child-element.test.txt',
 	'typing-of-a-new-attribute-character-by-character.test.txt',
 	'wrapping-a-tag-around-some-text-character-by-character.test.txt',
 	'diff.test.txt',
 	'deleting-non-empty-tag-character-by-character.test.txt',
-	'doctype-and-whitespace-2.test.txt',
 	'doctype-and-whitespace-1.test.txt',
+	'doctype-and-whitespace-2.test.txt',
 	'doctype-and-whitespace-3.test.txt',
 	'bug-2.test.txt',
 	'replace-text-after-element-and-insert-element.test.txt'
 ];
 
-const only = ['insert-h1-character-by-character.test.txt'];
+const only = [];
 const diffTestFiles = fs
 	.readdirSync(path.join(__dirname, '..'))
 	.filter(file => file.endsWith('.test.txt'))
@@ -81,6 +79,12 @@ function generateTest(fileName) {
 		if (line.startsWith('previousText:')) {
 			finishBlock();
 			blockType = 'previousText';
+			continue;
+		}
+
+		if (line.startsWith('initialError:')) {
+			finishBlock();
+			blockType = 'initialError';
 			continue;
 		}
 
@@ -194,8 +198,6 @@ function generateTest(fileName) {
 				index++;
 			}
 
-			testCase.previousText.split(''); // ?
-			expectedNextCode; // ?
 			index += edit.rangeLength;
 			inserted += edit.text.length;
 			for (let j = 0; j < edit.text.length; j++) {
@@ -255,7 +257,6 @@ function generateTest(fileName) {
 		validatePreviousText(previousText);
 		const {nextText} = test;
 		validateNextText(nextText);
-		test.edits; // ?
 		const edits = parseJson(test.edits);
 		validateEdits(edits);
 		const expectedEdits = parseJson(test.expectedEdits || '[]');
@@ -264,7 +265,7 @@ function generateTest(fileName) {
 		return `
 
   ${
-	testIndex === 0 && !tests[0].error ?
+	testIndex === 0 && !test.initialError ?
 		'previousDom = parser.parse(' + JSON.stringify(previousText) + ').htmlDocument' :
 		''
 }

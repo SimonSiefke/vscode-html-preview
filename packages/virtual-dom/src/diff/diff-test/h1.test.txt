@@ -1,6 +1,9 @@
 previousText:
 <h1>
 
+initialError:
+true
+
 edits:
 [
   {

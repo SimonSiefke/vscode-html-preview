@@ -4,7 +4,7 @@ previousText:
 edits:
 [
   {
-    rangeOffset: ?
+    rangeOffset: 19
     rangeLength: 0
     text: <body
   }
@@ -13,7 +13,7 @@ edits:
 nextText:
 <html><head></head><body</html>
 
-invalid:
+error:
 true
 
 previousText:
@@ -22,9 +22,9 @@ previousText:
 edits:
 [
   {
-    rangeOffset: ?
+    rangeOffset: 24
     rangeLength: 0
-    text: ></body
+    text: "></body>"
   }
 ]
 

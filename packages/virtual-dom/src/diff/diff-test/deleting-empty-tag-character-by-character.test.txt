@@ -13,7 +13,7 @@ edits:
 nextText:
 <p><</p>
 
-invalid:
+error:
 true
 
 previousText:
@@ -34,7 +34,7 @@ nextText:
 expectedEdits:
 [
   {
-    command: ElementDelete
+    command: elementDelete
     payload: {}
   }
 ]
