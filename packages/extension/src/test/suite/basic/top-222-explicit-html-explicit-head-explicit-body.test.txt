@@ -1,0 +1,28 @@
+previousText:
+<html>
+  <head>
+    <title></title>
+  </head>
+  <body>
+    <b>
+  </body>
+</html>
+
+edits:
+[]
+
+waitForEdits:
+false
+
+nextText:
+<html>
+  <head>
+    <title></title>
+  </head>
+  <body>
+    <b>
+  </body>
+</html>
+
+expectedDom:
+<html><head><title></title></head><body><b></body></html>

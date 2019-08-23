@@ -96,6 +96,11 @@ function validate(node: any, $actualNode: Node) {
 	}
 }
 
+function isUsuallyInHead(node) {
+	const nodesThatAreUsuallyInHead = ['style', 'title', 'link', 'meta'];
+	return node.nodeType === 'ElementNode' && nodesThatAreUsuallyInHead.includes(node.tag);
+}
+
 async function fetchNodeMap() {
 	const nodeMap = {0: document};
 	const virtualDom = await fetch('/virtual-dom.json').then(res => res.json());
@@ -187,14 +192,16 @@ async function fetchNodeMap() {
 			// 	nextNode.text = nextNode.text.trimStart();
 			// }
 		} else if (
-			// comment nodes are allowed between head and body
-			node.nodeType !== 'CommentNode' &&
-			// whitespace text nodes are allowed between head and body
-			!(node.nodeType === 'TextNode' && !node.text.trim()) &&
-			!hasBody &&
-			!hasHtml &&
-			!inBody
+			node.nodeType === 'CommentNode' ||
+			(node.nodeType === 'TextNode' && !node.text.trim())
 		) {
+			// comment nodes are allowed between head and body
+			// whitespace text nodes are allowed between head and body
+			// do nothing special
+			// } else if (!inBody && !hasHtml && !hasHead && isUsuallyInHead(node)) {
+			// implicit head
+			// TODO
+		} else if (!hasBody && !hasHtml && !inBody) {
 			// if another node appears it will mark the implicit beginning of the body
 			inBody = true;
 			$root = document.body;
