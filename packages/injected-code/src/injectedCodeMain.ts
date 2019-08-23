@@ -31,6 +31,11 @@ function walk(dom, fn, childrenFirst = false) {
 }
 
 function validate(node: any, $actualNode: Node) {
+	if (!$actualNode) {
+		alert('failed to hydrate dom (0)');
+		console.error('$actualNode is undefined');
+	}
+
 	if (
 		node.nodeType === 'TextNode' &&
 		($actualNode.nodeType !== Node.TEXT_NODE ||
