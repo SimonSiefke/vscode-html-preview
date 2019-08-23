@@ -85,3 +85,4 @@ error: prefixSum or nodeMap is invalid because node is not found
 <!-- support for multiple changes -->
 <!-- TODO html preview inside vscode (webview or browserpreview extension or both)-->
 <!-- TODO move extension tests to html-preview-service -->
+<!-- TODO select text in editor when selected in browser -->
