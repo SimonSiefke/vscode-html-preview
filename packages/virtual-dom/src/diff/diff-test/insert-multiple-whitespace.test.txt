@@ -1,0 +1,62 @@
+previousText:
+<main></main>
+
+edits:
+[
+  {
+    rangeOffset: 6
+    rangeLength: 0
+    text: "\n  \n"
+  }
+]
+
+nextText:
+<main>
+  
+</main>
+
+expectedEdits:
+[
+  {
+    command: elementInsert
+    payload: {
+      nodeType: TextNode
+      text: "\n  \n"
+    }
+  }
+]
+
+previousText:
+<main>
+  
+</main>
+
+edits:
+[
+  {
+    rangeOffset: 9
+    rangeLength: 0
+    text: "\n  "
+  }
+  {
+    rangeOffset: 7
+    rangeLength: 2
+    text: ""
+  }
+]
+
+nextText:
+<main>
+
+  
+</main>
+
+expectedEdits:
+[
+  {
+    command: textReplace
+    payload: {
+      text: "\n\n  \n"
+    }
+  }
+]

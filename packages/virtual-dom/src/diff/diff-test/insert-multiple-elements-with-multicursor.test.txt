@@ -1,0 +1,258 @@
+previousText:
+
+
+
+
+edits:
+[
+  {
+    rangeOffset: 0
+    rangeLength: 0
+    text: <
+  }
+  {
+    rangeOffset: 1
+    rangeLength: 0
+    text: <
+  }
+  {
+    rangeOffset: 2
+    rangeLength: 0
+    text: <
+  }
+]
+
+nextText:
+<
+<
+<
+
+error:
+true
+
+previousText:
+<
+<
+<
+
+edits:
+[
+  {
+    rangeOffset: 1
+    rangeLength: 0
+    text: li
+  }
+  {
+    rangeOffset: 3
+    rangeLength: 0
+    text: li
+  }
+  {
+    rangeOffset: 5
+    rangeLength: 0
+    text: li
+  }
+]
+
+nextText:
+<li
+<li
+<li
+
+error:
+true
+
+previousText:
+<li
+<li
+<li
+
+edits:
+[
+  {
+    rangeOffset: 3
+    rangeLength: 0
+    text: >
+  }
+  {
+    rangeOffset: 7
+    rangeLength: 0
+    text: >
+  }
+  {
+    rangeOffset: 11
+    rangeLength: 0
+    text: >
+  }
+]
+
+nextText:
+<li>
+<li>
+<li>
+
+error:
+true
+
+previousText:
+<li>
+<li>
+<li>
+
+edits:
+[
+  {
+    rangeOffset: 4
+    rangeLength: 0
+    text: <
+  }
+  {
+    rangeOffset: 9
+    rangeLength: 0
+    text: <
+  }
+  {
+    rangeOffset: 14
+    rangeLength: 0
+    text: <
+  }
+]
+
+nextText:
+<li><
+<li><
+<li><
+
+error:
+true
+
+previousText:
+<li><
+<li><
+<li><
+
+edits:
+[
+  {
+    rangeOffset: 5
+    rangeLength: 0
+    text: "/"
+  }
+  {
+    rangeOffset: 11
+    rangeLength: 0
+    text: "/"
+  }
+  {
+    rangeOffset: 17
+    rangeLength: 0
+    text: "/"
+  }
+]
+
+nextText: 
+<li></
+<li></
+<li></
+
+error:
+true
+
+previousText:
+<li></
+<li></
+<li></
+
+edits:
+[
+  {
+    rangeOffset: 6
+    rangeLength: 0
+    text: li
+  }
+  {
+    rangeOffset: 13
+    rangeLength: 0
+    text: li
+  }
+  {
+    rangeOffset: 20
+    rangeLength: 0
+    text: li
+  }
+]
+
+nextText:
+<li></li
+<li></li
+<li></li
+
+error:
+true
+
+previousText:
+<li></li
+<li></li
+<li></li
+
+edits:
+[
+  {
+    rangeOffset: 8
+    rangeLength: 0
+    text: >
+  }
+  {
+    rangeOffset: 17
+    rangeLength: 0
+    text: >
+  }
+  {
+    rangeOffset: 26
+    rangeLength: 0
+    text: >
+  }
+]
+
+nextText:
+<li></li>
+<li></li>
+<li></li>
+
+expectedEdits:
+[
+  {
+    command: elementInsert
+    payload: {
+      nodeType: ElementNode
+      tag: li
+    }
+  }
+  {
+    command: textReplace
+    payload: {
+      text: "\n"
+    }
+  }
+  {
+    command: elementInsert
+    payload: {
+      nodeType: ElementNode
+      tag: li
+    }
+  }
+  {
+    command: elementInsert
+    payload: {
+      nodeType: TextNode
+      text: "\n"
+    }
+  }
+  {
+    command: elementInsert
+    payload: {
+      nodeType: ElementNode
+      tag: li
+    }
+  }
+]

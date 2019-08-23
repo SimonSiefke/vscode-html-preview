@@ -3,12 +3,7 @@ import * as path from 'path';
 import {toJson} from 'really-relaxed-json';
 import {validate} from 'jsonschema';
 
-const failingTests = [
-	'tag-changes-with-child-element.test.txt',
-	'diff.test.txt',
-	'bug-2.test.txt',
-	'replace-text-after-element-and-insert-element.test.txt'
-];
+const failingTests = ['diff.test.txt'];
 
 const only = [];
 const diffTestFiles = fs
@@ -179,28 +174,27 @@ function generateTest(fileName) {
 
 	function validateTestCase(testCase, fileName) {
 		const expectedNextCode = [];
-		let index = 0;
-		let inserted = 0;
+		let newIndex = 0;
+		testCase.edits = testCase.edits.sort((a, b) => a.rangeOffset - b.rangeOffset);
 		for (const edit of testCase.edits) {
-			while (index < edit.rangeOffset) {
-				expectedNextCode[index] = testCase.previousText[index];
-				index++;
+			while (newIndex < edit.rangeOffset) {
+				expectedNextCode.push(testCase.previousText[newIndex]);
+				newIndex++;
 			}
 
-			index += edit.rangeLength;
-			inserted += edit.text.length;
+			newIndex += edit.rangeLength;
+
 			for (let j = 0; j < edit.text.length; j++) {
-				expectedNextCode[index + j] = edit.text[j];
-				expectedNextCode.join(''); // ?
+				expectedNextCode.push(edit.text[j]);
 			}
+		}
+
+		while (newIndex < testCase.previousText.length) {
+			expectedNextCode.push(testCase.previousText[newIndex]);
+			newIndex++;
 		}
 
 		expectedNextCode.join(''); // ?
-
-		while (index < testCase.previousText.length) {
-			expectedNextCode[index + inserted] = testCase.previousText[index];
-			index++;
-		}
 
 		if (expectedNextCode.join('') !== testCase.nextText) {
 			console.log(expectedNextCode.join('')); // ?

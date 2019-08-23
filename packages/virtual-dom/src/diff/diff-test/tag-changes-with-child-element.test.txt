@@ -28,4 +28,18 @@ expectedEdits:
     command: elementDelete
     payload: {}
   }
+  {
+    command: elementInsert
+    payload: {
+      nodeType: ElementNode
+      tag: div
+    }
+  }
+  {
+    command: elementInsert
+    payload: {
+      nodeType: TextNode
+      text: "\n    hello world\n"
+    }
+  }
 ]

@@ -42,35 +42,18 @@ export const core: LocalPlugin = api => {
 		}
 
 		try {
-			if (edits.length === 1) {
-				console.log('change');
-				console.log(edits[0]);
-				const change = edits[0];
-				const oldNodeMap = api.parser.nodeMap;
-				const {htmlDocument: nextDom} = api.parser.edit(newText, [change]);
-				const newNodeMap = api.parser.nodeMap;
-				const diffs = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap});
-				previousDom = nextDom;
-				api.webSocketServer.broadcast(diffs, {});
-				previousText = newText;
-				console.log('diffs');
-				console.log(diffs);
-			} else {
-				console.log(edits.length);
-				console.log(edits);
-				console.log('sorry no diffs');
-				api.webSocketServer.broadcast(
-					[
-						{
-							command: 'error',
-							payload: {
-								message: 'too many changes'
-							}
-						}
-					],
-					{}
-				);
-			}
+			console.log('change');
+			console.log(edits);
+			const change = edits[0];
+			const oldNodeMap = api.parser.nodeMap;
+			const {htmlDocument: nextDom} = api.parser.edit(newText, [change]);
+			const newNodeMap = api.parser.nodeMap;
+			const diffs = diff(previousDom.children, nextDom.children, {oldNodeMap, newNodeMap});
+			previousDom = nextDom;
+			api.webSocketServer.broadcast(diffs, {});
+			previousText = newText;
+			console.log('diffs');
+			console.log(diffs);
 		} catch (error) {
 			console.error(error);
 		}
