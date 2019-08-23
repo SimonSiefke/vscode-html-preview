@@ -77,6 +77,8 @@ const httpMiddlewareSendCss = (api: PreviewApi) => async (
 		res.write(css);
 	} catch (error) {
 		res.statusCode = 404;
+		res.write('Not Found');
+		res.setHeader('Content-Type', 'text/plain');
 	} finally {
 		res.end();
 	}
@@ -138,6 +140,8 @@ const httpMiddlewareSendHtml = (api: PreviewApi) => async (
 		res.write(dom);
 	} catch (error) {
 		res.statusCode = 404;
+		res.setHeader('Content-Type', 'text/plain');
+		res.write('Not Found');
 	} finally {
 		res.end();
 	}
