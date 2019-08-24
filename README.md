@@ -86,3 +86,28 @@ error: prefixSum or nodeMap is invalid because node is not found
 <!-- TODO html preview inside vscode (webview or browserpreview extension or both)-->
 <!-- TODO move extension tests to html-preview-service -->
 <!-- TODO select text in editor when selected in browser -->
+<!-- TODO fix bug <body>
+  <ul>
+    <li>live edit</li>
+    <li>another one</li>
+    <li></li>
+    <li></li>
+  </ul>
+  <div></div>
+  TabNine::live TabNine::an
+
+  <button>
+  this is tab nice
+  <span>
+  this
+  is TabNine
+  <ul>
+
+  <li>another</li>
+  <li></li>
+  <li></li>
+  <li></li>
+  </span>
+  </button>
+</body>
+ cannot start with invalid html-->
