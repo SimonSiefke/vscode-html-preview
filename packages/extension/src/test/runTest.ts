@@ -33,25 +33,29 @@ async function run(test: Test) {
 }
 
 const tests: Test[] = [
+	// {
+	// 	workspace: 'basic/basic-test-workspace',
+	// 	testPath: 'suite/index'
+	// },
+	// {
+	// 	workspace: 'advanced/checkbox-stays-checked/checkbox-stays-checked-workspace',
+	// 	testPath: 'suite/advanced/checkbox-stays-checked/run'
+	// },
+	// {
+	// 	workspace: 'advanced/scroll-position-stays-the-same/scroll-position-stays-the-same-workspace',
+	// 	testPath: 'suite/advanced/scroll-position-stays-the-same/run'
+	// },
+	// {
+	// 	workspace: 'advanced/with-external-assets/with-external-assets-workspace',
+	// 	testPath: 'suite/advanced/with-external-assets/run'
+	// },
+	// {
+	// 	workspace: 'advanced/with-query-string/with-query-string-workspace',
+	// 	testPath: 'suite/advanced/with-query-string/run'
+	// },
 	{
-		workspace: 'basic/basic-test-workspace',
-		testPath: 'suite/index'
-	},
-	{
-		workspace: 'advanced/checkbox-stays-checked/checkbox-stays-checked-workspace',
-		testPath: 'suite/advanced/checkbox-stays-checked/run'
-	},
-	{
-		workspace: 'advanced/scroll-position-stays-the-same/scroll-position-stays-the-same-workspace',
-		testPath: 'suite/advanced/scroll-position-stays-the-same/run'
-	},
-	{
-		workspace: 'advanced/with-external-assets/with-external-assets-workspace',
-		testPath: 'suite/advanced/with-external-assets/run'
-	},
-	{
-		workspace: 'advanced/with-query-string/with-query-string-workspace',
-		testPath: 'suite/advanced/with-query-string/run'
+		workspace: 'advanced/reload/reload-workspace',
+		testPath: 'suite/advanced/reload/run'
 	}
 ];
 (async () => {

@@ -10,7 +10,8 @@ import {
 	createHttpServer,
 	openInBrowser,
 	genDom,
-	Parser
+	Parser,
+	createParser
 } from 'html-preview-service';
 import {core} from '../plugins/local-plugin-core/core';
 import {redirect} from '../plugins/local-plugin-redirect/redirect';
@@ -106,7 +107,9 @@ const httpMiddlewareSendHtml = (api: PreviewApi) => async (
 	);
 	if (matchingTextEditor) {
 		const text = matchingTextEditor.document.getText();
-		let dom = genDom(text);
+		api.parser = createParser();
+		api.parser.parse(text);
+		let dom = genDom(text, api.parser.dom);
 		const bodyIndex = dom.lastIndexOf('</body');
 		const $script = '<script type="module" src="html-preview.js"></script>';
 
@@ -126,9 +129,11 @@ const httpMiddlewareSendHtml = (api: PreviewApi) => async (
 	const diskPath = path.join(vscode.workspace.workspaceFolders[0].uri.fsPath, relativePath);
 	const uri = vscode.Uri.file(diskPath);
 	try {
-		const file = (await vscode.workspace.fs.readFile(uri)).toString();
+		const text = (await vscode.workspace.fs.readFile(uri)).toString();
+		api.parser = createParser();
+		api.parser.parse(text);
 		res.writeHead(200, {'Content-Type': 'text/html'});
-		let dom = genDom(file);
+		let dom = genDom(text, api.parser.dom);
 		const bodyIndex = dom.lastIndexOf('</body');
 		const $script = '<script type="module" src="html-preview.js"></script>';
 		if (bodyIndex !== -1) {

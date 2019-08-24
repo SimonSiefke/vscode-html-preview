@@ -111,3 +111,4 @@ error: prefixSum or nodeMap is invalid because node is not found
   </button>
 </body>
  cannot start with invalid html-->
+<!-- TODO build badge should have same style as other badges -->
