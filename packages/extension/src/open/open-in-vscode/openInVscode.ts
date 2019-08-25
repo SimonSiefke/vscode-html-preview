@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import {html} from './openInVscode.html';
+import {html} from './openInVscodeHtml';
 
 export const openInVscode = ({relativePath}: {relativePath: string}) => {
 	const webViewPanel = vscode.window.createWebviewPanel(

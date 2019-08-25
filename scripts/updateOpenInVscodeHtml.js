@@ -9,7 +9,7 @@ const highlightCss = fs.readFileSync(
 
 const code = `export const html = \`${highlightCss}\``;
 fs.writeFileSync(
-	path.join(root, 'packages/extension/src/open/open-in-vscode/openInVscode.html.ts'),
+	path.join(root, 'packages/extension/src/open/open-in-vscode/openInVscodeHtml.ts'),
 	code
 );
 
