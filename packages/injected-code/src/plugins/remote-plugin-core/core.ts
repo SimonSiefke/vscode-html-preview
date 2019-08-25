@@ -117,7 +117,7 @@ const elementInsert: RemotePlugin = api => {
           $node.setAttribute(attributeName, fixAttributeValue(attributeValue))
         }
 
-        $node.setAttribute('data-id', `${payload.id}`)
+        // $node.setAttribute('data-id', `${payload.id}`)
       }
     } else if (payload.nodeType === 'TextNode') {
       $node = document.createTextNode(payload.text)
