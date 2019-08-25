@@ -22,9 +22,10 @@
 
 ## Settings
 
-| Property              | Description                                                         | Default |
-| --------------------- | ------------------------------------------------------------------- | ------- |
-| htmlPreview.highlight | Highlight elements in the browser when they are selected in VSCode. | `false` |
+| Property              | Description                                                         | Default     |
+| --------------------- | ------------------------------------------------------------------- | ----------- |
+| htmlPreview.openWith  | Opens the preview with the specified application.                   | `"browser"` |
+| htmlPreview.highlight | Highlight elements in the browser when they are selected in VSCode. | `false`     |
 
 <!-- TODO bug: type <h1>a</h1>, select a , type b, $node is undefined -->
 
@@ -103,3 +104,5 @@ not working
  -->
 
 <!-- TODO bug insert ! press tab with emmet, shows $node is not defined -->
+<!-- TODO reload plugin not working when opening preview inside vscode -->
+<!-- TODO liveshare integration -->

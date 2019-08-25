@@ -84,6 +84,15 @@
           "type": "boolean",
           "default": false,
           "description": "Highlight elements in the browser when they are selected in VSCode."
+        },
+        "htmlPreview.openWith": {
+          "type": "string",
+          "enum": [
+            "browser",
+            "vscode"
+          ],
+          "default": "browser",
+          "description": "Opens the preview with the specified application"
         }
       }
     }

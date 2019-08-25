@@ -7,7 +7,7 @@ import {redirect} from './plugins/remote-plugin-redirect/redirect';
 import {reload} from './plugins/remote-plugin-reload/reload';
 import {updateCss} from './plugins/remote-plugin-update-css/updateCss';
 
-const $script = document.querySelector('script[src="html-preview.js"]') as HTMLScriptElement;
+const $script = document.querySelector('script[src="/html-preview.js"]') as HTMLScriptElement;
 $script.remove();
 
 function walk(dom, fn, childrenFirst = false) {
