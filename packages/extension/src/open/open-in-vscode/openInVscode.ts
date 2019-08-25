@@ -1,7 +1,5 @@
 import * as vscode from 'vscode';
-import * as fs from 'fs';
-import * as path from 'path';
-import {config} from '../../config';
+import {html} from './openInVscode.html';
 
 export const openInVscode = ({relativePath}: {relativePath: string}) => {
 	const webViewPanel = vscode.window.createWebviewPanel(
@@ -16,11 +14,9 @@ export const openInVscode = ({relativePath}: {relativePath: string}) => {
 			enableCommandUris: true
 		}
 	);
-	const html = fs
-		.readFileSync(
-			path.join(config.root, 'packages/extension/src/open/open-in-vscode/openInVscode.html'),
-			'utf-8'
-		)
-		.replace(/http:\/\/localhost:3000/g, 'http://localhost:3000/' + relativePath);
-	webViewPanel.webview.html = html;
+	const webViewHtml = html.replace(
+		/http:\/\/localhost:3000/g,
+		'http://localhost:3000/' + relativePath
+	);
+	webViewPanel.webview.html = webViewHtml;
 };
