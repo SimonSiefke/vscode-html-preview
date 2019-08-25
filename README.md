@@ -6,7 +6,7 @@
 
 ## Features
 
-- Live editing of HTML and CSS (currently there are still some bugs)
+- Live editing of HTML and CSS
 - Highlighting of html elements inside the browser (there are still a lot of bugs)
 
 ## TODO
@@ -51,7 +51,7 @@
 <!-- TODO htm -->
 <!-- TODO proxy? -->
 <!-- TODO cors -->
-<!-- TODO elment moves https://trello.com/c/yMmDFqdq/928-live-html-support-moves -->
+<!-- TODO element moves https://trello.com/c/yMmDFqdq/928-live-html-support-moves -->
 <!-- TODO better highlight position matching -->
 <!-- TODO create vscode.workspace.createfilesystemwatcher -->
 <!-- TODO pretty urls when opening, e.g. localhost:3000 instead of localhost:3000/index.html -->
@@ -62,8 +62,6 @@
 <!-- TODO test when css is deleted/created -->
 <!-- TODO multiple files at the same time, only reload index.html and not about.html when index.html is changed -->
 <!-- TODO like brackets: when no html file is opened, find the closest html file and open it -->
-<!-- support for multiple changes -->
-<!-- TODO html preview inside vscode (webview or browserpreview extension or both)-->
 <!-- TODO move extension tests to html-preview-service -->
 <!-- TODO select text in editor when selected in browser -->
 <!-- TODO fix bug <body>
