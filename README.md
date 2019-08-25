@@ -101,3 +101,5 @@ insert <p></p> around text
 then replace the p with h2
 not working
  -->
+
+<!-- TODO bug insert ! press tab with emmet, shows $node is not defined -->
