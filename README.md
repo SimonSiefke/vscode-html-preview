@@ -33,26 +33,6 @@
 
 <!-- autoreload extension: nodemon --watch **/dist/** --exec node scripts/update-extension.js -->
 
-<!-- TODO: bug
-input:
-<html>
-
-<head>
-  <title>Document</title>
-  <style></style>
-</head>
-
-<body>
-
-</body>
-
-</html>
-
-
-after <style> type enter enter up tab
-error: prefixSum or nodeMap is invalid because node is not found
- -->
-
 <!-- TODO support insertion of element via javascript, preview insertions can be done by referencing beforeid and afterid -->
 
 <!-- TODO debug why live preview isn't working on chrome on mobile android -->
@@ -75,7 +55,6 @@ error: prefixSum or nodeMap is invalid because node is not found
 <!-- TODO create vscode.workspace.createfilesystemwatcher -->
 <!-- TODO pretty urls when opening, e.g. localhost:3000 instead of localhost:3000/index.html -->
 <!-- TODO figure out whats best when another application is blocking the port (killing it or using another port) -->
-<!-- TODO live css -->
 <!-- TODO dispose listeners in live preview -->
 <!-- TODO test when index.html is created or deleted, same for related files -->
 <!-- TODO maybe use webworker when there is actually a lot of processing on the client -->
@@ -112,3 +91,13 @@ error: prefixSum or nodeMap is invalid because node is not found
 </body>
  cannot start with invalid html-->
 <!-- TODO build badge should have same style as other badges -->
+
+<!-- TODO bug
+<h1>hello world</h1>
+
+this is live edit
+
+insert <p></p> around text
+then replace the p with h2
+not working
+ -->

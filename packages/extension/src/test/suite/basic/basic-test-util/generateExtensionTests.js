@@ -4,7 +4,6 @@ const {toJson} = require('really-relaxed-json');
 const {validate} = require('jsonschema');
 
 const headless = true;
-// TODO figure out why puppeteer doesn't fire the networkidle2 event in headless mode
 
 const failing = [
 	'replace-element-with-text.test.txt',
@@ -107,7 +106,10 @@ const testFileNames = [
 	'insert-100-insert-element-between-text-and-text.test.txt',
 	'copy-paste-entire-document.test.txt',
 	'h1-to-h3.test.txt',
-	'bug-3.test.txt'
+	'bug-3.test.txt',
+	'special-0-delete-body-with-content.test.txt',
+	'special-1-delete-html-with-content.test.txt',
+	'special-2-delete-head-with-content.test.txt'
 ].filter(t => !failing.includes(t));
 // .filter(x => x === 'h1-to-h6.test.txt');
 
@@ -143,8 +145,8 @@ function genSingle(testCase) {
   )
 	${
 	waitForEdits ?
-		'waitForUpdateStart(page)' :
-		'await new Promise(resolve=>setTimeout(resolve, 100))'
+      'waitForUpdateStart(page)' :
+      'await new Promise(resolve=>setTimeout(resolve, 100))'
 }
 	await vscode.workspace.applyEdit(vscodeEdit)
 	${waitForEdits ? 'await waitForUpdateEnd(page)' : ''}
