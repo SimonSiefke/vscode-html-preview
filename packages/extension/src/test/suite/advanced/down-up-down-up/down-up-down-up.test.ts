@@ -38,6 +38,8 @@ function waitForUpdateEnd(page) {
   })
 }
 
+const sleep = () => new Promise(resolve => setTimeout(resolve, 1))
+
 test('moving line down and up and down and up', async () => {
   await activateExtension()
   const uri = getUri('index.html')
@@ -75,17 +77,17 @@ test('moving line down and up and down and up', async () => {
   waitForUpdateStart(page)
   await down()
   await waitForUpdateEnd(page)
-  await new Promise(resolve => setImmediate(resolve))
+  await sleep()
   await checkH1Outside()
   waitForUpdateStart(page)
   await up()
   await waitForUpdateEnd(page)
-  await new Promise(resolve => setImmediate(resolve))
+  await sleep()
   await checkH1Inside()
   waitForUpdateStart(page)
   await down()
   await waitForUpdateEnd(page)
-  await new Promise(resolve => setImmediate(resolve))
+  await sleep()
   await checkH1Outside()
   await browser.close()
 })
