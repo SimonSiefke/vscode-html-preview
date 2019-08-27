@@ -35,10 +35,6 @@
 <!-- autoreload extension: nodemon --watch **/dist/** --exec node scripts/update-extension.js -->
 
 <!-- TODO support insertion of element via javascript, preview insertions can be done by referencing beforeid and afterid -->
-
-<!-- TODO debug why live preview isn't working on chrome on mobile android -->
-<!-- TODO automatically open browser -->
-
 <!-- TODO live js via chrome devtools api / firefox devtools api similar to lighttable/brackets with chrome -->
 
 <!-- TODO http caching -->
@@ -104,3 +100,27 @@ not working
 <!-- TODO bug insert ! press tab with emmet, shows $node is not defined -->
 <!-- TODO reload plugin not working when opening preview inside vscode -->
 <!-- TODO liveshare integration -->
+
+<!-- TODO bug
+<!DOCTYPE html>
+<head>
+  <style>
+    h1 {
+      color: red;
+    }
+  </style>
+</head>
+<section>
+  <h1>hello world 1</h1>
+</section>
+
+<button>
+  this is a button
+</button>
+
+<input type="checkbox" name="" id="" />
+<input type="checkbox" name="" id="" />
+<input type="checkbox" name="" id="" />
+
+hydration error
+ -->
