@@ -1,0 +1,49 @@
+previousText:
+<p>
+  Hello
+</p>
+<p>
+    <em>World</em>
+</p>
+
+edits:
+[
+  {
+    rangeOffset: 12
+    rangeLength: 8
+    text: ""
+  }
+]
+
+nextText:
+<p>
+  Hello
+
+    <em>World</em>
+</p>
+
+expectedEdits:
+[
+  {
+    command: textReplace
+    payload: {
+      text: "\n  Hello\n\n    "
+    }
+  }
+  {
+    command: elementMove
+    payload: {}
+  }
+  {
+    command: elementMove
+    payload: {}
+  }
+  {
+    command: elementDelete
+    payload: {}
+  }
+  {
+    command: elementDelete
+    payload: {}
+  }
+]

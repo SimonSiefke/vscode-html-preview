@@ -1,4 +1,7 @@
 {
+  "[html]": {
+    "editor.formatOnSave": false
+  },
   "files.exclude": {
     "**/.git": false,
     "**/.svn": false,
@@ -37,7 +40,9 @@
     "**/(deprecated)*": false,
     "examples": false,
     "**/html-preview-service": false,
-    "**/virtual-dom": false
+    ".prettierignore": false,
+    "**/tsconfig.json": false,
+    "**/README.md": false
   },
   "search.exclude": {
     "**/node_modules": false,

@@ -103,15 +103,15 @@ const testFileNames = [
 	'insert-021-insert-text-between-comment-and-element.test.txt',
 	'insert-022-insert-text-between-comment-and-comment.test.txt',
 	'insert-100-insert-element-between-text-and-text.test.txt',
-	'insert-100-insert-element-between-text-and-text.test.txt',
 	'copy-paste-entire-document.test.txt',
 	'h1-to-h3.test.txt',
 	'bug-3.test.txt',
 	'special-0-delete-body-with-content.test.txt',
 	'special-1-delete-html-with-content.test.txt',
-	'special-2-delete-head-with-content.test.txt'
+	'special-2-delete-head-with-content.test.txt',
+	'up-down-up-down.test.txt'
 ].filter(t => !failing.includes(t));
-// .filter(x => x === 'h1-to-h6.test.txt');
+// .filter(x => x === 'up-down-up-down.test.txt');
 
 testFileNames.length; // ?
 
@@ -145,8 +145,8 @@ function genSingle(testCase) {
   )
 	${
 	waitForEdits ?
-      'waitForUpdateStart(page)' :
-      'await new Promise(resolve=>setTimeout(resolve, 100))'
+		'waitForUpdateStart(page)' :
+		'await new Promise(resolve=>setTimeout(resolve, 100))'
 }
 	await vscode.workspace.applyEdit(vscodeEdit)
 	${waitForEdits ? 'await waitForUpdateEnd(page)' : ''}
@@ -262,33 +262,31 @@ function validateExpectedDom(expectedDom) {
 }
 
 function validateTestCase(testCase, testCaseName) {
-	const expectedNextText = [];
-	let index = 0;
-	let deleted = 0;
-	let inserted = 0;
+	const expectedNextCode = [];
+	let newIndex = 0;
+	testCase.edits = testCase.edits.sort((a, b) => a.rangeOffset - b.rangeOffset);
 	for (const edit of testCase.edits) {
-		while (index < edit.rangeOffset) {
-			expectedNextText[index] = testCase.previousText[index];
-			index++;
+		while (newIndex < edit.rangeOffset) {
+			expectedNextCode.push(testCase.previousText[newIndex]);
+			newIndex++;
 		}
 
-		index += edit.rangeLength;
-		deleted += edit.rangeLength;
-		inserted += edit.text.length;
+		newIndex += edit.rangeLength;
+
 		for (let j = 0; j < edit.text.length; j++) {
-			expectedNextText[index + j] = edit.text[j];
+			expectedNextCode.push(edit.text[j]);
 		}
 	}
 
-	while (index < testCase.previousText.length) {
-		expectedNextText[index + inserted] = testCase.previousText[index];
-		index++;
+	while (newIndex < testCase.previousText.length) {
+		expectedNextCode.push(testCase.previousText[newIndex]);
+		newIndex++;
 	}
 
-	if (expectedNextText.join('') !== testCase.nextText) {
-		console.log(expectedNextText.join('')); // ?
+	if (expectedNextCode.join('') !== testCase.nextText) {
+		console.log(expectedNextCode.join('')); // ?
 		console.log(testCase.nextText); // ?
-		const en = expectedNextText.join('');
+		const en = expectedNextCode.join('');
 		for (let n = 0; n < en.length; n++) {
 			if (en[n] !== testCase.nextText[n]) {
 				console.log('\nindex is', n);

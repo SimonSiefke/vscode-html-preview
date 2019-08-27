@@ -34,6 +34,7 @@
     "copy-webpack-plugin": "^5.0.4",
     "cssnano": "^4.1.10",
     "eslint": "^6.2.1",
+    "eslint-config-prettier": "^6.1.0",
     "eslint-config-xo": "^0.26.0",
     "eslint-plugin-jest": "^22.15.2",
     "jest": "^24.9.0",
@@ -56,7 +57,8 @@
   },
   "eslintConfig": {
     "extends": [
-      "xo/esnext"
+      "xo/esnext",
+      "prettier"
     ],
     "rules": {
       "capitalized-comments": "off"
@@ -87,7 +89,8 @@
     "*.html",
     "*.md",
     "*.generated.test.js",
-    "serveStaticOriginal.js"
+    "serveStaticOriginal.js",
+    "dist"
   ],
   "jest": {
     "preset": "ts-jest",
@@ -97,7 +100,7 @@
     ],
     "testPathIgnorePatterns": [
       "/node_modules/",
-      ".vscode-test",
+      "/.vscode-test/",
       "/dist/",
       "extension/src/test"
     ]

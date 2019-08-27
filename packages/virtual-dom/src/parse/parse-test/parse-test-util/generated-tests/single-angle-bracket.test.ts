@@ -14,6 +14,8 @@ import { parseHtml } from '../../../parse'
 		delete htmlDocument.attributeSignature
 		delete htmlDocument.subtreeSignature
 		delete htmlDocument.textSignature
+		delete htmlDocument.closed
+		delete htmlDocument.parent
 		if(htmlDocument.nodeType==="ElementNode"){
 			htmlDocument.children = htmlDocument.children.map(adjustHtmlDocument)
 		}

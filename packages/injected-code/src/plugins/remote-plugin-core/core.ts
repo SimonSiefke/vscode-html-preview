@@ -170,11 +170,55 @@ const elementInsert: RemotePlugin = api => {
   })
 }
 
+const elementMove: RemotePlugin = api => {
+  api.webSocket.onMessage('elementMove', payload => {
+    console.log('elemetn move')
+    const $node = api.nodeMap[payload.id] as HTMLElement | Text | Comment | DocumentType
+    console.log($node)
+    let $parent = api.nodeMap[payload.parentId] as HTMLElement
+    if (!$parent) {
+      debugger
+    }
+
+    if (payload.parentId === 0) {
+      $parent = document.body
+      for (const rootNode of api.virtualDom) {
+        const rootNodeParent = api.nodeMap[rootNode.id] && api.nodeMap[rootNode.id].parentNode
+        if (rootNodeParent === document) {
+          payload.beforeId--
+        } else {
+          break
+        }
+      }
+    }
+
+    console.log($parent)
+    if (payload.beforeId === 0) {
+      console.log('prepend')
+      $parent.prepend($node)
+    } else {
+      const $referenceNode = api.nodeMap[payload.beforeId]
+      // @debug
+      if (!$referenceNode) {
+        console.log(payload.beforeId)
+        console.log(api.nodeMap)
+        console.error(
+          `failed to insert new element because reference node with id ${payload.beforeId} does not exist`
+        )
+        return
+      }
+      console.log('ref', $referenceNode)
+      $parent.insertBefore($node, $referenceNode.nextSibling)
+    }
+  })
+}
+
 export const core = mergePlugins(
   textReplace,
   attributeChange,
   elementDelete,
   elementInsert,
+  elementMove,
   attributeAdd,
   attributeDelete
 )

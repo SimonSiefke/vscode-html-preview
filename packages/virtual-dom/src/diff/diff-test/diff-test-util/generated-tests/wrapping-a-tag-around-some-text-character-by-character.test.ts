@@ -116,10 +116,6 @@ test(`wrapping-a-tag-around-some-text-character-by-character.test.txt`, () => {
         "nodeType": "TextNode",
         "text": "some text"
       }
-    },
-    {
-      "command": "elementDelete",
-      "payload": {}
     }
   ]
 			expect(adjustEdits(edits)).toEqual(adjustExpectedEdits(expectedEdits))

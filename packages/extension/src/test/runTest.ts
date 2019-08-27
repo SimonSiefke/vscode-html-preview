@@ -57,6 +57,10 @@ const tests: Test[] = [
     workspace: 'advanced/reload/reload-workspace',
     testPath: 'suite/advanced/reload/run',
   },
+  {
+    workspace: 'advanced/down-up-down-up/down-up-down-up-workspace',
+    testPath: 'suite/advanced/down-up-down-up/run',
+  },
 ]
 ;(async () => {
   for (const test of tests) {

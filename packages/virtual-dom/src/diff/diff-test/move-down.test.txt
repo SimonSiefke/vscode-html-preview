@@ -1,0 +1,55 @@
+previousText:
+<section>
+  <h1>hello world</h1>
+</section>
+
+
+edits:
+[
+  {
+    rangeOffset: 32
+    rangeLength: 11
+    text: ""
+  }
+  {
+    rangeOffset: 10
+    rangeLength: 2
+    text: ""
+  }
+  {
+    rangeOffset: 10
+    rangeLength: 0
+    text: "</section>\n"
+  }
+]
+
+nextText:
+<section>
+</section>
+<h1>hello world</h1>
+
+
+expectedEdits:
+[
+  {
+    command: textReplace,
+    payload: {
+      text: "\n"
+    }
+  }
+  {
+    command: elementDelete
+    payload: {}
+  }
+  {
+    command: elementInsert
+    payload: {
+      nodeType: TextNode
+      text: "\n"
+    }
+  }
+  {
+    command: elementMove
+    payload: {}
+  }
+]

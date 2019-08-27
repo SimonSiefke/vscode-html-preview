@@ -66,8 +66,4 @@ expectedEdits:
       text: "some text"
     }
   }
-  {
-    command: elementDelete
-    payload: {}
-  }
 ]

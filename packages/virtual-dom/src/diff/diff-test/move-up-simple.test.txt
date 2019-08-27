@@ -1,0 +1,54 @@
+previousText:
+<h1>first</h1>
+<h1>second</h1>
+
+edits:
+[
+  {
+    rangeOffset: 30
+    rangeLength: 0
+    text: "\n<h1>first</h1>"
+  }
+  {
+    rangeOffset: 0
+    rangeLength: 15
+    text: ""
+  }
+]
+
+nextText:
+<h1>second</h1>
+<h1>first</h1>
+
+expectedEdits:
+[
+  {
+    command: elementDelete,
+    payload: {}
+  }
+  {
+    command: elementDelete
+    payload: {}
+  }
+  {
+    command: elementInsert
+    payload: {
+      nodeType: TextNode
+      text: "\n"
+    }
+  }
+  {
+    command: elementInsert
+    payload: {
+      nodeType: ElementNode
+      tag: h1
+    }
+  }
+  {
+    command: elementInsert
+    payload: {
+      nodeType: TextNode
+      text: first
+    }
+  }
+]

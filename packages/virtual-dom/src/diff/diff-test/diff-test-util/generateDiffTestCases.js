@@ -1,266 +1,268 @@
-import * as fs from 'fs-extra';
-import * as path from 'path';
-import {toJson} from 'really-relaxed-json';
-import {validate} from 'jsonschema';
+import * as fs from 'fs-extra'
+import * as path from 'path'
+import { toJson } from 'really-relaxed-json'
+import { validate } from 'jsonschema'
 
-const failingTests = ['diff.test.txt'];
+const failingTests = ['diff.test.txt']
 
-const only = [];
+const only = []
 const diffTestFiles = fs
-	.readdirSync(path.join(__dirname, '..'))
-	.filter(file => file.endsWith('.test.txt'))
-	.filter(x => !failingTests.includes(x))
-	.filter(x => (only.length > 0 ? only.includes(x) : true));
+  .readdirSync(path.join(__dirname, '..'))
+  .filter(file => file.endsWith('.test.txt'))
+  .filter(x => !failingTests.includes(x))
+  .filter(x => (only.length > 0 ? only.includes(x) : true))
 
 // fs.removeSync(path.join(__dirname, 'generated-tests'));
-fs.ensureDirSync(path.join(__dirname, 'generated-tests'));
+fs.ensureDirSync(path.join(__dirname, 'generated-tests'))
 
-diffTestFiles.forEach(generateTest);
+diffTestFiles.forEach(generateTest)
 
 function generateTest(fileName) {
-	const testFile = fs.readFileSync(path.join(__dirname, '..', fileName), 'utf-8');
+  const testFile = fs.readFileSync(path.join(__dirname, '..', fileName), 'utf-8')
 
-	const lines = testFile.split('\n');
+  const lines = testFile.split('\n')
 
-	if (lines[lines.length - 1] !== '') {
-		throw new Error(`file ${fileName} must end with a new line`);
-	}
+  if (lines[lines.length - 1] !== '') {
+    throw new Error(`file ${fileName} must end with a new line`)
+  }
 
-	let currentTest = {};
-	const tests = [];
+  let currentTest = {}
+  const tests = []
 
-	let blockType;
-	let blockContent = [];
-	function finishBlock() {
-		if (!blockType) {
-			return;
-		}
+  let blockType
+  let blockContent = []
+  function finishBlock() {
+    if (!blockType) {
+      return
+    }
 
-		if (
-			(blockType === 'name' || blockType === 'previousText') &&
-			currentTest.previousText !== undefined
-		) {
-			tests.push(currentTest);
-			currentTest = {};
-		}
+    if (
+      (blockType === 'name' || blockType === 'previousText') &&
+      currentTest.previousText !== undefined
+    ) {
+      tests.push(currentTest)
+      currentTest = {}
+    }
 
-		currentTest[blockType] = blockContent.join('\n').slice(0, -1);
-		blockContent = [];
-	}
+    currentTest[blockType] = blockContent.join('\n').slice(0, -1)
+    blockContent = []
+  }
 
-	for (let i = 0; i < lines.length; i++) {
-		const line = lines[i];
-		if (line.startsWith('//')) {
-			continue;
-		}
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i]
+    if (line.startsWith('//')) {
+      continue
+    }
 
-		if (line.startsWith('name:')) {
-			finishBlock();
-			blockType = 'name';
-			continue;
-		}
+    if (line.startsWith('name:')) {
+      finishBlock()
+      blockType = 'name'
+      continue
+    }
 
-		if (line.startsWith('previousText:')) {
-			finishBlock();
-			blockType = 'previousText';
-			continue;
-		}
+    if (line.startsWith('previousText:')) {
+      finishBlock()
+      blockType = 'previousText'
+      continue
+    }
 
-		if (line.startsWith('initialError:')) {
-			finishBlock();
-			blockType = 'initialError';
-			continue;
-		}
+    if (line.startsWith('initialError:')) {
+      finishBlock()
+      blockType = 'initialError'
+      continue
+    }
 
-		if (line.startsWith('error:')) {
-			finishBlock();
-			blockType = 'error';
-			continue;
-		}
+    if (line.startsWith('error:')) {
+      finishBlock()
+      blockType = 'error'
+      continue
+    }
 
-		if (line.startsWith('edits:')) {
-			finishBlock();
-			blockType = 'edits';
-			continue;
-		}
+    if (line.startsWith('edits:')) {
+      finishBlock()
+      blockType = 'edits'
+      continue
+    }
 
-		if (line.startsWith('nextText:')) {
-			finishBlock();
-			blockType = 'nextText';
-			continue;
-		}
+    if (line.startsWith('nextText:')) {
+      finishBlock()
+      blockType = 'nextText'
+      continue
+    }
 
-		if (line.startsWith('expectedEdits:')) {
-			finishBlock();
-			blockType = 'expectedEdits';
-			continue;
-		}
+    if (line.startsWith('expectedEdits:')) {
+      finishBlock()
+      blockType = 'expectedEdits'
+      continue
+    }
 
-		blockContent.push(line);
-	}
+    blockContent.push(line)
+  }
 
-	finishBlock();
-	blockType = 'name';
-	finishBlock();
+  finishBlock()
+  blockType = 'name'
+  finishBlock()
 
-	function parseJson(json) {
-		return JSON.parse(toJson(json));
-	}
+  function parseJson(json) {
+    return JSON.parse(toJson(json))
+  }
 
-	const editsSchema = {
-		type: 'array',
-		items: {
-			type: 'object',
-			additionalProperties: false,
-			properties: {
-				rangeLength: {
-					type: 'number'
-				},
-				rangeOffset: {
-					type: 'number'
-				},
-				text: {
-					type: 'string'
-				}
-			}
-		}
-	};
+  const editsSchema = {
+    type: 'array',
+    items: {
+      type: 'object',
+      additionalProperties: false,
+      properties: {
+        rangeLength: {
+          type: 'number',
+        },
+        rangeOffset: {
+          type: 'number',
+        },
+        text: {
+          type: 'string',
+        },
+      },
+    },
+  }
 
-	const expectedEditsSchema = {
-		type: 'array',
-		items: {
-			type: 'object',
-			additionalProperties: false,
-			properties: {
-				command: {
-					type: 'string',
-					enum: [
-						'elementInsert',
-						'textReplace',
-						'attributeAdd',
-						'elementDelete',
-						'attributeChange',
-						'attributeDelete'
-					]
-				},
-				payload: {
-					type: 'object'
-				}
-			}
-		}
-	};
+  const expectedEditsSchema = {
+    type: 'array',
+    items: {
+      type: 'object',
+      additionalProperties: false,
+      properties: {
+        command: {
+          type: 'string',
+          enum: [
+            'elementInsert',
+            'textReplace',
+            'attributeAdd',
+            'elementDelete',
+            'attributeChange',
+            'attributeDelete',
+            'elementMove',
+          ],
+        },
+        payload: {
+          type: 'object',
+        },
+      },
+    },
+  }
 
-	function validatePreviousText(previousText) {
-		return typeof previousText === 'string';
-	}
+  function validatePreviousText(previousText) {
+    return typeof previousText === 'string'
+  }
 
-	function validateNextText(nextText) {
-		return typeof nextText === 'string';
-	}
+  function validateNextText(nextText) {
+    return typeof nextText === 'string'
+  }
 
-	function validateEdits(edits) {
-		const result = validate(edits, editsSchema); // ?
-		if (result.errors.length > 0) {
-			throw new Error(JSON.stringify(result.errors, null, 2));
-		}
-	}
+  function validateEdits(edits) {
+    const result = validate(edits, editsSchema) // ?
+    if (result.errors.length > 0) {
+      throw new Error(JSON.stringify(result.errors, null, 2))
+    }
+  }
 
-	function validateExpectedEdits(expectedEdits) {
-		const result = validate(expectedEdits, expectedEditsSchema); // ?
-		if (result.errors.length > 0) {
-			throw new Error(JSON.stringify(result.errors, null, 2));
-		}
-	}
+  function validateExpectedEdits(expectedEdits) {
+    const result = validate(expectedEdits, expectedEditsSchema) // ?
+    if (result.errors.length > 0) {
+      throw new Error(JSON.stringify(result.errors, null, 2))
+    }
+  }
 
-	function validateTestCase(testCase, fileName) {
-		const expectedNextCode = [];
-		let newIndex = 0;
-		testCase.edits = testCase.edits.sort((a, b) => a.rangeOffset - b.rangeOffset);
-		for (const edit of testCase.edits) {
-			while (newIndex < edit.rangeOffset) {
-				expectedNextCode.push(testCase.previousText[newIndex]);
-				newIndex++;
-			}
+  function validateTestCase(testCase, fileName) {
+    const expectedNextCode = []
+    let newIndex = 0
+    testCase.edits = testCase.edits.sort((a, b) => a.rangeOffset - b.rangeOffset)
+    testCase.edits // ?
+    for (const edit of testCase.edits) {
+      while (newIndex < edit.rangeOffset) {
+        expectedNextCode.push(testCase.previousText[newIndex])
+        newIndex++
+      }
 
-			newIndex += edit.rangeLength;
+      newIndex += edit.rangeLength
 
-			for (let j = 0; j < edit.text.length; j++) {
-				expectedNextCode.push(edit.text[j]);
-			}
-		}
+      for (let j = 0; j < edit.text.length; j++) {
+        expectedNextCode.push(edit.text[j])
+      }
+    }
 
-		while (newIndex < testCase.previousText.length) {
-			expectedNextCode.push(testCase.previousText[newIndex]);
-			newIndex++;
-		}
+    while (newIndex < testCase.previousText.length) {
+      expectedNextCode.push(testCase.previousText[newIndex])
+      newIndex++
+    }
 
-		expectedNextCode.join(''); // ?
+    expectedNextCode.join('') // ?
 
-		if (expectedNextCode.join('') !== testCase.nextText) {
-			console.log(expectedNextCode.join('')); // ?
-			console.log(testCase.nextText); // ?
-			const en = expectedNextCode.join('');
-			for (let n = 0; n < en.length; n++) {
-				if (en[n] !== testCase.nextText[n]) {
-					console.log('\nindex is', n);
-					console.log(
-						'expected',
-						en
-							.slice(n, n + 10)
-							.replace(/ /g, 'SPACE')
-							.replace(/\n/g, 'NEWLINE'),
-						'\ngot',
-						testCase.nextText
-							.slice(n, n + 10)
-							.replace(/ /g, 'SPACE')
-							.replace(/\n/g, 'NEWLINE')
-					);
-					break;
-				}
-			}
+    if (expectedNextCode.join('') !== testCase.nextText) {
+      console.log(expectedNextCode.join('')) // ?
+      console.log(testCase.nextText) // ?
+      const en = expectedNextCode.join('')
+      for (let n = 0; n < en.length; n++) {
+        if (en[n] !== testCase.nextText[n]) {
+          console.log('\nindex is', n)
+          console.log(
+            'expected',
+            en
+              .slice(n, n + 10)
+              .replace(/ /g, 'SPACE')
+              .replace(/\n/g, 'NEWLINE'),
+            '\ngot',
+            testCase.nextText
+              .slice(n, n + 10)
+              .replace(/ /g, 'SPACE')
+              .replace(/\n/g, 'NEWLINE')
+          )
+          break
+        }
+      }
 
-			throw new Error(`testcase ${fileName} is invalid, nextText does not match specified edit`);
-		}
-	}
+      throw new Error(`testcase ${fileName} is invalid, nextText does not match specified edit`)
+    }
+  }
 
-	// for (const test of tests) {
-	// 	if (tests.filter(t => t.name === test.name).length >= 2) {
-	// 		throw new Error(`test with name "${test.name}" exists twice`);
-	// 	}
-	// }
+  // for (const test of tests) {
+  // 	if (tests.filter(t => t.name === test.name).length >= 2) {
+  // 		throw new Error(`test with name "${test.name}" exists twice`);
+  // 	}
+  // }
 
-	const outer = inner => `test(\`${fileName}\`, () => {
+  const outer = inner => `test(\`${fileName}\`, () => {
 	const parser = createParser()
 	let previousDom
 	${inner.map(x => `  {\n${x}\n  }`).join('\n')}
-})`;
+})`
 
-	const inners = tests.map((test, testIndex) => {
-		const {previousText} = test;
-		validatePreviousText(previousText);
-		const {nextText} = test;
-		validateNextText(nextText);
-		const edits = parseJson(test.edits);
-		validateEdits(edits);
-		const expectedEdits = parseJson(test.expectedEdits || '[]');
-		validateExpectedEdits(expectedEdits);
-		validateTestCase({previousText, nextText, edits}, fileName);
-		return `
+  const inners = tests.map((test, testIndex) => {
+    const { previousText } = test
+    validatePreviousText(previousText)
+    const { nextText } = test
+    validateNextText(nextText)
+    const edits = parseJson(test.edits)
+    validateEdits(edits)
+    const expectedEdits = parseJson(test.expectedEdits || '[]')
+    validateExpectedEdits(expectedEdits)
+    validateTestCase({ previousText, nextText, edits }, fileName)
+    return `
 
   ${
-	testIndex === 0 && !test.initialError ?
-		'previousDom = parser.parse(' + JSON.stringify(previousText) + ').htmlDocument' :
-		''
-}
+    testIndex === 0 && !test.initialError
+      ? 'previousDom = parser.parse(' + JSON.stringify(previousText) + ').htmlDocument'
+      : ''
+  }
   const oldNodeMap = parser.nodeMap
   const {htmlDocument:nextDom, error} = parser.edit(\`${nextText}\`, ${JSON.stringify(
-	edits,
-	null,
-	2
-)
-	.split('\n')
-	.map((x, index) => (index === 0 ? x : '  ' + x))
-	.join('\n')})
+      edits,
+      null,
+      2
+    )
+      .split('\n')
+      .map((x, index) => (index === 0 ? x : '  ' + x))
+      .join('\n')})
 	const expectedError = ${test.error};
 	if(error && !expectedError){
 		console.error(error)
@@ -272,22 +274,22 @@ function generateTest(fileName) {
 		const newNodeMap = parser.nodeMap
 		const edits = diff((previousDom && previousDom.children) || [], nextDom!.children, {oldNodeMap, newNodeMap})
 		const expectedEdits = ${JSON.stringify(expectedEdits, null, 2)
-		.split('\n')
-		.map((x, index) => (index === 0 ? x : '  ' + x))
-		.join('\n')}
+      .split('\n')
+      .map((x, index) => (index === 0 ? x : '  ' + x))
+      .join('\n')}
 			expect(adjustEdits(edits)).toEqual(adjustExpectedEdits(expectedEdits))
 			previousDom = nextDom
 		}
-	`; // ?
-	});
-	const outerCode = outer(inners);
+	` // ?
+  })
+  const outerCode = outer(inners)
 
-	const importCode = [
-		'import { diff } from \'../../../diff\'',
-		'import { createParser } from \'../../../../parse/parse\''
-	].join('\n');
-	const functionCode = [
-		`function adjustEdits(edits){
+  const importCode = [
+    "import { diff } from '../../../diff'",
+    "import { createParser } from '../../../../parse/parse'",
+  ].join('\n')
+  const functionCode = [
+    `function adjustEdits(edits){
   for(const edit of edits){
     delete edit.payload.index
     delete edit.payload.beforeId
@@ -296,18 +298,18 @@ function generateTest(fileName) {
   }
   return edits
 }`,
-		`function adjustExpectedEdits(expectedEdits){
+    `function adjustExpectedEdits(expectedEdits){
   for(const expectedEdit of expectedEdits){
     if(expectedEdit.command==='elementInsert' && expectedEdit.payload.nodeType==='ElementNode'){
       expectedEdit.payload.attributes = expectedEdit.payload.attributes||{}
     }
   }
   return expectedEdits
-}`
-	].join('\n\n');
-	const code = `${importCode}\n\n${functionCode}\n\n${outerCode}`;
+}`,
+  ].join('\n\n')
+  const code = `${importCode}\n\n${functionCode}\n\n${outerCode}`
 
-	fs.writeFileSync(path.join(__dirname, 'generated-tests', fileName.replace('.txt', '.ts')), code);
+  fs.writeFileSync(path.join(__dirname, 'generated-tests', fileName.replace('.txt', '.ts')), code)
 }
 
-console.log('generated diff tests ✔️');
+console.log('generated diff tests ✔️')

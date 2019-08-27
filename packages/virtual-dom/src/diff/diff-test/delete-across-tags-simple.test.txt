@@ -1,0 +1,28 @@
+previousText:
+<p>a</p><p>b</p>
+
+edits:
+[
+  {
+    rangeOffset: 4
+    rangeLength: 7
+    text: ""
+  }
+]
+
+nextText:
+<p>ab</p>
+
+expectedEdits:
+[
+  {
+    command: textReplace
+    payload: {
+      text: ab
+    }
+  }
+  {
+    command: elementDelete
+    payload: {}
+  }
+]

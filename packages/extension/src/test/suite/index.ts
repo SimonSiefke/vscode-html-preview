@@ -33,7 +33,8 @@ const failing = [
 	'insert-012-insert-text-between-element-and-comment.test.txt',
 	'insert-020-insert-text-between-comment-and-text.test.txt',
 	'insert-021-insert-text-between-comment-and-element.test.txt',
-	'insert-022-insert-text-between-comment-and-comment.test.txt'
+	'insert-022-insert-text-between-comment-and-comment.test.txt',
+	'special-1-delete-html-with-content.test.txt'
 ]; // TODO
 const testFileNames = [
 	'basic.test.txt',
@@ -97,7 +98,6 @@ const testFileNames = [
 	'insert-001-insert-text-between-text-and-element.test.txt',
 	'insert-002-insert-text-between-text-and-comment.test.txt',
 	'insert-010-insert-text-between-element-and-text.test.txt',
-	'insert-011-insert-text-between-element-and-element.test.txt',
 	'insert-012-insert-text-between-element-and-comment.test.txt',
 	'insert-020-insert-text-between-comment-and-text.test.txt',
 	'insert-021-insert-text-between-comment-and-element.test.txt',
@@ -105,7 +105,11 @@ const testFileNames = [
 	'insert-100-insert-element-between-text-and-text.test.txt',
 	'copy-paste-entire-document.test.txt',
 	'h1-to-h3.test.txt',
-	'bug-3.test.txt'
+	'bug-3.test.txt',
+	'special-0-delete-body-with-content.test.txt',
+	'special-1-delete-html-with-content.test.txt',
+	'special-2-delete-head-with-content.test.txt',
+	'up-down-up-down.test.txt'
 ].filter(t => !failing.includes(t));
 
 const only = undefined;
