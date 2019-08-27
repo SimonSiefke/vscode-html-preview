@@ -35,7 +35,6 @@ export const core: LocalPlugin = api => {
     }
 
     const edits = minimizeEdits(previousText, event.contentChanges)
-    console.log('min', edits)
     const newText = event.document.getText()
 
     if (edits.length === 0) {
