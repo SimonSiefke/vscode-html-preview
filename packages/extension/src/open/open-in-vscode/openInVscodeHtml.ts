@@ -6,6 +6,11 @@ export const html = `<!DOCTYPE html>
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Document</title>
     <style>
+      /* restore default selection colors */
+      ::selection {
+        background-color: #3297df;
+        color: white;
+      }
       body {
         margin: 0;
         padding: 0;
