@@ -167,7 +167,7 @@
     },
     {
       "path": "./dist/packages/injected-code/dist/html-preview.js",
-      "maxSize": "16 kB",
+      "maxSize": "17 kB",
       "compression": "none"
     }
   ]
