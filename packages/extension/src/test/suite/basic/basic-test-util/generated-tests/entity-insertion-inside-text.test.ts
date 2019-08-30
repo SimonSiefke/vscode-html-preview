@@ -24,7 +24,10 @@ function waitForUpdateStart(page){
 	})
 }
 function waitForUpdateEnd(page){
-	return new Promise(resolve=>{
+	return new Promise((resolve, reject)=>{
+		setTimeout(() => {
+			reject(new Error('no update received'));
+		}, 50);
 		if(received){
 			resolve()
 		} else{
@@ -36,23 +39,24 @@ function waitForUpdateEnd(page){
 }
 
 function adjust(html) {
-	return html.replace('\n<script type="module" src="html-preview.js"></script>', '').replace('<script type="module" src="html-preview.js"></script>', '').replace(/ data-id="\d*"/g, '');
+	return html.replace(/ data-id="\d*"/g, '');
 }
 
-test('insert-022-inser-text-between-comment-and-comment', async () => {
-	const uri = await createTestFile('insert-022-inser-text-between-comment-and-comment.html')
-  await setText(`<!--a--><!--c-->`)
+test('entity-insertion-inside-text', async () => {
+	const uri = await createTestFile('entity-insertion-inside-text.html')
+  await setText(``)
   await activateExtension()
   const browser = await getBrowser()
   const page = await browser.newPage()
   await vscode.commands.executeCommand('htmlPreview.openPreview')
-  await page.goto('http://localhost:3000', {waitUntil: 'networkidle2'})
+  await page.goto('http://localhost:3000/entity-insertion-inside-text.html', {waitUntil: 'networkidle2', timeout: 10000})
+  //await page.goto('http://localhost:3000/entity-insertion-inside-text.html')
 	
 	{
 		const edit = {
-  "rangeOffset": 8,
+  "rangeOffset": 0,
   "rangeLength": 0,
-  "text": "b"
+  "text": "&copy;"
 }
   const vscodeEdit = new vscode.WorkspaceEdit()
   const {document} = vscode.window.activeTextEditor
@@ -64,11 +68,11 @@ test('insert-022-inser-text-between-comment-and-comment', async () => {
     ),
     edit.text
   )
-	await vscode.workspace.applyEdit(vscodeEdit)
 	waitForUpdateStart(page)
-	const html = await page.content()
+	await vscode.workspace.applyEdit(vscodeEdit)
 	await waitForUpdateEnd(page)
-	assert.equal(adjust(html), `<!--a--><html><head></head><body>b<!--c--></body></html>`);
+	const html = await page.content()
+	assert.equal(adjust(html), `<html><head></head><body>©</body></html>`);
 	
 		}
 	await browser.close()

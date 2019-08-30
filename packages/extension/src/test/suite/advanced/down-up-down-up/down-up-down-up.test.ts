@@ -38,7 +38,7 @@ function waitForUpdateEnd(page) {
   })
 }
 
-const sleep = () => new Promise(resolve => setTimeout(resolve, 1))
+const sleep = () => new Promise(resolve => setTimeout(resolve, 5))
 
 test('moving line down and up and down and up', async () => {
   await activateExtension()

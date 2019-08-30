@@ -1,5 +1,16 @@
 import { RemotePlugin, mergePlugins } from '../remotePluginApi'
 
+/**
+ *  Given a string containing encoded entity references, returns the string with the entities decoded.
+ */
+const parseEntities = (() => {
+  const entityParsingNode = document.createElement('div')
+  return (text: string) => {
+    entityParsingNode.innerHTML = text
+    return entityParsingNode.textContent as string
+  }
+})()
+
 function fixAttributeValue(value: string | null) {
   if (value === null) {
     return ''
@@ -37,7 +48,7 @@ const textReplace: RemotePlugin = api => {
       return
     }
 
-    $node.data = payload.text
+    $node.data = parseEntities(payload.text)
   })
 }
 
@@ -120,9 +131,9 @@ const elementInsert: RemotePlugin = api => {
         // $node.setAttribute('data-id', `${payload.id}`)
       }
     } else if (payload.nodeType === 'TextNode') {
-      $node = document.createTextNode(payload.text)
+      $node = document.createTextNode(parseEntities(payload.text))
     } else if (payload.nodeType === 'CommentNode') {
-      $node = document.createComment(payload.text)
+      $node = document.createComment(parseEntities(payload.text))
     } else {
       // @debug
       throw new Error('invalid node type')

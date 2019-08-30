@@ -24,7 +24,10 @@ function waitForUpdateStart(page){
 	})
 }
 function waitForUpdateEnd(page){
-	return new Promise(resolve=>{
+	return new Promise((resolve, reject)=>{
+		setTimeout(() => {
+			reject(new Error('no update received'));
+		}, 50);
 		if(received){
 			resolve()
 		} else{
@@ -36,7 +39,7 @@ function waitForUpdateEnd(page){
 }
 
 function adjust(html) {
-	return html.replace('\n<script type="module" src="html-preview.js"></script>', '').replace('<script type="module" src="html-preview.js"></script>', '').replace(/ data-id="\d*"/g, '');
+	return html.replace(/ data-id="\d*"/g, '');
 }
 
 test('delete-011-delete-text-between-element-and-element', async () => {
@@ -46,7 +49,8 @@ test('delete-011-delete-text-between-element-and-element', async () => {
   const browser = await getBrowser()
   const page = await browser.newPage()
   await vscode.commands.executeCommand('htmlPreview.openPreview')
-  await page.goto('http://localhost:3000', {waitUntil: 'networkidle2'})
+  await page.goto('http://localhost:3000/delete-011-delete-text-between-element-and-element.html', {waitUntil: 'networkidle2', timeout: 10000})
+  //await page.goto('http://localhost:3000/delete-011-delete-text-between-element-and-element.html')
 	
 	{
 		const edit = {
@@ -64,10 +68,10 @@ test('delete-011-delete-text-between-element-and-element', async () => {
     ),
     edit.text
   )
-	await vscode.workspace.applyEdit(vscodeEdit)
 	waitForUpdateStart(page)
-	const html = await page.content()
+	await vscode.workspace.applyEdit(vscodeEdit)
 	await waitForUpdateEnd(page)
+	const html = await page.content()
 	assert.equal(adjust(html), `<html><head></head><body><h1>a</h1><h1>c</h1></body></html>`);
 	
 		}
