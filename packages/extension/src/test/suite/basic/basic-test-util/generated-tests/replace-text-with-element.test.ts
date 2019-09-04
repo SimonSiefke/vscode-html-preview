@@ -53,7 +53,8 @@ test('replace-text-with-element', async () => {
   //await page.goto('http://localhost:3000/replace-text-with-element.html')
 	
 	{
-		const edit = {
+    
+    	const edit = {
   "rangeOffset": 0,
   "rangeLength": 2,
   "text": "<h1></h1>"
@@ -68,9 +69,10 @@ test('replace-text-with-element', async () => {
     ),
     edit.text
   )
-	waitForUpdateStart(page)
-	await vscode.workspace.applyEdit(vscodeEdit)
-	await waitForUpdateEnd(page)
+waitForUpdateStart(page)
+await vscode.workspace.applyEdit(vscodeEdit)
+await waitForUpdateEnd(page)
+    
 	const html = await page.content()
 	assert.equal(adjust(html), `<html><head></head><body><h1></h1></body></html>`);
 	

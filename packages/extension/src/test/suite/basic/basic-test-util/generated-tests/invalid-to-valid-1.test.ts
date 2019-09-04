@@ -42,22 +42,30 @@ function adjust(html) {
 	return html.replace(/ data-id="\d*"/g, '');
 }
 
-test('replace-text-inside-element-with-attributes', async () => {
-	const uri = await createTestFile('replace-text-inside-element-with-attributes.html')
-  await setText(`<h1 style="background:orange">a</h1>`)
+test('invalid-to-valid-1', async () => {
+	const uri = await createTestFile('invalid-to-valid-1.html')
+  await setText(`<h1>`)
   await activateExtension()
   const browser = await getBrowser()
   const page = await browser.newPage()
   await vscode.commands.executeCommand('htmlPreview.openPreview')
-  await page.goto('http://localhost:3000/replace-text-inside-element-with-attributes.html', {waitUntil: 'networkidle2', timeout: 10000})
-  //await page.goto('http://localhost:3000/replace-text-inside-element-with-attributes.html')
+  await page.goto('http://localhost:3000/invalid-to-valid-1.html', {waitUntil: 'networkidle2', timeout: 10000})
+  //await page.goto('http://localhost:3000/invalid-to-valid-1.html')
 	
 	{
     
+    
+    await new Promise(resolve=>setTimeout(resolve, 100))
+	const html = await page.content()
+	assert.equal(adjust(html), `<html><head></head><body><h1></h1></body></html>`);
+	
+		}
+
+	{
     	const edit = {
-  "rangeOffset": 30,
-  "rangeLength": 1,
-  "text": "b"
+  "rangeOffset": 4,
+  "rangeLength": 0,
+  "text": "hello world</h1>"
 }
   const vscodeEdit = new vscode.WorkspaceEdit()
   const {document} = vscode.window.activeTextEditor
@@ -69,12 +77,13 @@ test('replace-text-inside-element-with-attributes', async () => {
     ),
     edit.text
   )
-waitForUpdateStart(page)
 await vscode.workspace.applyEdit(vscodeEdit)
-await waitForUpdateEnd(page)
+await page.waitForNavigation({ waitUntil: 'networkidle2' })
+
+    
     
 	const html = await page.content()
-	assert.equal(adjust(html), `<html><head></head><body><h1 style="background:orange">b</h1></body></html>`);
+	assert.equal(adjust(html), `<html><head></head><body><h1>hello world</h1></body></html>`);
 	
 		}
 	await browser.close()

@@ -53,7 +53,8 @@ test('attribute-name-change', async () => {
   //await page.goto('http://localhost:3000/attribute-name-change.html')
 	
 	{
-		const edit = {
+    
+    	const edit = {
   "rangeOffset": 5,
   "rangeLength": 0,
   "text": "lass"
@@ -68,9 +69,10 @@ test('attribute-name-change', async () => {
     ),
     edit.text
   )
-	waitForUpdateStart(page)
-	await vscode.workspace.applyEdit(vscodeEdit)
-	await waitForUpdateEnd(page)
+waitForUpdateStart(page)
+await vscode.workspace.applyEdit(vscodeEdit)
+await waitForUpdateEnd(page)
+    
 	const html = await page.content()
 	assert.equal(adjust(html), `<html><head></head><body><h1 class="">hello world</h1></body></html>`);
 	

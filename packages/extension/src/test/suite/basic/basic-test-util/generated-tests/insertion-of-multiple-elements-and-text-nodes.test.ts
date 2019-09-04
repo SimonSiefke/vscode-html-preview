@@ -56,7 +56,8 @@ test('insertion-of-multiple-elements-and-text-nodes', async () => {
   //await page.goto('http://localhost:3000/insertion-of-multiple-elements-and-text-nodes.html')
 	
 	{
-		const edit = {
+    
+    	const edit = {
   "rangeOffset": 68,
   "rangeLength": 0,
   "text": "  Last name:<br>\n  <input type=\"text\" name=\"lastName\"><br>\n"
@@ -71,9 +72,10 @@ test('insertion-of-multiple-elements-and-text-nodes', async () => {
     ),
     edit.text
   )
-	waitForUpdateStart(page)
-	await vscode.workspace.applyEdit(vscodeEdit)
-	await waitForUpdateEnd(page)
+waitForUpdateStart(page)
+await vscode.workspace.applyEdit(vscodeEdit)
+await waitForUpdateEnd(page)
+    
 	const html = await page.content()
 	assert.equal(adjust(html), `<html><head></head><body><form>
   First name:<br>

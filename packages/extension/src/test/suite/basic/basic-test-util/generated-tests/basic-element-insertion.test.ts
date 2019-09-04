@@ -53,7 +53,8 @@ test('basic-element-insertion', async () => {
   //await page.goto('http://localhost:3000/basic-element-insertion.html')
 	
 	{
-		const edit = {
+    
+    	const edit = {
   "rangeOffset": 4,
   "rangeLength": 0,
   "text": "<p>ok</p>"
@@ -68,9 +69,10 @@ test('basic-element-insertion', async () => {
     ),
     edit.text
   )
-	waitForUpdateStart(page)
-	await vscode.workspace.applyEdit(vscodeEdit)
-	await waitForUpdateEnd(page)
+waitForUpdateStart(page)
+await vscode.workspace.applyEdit(vscodeEdit)
+await waitForUpdateEnd(page)
+    
 	const html = await page.content()
 	assert.equal(adjust(html), `<html><head></head><body><h1><p>ok</p><p>ok</p></h1></body></html>`);
 	

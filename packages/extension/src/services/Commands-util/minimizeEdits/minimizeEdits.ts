@@ -4,7 +4,8 @@ interface Edit {
   readonly text: string
 }
 
-export function minimizeEdits(previousText: string, edits: readonly Edit[]): Edit[] {
+export function minimizeEdits(previousText: string | undefined, edits: readonly Edit[]): Edit[] {
+  console.log('minimizee')
   const newEdits: Edit[] = []
   for (const edit of edits) {
     const newEdit = {
@@ -28,6 +29,7 @@ export function minimizeEdits(previousText: string, edits: readonly Edit[]): Edi
 
     newEdits.push(newEdit)
   }
+  console.log('minimizee deon')
 
   return newEdits
 }

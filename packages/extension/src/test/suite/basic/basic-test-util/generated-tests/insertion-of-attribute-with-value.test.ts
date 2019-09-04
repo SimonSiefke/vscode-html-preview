@@ -53,7 +53,8 @@ test('insertion-of-attribute-with-value', async () => {
   //await page.goto('http://localhost:3000/insertion-of-attribute-with-value.html')
 	
 	{
-		const edit = {
+    
+    	const edit = {
   "rangeOffset": 4,
   "rangeLength": 0,
   "text": "class=\"big\""
@@ -68,9 +69,10 @@ test('insertion-of-attribute-with-value', async () => {
     ),
     edit.text
   )
-	waitForUpdateStart(page)
-	await vscode.workspace.applyEdit(vscodeEdit)
-	await waitForUpdateEnd(page)
+waitForUpdateStart(page)
+await vscode.workspace.applyEdit(vscodeEdit)
+await waitForUpdateEnd(page)
+    
 	const html = await page.content()
 	assert.equal(adjust(html), `<html><head></head><body><h1 class="big">hello world</h1></body></html>`);
 	

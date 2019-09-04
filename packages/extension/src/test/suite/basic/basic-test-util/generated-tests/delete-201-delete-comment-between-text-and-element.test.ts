@@ -53,7 +53,8 @@ test('delete-201-delete-comment-between-text-and-element', async () => {
   //await page.goto('http://localhost:3000/delete-201-delete-comment-between-text-and-element.html')
 	
 	{
-		const edit = {
+    
+    	const edit = {
   "rangeOffset": 1,
   "rangeLength": 8,
   "text": ""
@@ -68,9 +69,10 @@ test('delete-201-delete-comment-between-text-and-element', async () => {
     ),
     edit.text
   )
-	waitForUpdateStart(page)
-	await vscode.workspace.applyEdit(vscodeEdit)
-	await waitForUpdateEnd(page)
+waitForUpdateStart(page)
+await vscode.workspace.applyEdit(vscodeEdit)
+await waitForUpdateEnd(page)
+    
 	const html = await page.content()
 	assert.equal(adjust(html), `<html><head></head><body>a<h1>c</h1></body></html>`);
 	

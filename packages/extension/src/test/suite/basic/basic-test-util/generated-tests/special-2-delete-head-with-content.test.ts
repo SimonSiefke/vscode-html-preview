@@ -55,7 +55,8 @@ test('special-2-delete-head-with-content', async () => {
   //await page.goto('http://localhost:3000/special-2-delete-head-with-content.html')
 	
 	{
-		const edit = {
+    
+    	const edit = {
   "rangeOffset": 0,
   "rangeLength": 43,
   "text": ""
@@ -70,9 +71,10 @@ test('special-2-delete-head-with-content', async () => {
     ),
     edit.text
   )
-	waitForUpdateStart(page)
-	await vscode.workspace.applyEdit(vscodeEdit)
-	await waitForUpdateEnd(page)
+waitForUpdateStart(page)
+await vscode.workspace.applyEdit(vscodeEdit)
+await waitForUpdateEnd(page)
+    
 	const html = await page.content()
 	assert.equal(adjust(html), `<html><head></head><body></body></html>`);
 	

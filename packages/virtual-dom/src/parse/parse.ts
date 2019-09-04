@@ -54,7 +54,7 @@ type ParsingError = {
   offset: number
 }
 
-type ParsingResult = {
+export type ParsingResult = {
   htmlDocument?: HtmlDocument
   error?: ParsingError | null // TODO not null but undefined instead
 }
@@ -70,7 +70,7 @@ export interface Parser {
 
   readonly prefixSums: any
   readonly nodeMap: any
-  edit: (
+  readonly edit: (
     textWithEdits: string,
     edits: Array<{ rangeLength: number; rangeOffset: number; text: string }>
   ) => ParsingResult
@@ -279,18 +279,17 @@ function parse(
   }
 
   while (curr.parent) {
-    if (!error) {
-      error = {
-        type: 'soft-invalid',
-        message: 'missing closing tag',
-        offset: scanner.getTokenOffset(),
-      }
+    error = {
+      type: 'soft-invalid',
+      message: 'missing closing tag',
+      offset: scanner.getTokenOffset(),
     }
+    return { error }
 
     // @ts-ignore
-    curr.closed = false
-    // @ts-ignore
-    curr = curr.parent
+    // curr.closed = false
+    // // @ts-ignore
+    // curr = curr.parent
   }
 
   return { htmlDocument, error }
@@ -311,7 +310,7 @@ export const parseHtml = (
   // Let id = 1;
 
   const { htmlDocument, error } = parse(html, { nextId, nodeMap, prefixSums, newNodeMap })
-  if (error && error.type === 'invalid') {
+  if (error) {
     return { error }
   }
 
@@ -569,17 +568,22 @@ const pretty = node => {
 // const newNodeMap = parser.nodeMap // ?
 
 const testCase = {
-  previousDom: `<p>a</p><p>b<br></p>`,
-  nextDom: `<p>ab<br></p>`,
+  previousDom: `<h1>`,
 }
 const parser = createParser()
 const { htmlDocument: parsedH1 } = parser.parse(testCase.previousDom)
-const oldNodeMap = parser.nodeMap // ?
-const { htmlDocument: parsedH2 } = parser.edit(testCase.nextDom, [
-  {
-    rangeOffset: 4,
-    rangeLength: 7,
-    text: '',
-  },
-])
-const newNodeMap = parser.nodeMap // ?
+// const testCase = {
+//   previousDom: `<p>a</p><p>b<br></p>`,
+//   nextDom: `<p>ab<br></p>`,
+// }
+// const parser = createParser()
+// const { htmlDocument: parsedH1 } = parser.parse(testCase.previousDom)
+// const oldNodeMap = parser.nodeMap // ?
+// const { htmlDocument: parsedH2 } = parser.edit(testCase.nextDom, [
+//   {
+//     rangeOffset: 4,
+//     rangeLength: 7,
+//     text: '',
+//   },
+// ])
+// const newNodeMap = parser.nodeMap // ?

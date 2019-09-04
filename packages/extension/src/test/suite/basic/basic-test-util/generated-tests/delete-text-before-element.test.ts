@@ -53,7 +53,8 @@ test('delete-text-before-element', async () => {
   //await page.goto('http://localhost:3000/delete-text-before-element.html')
 	
 	{
-		const edit = {
+    
+    	const edit = {
   "rangeOffset": 0,
   "rangeLength": 1,
   "text": ""
@@ -68,9 +69,10 @@ test('delete-text-before-element', async () => {
     ),
     edit.text
   )
-	waitForUpdateStart(page)
-	await vscode.workspace.applyEdit(vscodeEdit)
-	await waitForUpdateEnd(page)
+waitForUpdateStart(page)
+await vscode.workspace.applyEdit(vscodeEdit)
+await waitForUpdateEnd(page)
+    
 	const html = await page.content()
 	assert.equal(adjust(html), `<html><head></head><body><h1>b</h1></body></html>`);
 	

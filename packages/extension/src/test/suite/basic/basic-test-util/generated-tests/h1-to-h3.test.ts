@@ -53,7 +53,8 @@ test('h1-to-h3', async () => {
   //await page.goto('http://localhost:3000/h1-to-h3.html')
 	
 	{
-		const edit = {
+    
+    	const edit = {
   "rangeOffset": 0,
   "rangeLength": 0,
   "text": "h1"
@@ -68,16 +69,18 @@ test('h1-to-h3', async () => {
     ),
     edit.text
   )
-	waitForUpdateStart(page)
-	await vscode.workspace.applyEdit(vscodeEdit)
-	await waitForUpdateEnd(page)
+waitForUpdateStart(page)
+await vscode.workspace.applyEdit(vscodeEdit)
+await waitForUpdateEnd(page)
+    
 	const html = await page.content()
 	assert.equal(adjust(html), `<html><head></head><body>h1</body></html>`);
 	
 		}
 
 	{
-		const edit = {
+    
+    	const edit = {
   "rangeOffset": 0,
   "rangeLength": 2,
   "text": "<h1></h1>"
@@ -92,16 +95,18 @@ test('h1-to-h3', async () => {
     ),
     edit.text
   )
-	waitForUpdateStart(page)
-	await vscode.workspace.applyEdit(vscodeEdit)
-	await waitForUpdateEnd(page)
+waitForUpdateStart(page)
+await vscode.workspace.applyEdit(vscodeEdit)
+await waitForUpdateEnd(page)
+    
 	const html = await page.content()
 	assert.equal(adjust(html), `<html><head></head><body><h1></h1></body></html>`);
 	
 		}
 
 	{
-		const edit = {
+    
+    	const edit = {
   "rangeOffset": 4,
   "rangeLength": 0,
   "text": "first heading"
@@ -116,16 +121,18 @@ test('h1-to-h3', async () => {
     ),
     edit.text
   )
-	waitForUpdateStart(page)
-	await vscode.workspace.applyEdit(vscodeEdit)
-	await waitForUpdateEnd(page)
+waitForUpdateStart(page)
+await vscode.workspace.applyEdit(vscodeEdit)
+await waitForUpdateEnd(page)
+    
 	const html = await page.content()
 	assert.equal(adjust(html), `<html><head></head><body><h1>first heading</h1></body></html>`);
 	
 		}
 
 	{
-		const edit = {
+    
+    	const edit = {
   "rangeOffset": 22,
   "rangeLength": 0,
   "text": "\n"
@@ -140,9 +147,10 @@ test('h1-to-h3', async () => {
     ),
     edit.text
   )
-	waitForUpdateStart(page)
-	await vscode.workspace.applyEdit(vscodeEdit)
-	await waitForUpdateEnd(page)
+waitForUpdateStart(page)
+await vscode.workspace.applyEdit(vscodeEdit)
+await waitForUpdateEnd(page)
+    
 	const html = await page.content()
 	assert.equal(adjust(html), `<html><head></head><body><h1>first heading</h1>
 </body></html>`);
@@ -150,7 +158,8 @@ test('h1-to-h3', async () => {
 		}
 
 	{
-		const edit = {
+    
+    	const edit = {
   "rangeOffset": 23,
   "rangeLength": 0,
   "text": "h2"
@@ -165,9 +174,10 @@ test('h1-to-h3', async () => {
     ),
     edit.text
   )
-	waitForUpdateStart(page)
-	await vscode.workspace.applyEdit(vscodeEdit)
-	await waitForUpdateEnd(page)
+waitForUpdateStart(page)
+await vscode.workspace.applyEdit(vscodeEdit)
+await waitForUpdateEnd(page)
+    
 	const html = await page.content()
 	assert.equal(adjust(html), `<html><head></head><body><h1>first heading</h1>
 h2</body></html>`);
@@ -175,7 +185,8 @@ h2</body></html>`);
 		}
 
 	{
-		const edit = {
+    
+    	const edit = {
   "rangeOffset": 23,
   "rangeLength": 2,
   "text": "<h2></h2>"
@@ -190,9 +201,10 @@ h2</body></html>`);
     ),
     edit.text
   )
-	waitForUpdateStart(page)
-	await vscode.workspace.applyEdit(vscodeEdit)
-	await waitForUpdateEnd(page)
+waitForUpdateStart(page)
+await vscode.workspace.applyEdit(vscodeEdit)
+await waitForUpdateEnd(page)
+    
 	const html = await page.content()
 	assert.equal(adjust(html), `<html><head></head><body><h1>first heading</h1>
 <h2></h2></body></html>`);
@@ -200,7 +212,8 @@ h2</body></html>`);
 		}
 
 	{
-		const edit = {
+    
+    	const edit = {
   "rangeOffset": 27,
   "rangeLength": 0,
   "text": "second heading"
@@ -215,9 +228,10 @@ h2</body></html>`);
     ),
     edit.text
   )
-	waitForUpdateStart(page)
-	await vscode.workspace.applyEdit(vscodeEdit)
-	await waitForUpdateEnd(page)
+waitForUpdateStart(page)
+await vscode.workspace.applyEdit(vscodeEdit)
+await waitForUpdateEnd(page)
+    
 	const html = await page.content()
 	assert.equal(adjust(html), `<html><head></head><body><h1>first heading</h1>
 <h2>second heading</h2></body></html>`);
@@ -225,7 +239,8 @@ h2</body></html>`);
 		}
 
 	{
-		const edit = {
+    
+    	const edit = {
   "rangeOffset": 46,
   "rangeLength": 0,
   "text": "\n"
@@ -240,9 +255,10 @@ h2</body></html>`);
     ),
     edit.text
   )
-	waitForUpdateStart(page)
-	await vscode.workspace.applyEdit(vscodeEdit)
-	await waitForUpdateEnd(page)
+waitForUpdateStart(page)
+await vscode.workspace.applyEdit(vscodeEdit)
+await waitForUpdateEnd(page)
+    
 	const html = await page.content()
 	assert.equal(adjust(html), `<html><head></head><body><h1>first heading</h1>
 <h2>second heading</h2>
@@ -251,7 +267,8 @@ h2</body></html>`);
 		}
 
 	{
-		const edit = {
+    
+    	const edit = {
   "rangeOffset": 47,
   "rangeLength": 0,
   "text": "h3"
@@ -266,9 +283,10 @@ h2</body></html>`);
     ),
     edit.text
   )
-	waitForUpdateStart(page)
-	await vscode.workspace.applyEdit(vscodeEdit)
-	await waitForUpdateEnd(page)
+waitForUpdateStart(page)
+await vscode.workspace.applyEdit(vscodeEdit)
+await waitForUpdateEnd(page)
+    
 	const html = await page.content()
 	assert.equal(adjust(html), `<html><head></head><body><h1>first heading</h1>
 <h2>second heading</h2>
@@ -277,7 +295,8 @@ h3</body></html>`);
 		}
 
 	{
-		const edit = {
+    
+    	const edit = {
   "rangeOffset": 47,
   "rangeLength": 2,
   "text": "<h3></h3>"
@@ -292,9 +311,10 @@ h3</body></html>`);
     ),
     edit.text
   )
-	waitForUpdateStart(page)
-	await vscode.workspace.applyEdit(vscodeEdit)
-	await waitForUpdateEnd(page)
+waitForUpdateStart(page)
+await vscode.workspace.applyEdit(vscodeEdit)
+await waitForUpdateEnd(page)
+    
 	const html = await page.content()
 	assert.equal(adjust(html), `<html><head></head><body><h1>first heading</h1>
 <h2>second heading</h2>
@@ -303,7 +323,8 @@ h3</body></html>`);
 		}
 
 	{
-		const edit = {
+    
+    	const edit = {
   "rangeOffset": 51,
   "rangeLength": 0,
   "text": "third heading"
@@ -318,9 +339,10 @@ h3</body></html>`);
     ),
     edit.text
   )
-	waitForUpdateStart(page)
-	await vscode.workspace.applyEdit(vscodeEdit)
-	await waitForUpdateEnd(page)
+waitForUpdateStart(page)
+await vscode.workspace.applyEdit(vscodeEdit)
+await waitForUpdateEnd(page)
+    
 	const html = await page.content()
 	assert.equal(adjust(html), `<html><head></head><body><h1>first heading</h1>
 <h2>second heading</h2>

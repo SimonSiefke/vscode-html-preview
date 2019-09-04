@@ -53,7 +53,8 @@ test('element-addition-at-the-start', async () => {
   //await page.goto('http://localhost:3000/element-addition-at-the-start.html')
 	
 	{
-		const edit = {
+    
+    	const edit = {
   "rangeOffset": 0,
   "rangeLength": 0,
   "text": "<h1>b</h1>"
@@ -68,9 +69,10 @@ test('element-addition-at-the-start', async () => {
     ),
     edit.text
   )
-	waitForUpdateStart(page)
-	await vscode.workspace.applyEdit(vscodeEdit)
-	await waitForUpdateEnd(page)
+waitForUpdateStart(page)
+await vscode.workspace.applyEdit(vscodeEdit)
+await waitForUpdateEnd(page)
+    
 	const html = await page.content()
 	assert.equal(adjust(html), `<html><head></head><body><h1>b</h1><h1>a</h1></body></html>`);
 	

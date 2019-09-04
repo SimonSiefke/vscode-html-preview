@@ -53,7 +53,8 @@ test('useless-whitespace-change-2', async () => {
   //await page.goto('http://localhost:3000/useless-whitespace-change-2.html')
 	
 	{
-		const edit = {
+    
+    	const edit = {
   "rangeOffset": 7,
   "rangeLength": 2,
   "text": ""
@@ -68,9 +69,10 @@ test('useless-whitespace-change-2', async () => {
     ),
     edit.text
   )
-	waitForUpdateStart(page)
-	await vscode.workspace.applyEdit(vscodeEdit)
-	await waitForUpdateEnd(page)
+waitForUpdateStart(page)
+await vscode.workspace.applyEdit(vscodeEdit)
+await waitForUpdateEnd(page)
+    
 	const html = await page.content()
 	assert.equal(adjust(html), `<html><head></head><body><h1><br></h1></body></html>`);
 	

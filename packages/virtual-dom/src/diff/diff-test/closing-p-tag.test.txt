@@ -14,4 +14,12 @@ nextText:
 <p></p>
 
 expectedEdits:
-[]
+[
+  {
+    command: elementInsert
+    payload: {
+      nodeType: ElementNode
+      tag: p
+    }
+  }
+]

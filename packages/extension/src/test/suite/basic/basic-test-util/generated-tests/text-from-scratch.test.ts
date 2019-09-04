@@ -53,7 +53,8 @@ test('text-from-scratch', async () => {
   //await page.goto('http://localhost:3000/text-from-scratch.html')
 	
 	{
-		const edit = {
+    
+    	const edit = {
   "rangeLength": 0,
   "rangeOffset": 0,
   "text": "hello world"
@@ -68,9 +69,10 @@ test('text-from-scratch', async () => {
     ),
     edit.text
   )
-	waitForUpdateStart(page)
-	await vscode.workspace.applyEdit(vscodeEdit)
-	await waitForUpdateEnd(page)
+waitForUpdateStart(page)
+await vscode.workspace.applyEdit(vscodeEdit)
+await waitForUpdateEnd(page)
+    
 	const html = await page.content()
 	assert.equal(adjust(html), `<html><head></head><body>hello world</body></html>`);
 	

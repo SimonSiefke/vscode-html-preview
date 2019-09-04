@@ -56,7 +56,8 @@ test('text-insertion-in-nested-html', async () => {
   //await page.goto('http://localhost:3000/text-insertion-in-nested-html.html')
 	
 	{
-		const edit = {
+    
+    	const edit = {
   "rangeOffset": 107,
   "rangeLength": 0,
   "text": "!!!"
@@ -71,9 +72,10 @@ test('text-insertion-in-nested-html', async () => {
     ),
     edit.text
   )
-	waitForUpdateStart(page)
-	await vscode.workspace.applyEdit(vscodeEdit)
-	await waitForUpdateEnd(page)
+waitForUpdateStart(page)
+await vscode.workspace.applyEdit(vscodeEdit)
+await waitForUpdateEnd(page)
+    
 	const html = await page.content()
 	assert.equal(adjust(html), `<html><head></head><body><div>
   <img src="https://source.unsplash.com/random" alt="random image">

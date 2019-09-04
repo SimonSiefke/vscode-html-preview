@@ -1,3 +1,4 @@
 {
-  "editor.formatOnSave": false
+  "editor.formatOnSave": false,
+  "html.autoClosingTags": false
 }

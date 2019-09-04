@@ -53,7 +53,8 @@ test('basic-replace-text-1', async () => {
   //await page.goto('http://localhost:3000/basic-replace-text-1.html')
 	
 	{
-		const edit = {
+    
+    	const edit = {
   "rangeOffset": 4,
   "rangeLength": 1,
   "text": "b"
@@ -68,9 +69,10 @@ test('basic-replace-text-1', async () => {
     ),
     edit.text
   )
-	waitForUpdateStart(page)
-	await vscode.workspace.applyEdit(vscodeEdit)
-	await waitForUpdateEnd(page)
+waitForUpdateStart(page)
+await vscode.workspace.applyEdit(vscodeEdit)
+await waitForUpdateEnd(page)
+    
 	const html = await page.content()
 	assert.equal(adjust(html), `<html><head></head><body><h1>b</h1></body></html>`);
 	

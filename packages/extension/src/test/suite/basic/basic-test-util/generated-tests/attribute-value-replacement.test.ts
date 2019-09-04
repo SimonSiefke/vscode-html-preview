@@ -53,7 +53,8 @@ test('attribute-value-replacement', async () => {
   //await page.goto('http://localhost:3000/attribute-value-replacement.html')
 	
 	{
-		const edit = {
+    
+    	const edit = {
   "rangeOffset": 11,
   "rangeLength": 3,
   "text": "small"
@@ -68,9 +69,10 @@ test('attribute-value-replacement', async () => {
     ),
     edit.text
   )
-	waitForUpdateStart(page)
-	await vscode.workspace.applyEdit(vscodeEdit)
-	await waitForUpdateEnd(page)
+waitForUpdateStart(page)
+await vscode.workspace.applyEdit(vscodeEdit)
+await waitForUpdateEnd(page)
+    
 	const html = await page.content()
 	assert.equal(adjust(html), `<html><head></head><body><h1 class="small">hello world</h1></body></html>`);
 	

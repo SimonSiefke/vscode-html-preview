@@ -53,7 +53,8 @@ test('entity-insertion-inside-text', async () => {
   //await page.goto('http://localhost:3000/entity-insertion-inside-text.html')
 	
 	{
-		const edit = {
+    
+    	const edit = {
   "rangeOffset": 0,
   "rangeLength": 0,
   "text": "&copy;"
@@ -68,9 +69,10 @@ test('entity-insertion-inside-text', async () => {
     ),
     edit.text
   )
-	waitForUpdateStart(page)
-	await vscode.workspace.applyEdit(vscodeEdit)
-	await waitForUpdateEnd(page)
+waitForUpdateStart(page)
+await vscode.workspace.applyEdit(vscodeEdit)
+await waitForUpdateEnd(page)
+    
 	const html = await page.content()
 	assert.equal(adjust(html), `<html><head></head><body>©</body></html>`);
 	

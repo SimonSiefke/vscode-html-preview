@@ -9,7 +9,7 @@ export const highlight: LocalPlugin = api => {
       const { id } = message.payload
       // console.log('id', message.message.payload.id);
       // console.log(parser.prefixSums);
-      for (const [key, value] of Object.entries(api.parser.prefixSums)) {
+      for (const [key, value] of Object.entries(api.stateMap.prefixSums)) {
         if (value === id) {
           const parsedKey = parseInt(key, 10)
           vscode.window.activeTextEditor.selection = new vscode.Selection(
@@ -30,11 +30,11 @@ export const highlight: LocalPlugin = api => {
     const offset = vscode.window.activeTextEditor.document.offsetAt(selection.active)
     let previousValue
     let found
-    for (const [key, value] of Object.entries(api.parser.prefixSums) as any[]) {
+    for (const [key, value] of Object.entries(api.stateMap.prefixSums) as any[]) {
       const parsedKey = parseInt(key, 10)
       // @debug
-      if (!api.parser.nodeMap[value]) {
-        console.log(api.parser.prefixSums)
+      if (!api.stateMap.nodeMap[value]) {
+        console.log(api.stateMap.prefixSums)
         console.error(`node ${value} doesn\'t exist`)
         api.webSocketServer.broadcast(
           [
@@ -49,7 +49,7 @@ export const highlight: LocalPlugin = api => {
         )
       }
 
-      const isElementNode = api.parser.nodeMap[value].nodeType === 'ElementNode'
+      const isElementNode = api.stateMap.nodeMap[value].nodeType === 'ElementNode'
 
       if (parsedKey === offset && isElementNode) {
         found = value

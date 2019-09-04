@@ -19,11 +19,21 @@ import { highlight } from '../plugins/local-plugin-highlight/highlight'
 import * as http from 'http'
 import { LocalPlugin } from '../plugins/localPluginApi'
 import { open } from '../open/open'
+import * as assert from 'assert'
+import * as querystring from 'querystring'
 
+export const invariant = (message: string, value: any) => assert.ok(value, message)
+
+interface State {
+  parser: Parser
+  previousText?: string
+  previousDom?: any
+  previousNodeMap?: any
+}
 export interface PreviewApi {
   vscode: {
     window: {
-      onDidChangeActiveTextEditor: (listener: (event: vscode.TextEditor) => void) => void
+      // onDidChangeActiveTextEditor: (listener: (event: vscode.TextEditor) => void) => void
       onDidChangeTextEditorSelection: (
         listener: (event: vscode.TextEditorSelectionChangeEvent) => void
       ) => void
@@ -38,7 +48,9 @@ export interface PreviewApi {
       ) => vscode.FileSystemWatcher
     }
   }
-  parser: Parser
+  stateMap: {
+    [key: string]: State
+  }
   webSocketServer: WebSocketServer | undefined
   httpServer: HttpServer | undefined
 }
@@ -55,7 +67,8 @@ const httpMiddlewareSendCss = (api: PreviewApi) => async (
   res: http.ServerResponse,
   next: any
 ) => {
-  const url = parseUrl(req.url)
+  const url = parseUrl(req.url, true)
+  url.query.name
   if (!url.pathname.endsWith('.css')) {
     return next()
   }
@@ -100,17 +113,29 @@ const httpMiddlewareSendHtml = (api: PreviewApi) => async (
   }
 
   if (!relativePath) {
+    console.log('url')
+    console.log(req.url)
+    console.log('relative oath')
+    console.log(relativePath)
     return next()
   }
 
   const matchingTextEditor = vscode.window.visibleTextEditors.find(
     textEditor => vscode.workspace.asRelativePath(textEditor.document.uri) === relativePath.slice(1)
   )
-  if (matchingTextEditor) {
-    const text = matchingTextEditor.document.getText()
-    api.parser = createParser()
-    api.parser.parse(text)
-    let dom = genDom(text, api.parser.dom)
+  const sendHtml = (text: string) => {
+    const state: State = { parser: createParser() }
+    api.stateMap[relativePath] = state
+    const parsingResult = api.stateMap[relativePath].parser.parse(text)
+    if (parsingResult.error) {
+      console.error('initial error')
+      state.previousText = text
+    } else {
+      state.previousDom = parsingResult.htmlDocument
+      state.previousText = text
+      state.previousNodeMap = state.parser.nodeMap
+    }
+    let dom = genDom(text, state.parser.dom)
     const bodyIndex = dom.lastIndexOf('</body')
     const $script = '<script type="module" src="/html-preview.js"></script>'
 
@@ -119,11 +144,14 @@ const httpMiddlewareSendHtml = (api: PreviewApi) => async (
     } else {
       dom += $script
     }
-
     res.writeHead(200, { 'Content-Type': 'text/html' })
     res.write(dom)
     res.end()
-    return
+  }
+
+  if (matchingTextEditor) {
+    const text = matchingTextEditor.document.getText()
+    return sendHtml(text)
   }
 
   // TODO add cache with parser and urls
@@ -131,24 +159,11 @@ const httpMiddlewareSendHtml = (api: PreviewApi) => async (
   const uri = vscode.Uri.file(diskPath)
   try {
     const text = (await vscode.workspace.fs.readFile(uri)).toString()
-    api.parser = createParser()
-    api.parser.parse(text)
-    res.writeHead(200, { 'Content-Type': 'text/html' })
-    let dom = genDom(text, api.parser.dom)
-    const bodyIndex = dom.lastIndexOf('</body')
-    const $script = '<script type="module" src="html-preview.js"></script>'
-    if (bodyIndex !== -1) {
-      dom = dom.slice(0, bodyIndex) + $script + dom.slice(bodyIndex)
-    } else {
-      dom += $script
-    }
-
-    res.write(dom)
+    return sendHtml(text)
   } catch (error) {
     res.statusCode = 404
     res.setHeader('Content-Type', 'text/plain')
     res.write('Not Found')
-  } finally {
     res.end()
   }
 }
@@ -158,9 +173,14 @@ const httpMiddlewareSendInjectedCode = (api: PreviewApi) => (
   res: http.ServerResponse,
   next: any
 ) => {
-  if (req.url === '/virtual-dom.json') {
-    res.writeHead(200, { 'Content-Type': 'text/json' })
-    console.log(api.parser.dom.children)
+  const url = parseUrl(req.url)
+  const urlPathName = url.pathname
+  if (urlPathName === '/virtual-dom.json') {
+    const urlQuery = querystring.parse(url.query) as { relativePath: string }
+    let relativePath = JSON.parse(urlQuery.relativePath)
+    if (relativePath.endsWith('/')) {
+      relativePath += 'index.html'
+    }
     const getCircularReplacer = () => {
       const seen = new WeakSet()
       return (key, value) => {
@@ -176,23 +196,28 @@ const httpMiddlewareSendInjectedCode = (api: PreviewApi) => (
         return value
       }
     }
+    res.writeHead(200, { 'Content-Type': 'text/json' })
     try {
-      const virtualDom = JSON.stringify(api.parser.dom.children, getCircularReplacer())
+      const dom = api.stateMap[relativePath].previousDom
+      if (dom === undefined) {
+        res.write(JSON.stringify('invalid'))
+        return res.end()
+      }
+      const virtualDom = JSON.stringify(dom.children, getCircularReplacer())
       res.write(virtualDom)
-
       return res.end()
     } catch (error) {
       console.error(error)
     }
   }
 
-  if (req.url === '/html-preview.js') {
+  if (urlPathName === '/html-preview.js') {
     res.writeHead(200, { 'Content-Type': 'text/javascript' })
     res.write(htmlPreviewJs)
     return res.end()
   }
 
-  if (req.url === '/html-preview.js.map') {
+  if (urlPathName === '/html-preview.js.map') {
     res.writeHead(200)
     res.write(htmlPreviewJsMap)
     return res.end()
@@ -201,7 +226,7 @@ const httpMiddlewareSendInjectedCode = (api: PreviewApi) => (
   next()
 }
 
-const doOpen = async (api: PreviewApi): Promise<void> => {
+const startServer = async (api: PreviewApi): Promise<void> => {
   api.httpServer = createHttpServer()
   api.httpServer.use(httpMiddlewareSendHtml(api))
   api.httpServer.use(httpMiddlewareSendInjectedCode(api))
@@ -283,14 +308,13 @@ if (
 }
 
 export const Preview = (() => {
-  let state: 'opening' | 'open' | 'closing' | 'closed' = 'closed'
+  let previewState: 'opening' | 'open' | 'closing' | 'closed' = 'closed'
   let closingPromise: Promise<void> | undefined
   let openingPromise: Promise<void> | undefined
   const previewApi: PreviewApi = {
-    parser: undefined,
     vscode: {
       window: {
-        onDidChangeActiveTextEditor: vscode.window.onDidChangeActiveTextEditor,
+        // onDidChangeActiveTextEditor: vscode.window.onDidChangeActiveTextEditor,
         onDidChangeTextEditorSelection: vscode.window.onDidChangeTextEditorSelection,
       },
       workspace: {
@@ -298,34 +322,35 @@ export const Preview = (() => {
         createFileSystemWatcher: vscode.workspace.createFileSystemWatcher,
       },
     },
+    stateMap: {},
     httpServer: undefined,
     webSocketServer: undefined,
   }
   return {
     get state() {
-      return state
+      return previewState
     },
     async open(uri?: vscode.Uri) {
-      if (state === 'opening') {
+      if (previewState === 'opening') {
         return
       }
 
-      if (state === 'closing') {
+      if (previewState === 'closing') {
         await closingPromise
       }
 
-      if (state === 'open') {
+      if (previewState === 'open') {
         await open({ uri })
         await openingPromise
         openingPromise = undefined
         return
       }
 
-      state = 'opening'
+      previewState = 'opening'
       try {
         openingPromise = new Promise(async (resolve, reject) => {
           try {
-            await doOpen(previewApi)
+            await startServer(previewApi)
             await open({ uri })
             resolve()
           } catch (error) {
@@ -338,25 +363,28 @@ export const Preview = (() => {
           plugin(previewApi)
         }
 
-        state = 'open'
+        previewState = 'open'
       } catch (error) {
-        state = 'closed'
+        previewState = 'closed'
       }
     },
     async dispose() {
-      if (state === 'closed') {
+      if (previewState === 'closed') {
+        // @debug
         vscode.window.showErrorMessage('already closed')
       }
 
-      if (state === 'closing') {
+      if (previewState === 'closing') {
+        // @debug
+        vscode.window.showErrorMessage('already closing')
         return
       }
 
       await doDispose(previewApi)
-      state = 'closing'
+      previewState = 'closing'
       await closingPromise
       closingPromise = undefined
-      state = 'closed'
+      previewState = 'closed'
     },
   }
 })()

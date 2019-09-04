@@ -53,7 +53,8 @@ test('insert-002-insert-text-between-text-and-comment', async () => {
   //await page.goto('http://localhost:3000/insert-002-insert-text-between-text-and-comment.html')
 	
 	{
-		const edit = {
+    
+    	const edit = {
   "rangeOffset": 1,
   "rangeLength": 0,
   "text": "b"
@@ -68,9 +69,10 @@ test('insert-002-insert-text-between-text-and-comment', async () => {
     ),
     edit.text
   )
-	waitForUpdateStart(page)
-	await vscode.workspace.applyEdit(vscodeEdit)
-	await waitForUpdateEnd(page)
+waitForUpdateStart(page)
+await vscode.workspace.applyEdit(vscodeEdit)
+await waitForUpdateEnd(page)
+    
 	const html = await page.content()
 	assert.equal(adjust(html), `<html><head></head><body>ab<!--c--></body></html>`);
 	

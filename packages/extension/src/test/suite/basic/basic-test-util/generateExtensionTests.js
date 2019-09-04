@@ -97,10 +97,8 @@ import * as _ from 'lodash'
 
 function genSingle(testCase) {
   const edit = testCase.edits[0]
-  const { waitForEdits } = testCase // ?
-  return `
-	{
-		const edit = ${JSON.stringify(edit, null, 2)}
+  const { waitForEdits, waitForReload } = testCase // ?
+  const createEdit = `	const edit = ${JSON.stringify(edit, null, 2)}
   const vscodeEdit = new vscode.WorkspaceEdit()
   const {document} = vscode.window.activeTextEditor
   vscodeEdit.replace(
@@ -110,14 +108,21 @@ function genSingle(testCase) {
       document.positionAt(edit.rangeOffset + edit.rangeLength)
     ),
     edit.text
-  )
-	${
-    waitForEdits
-      ? 'waitForUpdateStart(page)'
-      : 'await new Promise(resolve=>setTimeout(resolve, 100))'
-  }
-	await vscode.workspace.applyEdit(vscodeEdit)
-	${waitForEdits ? 'await waitForUpdateEnd(page)' : ''}
+  )`
+  const applyEdit = `await vscode.workspace.applyEdit(vscodeEdit)`
+  return `
+	{
+    ${
+      waitForReload
+        ? `${createEdit}\n${applyEdit}\nawait page.waitForNavigation({ waitUntil: 'networkidle2' })\n`
+        : ''
+    }
+    ${
+      waitForEdits
+        ? `${createEdit}\nwaitForUpdateStart(page)\n${applyEdit}\nawait waitForUpdateEnd(page)`
+        : ''
+    }
+    ${!waitForEdits && !waitForReload ? `await new Promise(resolve=>setTimeout(resolve, 100))` : ''}
 	const html = await page.content()
 	assert.equal(adjust(html), \`${testCase.expectedDom}\`);
 	
@@ -284,6 +289,10 @@ function validateWaitForEdits(waitForEdits) {
   return waitForEdits === 'false'
 }
 
+function validateWaitForReload(waitForReload) {
+  return waitForReload === 'true'
+}
+
 function gen(fileName) {
   const basicTest = fs.readFileSync(path.join(__dirname, `../${fileName}`), 'utf-8')
 
@@ -323,6 +332,12 @@ function gen(fileName) {
       continue
     }
 
+    if (line.startsWith('waitForReload:')) {
+      finishBlock()
+      blockType = 'waitForReload'
+      continue
+    }
+
     if (line.startsWith('edits:')) {
       finishBlock()
       blockType = 'edits'
@@ -359,9 +374,13 @@ function gen(fileName) {
       validateWaitForEdits(test.waitForEdits)
     }
 
-    const waitForEdits = test.waitForEdits !== 'false'
+    if (test.waitForReload) {
+      validateWaitForReload(test.waitForReload)
+    }
 
+    const waitForEdits = test.waitForEdits !== 'false' && test.waitForReload !== 'true'
     const { previousText } = test
+    const waitForReload = test.waitForReload === 'true'
     validatePreviousText(previousText)
     const { nextText } = test
     validateNextText(nextText)
@@ -370,7 +389,7 @@ function gen(fileName) {
     const { expectedDom } = test
     validateExpectedDom(expectedDom)
     validateTestCase({ previousText, nextText, edits }, fileName)
-    return { previousText, edits, expectedDom, waitForEdits }
+    return { previousText, edits, expectedDom, waitForEdits, waitForReload }
   })
 
   e2eCases

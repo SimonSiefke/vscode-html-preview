@@ -63,24 +63,9 @@ test('copy-paste-entire-document', async () => {
   //await page.goto('http://localhost:3000/copy-paste-entire-document.html')
 	
 	{
-		const edit = {
-  "rangeOffset": 0,
-  "rangeLength": 158,
-  "text": "<!DOCTYPE html>\n<html>\n  <head>\n    <meta charset=\"utf-8\">\n    <title>Live Preview</title>\n  </head>\n  <body>\n    <p>this is a paragraph</p>\n  </body>\n</html>"
-}
-  const vscodeEdit = new vscode.WorkspaceEdit()
-  const {document} = vscode.window.activeTextEditor
-  vscodeEdit.replace(
-    uri,
-    new vscode.Range(
-      document.positionAt(edit.rangeOffset),
-      document.positionAt(edit.rangeOffset + edit.rangeLength)
-    ),
-    edit.text
-  )
-	await new Promise(resolve=>setTimeout(resolve, 100))
-	await vscode.workspace.applyEdit(vscodeEdit)
-	
+    
+    
+    await new Promise(resolve=>setTimeout(resolve, 100))
 	const html = await page.content()
 	assert.equal(adjust(html), `<!DOCTYPE html><html><head>
     <meta charset="utf-8">

@@ -53,7 +53,8 @@ test('delete-000-delete-text-between-text-and-text', async () => {
   //await page.goto('http://localhost:3000/delete-000-delete-text-between-text-and-text.html')
 	
 	{
-		const edit = {
+    
+    	const edit = {
   "rangeOffset": 1,
   "rangeLength": 1,
   "text": ""
@@ -68,9 +69,10 @@ test('delete-000-delete-text-between-text-and-text', async () => {
     ),
     edit.text
   )
-	waitForUpdateStart(page)
-	await vscode.workspace.applyEdit(vscodeEdit)
-	await waitForUpdateEnd(page)
+waitForUpdateStart(page)
+await vscode.workspace.applyEdit(vscodeEdit)
+await waitForUpdateEnd(page)
+    
 	const html = await page.content()
 	assert.equal(adjust(html), `<html><head></head><body>ac</body></html>`);
 	

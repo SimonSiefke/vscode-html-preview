@@ -54,7 +54,8 @@ ddd`)
   //await page.goto('http://localhost:3000/bug-3.html')
 	
 	{
-		const edit = {
+    
+    	const edit = {
   "rangeOffset": 24,
   "rangeLength": 0,
   "text": "d"
@@ -69,9 +70,10 @@ ddd`)
     ),
     edit.text
   )
-	waitForUpdateStart(page)
-	await vscode.workspace.applyEdit(vscodeEdit)
-	await waitForUpdateEnd(page)
+waitForUpdateStart(page)
+await vscode.workspace.applyEdit(vscodeEdit)
+await waitForUpdateEnd(page)
+    
 	const html = await page.content()
 	assert.equal(adjust(html), `<html><head></head><body><h1>hello world</h1>
 dddd</body></html>`);

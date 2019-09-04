@@ -53,7 +53,8 @@ test('delete-text-after-text', async () => {
   //await page.goto('http://localhost:3000/delete-text-after-text.html')
 	
 	{
-		const edit = {
+    
+    	const edit = {
   "rangeOffset": 1,
   "rangeLength": 1,
   "text": ""
@@ -68,9 +69,10 @@ test('delete-text-after-text', async () => {
     ),
     edit.text
   )
-	waitForUpdateStart(page)
-	await vscode.workspace.applyEdit(vscodeEdit)
-	await waitForUpdateEnd(page)
+waitForUpdateStart(page)
+await vscode.workspace.applyEdit(vscodeEdit)
+await waitForUpdateEnd(page)
+    
 	const html = await page.content()
 	assert.equal(adjust(html), `<html><head></head><body>a</body></html>`);
 	

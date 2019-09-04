@@ -45,7 +45,15 @@ test(`closing-p-tag.test.txt`, () => {
 
 		const newNodeMap = parser.nodeMap
 		const edits = diff((previousDom && previousDom.children) || [], nextDom!.children, {oldNodeMap, newNodeMap})
-		const expectedEdits = []
+		const expectedEdits = [
+    {
+      "command": "elementInsert",
+      "payload": {
+        "nodeType": "ElementNode",
+        "tag": "p"
+      }
+    }
+  ]
 			expect(adjustEdits(edits)).toEqual(adjustExpectedEdits(expectedEdits))
 			previousDom = nextDom
 		}
