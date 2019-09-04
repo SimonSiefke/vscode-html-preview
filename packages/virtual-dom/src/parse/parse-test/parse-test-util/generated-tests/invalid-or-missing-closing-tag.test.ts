@@ -49,18 +49,7 @@ test(`missing closing tag`, () => {
     "offset": 15
   }
 		expect(error).toEqual(expectedError)
-	const expectedTree = [
-  {
-    "nodeType": "ElementNode",
-    "tag": "h1",
-    "children": [
-      {
-        "nodeType": "TextNode",
-        "text": "hello world"
-      }
-    ]
-  }
-]
+	const expectedTree = null
 	expect(adjustHtmlDocument(htmlDocument && htmlDocument.children)).toEqual(adjustExpectedTree(expectedTree))
 })
 

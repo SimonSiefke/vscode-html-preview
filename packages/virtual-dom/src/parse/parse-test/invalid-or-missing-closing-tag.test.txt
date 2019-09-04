@@ -4,20 +4,6 @@ missing closing tag
 text:
 <h1>hello world
 
-expectedTree:
-[
-  {
-    nodeType: ElementNode
-    tag: h1
-    children: [
-      {
-        nodeType: TextNode
-        text: "hello world"
-      }
-    ]
-  }
-]
-
 error:
 {
   type: soft-invalid

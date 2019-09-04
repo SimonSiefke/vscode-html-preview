@@ -17,14 +17,6 @@ only start tag
 text:
 <h1>
 
-expectedTree:
-[
-  {
-    nodeType: ElementNode
-    tag: h1
-  }
-]
-
 error:
 {
   type: soft-invalid

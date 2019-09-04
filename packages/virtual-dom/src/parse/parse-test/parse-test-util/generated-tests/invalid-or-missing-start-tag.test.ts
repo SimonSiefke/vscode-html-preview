@@ -61,12 +61,7 @@ test(`only start tag`, () => {
     "offset": 4
   }
 		expect(error).toEqual(expectedError)
-	const expectedTree = [
-  {
-    "nodeType": "ElementNode",
-    "tag": "h1"
-  }
-]
+	const expectedTree = null
 	expect(adjustHtmlDocument(htmlDocument && htmlDocument.children)).toEqual(adjustExpectedTree(expectedTree))
 })
 

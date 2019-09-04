@@ -24,10 +24,6 @@ export const core: LocalPlugin = api => {
     }
 
     try {
-      console.log('state')
-      console.log(state)
-      console.log('prev')
-      console.log(state.previousDom)
       console.log('change')
       console.log(minimizedEdits)
       if (!state.previousDom) {
