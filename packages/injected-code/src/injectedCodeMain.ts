@@ -266,7 +266,7 @@ async function fetchNodeMap() {
   } = await fetchNodeMap()
   // @ts-ignore
   window.nodeMap = nodeMap
-  const webSocket = new WebSocket(`ws://${location.host}`)
+  const webSocket = new WebSocket(`ws://${location.host}?relativePath=${location.pathname}`)
   webSocket.onerror = console.error
   webSocket.onmessage = ({ data }) => {
     const { messages, id } = JSON.parse(data)

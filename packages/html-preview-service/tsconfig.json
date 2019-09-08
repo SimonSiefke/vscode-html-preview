@@ -3,8 +3,8 @@
   "compilerOptions": {
     "outDir": "dist",
     "rootDir": "src",
-    "strictNullChecks": false,
-
+    "strict": false,
+    "strictNullChecks": true,
     "types": ["node", "jest"]
   },
   "include": ["src", "../../global.d.ts"],

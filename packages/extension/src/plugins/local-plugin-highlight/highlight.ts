@@ -36,8 +36,8 @@ export const highlight: LocalPlugin = api => {
       if (!api.stateMap.nodeMap[value]) {
         console.log(api.stateMap.prefixSums)
         console.error(`node ${value} doesn\'t exist`)
-        api.webSocketServer.broadcast(
-          [
+        api.webSocketServer.broadcast({
+          commands: [
             {
               command: 'error',
               payload: {
@@ -45,8 +45,7 @@ export const highlight: LocalPlugin = api => {
               },
             },
           ],
-          {}
-        )
+        })
       }
 
       const isElementNode = api.stateMap.nodeMap[value].nodeType === 'ElementNode'
@@ -81,8 +80,8 @@ export const highlight: LocalPlugin = api => {
 
     highlightedId = found
 
-    api.webSocketServer.broadcast(
-      [
+    api.webSocketServer.broadcast({
+      commands: [
         {
           command: 'highlight',
           payload: {
@@ -90,7 +89,6 @@ export const highlight: LocalPlugin = api => {
           },
         },
       ],
-      {}
-    )
+    })
   })
 }

@@ -1,7 +1,7 @@
+import * as vscode from 'vscode'
+import { diff } from 'html-preview-service'
 import { LocalPlugin } from '../localPluginApi'
 import { minimizeEdits } from '../../services/Commands-util/minimizeEdits/minimizeEdits'
-import { diff } from 'html-preview-service'
-import * as vscode from 'vscode'
 
 export const core: LocalPlugin = api => {
   api.vscode.workspace.onDidChangeTextDocument(event => {
@@ -36,12 +36,15 @@ export const core: LocalPlugin = api => {
         state.previousDom = state.parser.dom
         state.previousText = newText
         state.previousNodeMap = state.parser.nodeMap
-        return api.webSocketServer.broadcast([
-          {
-            command: 'reload',
-            payload: {},
-          },
-        ])
+        return api.webSocketServer.broadcastToRelativePath({
+          relativePath,
+          commands: [
+            {
+              command: 'reload',
+              payload: {},
+            },
+          ],
+        })
       }
       const oldNodeMap = state.previousNodeMap
       const { htmlDocument: nextDom } = state.parser.edit(newText, minimizedEdits)
@@ -50,7 +53,10 @@ export const core: LocalPlugin = api => {
       state.previousDom = nextDom
       state.previousText = newText
       state.previousNodeMap = newNodeMap
-      api.webSocketServer.broadcast(diffs, {})
+      api.webSocketServer.broadcastToRelativePath({
+        relativePath,
+        commands: diffs,
+      })
       console.log('diffs')
       console.log(diffs)
     } catch (error) {

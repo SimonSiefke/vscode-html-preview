@@ -254,12 +254,14 @@ const startServer = async (api: PreviewApi): Promise<void> => {
       return
     }
 
-    api.webSocketServer.broadcast([
-      {
-        command: 'updateCss',
-        payload: {},
-      },
-    ])
+    api.webSocketServer.broadcast({
+      commands: [
+        {
+          command: 'updateCss',
+          payload: {},
+        },
+      ],
+    })
   })
   // this might be useful later when using sass
   // const fileSystemWatcher = api.vscode.workspace.createFileSystemWatcher(
@@ -282,12 +284,14 @@ const startServer = async (api: PreviewApi): Promise<void> => {
 }
 
 const doDispose = async (api: PreviewApi): Promise<void> => {
-  api.webSocketServer.broadcast([
-    {
-      command: 'connectionClosed',
-      payload: {},
-    },
-  ])
+  api.webSocketServer.broadcast({
+    commands: [
+      {
+        command: 'connectionClosed',
+        payload: {},
+      },
+    ],
+  })
   await api.webSocketServer.stop()
   await api.httpServer.stop()
   api.httpServer = undefined
