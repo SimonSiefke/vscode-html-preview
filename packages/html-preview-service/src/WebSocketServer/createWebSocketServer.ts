@@ -1,6 +1,6 @@
 import * as WebSocket from 'ws'
 import { HttpServer } from '../HttpServer/createHttpServerNew'
-import { urlParse, urlNormalize } from '../url/url'
+import { urlParsePathname, urlNormalize } from '../url/url'
 export interface WebSocketServer {
   /**
    * Send a list of commands to all connected clients.
@@ -38,7 +38,7 @@ export function createWebSocketServer(httpServer: HttpServer): WebSocketServer {
   const webSocketMap: { [relativePath: string]: Set<WebSocket> } = {}
 
   webSocketServer.on('connection', (webSocket, request) => {
-    const parsedUrl = urlParse(request.url as string)
+    const parsedUrl = urlParsePathname(request.url as string)
     // @ts-ignore
     const relativePath = urlNormalize(parsedUrl.query.relativePath)
     webSocketMap[relativePath] = webSocketMap[relativePath] || new Set()
