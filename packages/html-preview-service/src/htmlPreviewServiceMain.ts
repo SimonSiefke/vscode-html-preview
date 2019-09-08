@@ -1,4 +1,3 @@
-// export { createStateApi as createState } from './state/state'
 export { inject } from './HttpServer/serveStatic'
 export {
   createHttpServerNew as createHttpServer,

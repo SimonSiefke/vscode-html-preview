@@ -1,6 +1,6 @@
 import * as WebSocket from 'ws'
 import { HttpServer } from '../HttpServer/createHttpServerNew'
-import { urlParsePathname, urlNormalize } from '../url/url'
+import { urlParsePathname, urlParseQuery } from '../url/url'
 export interface WebSocketServer {
   /**
    * Send a list of commands to all connected clients.
@@ -35,16 +35,15 @@ const pendingResults: any = {}
 
 export function createWebSocketServer(httpServer: HttpServer): WebSocketServer {
   const webSocketServer = new WebSocket.Server({ server: httpServer.server })
-  const webSocketMap: { [relativePath: string]: Set<WebSocket> } = {}
+  const webSocketMap: { [normalizedPath: string]: Set<WebSocket> } = {}
 
   webSocketServer.on('connection', (webSocket, request) => {
-    const parsedUrl = urlParsePathname(request.url as string)
-    // @ts-ignore
-    const relativePath = urlNormalize(parsedUrl.query.relativePath)
-    webSocketMap[relativePath] = webSocketMap[relativePath] || new Set()
-    webSocketMap[relativePath].add(webSocket)
+    const query = urlParseQuery(request.url as string)
+    const normalizedPath = urlParsePathname(query.originalUrl)
+    webSocketMap[normalizedPath] = webSocketMap[normalizedPath] || new Set()
+    webSocketMap[normalizedPath].add(webSocket)
     webSocket.on('close', () => {
-      webSocketMap[relativePath].delete(webSocket)
+      webSocketMap[normalizedPath].delete(webSocket)
     })
     webSocket.on('message', data => {
       const message = JSON.parse(data.toString())
@@ -76,10 +75,7 @@ export function createWebSocketServer(httpServer: HttpServer): WebSocketServer {
   }
   return {
     broadcastToRelativePath({ commands, skip, relativePath }) {
-      console.log('rel path is:::' + relativePath)
       const clients = webSocketMap[relativePath]
-      console.log('clients')
-      console.log(clients)
       broadcast({ clients, commands, skip })
     },
     broadcast({ commands, skip }) {

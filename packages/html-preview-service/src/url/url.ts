@@ -4,16 +4,18 @@ import * as querystring from 'querystring'
 /**
  * Normalize the url, useful for storing things by url
  * @example
- * urlNormalize('http://localhost:3000') // http://localhost:3000/index.html
+ * urlParseHtmlPathname('http://localhost:3000/') // /index.html
  */
-export const urlNormalize = (url: string) => {
-  if (url.endsWith('.html')) {
-    return url
+export const urlParseHtmlPathname = (url: string): string | undefined => {
+  const pathname = parse(url).pathname as string
+  if (pathname.endsWith('.html')) {
+    return pathname
   }
-  if (url.endsWith('/')) {
-    return url + 'index.html'
+  if (pathname.endsWith('/')) {
+    return pathname + 'index.html'
   }
-  return url + '/index.html'
+  // TODO if url is http://localhost:3000/.hidden is file or folder requested?
+  return undefined
 }
 
 /**
@@ -28,9 +30,9 @@ export const urlPrettify = (url: string) => {
 }
 
 /**
- * Get the pathname of the url
+ * Get the relative path of the url
  * @example
- * urlParsePathname('http://localhost:3000/index.html') // /index.html
+ * urlRelativePath('http://localhost:3000/index.html') // /index.html
  */
 export const urlParsePathname = (url: string): string => {
   const parsedUrl = parse(url)
@@ -42,7 +44,7 @@ export const urlParsePathname = (url: string): string => {
  * @example
  * urlParseQuery('http://localhost:3000?relativePath=http://localhost:3000/index.html') // { relativePath: '/index.html' }
  */
-export const urlParseQuery = (url: string): object => {
+export const urlParseQuery = (url: string): any => {
   const parsedUrl = parse(url)
   return querystring.parse(parsedUrl.query as string)
 }

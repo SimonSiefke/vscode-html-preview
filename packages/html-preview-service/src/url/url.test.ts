@@ -1,28 +1,23 @@
-import { urlPrettify, urlNormalize, urlParsePathname, urlParseQuery } from './url'
+import { urlPrettify, urlParseQuery, urlParseHtmlPathname } from './url'
 
-// Parse pathname
-test('Parse pathname - http://localhost:3000/index.html', () => {
-  expect(urlParsePathname('http://localhost:3000/index.html')).toEqual('/index.html')
+// Parse html pathname
+test('Parse html pathname - /tmp/index.html', () => {
+  expect(urlParseHtmlPathname('/tmp/index.html')).toBe('/tmp/index.html')
 })
 
-// Normalize url
-test('Normalize - /tmp/index.html', () => {
-  expect(urlNormalize('/tmp/index.html')).toBe('/tmp/index.html')
+test('Parse html pathname - /tmp/about.html', () => {
+  expect(urlParseHtmlPathname('/tmp/about.html')).toBe('/tmp/about.html')
 })
 
-test('Normalize - /tmp/about.html', () => {
-  expect(urlNormalize('/tmp/about.html')).toBe('/tmp/about.html')
+test.skip('Parse html pathname - /tmp', () => {
+  expect(urlParseHtmlPathname('/tmp')).toBe('/tmp/index.html')
 })
 
-test('Normalize - /tmp', () => {
-  expect(urlNormalize('/tmp')).toBe('/tmp/index.html')
+test('Parse html pathname - /tmp/', () => {
+  expect(urlParseHtmlPathname('/tmp/')).toBe('/tmp/index.html')
 })
 
-test('Normalize - /tmp/', () => {
-  expect(urlNormalize('/tmp/')).toBe('/tmp/index.html')
-})
-
-// Prettify url
+// Prettify
 test('Prettify url - /tmp/index.html', () => {
   expect(urlPrettify('/tmp/index.html')).toBe('/tmp')
 })

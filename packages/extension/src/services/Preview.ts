@@ -8,10 +8,12 @@ import {
   WebSocketServer,
   createWebSocketServer,
   createHttpServer,
-  openInBrowser,
   genDom,
   Parser,
   createParser,
+  urlParsePathname,
+  urlParseHtmlPathname,
+  urlParseQuery,
 } from 'html-preview-service'
 import { core } from '../plugins/local-plugin-core/core'
 import { redirect } from '../plugins/local-plugin-redirect/redirect'
@@ -20,7 +22,6 @@ import * as http from 'http'
 import { LocalPlugin } from '../plugins/localPluginApi'
 import { open } from '../open/open'
 import * as assert from 'assert'
-import * as querystring from 'querystring'
 
 export const invariant = (message: string, value: any) => assert.ok(value, message)
 
@@ -104,29 +105,18 @@ const httpMiddlewareSendHtml = (api: PreviewApi) => async (
   res: http.ServerResponse,
   next: any
 ) => {
-  const url = parseUrl(req.url)
-  let relativePath: string | undefined
-  if (url.pathname.endsWith('.html')) {
-    relativePath = url.pathname
-  } else if (url.pathname.endsWith('/')) {
-    relativePath = url.pathname + 'index.html'
-  }
-
-  if (!relativePath) {
-    console.log('url')
-    console.log(req.url)
-    console.log('relative oath')
-    console.log(relativePath)
+  const pathname = urlParseHtmlPathname(req.url as string)
+  if (!pathname) {
     return next()
   }
 
   const matchingTextEditor = vscode.window.visibleTextEditors.find(
-    textEditor => vscode.workspace.asRelativePath(textEditor.document.uri) === relativePath.slice(1)
+    textEditor => vscode.workspace.asRelativePath(textEditor.document.uri) === pathname.slice(1)
   )
   const sendHtml = (text: string) => {
     const state: State = { parser: createParser() }
-    api.stateMap[relativePath] = state
-    const parsingResult = api.stateMap[relativePath].parser.parse(text)
+    api.stateMap[pathname] = state
+    const parsingResult = api.stateMap[pathname].parser.parse(text)
     if (parsingResult.error) {
       console.error('initial error')
       state.previousText = text
@@ -155,7 +145,7 @@ const httpMiddlewareSendHtml = (api: PreviewApi) => async (
   }
 
   // TODO add cache with parser and urls
-  const diskPath = path.join(vscode.workspace.workspaceFolders[0].uri.fsPath, relativePath)
+  const diskPath = path.join(vscode.workspace.workspaceFolders[0].uri.fsPath, pathname)
   const uri = vscode.Uri.file(diskPath)
   try {
     const text = (await vscode.workspace.fs.readFile(uri)).toString()
@@ -173,14 +163,10 @@ const httpMiddlewareSendInjectedCode = (api: PreviewApi) => (
   res: http.ServerResponse,
   next: any
 ) => {
-  const url = parseUrl(req.url)
-  const urlPathName = url.pathname
-  if (urlPathName === '/virtual-dom.json') {
-    const urlQuery = querystring.parse(url.query) as { relativePath: string }
-    let relativePath = JSON.parse(urlQuery.relativePath)
-    if (relativePath.endsWith('/')) {
-      relativePath += 'index.html'
-    }
+  const pathname = urlParsePathname(req.url as string)
+  if (pathname === '/virtual-dom.json') {
+    const originalPathname = urlParseHtmlPathname(urlParseQuery(req.url as string).originalUrl)
+    // TODO rewrite parser
     const getCircularReplacer = () => {
       const seen = new WeakSet()
       return (key, value) => {
@@ -198,7 +184,7 @@ const httpMiddlewareSendInjectedCode = (api: PreviewApi) => (
     }
     res.writeHead(200, { 'Content-Type': 'text/json' })
     try {
-      const dom = api.stateMap[relativePath].previousDom
+      const dom = api.stateMap[originalPathname].previousDom
       if (dom === undefined) {
         res.write(JSON.stringify('invalid'))
         return res.end()
@@ -211,13 +197,13 @@ const httpMiddlewareSendInjectedCode = (api: PreviewApi) => (
     }
   }
 
-  if (urlPathName === '/html-preview.js') {
+  if (pathname === '/html-preview.js') {
     res.writeHead(200, { 'Content-Type': 'text/javascript' })
     res.write(htmlPreviewJs)
     return res.end()
   }
 
-  if (urlPathName === '/html-preview.js.map') {
+  if (pathname === '/html-preview.js.map') {
     res.writeHead(200)
     res.write(htmlPreviewJsMap)
     return res.end()

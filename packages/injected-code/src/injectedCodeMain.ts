@@ -103,8 +103,7 @@ function isUsuallyInHead(node) {
 
 async function fetchNodeMap() {
   const nodeMap = { 0: document }
-  const relativePath = window.location.pathname
-  const virtualDom = await fetch(`/virtual-dom.json?relativePath="${relativePath}"`).then(res =>
+  const virtualDom = await fetch(`/virtual-dom.json?originalUrl=${location.href}`).then(res =>
     res.json()
   )
   if (virtualDom === 'invalid') {
@@ -266,7 +265,7 @@ async function fetchNodeMap() {
   } = await fetchNodeMap()
   // @ts-ignore
   window.nodeMap = nodeMap
-  const webSocket = new WebSocket(`ws://${location.host}?relativePath=${location.pathname}`)
+  const webSocket = new WebSocket(`ws://${location.host}?originalUrl=${location.href}`)
   webSocket.onerror = console.error
   webSocket.onmessage = ({ data }) => {
     const { messages, id } = JSON.parse(data)
