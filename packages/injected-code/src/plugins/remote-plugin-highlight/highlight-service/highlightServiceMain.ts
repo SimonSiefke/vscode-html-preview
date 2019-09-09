@@ -32,6 +32,9 @@ function computeOffsetWithoutTransform($element: HTMLElement, originalStyle: CSS
     offsetTop += parseInt(originalStyle.marginTop || '0', 10)
   }
 
+  offsetLeft -= parseInt(originalStyle.paddingLeft || '0', 10)
+  offsetTop -= parseInt(originalStyle.paddingTop || '0', 10)
+
   return {
     left: `${offsetLeft}px`,
     top: `${offsetTop}px`,
