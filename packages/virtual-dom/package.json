@@ -10,7 +10,7 @@
     "generate:watch:parseTests": "nodemon --ext txt,js --watch 'src/parse/parse-test' --exec npm run generate:parseTests"
   },
   "devDependencies": {
-    "@babel/node": "^7.5.5",
+    "@babel/node": "^7.6.1",
     "ts-node": "^8.3.0"
   },
   "quokka": {
