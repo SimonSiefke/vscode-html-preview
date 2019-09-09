@@ -2,14 +2,17 @@ import { LocalPlugin } from '../localPluginApi'
 import * as vscode from 'vscode'
 
 export const highlight: LocalPlugin = api => {
+  console.log('highlight plugins')
   let highlightedId: number | undefined
 
+  // rebroadcast highlight message from another client
   api.webSocketServer.onMessage((message: any) => {
     if (message.type === 'request' && message.command === 'highlight') {
       const { id } = message.payload
       // console.log('id', message.message.payload.id);
       // console.log(parser.prefixSums);
-      for (const [key, value] of Object.entries(api.stateMap.prefixSums)) {
+      return
+      for (const [key, value] of Object.entries(api.stateMap)) {
         if (value === id) {
           const parsedKey = parseInt(key, 10)
           vscode.window.activeTextEditor.selection = new vscode.Selection(
@@ -22,6 +25,12 @@ export const highlight: LocalPlugin = api => {
   })
 
   vscode.window.onDidChangeTextEditorSelection(event => {
+    const relativePath = '/' + vscode.workspace.asRelativePath(event.textEditor.document.uri)
+    console.log('change sel')
+    if (event.textEditor.document.languageId !== 'html') {
+      return
+    }
+    console.log('ehere')
     if (event.selections.length !== 1) {
       return
     }
@@ -30,13 +39,17 @@ export const highlight: LocalPlugin = api => {
     const offset = vscode.window.activeTextEditor.document.offsetAt(selection.active)
     let previousValue
     let found
-    for (const [key, value] of Object.entries(api.stateMap.prefixSums) as any[]) {
+    console.log('rel')
+    console.log(relativePath)
+    const state = api.stateMap[relativePath]
+    const parser = state.parser
+    for (const [key, value] of Object.entries(parser.prefixSums) as any[]) {
       const parsedKey = parseInt(key, 10)
       // @debug
-      if (!api.stateMap.nodeMap[value]) {
-        console.log(api.stateMap.prefixSums)
+      if (!parser.nodeMap[value]) {
         console.error(`node ${value} doesn\'t exist`)
-        api.webSocketServer.broadcast({
+        api.webSocketServer.broadcastToRelativePath({
+          relativePath,
           commands: [
             {
               command: 'error',
@@ -48,7 +61,7 @@ export const highlight: LocalPlugin = api => {
         })
       }
 
-      const isElementNode = api.stateMap.nodeMap[value].nodeType === 'ElementNode'
+      const isElementNode = state.parser.nodeMap[value].nodeType === 'ElementNode'
 
       if (parsedKey === offset && isElementNode) {
         found = value
@@ -75,12 +88,15 @@ export const highlight: LocalPlugin = api => {
     }
 
     if (highlightedId === found) {
+      console.log('same')
       return
     }
+    console.log('found')
 
     highlightedId = found
 
-    api.webSocketServer.broadcast({
+    api.webSocketServer.broadcastToRelativePath({
+      relativePath,
       commands: [
         {
           command: 'highlight',

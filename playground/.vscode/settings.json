@@ -1,5 +1,5 @@
 {
-  "htmlPreview.highlight": false,
+  "htmlPreview.highlight": true,
   "files.trimTrailingWhitespace": false,
   "editor.formatOnSave": false
 }

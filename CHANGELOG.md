@@ -2,6 +2,7 @@
 
 | Version | Date     | Changelog                                                                                                                                                                                           |
 | ------- | -------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1.15.10 | 09.09.19 | &mdash; **_[Fix]_** highlighting not working correctly for body tag                                                                                                                                 |
 | 1.15.9  | 08.09.19 | &mdash; **_[Fix]_** editing multiple html files at the same time not working                                                                                                                        |
 | 1.15.8  | 04.09.19 | &mdash; **_[Fix]_** support for editing multiple html files at the same time &mdash; **_[Fix]_** starting with invalid html file                                                                    |
 | 1.15.7  | 31.08.19 | &mdash; **_[Fix]_** remove url bar in vscode because its ugly                                                                                                                                       |

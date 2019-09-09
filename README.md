@@ -27,8 +27,6 @@
 | htmlPreview.openWith  | Opens the preview with the specified application.                   | `"browser"` |
 | htmlPreview.highlight | Highlight elements in the browser when they are selected in VSCode. | `false`     |
 
-<!-- TODO bug: type <h1>a</h1>, select a , type b, $node is undefined -->
-
 <!-- TODO use child process for efficiency -->
 <!-- TODO implicit head body tbody tags -->
 
