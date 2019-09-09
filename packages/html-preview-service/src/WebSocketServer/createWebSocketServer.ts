@@ -1,6 +1,6 @@
 import * as WebSocket from 'ws'
 import { HttpServer } from '../HttpServer/createHttpServerNew'
-import { urlParsePathname, urlParseQuery } from '../url/url'
+import { urlParsePathname, urlParseQuery, urlParseHtmlPathname } from '../url/url'
 export interface WebSocketServer {
   /**
    * Send a list of commands to all connected clients.
@@ -38,8 +38,11 @@ export function createWebSocketServer(httpServer: HttpServer): WebSocketServer {
   const webSocketMap: { [normalizedPath: string]: Set<WebSocket> } = {}
 
   webSocketServer.on('connection', (webSocket, request) => {
+    console.log('conn')
     const query = urlParseQuery(request.url as string)
-    const normalizedPath = urlParsePathname(query.originalUrl)
+    const normalizedPath = urlParseHtmlPathname(query.originalUrl) as string
+    console.log('normalized')
+    console.log(normalizedPath)
     webSocketMap[normalizedPath] = webSocketMap[normalizedPath] || new Set()
     webSocketMap[normalizedPath].add(webSocket)
     webSocket.on('close', () => {
@@ -75,6 +78,9 @@ export function createWebSocketServer(httpServer: HttpServer): WebSocketServer {
   }
   return {
     broadcastToRelativePath({ commands, skip, relativePath }) {
+      console.log('relllll')
+      console.log(relativePath)
+      console.log(webSocketServer.clients)
       const clients = webSocketMap[relativePath]
       broadcast({ clients, commands, skip })
     },
