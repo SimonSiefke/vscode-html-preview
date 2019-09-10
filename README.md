@@ -125,3 +125,7 @@ hydration error
 <!-- TODO live update settings -->
 <!-- TODO styleguide: no function keyword, no this, no let, no classes, no export default, no more than 2 parameters -->
 <!-- TODO enable every strict option in typescript (initialization, no implicit any etc) -->
+
+## Credits
+
+Much of this project is based on the Live Preview for html by [adobe brackets](https://github.com/adobe/brackets)
