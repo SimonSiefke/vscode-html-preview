@@ -2,6 +2,7 @@
 
 | Version | Date     | Changelog                                                                                                                                                                                           |
 | ------- | -------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1.16.0  | 10.09.19 | &mdash; **_[Feature]_** better highlight styles                                                                                                                                                     |
 | 1.15.10 | 09.09.19 | &mdash; **_[Fix]_** highlighting not working correctly for body tag <br> &mdash; **_[Fix]_** highlighting not working correctly when element has padding                                            |
 | 1.15.9  | 08.09.19 | &mdash; **_[Fix]_** editing multiple html files at the same time not working                                                                                                                        |
 | 1.15.8  | 04.09.19 | &mdash; **_[Fix]_** support for editing multiple html files at the same time &mdash; **_[Fix]_** starting with invalid html file                                                                    |

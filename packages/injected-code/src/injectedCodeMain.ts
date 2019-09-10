@@ -1,8 +1,8 @@
-import { core } from './plugins/remote-plugin-core/core'
-import { error } from './plugins/remote-plugin-error/error'
-import { highlight } from './plugins/remote-plugin-highlight/highlight'
+import { remotePluginCore } from './plugins/remote-plugin-core/remotePluginCore'
+import { remotePluginError } from './plugins/remote-plugin-error/remotePluginError'
+import { remotePluginHighlight } from './plugins/remote-plugin-highlight/remotePluginHighlight'
 import { RemotePluginApi } from './plugins/remotePluginApi'
-import { connection } from './plugins/remote-plugin-connection/remote-plugin-connection'
+import { connection } from './plugins/remote-plugin-connection/remotePluginConnection'
 import { redirect } from './plugins/remote-plugin-redirect/redirect'
 import { reload } from './plugins/remote-plugin-reload/reload'
 import { updateCss } from './plugins/remote-plugin-update-css/updateCss'
@@ -308,11 +308,11 @@ async function fetchNodeMap() {
     virtualDom,
   }
 
-  core(remotePluginApi)
+  remotePluginCore(remotePluginApi)
   reload(remotePluginApi)
   connection(remotePluginApi)
   redirect(remotePluginApi)
-  error(remotePluginApi)
-  highlight(remotePluginApi)
+  remotePluginError(remotePluginApi)
+  remotePluginHighlight(remotePluginApi)
   updateCss(remotePluginApi)
 })()

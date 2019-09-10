@@ -15,9 +15,9 @@ import {
   urlParseHtmlPathname,
   urlParseQuery,
 } from 'html-preview-service'
-import { core } from '../plugins/local-plugin-core/core'
-import { redirect } from '../plugins/local-plugin-redirect/redirect'
-import { highlight } from '../plugins/local-plugin-highlight/highlight'
+import { localPluginCore } from '../plugins/local-plugin-core/localPluginCore'
+import { localPluginRedirect } from '../plugins/local-plugin-redirect/localPluginRedirect'
+import { localPluginHighlight } from '../plugins/local-plugin-highlight/localPluginHighlight'
 import * as http from 'http'
 import { LocalPlugin } from '../plugins/localPluginApi'
 import { open } from '../open/open'
@@ -285,16 +285,16 @@ const doDispose = async (api: PreviewApi): Promise<void> => {
 }
 
 const plugins: LocalPlugin[] = []
-plugins.push(core)
+plugins.push(localPluginCore)
 if (process.env.NODE_ENV !== 'test') {
-  plugins.push(redirect)
+  plugins.push(localPluginRedirect)
 }
 
 if (
   vscode.workspace.getConfiguration().get('htmlPreview.highlight') &&
   process.env.NODE_ENV !== 'test'
 ) {
-  plugins.push(highlight)
+  plugins.push(localPluginHighlight)
 }
 
 export const Preview = (() => {

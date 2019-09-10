@@ -3,7 +3,7 @@ import { diff } from 'html-preview-service'
 import { LocalPlugin } from '../localPluginApi'
 import { minimizeEdits } from '../../services/Commands-util/minimizeEdits/minimizeEdits'
 
-export const core: LocalPlugin = api => {
+export const localPluginCore: LocalPlugin = api => {
   api.vscode.workspace.onDidChangeTextDocument(event => {
     const relativePath = '/' + vscode.workspace.asRelativePath(event.document.uri)
     if (event.document.languageId !== 'html') {

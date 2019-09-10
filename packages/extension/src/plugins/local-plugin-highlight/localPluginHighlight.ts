@@ -1,8 +1,13 @@
 import { LocalPlugin } from '../localPluginApi'
 import * as vscode from 'vscode'
+import { urlParseQuery, urlParseHtmlPathname } from 'html-preview-service'
 
-export const highlight: LocalPlugin = api => {
-  console.log('highlight plugins')
+interface HighlightState {
+  highlightedId: number
+}
+
+export const localPluginHighlight: LocalPlugin = api => {
+  const highlightStateMap: { [key: string]: HighlightState[] } = {}
   let highlightedId: number | undefined
 
   // rebroadcast highlight message from another client
@@ -23,14 +28,31 @@ export const highlight: LocalPlugin = api => {
       }
     }
   })
+  api.webSocketServer.onConnection((webSocket, request) => {
+    const query = urlParseQuery(request.url as string)
+    const relativePath = urlParseHtmlPathname(query.originalUrl) as string
+    if (!highlightStateMap[relativePath]) {
+      return
+    }
+    api.webSocketServer.broadcastToRelativePath({
+      skip: w => w !== webSocket,
+      relativePath,
+      commands: [
+        {
+          command: 'highlight',
+          payload: {
+            id: highlightStateMap[relativePath][0].highlightedId,
+          },
+        },
+      ],
+    })
+  })
 
   vscode.window.onDidChangeTextEditorSelection(event => {
     const relativePath = '/' + vscode.workspace.asRelativePath(event.textEditor.document.uri)
-    console.log('change sel')
     if (event.textEditor.document.languageId !== 'html') {
       return
     }
-    console.log('ehere')
     if (event.selections.length !== 1) {
       return
     }
@@ -38,9 +60,7 @@ export const highlight: LocalPlugin = api => {
     const selection = event.selections[0]
     const offset = vscode.window.activeTextEditor.document.offsetAt(selection.active)
     let previousValue
-    let found
-    console.log('rel')
-    console.log(relativePath)
+    let found: number
     const state = api.stateMap[relativePath]
     const parser = state.parser
     for (const [key, value] of Object.entries(parser.prefixSums) as any[]) {
@@ -88,12 +108,12 @@ export const highlight: LocalPlugin = api => {
     }
 
     if (highlightedId === found) {
-      console.log('same')
       return
     }
-    console.log('found')
 
     highlightedId = found
+    highlightStateMap[relativePath] = highlightStateMap[relativePath] || []
+    highlightStateMap[relativePath].unshift({ highlightedId })
 
     api.webSocketServer.broadcastToRelativePath({
       relativePath,

@@ -1,7 +1,7 @@
 import { LocalPlugin } from '../localPluginApi'
 import * as vscode from 'vscode'
 
-export const redirect: LocalPlugin = api => {
+export const localPluginRedirect: LocalPlugin = api => {
   // api.vscode.window.onDidChangeActiveTextEditor(event => {
   // 	if (event.document.languageId !== 'html') {
   // 		return;

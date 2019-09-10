@@ -224,7 +224,7 @@ const elementMove: RemotePlugin = api => {
   })
 }
 
-export const core = mergePlugins(
+export const remotePluginCore = mergePlugins(
   textReplace,
   attributeChange,
   elementDelete,

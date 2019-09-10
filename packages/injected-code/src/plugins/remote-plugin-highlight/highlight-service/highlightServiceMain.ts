@@ -91,7 +91,16 @@ function dashCase(s) {
 /**
  * Apply an object of styles to an HTML element
  */
-export function applyStyle($element: HTMLElement, styleObject: Partial<CSSStyleDeclaration>) {
+export function applyStyle(
+  $element: HTMLElement,
+  styleObject: Partial<
+    CSSStyleDeclaration & {
+      '--color-margin': string
+      '--color-padding': string
+      '--color-content': string
+    }
+  >
+) {
   for (const [key, value] of Object.entries(styleObject)) {
     $element.style.setProperty(dashCase(key), value)
   }
@@ -101,11 +110,21 @@ export function applyStyle($element: HTMLElement, styleObject: Partial<CSSStyleD
 const baseStyle =
   ':host{display:block;--padding-horizontal:calc(var(--padding-left) + var(--padding-right));--padding-vertical:calc(var(--padding-top) + var(--padding-bottom));--margin-horizontal:calc(var(--margin-left) + var(--margin-right));--margin-vertical:calc(var(--margin-top) + var(--margin-bottom));pointer-events:none;width:calc(var(--width) + var(--padding-horizontal));height:calc(var(--height) + var(--padding-vertical));z-index:2000000}.margin,.padding,:host{position:absolute}.content{background:var(--color-content);width:var(--width);height:var(--height);-webkit-transform:translate(var(--padding-left),var(--padding-top));transform:translate(var(--padding-left),var(--padding-top))}.padding{--top:var(--padding-top);--right:var(--padding-right);--bottom:var(--padding-bottom);--left:var(--padding-left);--full-width:calc(var(--width) + var(--padding-horizontal));--full-height:calc(var(--height) + var(--padding-vertical));background:var(--color-padding)}.margin,.padding{-webkit-clip-path:polygon(0 0,0 100%,var(--left) 100%,var(--left) var(--top),calc(var(--full-width) - var(--right)) var(--top),calc(var(--full-width) - var(--right)) calc(var(--full-height) - var(--bottom)),var(--left) calc(var(--full-height) - var(--bottom)),var(--left) 100%,100% 100%,100% 0);clip-path:polygon(0 0,0 100%,var(--left) 100%,var(--left) var(--top),calc(var(--full-width) - var(--right)) var(--top),calc(var(--full-width) - var(--right)) calc(var(--full-height) - var(--bottom)),var(--left) calc(var(--full-height) - var(--bottom)),var(--left) 100%,100% 100%,100% 0);width:var(--full-width);height:var(--full-height)}.margin{--top:var(--margin-top);--right:var(--margin-right);--bottom:var(--margin-bottom);--left:var(--margin-left);--full-width:calc(var(--width) + var(--margin-horizontal) + var(--padding-horizontal));--full-height:calc(var(--height) + var(--margin-vertical) + var(--padding-vertical));background:var(--color-margin);-webkit-transform:translate(calc(-1*var(--margin-left)),calc(-1*var(--margin-top)));transform:translate(calc(-1*var(--margin-left)),calc(-1*var(--margin-top)))}'
 
-const customStyle = {
-  '--color-padding': 'rgba(147, 196, 125, 0.55)',
-  '--color-margin': 'rgba(246, 178, 107, 0.66)',
-  '--color-content': 'rgba(111, 168, 220, 0.66)',
-}
+// TODO animation
+// animateStartValue: {
+//   "background-color": "rgba(0, 162, 255, 0.5)",
+//   "opacity": 0
+// },
+// animateEndValue: {
+//   "background-color": "rgba(0, 162, 255, 0)",
+//   "opacity": 0.6
+// },
+
+// const customStyle = {
+//   '--color-padding': 'rgba(147, 196, 125, 0.55)',
+//   '--color-margin': 'rgba(246, 178, 107, 0.66)',
+//   '--color-content': 'rgba(111, 168, 220, 0.66)',
+// }
 
 function createElement(className: string) {
   const element = document.createElement('div')
@@ -114,7 +133,7 @@ function createElement(className: string) {
 }
 
 class HighlightDomElement extends HTMLElement {
-  private _element: HTMLElement | undefined
+  private _$element: HTMLElement | undefined
 
   private _highlightStyle!: Partial<HighlightStyle>
 
@@ -161,11 +180,11 @@ class HighlightDomElement extends HTMLElement {
   }
 
   get element() {
-    return this._element
+    return this._$element
   }
 
   set element(value: HTMLElement | undefined) {
-    this._element = value
+    this._$element = value
   }
 
   private update() {
@@ -189,7 +208,22 @@ class HighlightDomElement extends HTMLElement {
       throw new Error('cannot highlight non existing element')
     }
 
-    applyStyle(this, customStyle)
+    applyStyle(this, {
+      '--color-padding': 'transparent',
+      '--color-margin': 'rgba(21, 165, 255, 0.58)',
+      '--color-content': 'transparent',
+      transitionProperty: 'opacity, background-color',
+      transitionDuration: '300ms, 2.3s',
+      backgroundColor: 'rgba(0, 162, 255, 0.5)',
+      opacity: '0',
+    })
+
+    setTimeout(() => {
+      applyStyle(this, {
+        backgroundColor: 'rgba(0, 162, 255, 0)',
+        opacity: '0.6',
+      })
+    }, 20)
 
     this._boundingRect = this.element.getBoundingClientRect()
     // Don't highlight elements with 0 width and height
