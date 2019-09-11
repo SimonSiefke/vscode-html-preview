@@ -82,7 +82,7 @@
       "properties": {
         "htmlPreview.highlight": {
           "type": "boolean",
-          "default": false,
+          "default": true,
           "description": "Highlight elements in the browser when they are selected in VSCode."
         },
         "htmlPreview.openWith": {
