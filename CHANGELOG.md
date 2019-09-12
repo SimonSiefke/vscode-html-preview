@@ -2,9 +2,9 @@
 
 | Version | Date     | Changelog                                                                                                                                                                                           |
 | ------- | -------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 1.17.0  | 12.09.19 | &mdash; **_[Feature]_** highlight now works from css files                                                                                                                                          |
-| 1.16.2  | 12.09.19 | &mdash; **_[Fix]_** highlight of margin-right                                                                                                                                                       |
-| 1.16.1  | 11.09.19 | &mdash; **_[Feature]_** highlight is now enabled by default                                                                                                                                         |
+| 1.18.0  | 12.09.19 | &mdash; **_[Feature]_** highlight now works from css files                                                                                                                                          |
+| 1.17.1  | 12.09.19 | &mdash; **_[Fix]_** highlight of margin-right                                                                                                                                                       |
+| 1.17.0  | 11.09.19 | &mdash; **_[Feature]_** highlight is now enabled by default                                                                                                                                         |
 | 1.16.0  | 10.09.19 | &mdash; **_[Feature]_** better highlight styles                                                                                                                                                     |
 | 1.15.10 | 09.09.19 | &mdash; **_[Fix]_** highlighting not working correctly for body tag <br> &mdash; **_[Fix]_** highlighting not working correctly when element has padding                                            |
 | 1.15.9  | 08.09.19 | &mdash; **_[Fix]_** editing multiple html files at the same time not working                                                                                                                        |
