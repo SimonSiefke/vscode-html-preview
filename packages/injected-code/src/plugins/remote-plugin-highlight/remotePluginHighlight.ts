@@ -12,14 +12,23 @@ const isOutOfViewport = ($element: HTMLElement) => {
 }
 
 export const remotePluginHighlight: RemotePlugin = api => {
+  api.webSocket.onMessage('highlightSelector', payload => {
+    const { selector } = payload
+    const $nodes = Array.from(document.querySelectorAll(selector)) as HTMLElement[]
+    addHighlight($nodes)
+  })
+
   api.webSocket.onMessage('highlight', payload => {
     const { id } = payload
-    const $node = api.nodeMap[id] as HTMLElement
+    const $node = api.nodeMap[id]
+    if ($node === document.doctype) {
+      return
+    }
     // if (isOutOfViewport($node)) {
     //   $node.scrollIntoView({
     //     behavior: 'smooth',
     //   })
     // }
-    addHighlight($node)
+    addHighlight([$node as HTMLElement])
   })
 }

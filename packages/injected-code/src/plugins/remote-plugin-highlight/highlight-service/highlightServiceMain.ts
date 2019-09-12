@@ -262,37 +262,45 @@ class HighlightDomElement extends HTMLElement {
 // Register the custom element
 window.customElements.define('highlight-dom-element', HighlightDomElement)
 
-let $highlight: any
-let highlightTimeout: number
+let highlights: Array<{ $element: HTMLElement; $highlight: HTMLElement }> = []
 
-export function addHighlight(element) {
-  clearTimeout(highlightTimeout)
-  if ($highlight) {
-    if ($highlight === element) {
-      return
+export function addHighlight($elements: HTMLElement[]) {
+  let different = false
+  if (highlights.length !== $elements.length) {
+    different = true
+    console.log('d1')
+  } else {
+    for (let i = 0; i < highlights.length; i++) {
+      if (highlights[i].$element !== $elements[i]) {
+        console.log('d2')
+        different = true
+        break
+      }
     }
-
-    clearHighlight()
   }
+  if (!different) {
+    return
+  }
+  clearHighlights()
 
-  $highlight = document.createElement('highlight-dom-element')
-  $highlight.element = element
-  document.body.append($highlight)
-  // highlightTimeout = setTimeout(() => {
-  // 	clearHighlight();
-  // }, 2300);
-}
-
-function clearHighlight() {
-  if ($highlight) {
-    document.body.removeChild($highlight)
-    $highlight = undefined
+  for (const $element of $elements) {
+    const $highlight = document.createElement('highlight-dom-element') as any
+    $highlight.element = $element
+    highlights.push({ $highlight, $element })
+    document.body.append($highlight)
   }
 }
 
-function isLeftClick(event: MouseEvent) {
-  return event.button === 0
+const clearHighlights = () => {
+  for (const highlight of highlights) {
+    document.body.removeChild(highlight.$highlight)
+  }
+  highlights = []
 }
+
+// function isLeftClick(event: MouseEvent) {
+//   return event.button === 0
+// }
 
 // window.addEventListener('click', event => {
 // 	if ($highlight && $highlight.element === event.target) {
