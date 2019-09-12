@@ -74,7 +74,7 @@ export function getHighlightStyle(
     '--width': originalStyle.width,
     '--height': originalStyle.height,
     '--margin-top': originalStyle.marginTop,
-    '--margin-right': originalStyle.marginLeft,
+    '--margin-right': originalStyle.marginRight,
     '--margin-bottom': originalStyle.marginBottom,
     '--margin-left': originalStyle.marginLeft,
     '--padding-top': originalStyle.paddingTop,

@@ -2,6 +2,7 @@
 
 | Version | Date     | Changelog                                                                                                                                                                                           |
 | ------- | -------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1.16.2  | 12.09.19 | &mdash; **_[Fix]_** highlight of margin-right                                                                                                                                                       |
 | 1.16.1  | 11.09.19 | &mdash; **_[Feature]_** highlight is now enabled by default                                                                                                                                         |
 | 1.16.0  | 10.09.19 | &mdash; **_[Feature]_** better highlight styles                                                                                                                                                     |
 | 1.15.10 | 09.09.19 | &mdash; **_[Fix]_** highlighting not working correctly for body tag <br> &mdash; **_[Fix]_** highlighting not working correctly when element has padding                                            |
