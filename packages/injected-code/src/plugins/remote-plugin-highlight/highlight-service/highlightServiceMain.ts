@@ -187,7 +187,7 @@ class HighlightDomElement extends HTMLElement {
     this._$element = value
   }
 
-  private update() {
+  update() {
     this._computedStyle = window.getComputedStyle(this.element!)
 
     const newHighlightStyle = getHighlightStyle(
@@ -245,16 +245,16 @@ class HighlightDomElement extends HTMLElement {
       addAnimation()
     } else {
       let animationFrame: number
-      const update = () => {
+      const updateWithAnimationFrame = () => {
         this.update()
-        animationFrame = requestAnimationFrame(update)
+        animationFrame = requestAnimationFrame(updateWithAnimationFrame)
       }
 
       this.element.addEventListener('animationiteration', () => {
         cancelAnimationFrame(animationFrame)
         addAnimation()
       })
-      update()
+      updateWithAnimationFrame()
     }
   }
 }
@@ -262,17 +262,15 @@ class HighlightDomElement extends HTMLElement {
 // Register the custom element
 window.customElements.define('highlight-dom-element', HighlightDomElement)
 
-let highlights: Array<{ $element: HTMLElement; $highlight: HTMLElement }> = []
+let highlights: Array<{ $element: HTMLElement; $highlight: HighlightDomElement }> = []
 
 export function addHighlight($elements: HTMLElement[]) {
   let different = false
   if (highlights.length !== $elements.length) {
     different = true
-    console.log('d1')
   } else {
     for (let i = 0; i < highlights.length; i++) {
       if (highlights[i].$element !== $elements[i]) {
-        console.log('d2')
         different = true
         break
       }
@@ -288,6 +286,12 @@ export function addHighlight($elements: HTMLElement[]) {
     $highlight.element = $element
     highlights.push({ $highlight, $element })
     document.body.append($highlight)
+  }
+}
+
+export const updateHighlights = () => {
+  for (const highlight of highlights) {
+    highlight.$highlight.update()
   }
 }
 

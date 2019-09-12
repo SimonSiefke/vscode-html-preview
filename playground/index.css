@@ -2,7 +2,9 @@ h1{
   color: rgb(0, 18, 184);
 }
 button{
-  color: orangered
+  color: orangered;
+  padding: 2px;
+  margin: 3rem;
 }
 
 

@@ -1,4 +1,4 @@
-import { addHighlight } from './highlight-service/highlightServiceMain'
+import { addHighlight, updateHighlights } from './highlight-service/highlightServiceMain'
 import { RemotePlugin } from '../remotePluginApi'
 
 const isOutOfViewport = ($element: HTMLElement) => {
@@ -12,6 +12,19 @@ const isOutOfViewport = ($element: HTMLElement) => {
 }
 
 export const remotePluginHighlight: RemotePlugin = api => {
+  const messagesThatCauseLayoutChange = [
+    'textReplace',
+    'attributeChange',
+    'attributeAdd',
+    'attributeDelete',
+    'elementDelete',
+    'elementInsert',
+    'elementMove',
+  ]
+  for (const messageThatCausesLayoutChange of messagesThatCauseLayoutChange) {
+    api.webSocket.onMessage(messageThatCausesLayoutChange, updateHighlights)
+  }
+
   api.webSocket.onMessage('highlightSelector', payload => {
     const { selector } = payload
     const $nodes = Array.from(document.querySelectorAll(selector)) as HTMLElement[]
