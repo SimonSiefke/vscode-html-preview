@@ -1,0 +1,14 @@
+
+button,
+p {
+  color: red;
+  padding: 20px;
+}
+
+p {
+  /* box-sizing: border-box; */
+}
+
+p{
+  padding: 40px;
+}

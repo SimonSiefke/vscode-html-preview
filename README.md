@@ -126,6 +126,49 @@ hydration error
 <!-- TODO styleguide: no function keyword, no this, no let, no classes, no export default, no more than 2 parameters -->
 <!-- TODO enable every strict option in typescript (initialization, no implicit any etc) -->
 
+<!-- TODO bug
+
+/* button {
+  --color: rgba(37, 23, 226, 0.808);
+  border: 2px solid var(--color);
+  border-radius: 10px;
+  padding: 20px;
+  background: transparent;
+  box-sizing: border-box;
+}
+button:hover {
+  background: var(--color);
+  color: white;
+  cursor: pointer;
+} */
+
+/* html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  display: grid;
+  place-items: center;
+} */
+
+button,
+p {
+  color: red;
+  padding: 20px;
+}
+
+p {
+  /* box-sizing: border-box; */
+}
+
+p{
+  padding: 40px;
+}
+
+highlight in css not working with comment
+ -->
+
 ## Credits
 
 Much of this project is based on the Live Preview for html by [adobe brackets](https://github.com/adobe/brackets)
