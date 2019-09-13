@@ -1,5 +1,6 @@
 {
   "htmlPreview.highlight": true,
+  "htmlPreview.openWith": "browser",
   "files.trimTrailingWhitespace": false,
   "editor.formatOnSave": false
 }

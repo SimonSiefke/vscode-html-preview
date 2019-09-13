@@ -15,7 +15,11 @@ export interface HighlightStyle extends Partial<CSSStyleDeclaration> {
   '--padding-left': string | null
 }
 
-function computeOffsetWithoutTransform($element: HTMLElement, originalStyle: CSSStyleDeclaration) {
+function computeOffsetWithoutTransform(
+  $element: HTMLElement,
+  originalStyle: CSSStyleDeclaration,
+  borderBox: boolean
+) {
   let $currentElement: HTMLElement | null = $element
   let offsetLeft = 0
   let offsetTop = 0
@@ -38,8 +42,10 @@ function computeOffsetWithoutTransform($element: HTMLElement, originalStyle: CSS
   // offsetTop += parseInt(originalStyle.marginTop || '0', 10)
   // }
 
-  // offsetLeft -= parseInt(originalStyle.paddingLeft || '0', 10)
-  // offsetTop -= parseInt(originalStyle.paddingTop || '0', 10)
+  if (borderBox) {
+    offsetLeft -= parseInt(originalStyle.marginLeft || '0', 10)
+    offsetTop -= parseInt(originalStyle.marginTop || '0', 10)
+  }
 
   return {
     left: `${offsetLeft}px`,
@@ -62,12 +68,13 @@ export function getHighlightAnimationStyle(
 export function getHighlightStyle(
   $element: HTMLElement,
   boundingRect: ClientRect | DOMRect,
-  originalStyle: CSSStyleDeclaration
+  originalStyle: CSSStyleDeclaration,
+  borderBox: boolean
 ): HighlightStyle {
   return {
     // left: `${boundingRect.left + window.scrollX}px`,
     // top: `${boundingRect.top + window.scrollY}px`,
-    ...computeOffsetWithoutTransform($element, originalStyle),
+    ...computeOffsetWithoutTransform($element, originalStyle, borderBox),
     transform: originalStyle.transform,
     transformOrigin: originalStyle.transformOrigin,
     // animationName: originalStyle.animationName,
@@ -114,7 +121,7 @@ export function applyStyle(
 
 // run `npm run update-highlight-css` to update this code
 const baseStyle =
-  ':host{display:block;--padding-horizontal:calc(var(--padding-left) + var(--padding-right));--padding-vertical:calc(var(--padding-top) + var(--padding-bottom));--margin-horizontal:calc(var(--margin-left) + var(--margin-right));--margin-vertical:calc(var(--margin-top) + var(--margin-bottom));pointer-events:none;width:calc(var(--width) + var(--padding-horizontal));height:calc(var(--height) + var(--padding-vertical));z-index:2000000}.margin,.padding,:host{position:absolute}.content{background:var(--color-content);width:var(--width);height:var(--height);-webkit-transform:translate(var(--padding-left),var(--padding-top));transform:translate(var(--padding-left),var(--padding-top))}.padding{--top:var(--padding-top);--right:var(--padding-right);--bottom:var(--padding-bottom);--left:var(--padding-left);--full-width:calc(var(--width) + var(--padding-horizontal));--full-height:calc(var(--height) + var(--padding-vertical));background:var(--color-padding)}.margin,.padding{-webkit-clip-path:polygon(0 0,0 100%,var(--left) 100%,var(--left) var(--top),calc(var(--full-width) - var(--right)) var(--top),calc(var(--full-width) - var(--right)) calc(var(--full-height) - var(--bottom)),var(--left) calc(var(--full-height) - var(--bottom)),var(--left) 100%,100% 100%,100% 0);clip-path:polygon(0 0,0 100%,var(--left) 100%,var(--left) var(--top),calc(var(--full-width) - var(--right)) var(--top),calc(var(--full-width) - var(--right)) calc(var(--full-height) - var(--bottom)),var(--left) calc(var(--full-height) - var(--bottom)),var(--left) 100%,100% 100%,100% 0);width:var(--full-width);height:var(--full-height)}.margin{--top:var(--margin-top);--right:var(--margin-right);--bottom:var(--margin-bottom);--left:var(--margin-left);--full-width:calc(var(--width) + var(--margin-horizontal) + var(--padding-horizontal));--full-height:calc(var(--height) + var(--margin-vertical) + var(--padding-vertical));background:var(--color-margin);-webkit-transform:translate(calc(-1*var(--margin-left)),calc(-1*var(--margin-top)));transform:translate(calc(-1*var(--margin-left)),calc(-1*var(--margin-top)))}'
+  '.margin,.padding,:host{position:absolute}:host{display:block;--padding-horizontal:calc(var(--padding-left) + var(--padding-right));--padding-vertical:calc(var(--padding-top) + var(--padding-bottom));--margin-horizontal:calc(var(--margin-left) + var(--margin-right));--margin-vertical:calc(var(--margin-top) + var(--margin-bottom));pointer-events:none;width:calc(var(--width) + var(--padding-horizontal));height:calc(var(--height) + var(--padding-vertical));z-index:2000000}.content{background:var(--color-content);width:var(--width);height:var(--height);-webkit-transform:translate(var(--padding-left),var(--padding-top));transform:translate(var(--padding-left),var(--padding-top))}.padding{--top:var(--padding-top);--right:var(--padding-right);--bottom:var(--padding-bottom);--left:var(--padding-left);--full-width:calc(var(--width) + var(--padding-horizontal));--full-height:calc(var(--height) + var(--padding-vertical));background:var(--color-padding)}.margin,.padding{-webkit-clip-path:polygon(0 0,0 100%,var(--left) 100%,var(--left) var(--top),calc(var(--full-width) - var(--right)) var(--top),calc(var(--full-width) - var(--right)) calc(var(--full-height) - var(--bottom)),var(--left) calc(var(--full-height) - var(--bottom)),var(--left) 100%,100% 100%,100% 0);clip-path:polygon(0 0,0 100%,var(--left) 100%,var(--left) var(--top),calc(var(--full-width) - var(--right)) var(--top),calc(var(--full-width) - var(--right)) calc(var(--full-height) - var(--bottom)),var(--left) calc(var(--full-height) - var(--bottom)),var(--left) 100%,100% 100%,100% 0);width:var(--full-width);height:var(--full-height)}.margin{--top:var(--margin-top);--right:var(--margin-right);--bottom:var(--margin-bottom);--left:var(--margin-left);--full-width:calc(var(--width) + var(--margin-horizontal) + var(--padding-horizontal));--full-height:calc(var(--height) + var(--margin-vertical) + var(--padding-vertical));background:var(--color-margin);-webkit-transform:translate(calc(-1*var(--margin-left)),calc(-1*var(--margin-top)));transform:translate(calc(-1*var(--margin-left)),calc(-1*var(--margin-top)))}:host(.border-box){width:calc(var(--width) + var(--margin-horizontal));height:calc(var(--height) + var(--margin-vertical))}:host(.border-box) .margin{--full-width:calc(var(--width) + var(--margin-horizontal));--full-height:calc(var(--height) + var(--margin-vertical));-webkit-transform:none;transform:none}:host(.border-box) .padding{--full-width:var(--width);--full-height:var(--height);-webkit-transform:translate(var(--margin-left),var(--margin-top));transform:translate(var(--margin-left),var(--margin-top))}:host(.border-box) .content{width:calc(var(--width) - var(--padding-horizontal));height:calc(var(--height) - var(--padding-vertical));-webkit-transform:translate(calc(var(--padding-left) + var(--margin-left)),calc(var(--padding-top) + var(--margin-top)));transform:translate(calc(var(--padding-left) + var(--margin-left)),calc(var(--padding-top) + var(--margin-top)))}'
 
 // TODO animation
 // animateStartValue: {
@@ -195,12 +202,20 @@ class HighlightDomElement extends HTMLElement {
 
   update() {
     this._computedStyle = window.getComputedStyle(this.element!)
+    const borderBox = this._computedStyle.boxSizing === 'border-box'
 
     const newHighlightStyle = getHighlightStyle(
       this.element!,
       this._boundingRect,
-      this._computedStyle
+      this._computedStyle,
+      borderBox
     )
+
+    if (borderBox && !this.classList.contains('border-box')) {
+      this.classList.add('border-box')
+    } else if (!borderBox && this.classList.contains('border-box')) {
+      this.classList.remove('border-box')
+    }
 
     // if (!_.isEqual(this._highlightStyle, newHighlightStyle)) {
     this._highlightStyle = newHighlightStyle
@@ -215,8 +230,10 @@ class HighlightDomElement extends HTMLElement {
     }
 
     applyStyle(this, {
+      // '--color-padding': 'rgba(212,121,11,0.4)',
       '--color-padding': 'transparent',
       '--color-margin': 'rgba(21, 165, 255, 0.58)',
+      // '--color-content': 'rgba(0,212,11,0.4)',
       '--color-content': 'transparent',
       transitionProperty: 'opacity, background-color',
       transitionDuration: '300ms, 2.3s',
@@ -247,9 +264,12 @@ class HighlightDomElement extends HTMLElement {
       this.element!.removeEventListener('animationiteration', addAnimation)
     }
 
-    if (this._computedStyle.animationPlayState === 'paused') {
+    if (
+      this._computedStyle.animationName !== 'none' &&
+      this._computedStyle.animationPlayState === 'paused'
+    ) {
       addAnimation()
-    } else {
+    } else if (this._computedStyle.animationName !== 'none') {
       let animationFrame: number
       const updateWithAnimationFrame = () => {
         this.update()
@@ -270,7 +290,7 @@ window.customElements.define('highlight-dom-element', HighlightDomElement)
 
 let highlights: Array<{ $element: HTMLElement; $highlight: HighlightDomElement }> = []
 
-export function addHighlight($elements: HTMLElement[]) {
+export const addHighlights = ($elements: HTMLElement[]) => {
   let different = false
   if (highlights.length !== $elements.length) {
     different = true

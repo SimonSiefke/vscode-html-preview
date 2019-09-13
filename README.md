@@ -169,6 +169,10 @@ p{
 highlight in css not working with comment
  -->
 
+<!-- TODO keep highlight of html element if css is edited (better: highlight from css inside html)-->
+
+<!-- TODO fix highlight of borders -->
+
 ## Credits
 
 Much of this project is based on the Live Preview for html by [adobe brackets](https://github.com/adobe/brackets)

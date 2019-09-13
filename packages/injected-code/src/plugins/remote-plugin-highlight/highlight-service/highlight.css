@@ -1,3 +1,9 @@
+:host,
+.margin,
+.padding {
+  position: absolute;
+}
+
 /*
  *                 Creating a frame structure with CSS for highlighting padding and margin
  *                 ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
@@ -89,12 +95,6 @@
   /* margin: 10px; */
 }
 
-:host,
-.margin,
-.padding {
-  position: absolute;
-}
-
 .content {
   background: var(--color-content);
   width: var(--width);
@@ -150,4 +150,30 @@
   height: var(--full-height);
   background: var(--color-margin);
   transform: translate(calc(-1 * var(--margin-left)), calc(-1 * var(--margin-top)));
+}
+
+:host(.border-box) {
+  width: calc(var(--width) + var(--margin-horizontal));
+  height: calc(var(--height) + var(--margin-vertical));
+}
+
+:host(.border-box) .margin {
+  --full-width: calc(var(--width) + var(--margin-horizontal));
+  --full-height: calc(var(--height) + var(--margin-vertical));
+  transform: none;
+}
+
+:host(.border-box) .padding {
+  --full-width: calc(var(--width));
+  --full-height: calc(var(--height));
+  transform: translate(var(--margin-left), var(--margin-top));
+}
+
+:host(.border-box) .content {
+  width: calc(var(--width) - var(--padding-horizontal));
+  height: calc(var(--height) - var(--padding-vertical));
+  transform: translate(
+    calc(var(--padding-left) + var(--margin-left)),
+    calc(var(--padding-top) + var(--margin-top))
+  );
 }

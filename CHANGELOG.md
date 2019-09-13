@@ -2,6 +2,7 @@
 
 | Version | Date     | Changelog                                                                                                                                                                                           |
 | ------- | -------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1.18.3  | 13.09.19 | &mdash; **_[Fix]_** highlight not working with box-sizing: border-box                                                                                                                               |
 | 1.18.2  | 12.09.19 | &mdash; **_[Fix]_** highlight incorrect when element has padding                                                                                                                                    |
 | 1.18.1  | 12.09.19 | &mdash; **_[Fix]_** update highlight when html changes                                                                                                                                              |
 | 1.18.0  | 12.09.19 | &mdash; **_[Feature]_** highlight now works from css files                                                                                                                                          |

@@ -1,4 +1,4 @@
-import { addHighlight, updateHighlights } from './highlight-service/highlightServiceMain'
+import { addHighlights, updateHighlights } from './highlight-service/highlightServiceMain'
 import { RemotePlugin } from '../remotePluginApi'
 
 const isOutOfViewport = ($element: HTMLElement) => {
@@ -10,6 +10,8 @@ const isOutOfViewport = ($element: HTMLElement) => {
   const right = bounding.right > (window.innerWidth || document.documentElement.clientWidth)
   return top || left || bottom || right
 }
+
+const isVisible = ($node: HTMLElement) => window.getComputedStyle($node).display !== 'none'
 
 export const remotePluginHighlight: RemotePlugin = api => {
   const messagesThatCauseLayoutChange = [
@@ -25,10 +27,13 @@ export const remotePluginHighlight: RemotePlugin = api => {
     api.webSocket.onMessage(messageThatCausesLayoutChange, updateHighlights)
   }
 
+  window.addEventListener('resize', updateHighlights, { passive: true })
+
   api.webSocket.onMessage('highlightSelector', payload => {
     const { selector } = payload
     const $nodes = Array.from(document.querySelectorAll(selector)) as HTMLElement[]
-    addHighlight($nodes)
+    const $visibleNodes = $nodes.filter(isVisible)
+    addHighlights($visibleNodes)
   })
 
   api.webSocket.onMessage('highlight', payload => {
@@ -37,11 +42,15 @@ export const remotePluginHighlight: RemotePlugin = api => {
     if ($node === document.doctype) {
       return
     }
+    if (!isVisible($node as HTMLElement)) {
+      addHighlights([])
+      return
+    }
     // if (isOutOfViewport($node)) {
     //   $node.scrollIntoView({
     //     behavior: 'smooth',
     //   })
     // }
-    addHighlight([$node as HTMLElement])
+    addHighlights([$node as HTMLElement])
   })
 }
