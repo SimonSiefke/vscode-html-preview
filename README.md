@@ -175,4 +175,4 @@ highlight in css not working with comment
 
 ## Credits
 
-Much of this project is based on the Live Preview for html by [adobe brackets](https://github.com/adobe/brackets)
+Much of this project is based on the Live Preview feature by [Brackets](https://github.com/adobe/brackets)
