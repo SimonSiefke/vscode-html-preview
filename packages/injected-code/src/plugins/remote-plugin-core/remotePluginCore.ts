@@ -48,7 +48,20 @@ const textReplace: RemotePlugin = api => {
       return
     }
 
-    $node.data = parseEntities(payload.text)
+    const newData = parseEntities(payload.text)
+    if ($node.data === newData) {
+      return
+    }
+    console.log($node.data.replace(/ /g, 'SPACE'))
+    console.log(newData.replace(/ /g, 'SPACE'))
+    if ($node.data.length !== newData.length) {
+      console.log('diff length')
+      console.log($node.data.length, newData.length)
+    }
+    console.log($node.data === newData.slice(0, $node.data.length))
+    console.log(newData[newData.length - 1] === '\n')
+    console.log('different data')
+    $node.data = newData
   })
 }
 
@@ -75,12 +88,17 @@ const attributeDelete: RemotePlugin = api => {
 
 const elementDelete: RemotePlugin = api => {
   api.webSocket.onMessage('elementDelete', payload => {
+    const deleteFromNodeMap = () => {
+      const $node = api.nodeMap[payload.id]
+      delete api.nodeMap[payload.id]
+      api.messageChannel.broadcastMessage('elementDeleted', { id: payload.id, element: $node })
+    }
     const $node = api.nodeMap[payload.id]
     // @ts-ignore
     if ($node.tagName && ['HTML', 'HEAD', 'BODY'].includes($node.tagName)) {
       // cannot delete those, but need to remove their children
       removeChildren($node)
-      delete api.nodeMap[payload.id]
+      deleteFromNodeMap()
       return
     }
 
@@ -95,28 +113,34 @@ const elementDelete: RemotePlugin = api => {
     } else if ($node.parentNode && $node.parentNode.removeChild) {
       $node.parentNode.removeChild($node)
     }
-
-    delete api.nodeMap[payload.id]
+    deleteFromNodeMap()
   })
 }
 
 const elementInsert: RemotePlugin = api => {
   api.webSocket.onMessage('elementInsert', payload => {
-    let $node: HTMLElement | Text | Comment | DocumentType
+    let $node: Node
+    const addToNodeMap = ($node: Node) => {
+      api.nodeMap[payload.id] = $node
+      api.messageChannel.broadcastMessage('elementInserted', {
+        element: $node,
+        id: payload.id,
+      })
+    }
     if (payload.nodeType === 'ElementNode') {
       const tag = payload.tag.toLowerCase()
       if (tag === 'html') {
-        api.nodeMap[payload.id] = document.documentElement
+        addToNodeMap(document.documentElement)
         return
       }
 
       if (tag === 'body') {
-        api.nodeMap[payload.id] = document.body
+        addToNodeMap(document.body)
         return
       }
 
       if (tag === 'head') {
-        api.nodeMap[payload.id] = document.head
+        addToNodeMap(document.head)
         return
       }
 
@@ -125,7 +149,7 @@ const elementInsert: RemotePlugin = api => {
       } else {
         $node = document.createElement(payload.tag) as HTMLElement
         for (const [attributeName, attributeValue] of Object.entries<any>(payload.attributes)) {
-          $node.setAttribute(attributeName, fixAttributeValue(attributeValue))
+          ;($node as HTMLElement).setAttribute(attributeName, fixAttributeValue(attributeValue))
         }
 
         // $node.setAttribute('data-id', `${payload.id}`)
@@ -139,7 +163,7 @@ const elementInsert: RemotePlugin = api => {
       throw new Error('invalid node type')
     }
 
-    api.nodeMap[payload.id] = $node
+    addToNodeMap($node)
     let $parent = api.nodeMap[payload.parentId] as HTMLElement
     if (!$parent) {
       debugger

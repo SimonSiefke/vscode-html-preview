@@ -6,6 +6,7 @@ import { connection } from './plugins/remote-plugin-connection/remotePluginConne
 import { redirect } from './plugins/remote-plugin-redirect/redirect'
 import { reload } from './plugins/remote-plugin-reload/reload'
 import { updateCss } from './plugins/remote-plugin-update-css/updateCss'
+import { remotePluginEditText } from './plugins/remote-plugin-edit-text/remotePluginEditText'
 
 const $script = document.querySelector('script[src="/html-preview.js"]') as HTMLScriptElement
 $script.remove()
@@ -291,12 +292,16 @@ async function fetchNodeMap() {
     // @ts-ignore
     nodeMap,
     webSocket: {
-      onMessage(command, listener) {
+      onMessage: (command, listener) => {
         if (!listeners[command]) {
           listeners[command] = []
         }
 
         listeners[command]!.push(listener)
+      },
+      broadcastMessage: (command, payload) => {
+        const stringifiedMessage = JSON.stringify({ command, payload })
+        webSocket.send(stringifiedMessage)
       },
     },
     // @ts-ignore
@@ -332,4 +337,5 @@ async function fetchNodeMap() {
   redirect(remotePluginApi)
   remotePluginError(remotePluginApi)
   remotePluginHighlight(remotePluginApi)
+  remotePluginEditText(remotePluginApi)
 })()

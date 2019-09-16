@@ -1,14 +1,18 @@
 // export type Command<K extends keyof RemoteCommandMap> = (payload: RemoteCommandMap[K]) => void;
 // export const useCommand: <T>(fn: () => T) => T = fn => fn();
 
+/**
+ * maps from id to node
+ */
 interface NodeMap {
-  [key: number]: HTMLElement | Text | Comment | DocumentType | Document
+  [key: number]: Node
 }
 
 export interface RemotePluginApi {
   nodeMap: NodeMap
   webSocket: {
     onMessage: (command: string, listener: (payload: any) => void) => void
+    broadcastMessage: (command: string, payload: any) => void
   }
   hasBody: boolean
   hasHtml: boolean

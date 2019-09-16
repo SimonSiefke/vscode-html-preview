@@ -22,6 +22,7 @@ import * as http from 'http'
 import { LocalPlugin } from '../plugins/localPluginApi'
 import { open } from '../open/open'
 import * as assert from 'assert'
+import { localPluginEditText } from '../plugins/local-plugin-edit-text/localPluginEditText'
 
 export const invariant = (message: string, value: any) => assert.ok(value, message)
 
@@ -289,6 +290,8 @@ plugins.push(localPluginCore)
 if (process.env.NODE_ENV !== 'test') {
   plugins.push(localPluginRedirect)
 }
+
+plugins.push(localPluginEditText)
 
 if (
   vscode.workspace.getConfiguration().get('htmlPreview.highlight') &&

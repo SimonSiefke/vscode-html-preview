@@ -27,7 +27,11 @@ export interface WebSocketServer {
     relativePath: string
   }) => void
 
-  readonly onMessage: (fn: (message: object) => void) => void
+  readonly onMessage: (
+    command: string,
+    listener: ({ normalizedPath: string, payload: any }) => void
+  ) => void
+
   readonly onConnection: (fn: (webSocket: WebSocket, request: http.IncomingMessage) => void) => void
   /**
    * Stop the websocket server. Also stops the underlying http server.
@@ -57,7 +61,13 @@ export function createWebSocketServer(httpServer: HttpServer): WebSocketServer {
     })
     webSocket.on('message', data => {
       const message = JSON.parse(data.toString())
-      onMessageListeners.forEach(fn => fn(message))
+      const command = message.command
+      if (listeners[command]) {
+        listeners[command].forEach(listener =>
+          listener({ payload: message.payload, normalizedPath })
+        )
+      }
+      // onMessageListeners.forEach(fn => fn(message))
       // const {id} = JSON.parse(data.toString());
       // const {start} = pendingResults[id];
       // const end = Math.round(process.hrtime(start)[1] / 1000000);
@@ -73,7 +83,11 @@ export function createWebSocketServer(httpServer: HttpServer): WebSocketServer {
     })
     onConnectionListeners.forEach(fn => fn(webSocket, request))
   })
-  const onMessageListeners: Array<(message: any) => void> = []
+  // const onMessageListeners: Array<(message: any) => void> = []
+
+  const listeners: {
+    [command: string]: Array<({ normalizedPath: string, payload: any }) => void>
+  } = {}
   const onConnectionListeners: Array<
     (webSocket: WebSocket, request: http.IncomingMessage) => void
   > = []
@@ -111,8 +125,9 @@ export function createWebSocketServer(httpServer: HttpServer): WebSocketServer {
       const clients = webSocketServer.clients
       broadcast({ commands, skip, clients })
     },
-    onMessage: fn => {
-      onMessageListeners.push(fn)
+    onMessage: (command: string, listener: (payload: any) => void) => {
+      listeners[command] = listeners[command] || []
+      listeners[command].push(listener)
     },
     onConnection: fn => {
       onConnectionListeners.push(fn)
