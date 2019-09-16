@@ -7,7 +7,7 @@
 ## Features
 
 - Live editing of HTML and CSS
-- Highlighting of html elements inside the browser (there are still a lot of bugs)
+- Highlighting of html elements inside the browser
 
 ## TODO
 
