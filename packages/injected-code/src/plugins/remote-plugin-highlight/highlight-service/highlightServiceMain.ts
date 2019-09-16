@@ -316,10 +316,14 @@ export const addHighlights = ($elements: HTMLElement[]) => {
 }
 
 export const updateHighlights = () => {
+  console.log('hu')
   for (const highlight of highlights) {
     highlight.$highlight.update()
   }
 }
+
+// @ts-ignore
+window.u = updateHighlights
 
 const clearHighlights = () => {
   for (const highlight of highlights) {

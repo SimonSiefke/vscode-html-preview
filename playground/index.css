@@ -1,18 +1,5 @@
 h1{
-  color: rgb(0, 18, 184);
-}
-button{
-  color: orangered;
-  padding: 2px;
-  margin: 3rem;
-}
-
-
-
-p{
-  color: rgb(153, 0, 255)
-}
-
-body{
-  font-size: 150%;
+  color: lightblue
+  ;
+  transform: translate(50px)
 }

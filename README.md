@@ -172,6 +172,7 @@ highlight in css not working with comment
 <!-- TODO keep highlight of html element if css is edited (better: highlight from css inside html)-->
 
 <!-- TODO fix highlight of borders -->
+<!-- TODO lots of tests for highlight etc -->
 
 ## Credits
 

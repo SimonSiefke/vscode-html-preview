@@ -14,7 +14,7 @@ const isOutOfViewport = ($element: HTMLElement) => {
 const isVisible = ($node: HTMLElement) => window.getComputedStyle($node).display !== 'none'
 
 export const remotePluginHighlight: RemotePlugin = api => {
-  const messagesThatCauseLayoutChange = [
+  const webSocketMessagesThatCauseLayoutChange = [
     'textReplace',
     'attributeChange',
     'attributeAdd',
@@ -23,8 +23,29 @@ export const remotePluginHighlight: RemotePlugin = api => {
     'elementInsert',
     'elementMove',
   ]
-  for (const messageThatCausesLayoutChange of messagesThatCauseLayoutChange) {
-    api.webSocket.onMessage(messageThatCausesLayoutChange, updateHighlights)
+
+  // const scheduleUpdateHighlights = (() => {
+  //   let shouldUpdate = false
+  //   return () => {
+  //     if (shouldUpdate) {
+  //       return
+  //     }
+  //     shouldUpdate = true
+  //     requestAnimationFrame(() =>
+  //       requestAnimationFrame(() => {
+  //         shouldUpdate = false
+  //         updateHighlights()
+  //       })
+  //     )
+  //   }
+  // })()
+  for (const websocketMessageThatCausesLayoutChange of webSocketMessagesThatCauseLayoutChange) {
+    api.webSocket.onMessage(websocketMessageThatCausesLayoutChange, updateHighlights)
+  }
+
+  const messageChannelMessagesThatCauseLayoutChange = ['updatedCss']
+  for (const messageChannelMessageThatCausesLayoutChange of messageChannelMessagesThatCauseLayoutChange) {
+    api.messageChannel.onMessage(messageChannelMessageThatCausesLayoutChange, updateHighlights)
   }
 
   window.addEventListener('resize', updateHighlights, { passive: true })
