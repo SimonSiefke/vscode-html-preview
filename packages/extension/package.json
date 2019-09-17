@@ -41,7 +41,11 @@
       {
         "category": "Html Preview",
         "command": "htmlPreview.openPreview",
-        "title": "Open"
+        "title": "Open Preview",
+        "icon": {
+          "light": "images/bolt_original_darkgray_optimized.svg",
+          "dark": "images/bolt_original_lightgray_optimized.svg"
+        }
       },
       {
         "category": "Html Preview",
@@ -71,8 +75,15 @@
       "explorer/context": [
         {
           "command": "htmlPreview.openWithHtmlPreview",
-          "group": "navigation@-HtmlPreview",
+          "group": "navigation",
           "when": "resourceLangId == html"
+        }
+      ],
+      "editor/title": [
+        {
+          "command": "htmlPreview.openPreview",
+          "group": "navigation",
+          "when": "editorLangId == html && resourceExtname == .html"
         }
       ]
     },

@@ -2,14 +2,14 @@
   "type": "object",
   "required": [
     "htmlPreview.openWithHtmlPreview",
-    "htmlPreview.open",
+    "htmlPreview.openPreview",
     "htmlPreview.closePreviewServer"
   ],
   "properties": {
     "htmlPreview.openWithHtmlPreview": {
       "type": "string"
     },
-    "htmlPreview.open": {
+    "htmlPreview.openPreview": {
       "type": "string"
     },
     "htmlPreview.closePreviewServer": {
