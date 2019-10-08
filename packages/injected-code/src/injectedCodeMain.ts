@@ -233,8 +233,8 @@ async function fetchNodeMap() {
     if (!$node && node.tag.toLowerCase() !== '!doctype') {
       console.error(node)
       console.error(node.id, $node)
-      debugger
-      alert('error, failed to hydrate dom (2)')
+      // debugger
+      alert('error, failed to hydrate dom (9)')
     }
 
     $node.removeAttribute('data-id') // TODO remove this while debugging

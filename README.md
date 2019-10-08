@@ -189,6 +189,8 @@ highlight in css not working with comment
 
 invalid? -->
 
+<!-- TODO dynamic html, e.g. http://bl.ocks.org/d3noob/8952219 -->
+
 ## Credits
 
 Much of this project is based on the Live Preview feature by [Brackets](https://github.com/adobe/brackets)
