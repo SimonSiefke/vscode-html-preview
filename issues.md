@@ -145,3 +145,37 @@ todo: bug nodemap is undefined
   </body>
 </html>
 ```
+
+todo bug edit text not working
+
+```
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css" />
+    <style>
+      button {
+        all: unset;
+        padding: 20px;
+        margin: 20px;
+        background: dodgerblue;
+        color: wheat;
+        border-radius: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>
+      heading level
+    </h1>
+    <header></header>
+    <button>
+      its a button with padding
+    </button>
+  </body>
+</html>
+
+```
