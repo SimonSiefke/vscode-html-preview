@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "event-stream": "^4.0.1",
-    "open": "^6.4.0",
+    "open": "^7.0.0",
     "send": "^0.17.1",
     "virtual-dom": "^0.0.0-development",
     "ws": "^7.1.2"
