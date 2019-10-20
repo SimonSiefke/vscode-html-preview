@@ -41,7 +41,8 @@ export interface PreviewApi {
       ) => void
     }
     workspace: {
-      onDidChangeTextDocument: (listener: (event: vscode.TextDocumentChangeEvent) => void) => void
+      onDidChangeTextDocument: typeof vscode.workspace.onDidChangeTextDocument
+      onDidSaveTextDocument: typeof vscode.workspace.onDidSaveTextDocument
       createFileSystemWatcher: (
         globPattern: vscode.GlobPattern,
         ignoreCreateEvents?: boolean,
@@ -312,6 +313,7 @@ export const Preview = (() => {
       },
       workspace: {
         onDidChangeTextDocument: vscode.workspace.onDidChangeTextDocument,
+        onDidSaveTextDocument: vscode.workspace.onDidSaveTextDocument,
         createFileSystemWatcher: vscode.workspace.createFileSystemWatcher,
       },
     },

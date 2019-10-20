@@ -2,6 +2,7 @@
 
 | Version | Date     | Changelog                                                                                                                                                                                           |
 | ------- | -------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1.21.0  | 17.09.19 | &mdash; **_[Feature]_** reload when js files etc. change                                                                                                                                            |
 | 1.20.0  | 17.09.19 | &mdash; **_[Feature]_** icon in explorer menu to open html preview                                                                                                                                  |
 | 1.19.0  | 16.09.19 | &mdash; **_[Feature]_** update text from the browser                                                                                                                                                |
 | 1.18.4  | 16.09.19 | &mdash; **_[Fix]_** highlight not updating when css is updated                                                                                                                                      |

@@ -7,6 +7,7 @@ import { redirect } from './plugins/remote-plugin-redirect/redirect'
 import { reload } from './plugins/remote-plugin-reload/reload'
 import { updateCss } from './plugins/remote-plugin-update-css/updateCss'
 import { remotePluginEditText } from './plugins/remote-plugin-edit-text/remotePluginEditText'
+import { createMessageChannel } from './messageChannel'
 
 const $script = document.querySelector('script[src="/html-preview.js"]') as HTMLScriptElement
 $script.remove()
@@ -311,23 +312,7 @@ async function fetchNodeMap() {
     // @ts-ignore
     hasHtml,
     virtualDom,
-    messageChannel: (() => {
-      const listeners: { [command: string]: any[] } = {}
-      return {
-        onMessage: (command: string, listener: (payload: any) => void) => {
-          listeners[command] = listeners[command] || []
-          listeners[command].push(listener)
-        },
-        broadcastMessage: (command: string, payload: any) => {
-          if (!listeners[command]) {
-            return
-          }
-          for (const listener of listeners[command]) {
-            listener(payload)
-          }
-        },
-      }
-    })(),
+    messageChannel: createMessageChannel(),
   }
 
   remotePluginCore(remotePluginApi)

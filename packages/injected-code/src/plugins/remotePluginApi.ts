@@ -1,6 +1,7 @@
 // export type Command<K extends keyof RemoteCommandMap> = (payload: RemoteCommandMap[K]) => void;
 // export const useCommand: <T>(fn: () => T) => T = fn => fn();
 
+import { MessageChannel } from '../messageChannel'
 /**
  * maps from id to node
  */
@@ -18,10 +19,7 @@ export interface RemotePluginApi {
   hasHtml: boolean
   hasHead: boolean
   virtualDom: any
-  messageChannel: {
-    onMessage: (command: string, listener: (payload: any) => void) => void
-    broadcastMessage: (command: string, payload: any) => void
-  }
+  messageChannel: MessageChannel
 }
 
 export type RemotePlugin = (api: RemotePluginApi) => void

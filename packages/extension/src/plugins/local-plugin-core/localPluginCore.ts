@@ -4,6 +4,21 @@ import { LocalPlugin } from '../localPluginApi'
 import { minimizeEdits } from '../../services/Commands-util/minimizeEdits/minimizeEdits'
 
 export const localPluginCore: LocalPlugin = api => {
+  api.vscode.workspace.onDidSaveTextDocument(event => {
+    if (['html', 'css'].includes(event.languageId)) {
+      return
+    }
+    console.log('something changed')
+    api.webSocketServer.broadcast({
+      commands: [
+        {
+          command: 'reload',
+          payload: {},
+        },
+      ],
+    })
+  })
+
   api.vscode.workspace.onDidChangeTextDocument(event => {
     const relativePath = '/' + vscode.workspace.asRelativePath(event.document.uri)
     if (event.document.languageId !== 'html') {
