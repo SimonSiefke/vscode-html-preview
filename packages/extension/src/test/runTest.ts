@@ -3,7 +3,7 @@ import * as fs from 'fs-extra'
 import { runTests } from 'vscode-test'
 
 const extensionRoot = path.join(__dirname, '../../')
-
+const vscodeVersion = '1.39.0'
 interface Test {
   testPath: string
   workspace: string
@@ -21,7 +21,7 @@ async function run(test: Test) {
 
     // Download VS Code, unzip it and run the integration test
     await runTests({
-      version: '1.38.0',
+      version: vscodeVersion,
       extensionDevelopmentPath,
       extensionTestsPath,
       launchArgs: ['--disable-extensions', workspacePathDist],
