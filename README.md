@@ -2,6 +2,8 @@
 
 # Html Preview for VSCode
 
+![demo](./demo.png)
+
 <!-- TODO demo gif -->
 
 ## Features

@@ -1,6 +1,6 @@
 {
   "htmlPreview.highlight": true,
-  "htmlPreview.openWith": "browser",
+  "htmlPreview.openWith": "vscode",
   "files.trimTrailingWhitespace": false,
   "editor.formatOnSave": false
 }

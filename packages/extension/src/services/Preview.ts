@@ -302,7 +302,7 @@ if (
   plugins.push(localPluginHighlight)
 }
 
-plugins.push(localPluginHighlightSelection)
+// plugins.push(localPluginHighlightSelection)
 
 export const Preview = (() => {
   let previewState: 'opening' | 'open' | 'closing' | 'closed' = 'closed'
