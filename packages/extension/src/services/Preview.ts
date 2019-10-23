@@ -23,6 +23,7 @@ import { LocalPlugin } from '../plugins/localPluginApi'
 import { open } from '../open/open'
 import * as assert from 'assert'
 import { localPluginEditText } from '../plugins/local-plugin-edit-text/localPluginEditText'
+import { localPluginHighlightSelection } from '../plugins/local-plugin-highlight-selection/localPluginHighlightSelection'
 
 export const invariant = (message: string, value: any) => assert.ok(value, message)
 
@@ -300,6 +301,8 @@ if (
 ) {
   plugins.push(localPluginHighlight)
 }
+
+plugins.push(localPluginHighlightSelection)
 
 export const Preview = (() => {
   let previewState: 'opening' | 'open' | 'closing' | 'closed' = 'closed'

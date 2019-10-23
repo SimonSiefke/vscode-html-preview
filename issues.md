@@ -179,3 +179,25 @@ todo bug edit text not working
 </html>
 
 ```
+
+bug: when clicking on the red text, live highlight doesn't work
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet" />
+    >
+  </head>
+  <body class="p-12 border-4 m-12">
+    <h1 class="text-blue-700">hello light blue</h1>
+    <h1 class="text-green-700">hello light green</h1>
+    <h1 class="text-yellow-700">hello light yellow</h1>
+    <h1 class="text-orange-700">hello light orange</h1>
+    <h1 class="text-red-700">hello light red</h1>
+  </body>
+</html>
+```

@@ -8,6 +8,7 @@ import { reload } from './plugins/remote-plugin-reload/reload'
 import { updateCss } from './plugins/remote-plugin-update-css/updateCss'
 import { remotePluginEditText } from './plugins/remote-plugin-edit-text/remotePluginEditText'
 import { createMessageChannel } from './messageChannel'
+import { remotePluginHighlightSelection } from './plugins/remote-plugin-highlight-selection/remotePluginHighlightSelection'
 
 const $script = document.querySelector('script[src="/html-preview.js"]') as HTMLScriptElement
 $script.remove()
@@ -323,4 +324,5 @@ async function fetchNodeMap() {
   remotePluginError(remotePluginApi)
   remotePluginHighlight(remotePluginApi)
   remotePluginEditText(remotePluginApi)
+  // remotePluginHighlightSelection(remotePluginApi)
 })()

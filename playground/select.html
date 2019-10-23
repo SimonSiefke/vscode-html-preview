@@ -7,9 +7,14 @@
   <title>Document</title>
 </head>
 <body>
+  <p id="p">Example: <i>italic</i> and <b>bold</b></p>
+  
+  <script>
+    let range = new Range();
 
-  <h1 id="h1">
-   hello
-  </h1>
+    range.setStart(p.firstChild, 2);
+    range.setEnd(p.firstChild, 4);
+    window.getSelection().addRange(range);
+  </script>
 </body>
 </html>
