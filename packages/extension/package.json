@@ -125,7 +125,7 @@
     "cross-env": "^6.0.0",
     "fs-extra": "^8.1.0",
     "mocha": "^6.2.0",
-    "puppeteer": "^1.19.0",
+    "puppeteer": "^2.0.0",
     "vscode-test": "^1.2.0"
   }
 }
