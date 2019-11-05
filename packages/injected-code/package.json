@@ -13,6 +13,6 @@
     "@types/lodash": "^4.14.138",
     "rollup": "^1.21.0",
     "rollup-plugin-terser": "^5.1.1",
-    "rollup-plugin-typescript2": "^0.24.0"
+    "rollup-plugin-typescript2": "^0.25.0"
   }
 }
