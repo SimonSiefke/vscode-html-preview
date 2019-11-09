@@ -3,7 +3,7 @@ import { LocalConnectionProxy } from './local-connection-proxy/localConnectionPr
 import { PreviewProxy } from './preview-proxy/previewProxy'
 
 export interface LocalPluginApi {
-  readonly localConnectionProxy: LocalConnectionProxy
+  readonly connectionProxy: LocalConnectionProxy
   readonly editorProxy: EditorProxy
   readonly previewProxy: PreviewProxy
 }

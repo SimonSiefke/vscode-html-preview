@@ -6,13 +6,3 @@ export interface LocalConnectionProxy {
     params: Params
   ) => Promise<Result>
 }
-
-export const createLocalConnectionProxy: ({
-  sendRequest,
-}: {
-  sendRequest: LocalConnectionProxy['sendRequest']
-}) => LocalConnectionProxy = ({ sendRequest }) => {
-  return {
-    sendRequest,
-  }
-}

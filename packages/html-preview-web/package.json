@@ -2,27 +2,17 @@
   "name": "html-preview-web",
   "version": "0.0.0-development",
   "main": "dist/index.js",
+  "sideEffects": "false",
   "scripts": {
-    "build": "rollup -c rollup.config.js",
-    "dev": "webpack --mode development",
-    "dev:client": "webpack --config client.webpack.config.js --mode development --watch"
+    "dev": "tsc -b --watch"
   },
   "dependencies": {
     "html-preview-service": "^0.0.0-development",
     "lodash": "^4.17.15"
   },
+  "license": "MIT",
   "devDependencies": {
     "@types/lodash": "^4.14.138",
-    "rollup": "^1.26.3",
-    "rollup-plugin-commonjs": "^10.1.0",
-    "rollup-plugin-json": "^4.0.0",
-    "rollup-plugin-node-resolve": "^5.2.0",
-    "rollup-plugin-terser": "^5.1.1",
-    "rollup-plugin-typescript2": "^0.25.0",
-    "ts-loader": "^6.2.1",
-    "ts-node": "^8.4.1",
-    "typescript": "^3.7.2",
-    "webpack": "^5.0.0-beta.3",
-    "webpack-cli": "^3.3.10"
+    "typescript": "^3.7.2"
   }
 }

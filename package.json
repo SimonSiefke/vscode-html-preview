@@ -2,6 +2,7 @@
   "engines": {
     "node": "12"
   },
+  "license": "MIT",
   "name": "vscode-html-preview",
   "scripts": {
     "dev": "tsc -b -w",
@@ -49,9 +50,9 @@
     "semantic-release": "^15.13.24",
     "semantic-release-vsce": "^2.2.8",
     "ts-jest": "^24.0.2",
-    "ts-loader": "^6.0.4",
+    "ts-loader": "^6.2.1",
     "ts-node": "^8.3.0",
-    "typescript": "^3.6.2",
+    "typescript": "^3.7.2",
     "webpack": "^4.39.3",
     "webpack-cli": "^3.3.8"
   },

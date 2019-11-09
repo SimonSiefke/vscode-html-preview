@@ -1,0 +1,19 @@
+{
+  "name": "minimal-sample",
+  "version": "0.0.0-development",
+  "main": "dist/index.js",
+  "license": "MIT",
+  "scripts": {
+    "dev": "webpack-dev-server"
+  },
+  "dependencies": {
+    "html-preview-web": "^0.0.0-development"
+  },
+  "devDependencies": {
+    "ts-loader": "^6.2.1",
+    "typescript": "^3.7.2",
+    "webpack": "^5.0.0-beta.3",
+    "webpack-cli": "^3.3.10",
+    "webpack-dev-server": "^3.9.0"
+  }
+}

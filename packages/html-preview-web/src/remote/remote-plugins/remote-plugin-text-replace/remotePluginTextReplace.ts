@@ -1,5 +1,7 @@
+import { createRequestType } from '../../../shared/requestType'
 import { RemotePlugin } from '../remotePlugin'
-import { hydrate } from './hydrate'
+
+const requestTypeTextReplace = createRequestType<{ id: number; text: string }, void>('textReplace')
 
 /**
  *  Given a string containing encoded entity references, returns the string with the entities decoded.
@@ -12,13 +14,14 @@ const parseEntities = (() => {
   }
 })()
 
-export const remotePluginCore: RemotePlugin = api => {
-  const $virtualDom = document.getElementById('nodeMap') as HTMLScriptElement
-  const virtualDom = JSON.parse($virtualDom.innerHTML)
-  const { nodeMap } = hydrate(virtualDom) as { nodeMap: any }
-
-  api.messageChannel.onCommand('textReplace', payload => {
-    const $node = nodeMap[payload.id] as Comment | Text
+/**
+ * Replaces the text inside a text node.
+ *
+ * @param api - the remote plugin api
+ */
+export const remotePluginTextReplace: RemotePlugin = api => {
+  api.connectionProxy.onRequest(requestTypeTextReplace, payload => {
+    const $node = api.nodeMap[payload.id] as Comment | Text
     if ($node === undefined) {
       console.error(`node ${payload.id} is undefined`)
       debugger
