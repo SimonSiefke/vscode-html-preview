@@ -1,7 +1,0 @@
-{
-  "compilerOptions": {
-    "target": "esnext",
-    "lib": ["webworker", "esnext", "scripthost"]
-  },
-  "files": ["adapterWorker.ts"]
-}

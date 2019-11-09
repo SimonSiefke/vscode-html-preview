@@ -7,12 +7,10 @@
     "dev": "tsc -b --watch"
   },
   "dependencies": {
-    "html-preview-service": "^0.0.0-development",
-    "lodash": "^4.17.15"
+    "html-preview-service": "^0.0.0-development"
   },
   "license": "MIT",
   "devDependencies": {
-    "@types/lodash": "^4.14.138",
     "typescript": "^3.7.2"
   }
 }
