@@ -1,15 +1,16 @@
 {
   "name": "minimal-sample",
   "version": "0.0.0-development",
-  "main": "dist/index.js",
   "license": "MIT",
   "scripts": {
-    "dev": "webpack-dev-server"
+    "dev": "concurrently \"webpack --mode production --watch\" \"webpack-dev-server\"",
+    "build": "webpack --mode production"
   },
   "dependencies": {
     "html-preview-web": "^0.0.0-development"
   },
   "devDependencies": {
+    "concurrently": "^5.0.0",
     "ts-loader": "^6.2.1",
     "typescript": "^3.7.2",
     "webpack": "^5.0.0-beta.3",
