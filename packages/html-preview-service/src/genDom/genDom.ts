@@ -1,10 +1,13 @@
-import { parseHtml, createParser } from 'virtual-dom'
+import { Parser } from 'virtual-dom'
 
-export function genDom(orig, dom = parseHtml(orig).htmlDocument) {
+export function genDom(orig, parser: Parser) {
+  const dom = parser.parse(orig).htmlDocument
   if (dom === undefined) {
-    return orig
+    console.log('no 1')
+    return { gen: orig }
   }
   let gen = ''
+  console.log('2')
   let lastIndex = 0
   // parser.dom;
   // // @ts-ignore
@@ -36,5 +39,8 @@ export function genDom(orig, dom = parseHtml(orig).htmlDocument) {
 
   dom.children.forEach(walk)
   gen += orig.substr(lastIndex)
-  return gen
+  return {
+    gen,
+    dom,
+  }
 }

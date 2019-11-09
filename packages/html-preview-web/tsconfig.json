@@ -1,0 +1,13 @@
+{
+  "extends": "../../tsconfig-noncomposite-base",
+  "compilerOptions": {
+    "lib": ["dom", "esnext"],
+    "module": "esnext",
+    "outDir": "dist",
+    "rootDir": "src",
+    "types": []
+  },
+  "include": ["src/**/*.ts"],
+  "exclude": ["src/**/*Worker.ts"],
+  "references": []
+}

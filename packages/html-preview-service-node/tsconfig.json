@@ -1,0 +1,11 @@
+{
+  "extends": "../../tsconfig-noncomposite-base",
+  "compilerOptions": {
+    "outDir": "dist",
+    "rootDir": "src",
+    "strictNullChecks": false,
+    "types": ["node", "jest"]
+  },
+  "include": ["src"],
+  "references": []
+}

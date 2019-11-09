@@ -6,5 +6,6 @@
     { "path": "./packages/injected-code" },
     { "path": "./packages/virtual-dom" },
     { "path": "./packages/html-preview-service" }
+    { "path": "./packages/html-preview-service-node" }
   ]
 }
