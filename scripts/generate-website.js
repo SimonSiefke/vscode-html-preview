@@ -17,4 +17,6 @@ for (const sample of samples) {
     path.join(root, `packages/html-preview-web-samples/${sample}/dist`),
     path.join(root, `website/samples/${sample}/dist`)
   )
+  fs.removeSync(path.join(root, `website/samples/${sample}/dist/remoteMain.js`))
+  fs.removeSync(path.join(root, `website/samples/${sample}/dist/remoteMain.js.map`))
 }
