@@ -20,3 +20,20 @@ for (const sample of samples) {
   fs.removeSync(path.join(root, `website/samples/${sample}/dist/remoteMain.js`))
   fs.removeSync(path.join(root, `website/samples/${sample}/dist/remoteMain.js.map`))
 }
+
+const html = `
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+  </head>
+  <body>
+    <ul>
+${samples
+  .map(sample => ' '.repeat(6) + `<li><a href="/samples/${sample}">${sample}</a></li>`)
+  .join('\n')}
+    </ul>
+  </body>
+</html>
+`.trimLeft()
+fs.writeFileSync(path.join(root, 'website/index.html'), html)

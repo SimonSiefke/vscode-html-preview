@@ -1,6 +1,6 @@
 import { LocalConnectionProxy } from 'html-preview-web'
 
-const worker = new Worker('/dist/workerMain.js')
+const worker = new Worker('./dist/workerMain.js')
 
 const waitForIdle: () => Promise<void> = () =>
   new Promise(resolve => {
