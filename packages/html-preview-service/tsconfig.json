@@ -5,9 +5,11 @@
     "rootDir": "src",
     "strict": false,
     "strictNullChecks": true,
+    "module": "commonjs",
     "types": ["node", "jest"]
   },
   "include": ["src", "../../global.d.ts"],
+  "exclude": ["**/*.test.ts", "**/*.benchmark.ts"],
   "references": [
     {
       "path": "../virtual-dom"

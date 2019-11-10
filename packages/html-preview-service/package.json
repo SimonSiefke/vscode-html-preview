@@ -3,20 +3,12 @@
   "version": "0.0.0-development",
   "description": "",
   "main": "dist/htmlPreviewServiceMain.js",
+  "sideEffects": false,
   "scripts": {
-    "generate:genDomTests": "babel-node --presets latest-node src/genDom/genDom-test-util/generateGenDomTestCases.js",
+    "generate:genDomTests": "node src/genDom/genDom-test-util/generateGenDomTestCases.js",
     "generate:watch:genDomTests": "nodemon --watch src/genDom/genDom.test.txt --exec npm run generate:genDomTests"
   },
   "dependencies": {
-    "event-stream": "^4.0.1",
-    "open": "^7.0.0",
-    "send": "^0.17.1",
-    "virtual-dom": "^0.0.0-development",
-    "ws": "^7.1.2"
-  },
-  "devDependencies": {
-    "@types/event-stream": "^3.3.34",
-    "@types/send": "^0.14.5",
-    "@types/ws": "^6.0.3"
+    "virtual-dom": "^0.0.0-development"
   }
 }

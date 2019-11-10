@@ -1,0 +1,16 @@
+{
+  "name": "html-preview-web",
+  "version": "0.0.0-development",
+  "main": "dist/index.js",
+  "sideEffects": "false",
+  "scripts": {
+    "dev": "tsc -b --watch"
+  },
+  "dependencies": {
+    "html-preview-service": "^0.0.0-development"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "typescript": "^3.7.2"
+  }
+}

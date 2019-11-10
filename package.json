@@ -2,6 +2,7 @@
   "engines": {
     "node": "12"
   },
+  "license": "MIT",
   "name": "vscode-html-preview",
   "scripts": {
     "dev": "tsc -b -w",
@@ -18,42 +19,48 @@
     "update-highlight-css": "postcss packages/injected-code/src/plugins/remote-plugin-highlight/highlight-service/highlight.css --no-map --output packages/injected-code/src/plugins/remote-plugin-highlight/highlight-service/highlight.min.css && node scripts/update-highlight-css",
     "e2e": "cd packages/extension && npm run e2e",
     "autoreload": "nodemon --watch **/dist/** --exec node scripts/update-extension-new.js",
-    "kill-whatever-is-on-port-3000": "fuser -k -TERM -n tcp 3000"
+    "kill-whatever-is-on-port-3000": "fuser -k -TERM -n tcp 3000",
+    "generate:website": "node scripts/generate-website",
+    "test:samples": "cd packages/html-preview-web-samples && cd minimal-sample && npm run e2e && cd .. && cd web-worker-sample && npm run e2e && cd .."
   },
   "devDependencies": {
-    "@babel/core": "^7.6.0",
-    "@babel/node": "^7.6.1",
-    "@types/jest": "^24.0.18",
-    "@types/lodash": "^4.14.138",
-    "@types/puppeteer": "^1.19.1",
-    "@types/webpack": "^4.39.1",
-    "autoprefixer": "^9.6.1",
+    "@babel/core": "^7.7.2",
+    "@babel/node": "^7.7.0",
+    "@types/fs-extra": "^8.0.1",
+    "@types/jest": "^24.0.22",
+    "@types/lodash": "^4.14.146",
+    "@types/puppeteer": "^1.20.2",
+    "@types/webpack": "^4.39.8",
+    "autoprefixer": "^9.7.1",
     "babel-preset-latest-node": "^3.2.1",
     "bundlesize": "^0.18.0",
     "circular-dependency-plugin": "^5.2.0",
-    "copy-webpack-plugin": "^5.0.4",
+    "copy-webpack-plugin": "^5.0.5",
     "cssnano": "^4.1.10",
-    "eslint": "^6.3.0",
-    "eslint-config-prettier": "^6.2.0",
-    "eslint-config-xo": "^0.27.0",
-    "eslint-plugin-jest": "^23.0.0",
+    "cypress": "^3.6.1",
+    "eslint": "^6.6.0",
+    "eslint-config-prettier": "^6.5.0",
+    "eslint-config-xo": "^0.27.2",
+    "eslint-plugin-jest": "^23.0.3",
+    "fs-extra": "^8.1.0",
     "jest": "^24.9.0",
     "jsonschema": "^1.2.4",
-    "lerna": "^3.16.4",
+    "lerna": "^3.18.4",
     "lodash": "^4.17.15",
-    "postcss": "^7.0.18",
+    "postcss": "^7.0.21",
     "postcss-cli": "^6.1.3",
-    "prettier": "^1.18.2",
+    "prettier": "^1.19.1",
     "really-relaxed-json": "^0.2.24",
     "rimraf": "^3.0.0",
-    "semantic-release": "^15.13.24",
+    "semantic-release": "^15.13.30",
     "semantic-release-vsce": "^2.2.8",
-    "ts-jest": "^24.0.2",
-    "ts-loader": "^6.0.4",
-    "ts-node": "^8.3.0",
-    "typescript": "^3.6.2",
-    "webpack": "^4.39.3",
-    "webpack-cli": "^3.3.8"
+    "start-server-and-test": "^1.10.6",
+    "ts-jest": "^24.1.0",
+    "ts-loader": "^6.2.1",
+    "ts-node": "^8.4.1",
+    "typescript": "^3.7.2",
+    "webpack": "^4.41.2",
+    "webpack-cli": "^3.3.10"
   },
   "eslintConfig": {
     "extends": [
@@ -168,6 +175,31 @@
     {
       "path": "./dist/packages/injected-code/dist/html-preview.js",
       "maxSize": "22.5 kB",
+      "compression": "none"
+    },
+    {
+      "path": "./packages/html-preview-web-samples/minimal-sample/dist/localMain.js",
+      "maxSize": "50 kB",
+      "compression": "none"
+    },
+    {
+      "path": "./packages/html-preview-web-samples/minimal-sample/dist/remoteMain.js",
+      "maxSize": "5 kB",
+      "compression": "none"
+    },
+    {
+      "path": "./packages/html-preview-web-samples/web-worker-sample/dist/localMain.js",
+      "maxSize": "4 kB",
+      "compression": "none"
+    },
+    {
+      "path": "./packages/html-preview-web-samples/web-worker-sample/dist/remoteMain.js",
+      "maxSize": "5 kB",
+      "compression": "none"
+    },
+    {
+      "path": "./packages/html-preview-web-samples/web-worker-sample/dist/workerMain.js",
+      "maxSize": "50 kB",
       "compression": "none"
     }
   ]

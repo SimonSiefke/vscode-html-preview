@@ -1,0 +1,15 @@
+{
+  "extends": "../../tsconfig-base",
+  "compilerOptions": {
+    "lib": ["dom", "esnext"],
+    "module": "esnext",
+    "outDir": "dist",
+    "rootDir": "src",
+    "types": [],
+    "declaration": true,
+    "declarationMap": true
+  },
+  "include": ["src/**/*.ts"],
+  "exclude": ["src/**/*Worker.ts"],
+  "references": []
+}

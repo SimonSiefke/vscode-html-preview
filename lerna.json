@@ -1,4 +1,4 @@
 {
-  "packages": ["packages/*"],
+  "packages": ["packages/*", "packages/html-preview-web-samples/*"],
   "version": "0.0.0"
 }

@@ -4,10 +4,6 @@ import * as fs from 'fs'
 import * as path from 'path'
 import { config } from '../config'
 import {
-  HttpServer,
-  WebSocketServer,
-  createWebSocketServer,
-  createHttpServer,
   genDom,
   Parser,
   createParser,
@@ -15,6 +11,12 @@ import {
   urlParseHtmlPathname,
   urlParseQuery,
 } from 'html-preview-service'
+import {
+  HttpServer,
+  WebSocketServer,
+  createWebSocketServer,
+  createHttpServer,
+} from 'html-preview-service-node'
 import { localPluginCore } from '../plugins/local-plugin-core/localPluginCore'
 import { localPluginRedirect } from '../plugins/local-plugin-redirect/localPluginRedirect'
 import { localPluginHighlight } from '../plugins/local-plugin-highlight/localPluginHighlight'
@@ -128,17 +130,17 @@ const httpMiddlewareSendHtml = (api: PreviewApi) => async (
       state.previousText = text
       state.previousNodeMap = state.parser.nodeMap
     }
-    let dom = genDom(text, state.parser.dom)
-    const bodyIndex = dom.lastIndexOf('</body')
+    let { gen } = genDom(text, state.parser)
+    const bodyIndex = gen.lastIndexOf('</body')
     const $script = '<script type="module" src="/html-preview.js"></script>'
 
     if (bodyIndex !== -1) {
-      dom = dom.slice(0, bodyIndex) + $script + dom.slice(bodyIndex)
+      gen = gen.slice(0, bodyIndex) + $script + gen.slice(bodyIndex)
     } else {
-      dom += $script
+      gen += $script
     }
     res.writeHead(200, { 'Content-Type': 'text/html' })
-    res.write(dom)
+    res.write(gen)
     res.end()
   }
 
@@ -329,6 +331,7 @@ export const Preview = (() => {
       return previewState
     },
     async open(uri?: vscode.Uri) {
+      console.log('open')
       if (previewState === 'opening') {
         return
       }
@@ -348,10 +351,14 @@ export const Preview = (() => {
       try {
         openingPromise = new Promise(async (resolve, reject) => {
           try {
+            console.log('start server')
             await startServer(previewApi)
+            console.log('started server')
             await open({ uri })
+            console.log('opened')
             resolve()
           } catch (error) {
+            console.error(error)
             reject(error)
           }
         })

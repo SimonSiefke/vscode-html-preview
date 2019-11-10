@@ -11,9 +11,9 @@
 - Live editing of HTML and CSS
 - Highlighting of html elements inside the browser
 
-## TODO
+<!-- ## TODO
 
-- reload page when external resources (e.g. images, javascript) change
+- reload page when external resources (e.g. images, javascript) change -->
 
 ## Commands
 

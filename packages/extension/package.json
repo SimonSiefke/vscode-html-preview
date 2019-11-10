@@ -115,6 +115,7 @@
   "main": "dist/extensionMain.js",
   "dependencies": {
     "html-preview-service": "^0.0.0-development",
+    "html-preview-service-node": "^0.0.0-development",
     "vsls": "^0.3.1291"
   },
   "devDependencies": {

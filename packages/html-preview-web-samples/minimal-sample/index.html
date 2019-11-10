@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Minimal Sample</title>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        height: 100%;
+      }
+      body {
+        margin: 0;
+      }
+      body {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+      }
+      textarea {
+        resize: none;
+        border: none;
+        outline: none;
+      }
+    </style>
+  </head>
+  <body>
+    <textarea autocomplete="off" spellcheck="false">&lt;h1&gt;hello world&lt;&#x2F;h1&gt;</textarea>
+    <iframe frameborder="0" sandbox="allow-scripts" title="Html Preview"></iframe>
+    <script src="./dist/localMain.js"></script>
+  </body>
+</html>
