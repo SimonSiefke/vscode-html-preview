@@ -15,10 +15,10 @@ const resolvers: {
 
 export const onRequest: WorkerConnectionProxy['onRequest'] = (() => {
   return <WorkerConnectionProxy['onRequest']>((requestType, resolver) => {
-    if (resolvers[requestType.method]) {
-      throw new Error(`duplicate resolver for request type "${requestType.method}"`)
+    if (resolvers[requestType]) {
+      throw new Error(`duplicate resolver for request type "${requestType}"`)
     }
-    resolvers[requestType.method] = resolver
+    resolvers[requestType] = resolver
   })
 })()
 
@@ -32,10 +32,10 @@ workerPluginGetGeneratedHtml(api)
 workerPluginGetDiffs(api)
 
 const sendRequest: LocalConnectionProxy['sendRequest'] = (requestType, params) => {
-  if (!resolvers[requestType.method]) {
-    throw new Error(`no resolver for request type "${requestType.method}"`)
+  if (!resolvers[requestType]) {
+    throw new Error(`no resolver for request type "${requestType}"`)
   }
-  return resolvers[requestType.method](params)
+  return resolvers[requestType](params)
 }
 
 export const createLocalConnectionProxy: () => LocalConnectionProxy = () => ({

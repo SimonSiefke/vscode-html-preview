@@ -1,7 +1,4 @@
-import { createRequestType } from '../../../shared/requestType'
 import { RemotePlugin } from '../remotePlugin'
-
-const requestTypeTextReplace = createRequestType<{ id: number; text: string }, void>('textReplace')
 
 /**
  *  Given a string containing encoded entity references, returns the string with the entities decoded.
@@ -20,7 +17,7 @@ const parseEntities = (() => {
  * @param api - the remote plugin api
  */
 export const remotePluginTextReplace: RemotePlugin = api => {
-  api.connectionProxy.onRequest(requestTypeTextReplace, payload => {
+  api.connectionProxy.onRequest<{ id: number; text: string }, void>('textReplace', payload => {
     const $node = api.nodeMap[payload.id] as Comment | Text
     if ($node === undefined) {
       console.error(`node ${payload.id} is undefined`)

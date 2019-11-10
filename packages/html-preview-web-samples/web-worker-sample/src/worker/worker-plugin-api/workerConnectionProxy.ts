@@ -8,10 +8,10 @@ const resolvers: {
 } = {}
 
 const onRequest: WorkerConnectionProxy['onRequest'] = (requestType, resolver) => {
-  if (resolvers[requestType.method]) {
-    throw new Error(`duplicate resolver for request type "${requestType.method}"`)
+  if (resolvers[requestType]) {
+    throw new Error(`duplicate resolver for request type "${requestType}"`)
   }
-  resolvers[requestType.method] = resolver
+  resolvers[requestType] = resolver
 }
 
 onmessage = ({ data }) => {

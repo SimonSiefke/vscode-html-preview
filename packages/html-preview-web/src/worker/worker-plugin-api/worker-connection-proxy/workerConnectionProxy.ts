@@ -1,9 +1,8 @@
-import { RequestType } from '../../../shared/requestType'
 import { Thenable } from '../../../shared/thenable'
 
 export interface WorkerConnectionProxy {
   readonly onRequest: <Params, Result>(
-    requestType: RequestType<Params, Result>,
+    requestType: string,
     resolver: (params: Params) => Thenable<Result>
   ) => void
 }

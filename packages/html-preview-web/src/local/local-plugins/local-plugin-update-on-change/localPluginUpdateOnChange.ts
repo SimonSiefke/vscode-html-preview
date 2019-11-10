@@ -1,10 +1,5 @@
 import { LocalPlugin } from '../localPlugin'
-import { createRequestType } from '../../../shared/requestType'
 import { Edit } from '../../../shared/edit'
-
-const requestTypeGetDiffs = createRequestType<{ text: string; edits: Edit[] }, any[]>(
-  'html-preview/get-diffs'
-)
 
 /**
  * Updates the preview when the text inside the editor changes.
@@ -20,10 +15,13 @@ export const localPluginUpdateOnChange: LocalPlugin = api => {
         text,
       },
     ]
-    const diffs = await api.connectionProxy.sendRequest(requestTypeGetDiffs, {
-      text,
-      edits,
-    })
+    const diffs = await api.connectionProxy.sendRequest<{ text: string; edits: Edit[] }, any[]>(
+      'html-preview/get-diffs',
+      {
+        text,
+        edits,
+      }
+    )
     await api.previewProxy.sendMessage(JSON.stringify(diffs))
   })
 }

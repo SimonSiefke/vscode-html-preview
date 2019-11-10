@@ -1,9 +1,4 @@
 import { LocalPlugin } from '../localPlugin'
-import { createRequestType } from '../../../shared/requestType'
-
-const requestTypeGetGeneratedHtml = createRequestType<{ text: string }, string>(
-  'html-preview/get-generated-html'
-)
 
 /**
  * Initializes the preview with the text from the editor.
@@ -12,8 +7,11 @@ const requestTypeGetGeneratedHtml = createRequestType<{ text: string }, string>(
  */
 export const localPluginInit: LocalPlugin = async api => {
   const initialText = api.editorProxy.getText()
-  const initialHtml = await api.connectionProxy.sendRequest(requestTypeGetGeneratedHtml, {
-    text: initialText,
-  })
+  const initialHtml = await api.connectionProxy.sendRequest<{ text: string }, string>(
+    'html-preview/get-generated-html',
+    {
+      text: initialText,
+    }
+  )
   await api.previewProxy.setHtml(initialHtml)
 }

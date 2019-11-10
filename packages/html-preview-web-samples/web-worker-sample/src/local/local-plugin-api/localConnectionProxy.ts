@@ -15,7 +15,7 @@ export const sendRequest: LocalConnectionProxy['sendRequest'] = (requestType, pa
   return new Promise(async (resolve, reject) => {
     const message = {
       request: {
-        method: requestType.method,
+        method: requestType,
         params,
       },
     }

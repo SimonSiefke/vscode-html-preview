@@ -5,8 +5,8 @@ const listeners: {
 } = {}
 
 const onRequest: RemoteConnectionProxy['onRequest'] = (requestType, listener) => {
-  listeners[requestType.method] = listeners[requestType.method] || []
-  listeners[requestType.method].push(listener)
+  listeners[requestType] = listeners[requestType] || []
+  listeners[requestType].push(listener)
 }
 
 onmessage = ({ data }) => {
