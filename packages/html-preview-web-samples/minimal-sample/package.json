@@ -13,9 +13,6 @@
     "watch:remote": "webpack --watch --config ./webpack/remote.webpack.config.js",
     "watch": "concurrently \"npm run watch:local\" \"npm run watch:remote\""
   },
-  "dependencies": {
-    "html-preview-web": "^0.0.0-development"
-  },
   "devDependencies": {
     "concurrently": "^5.0.0",
     "cypress": "^3.6.1",
@@ -26,5 +23,8 @@
     "typescript": "^3.7.2",
     "webpack": "^5.0.0-beta.3",
     "webpack-cli": "^3.3.10"
+  },
+  "dependencies": {
+    "html-preview-web": "^0.0.0-development"
   }
 }
