@@ -34,6 +34,7 @@
     "circular-dependency-plugin": "^5.2.0",
     "copy-webpack-plugin": "^5.0.4",
     "cssnano": "^4.1.10",
+    "cypress": "^3.6.1",
     "eslint": "^6.3.0",
     "eslint-config-prettier": "^6.2.0",
     "eslint-config-xo": "^0.27.0",
@@ -49,6 +50,7 @@
     "rimraf": "^3.0.0",
     "semantic-release": "^15.13.24",
     "semantic-release-vsce": "^2.2.8",
+    "start-server-and-test": "^1.10.6",
     "ts-jest": "^24.0.2",
     "ts-loader": "^6.2.1",
     "ts-node": "^8.3.0",
@@ -169,6 +171,31 @@
     {
       "path": "./dist/packages/injected-code/dist/html-preview.js",
       "maxSize": "22.5 kB",
+      "compression": "none"
+    },
+    {
+      "path": "./packages/html-preview-web-samples/minimal-sample/dist/localMain.js",
+      "maxSize": "400 kB",
+      "compression": "none"
+    },
+    {
+      "path": "./packages/html-preview-web-samples/minimal-sample/dist/remoteMain.js",
+      "maxSize": "30 kB",
+      "compression": "none"
+    },
+    {
+      "path": "./packages/html-preview-web-samples/web-worker-sample/dist/localMain.js",
+      "maxSize": "4 kB",
+      "compression": "none"
+    },
+    {
+      "path": "./packages/html-preview-web-samples/web-worker-sample/dist/remoteMain.js",
+      "maxSize": "5 kB",
+      "compression": "none"
+    },
+    {
+      "path": "./packages/html-preview-web-samples/web-worker-sample/dist/workerMain.js",
+      "maxSize": "50 kB",
       "compression": "none"
     }
   ]
