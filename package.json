@@ -20,7 +20,8 @@
     "e2e": "cd packages/extension && npm run e2e",
     "autoreload": "nodemon --watch **/dist/** --exec node scripts/update-extension-new.js",
     "kill-whatever-is-on-port-3000": "fuser -k -TERM -n tcp 3000",
-    "generate:website": "node scripts/generate-website"
+    "generate:website": "node scripts/generate-website",
+    "test:samples": "cd packages/html-preview-web-samples && cd minimal-sample && npm run e2e && cd .. && cd web-worker-sample && npm run e2e && cd .."
   },
   "devDependencies": {
     "@babel/core": "^7.7.2",
