@@ -75,8 +75,8 @@ export function getHighlightStyle(
     // left: `${boundingRect.left + window.scrollX}px`,
     // top: `${boundingRect.top + window.scrollY}px`,
     ...computeOffsetWithoutTransform($element, originalStyle, borderBox),
-    transform: originalStyle.transform,
-    transformOrigin: originalStyle.transformOrigin,
+    transform: originalStyle.transform as string,
+    transformOrigin: originalStyle.transformOrigin as string,
     // animationName: originalStyle.animationName,
     // animationDuration: originalStyle.animationDuration,
     // animationTimingFunction: originalStyle.animationTimingFunction,
@@ -84,16 +84,16 @@ export function getHighlightStyle(
     // animation: 'fly 2s linear',
     // animationn
     // 'animation-'
-    '--width': originalStyle.width,
-    '--height': originalStyle.height,
-    '--margin-top': originalStyle.marginTop,
-    '--margin-right': originalStyle.marginRight,
-    '--margin-bottom': originalStyle.marginBottom,
-    '--margin-left': originalStyle.marginLeft,
-    '--padding-top': originalStyle.paddingTop,
-    '--padding-right': originalStyle.paddingRight,
-    '--padding-bottom': originalStyle.paddingBottom,
-    '--padding-left': originalStyle.paddingLeft,
+    '--width': originalStyle.width as string,
+    '--height': originalStyle.height as string,
+    '--margin-top': originalStyle.marginTop as string,
+    '--margin-right': originalStyle.marginRight as string,
+    '--margin-bottom': originalStyle.marginBottom as string,
+    '--margin-left': originalStyle.marginLeft as string,
+    '--padding-top': originalStyle.paddingTop as string,
+    '--padding-right': originalStyle.paddingRight as string,
+    '--padding-bottom': originalStyle.paddingBottom as string,
+    '--padding-left': originalStyle.paddingLeft as string,
   }
 }
 
