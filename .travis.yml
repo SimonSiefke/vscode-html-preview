@@ -42,7 +42,7 @@ jobs:
         - npm run package
     - stage: release
       script:
-        - npm run package
         - npm run build:samples
+        - npm run package
         - cd dist
         - npx semantic-release
