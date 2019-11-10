@@ -47,7 +47,6 @@ export const workerPluginGetDiffs: WorkerPlugin = api => {
       api.state.previousDom = nextDom
       api.state.previousText = text
       api.state.previousNodeMap = newNodeMap
-      console.log('hello from web worker')
       return diffs
     }
   )
