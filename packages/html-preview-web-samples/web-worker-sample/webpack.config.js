@@ -20,7 +20,6 @@ module.exports = {
         include: [path.join(__dirname, 'src/local')],
         loader: 'ts-loader',
         options: {
-          instance: 'localMain',
           configFile: path.join(__dirname, 'src/local/tsconfig.json'),
         },
       },
@@ -29,7 +28,6 @@ module.exports = {
         include: [path.join(__dirname, 'src/remote')],
         loader: 'ts-loader',
         options: {
-          instance: 'remoteMain',
           configFile: path.join(__dirname, 'src/remote/tsconfig.json'),
         },
       },
@@ -38,7 +36,6 @@ module.exports = {
         include: [path.join(__dirname, 'src/worker')],
         loader: 'ts-loader',
         options: {
-          instance: 'workerMain',
           configFile: path.join(__dirname, 'src/worker/tsconfig.json'),
         },
       },
