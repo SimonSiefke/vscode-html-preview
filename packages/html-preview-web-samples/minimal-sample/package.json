@@ -8,7 +8,7 @@
     "e2e:open": "npm run build && start-server-and-test \"http-server -p 3000\" http://localhost:3000 \"cypress open\"",
     "build:local": "webpack --config ./webpack/local.webpack.config.js",
     "build:remote": "webpack --config ./webpack/remote.webpack.config.js",
-    "build": "npm run build:local && npm run build:remote",
+    "build": "npm run build:remote && npm run build:local",
     "watch:local": "webpack --watch --config ./webpack/local.webpack.config.js",
     "watch:remote": "webpack --watch --config ./webpack/remote.webpack.config.js",
     "watch": "concurrently \"npm run watch:local\" \"npm run watch:remote\""

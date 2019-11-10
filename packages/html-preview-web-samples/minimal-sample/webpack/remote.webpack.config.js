@@ -4,7 +4,6 @@ const path = require('path')
 const root = path.join(__dirname, '..')
 
 module.exports = withDefaults({
-  devtool: 'inline-source-map',
   entry: {
     remoteMain: path.resolve(root, 'src/remote/remoteMain.ts'),
   },

@@ -9,7 +9,7 @@
     "build:local": "webpack --config ./webpack/local.webpack.config.js",
     "build:remote": "webpack --config ./webpack/remote.webpack.config.js",
     "build:worker": "webpack --config ./webpack/worker.webpack.config.js",
-    "build": "npm run build:local && npm run build:remote && npm run build:worker",
+    "build": "npm run build:remote && npm run build:local && npm run build:worker",
     "watch:local": "webpack --watch --config ./webpack/local.webpack.config.js",
     "watch:remote": "webpack --watch --config ./webpack/remote.webpack.config.js",
     "watch:worker": "webpack --watch --config ./webpack/worker.webpack.config.js",
