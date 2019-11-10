@@ -1,3 +1,5 @@
+const path = require('path')
+
 module.exports = {
   devtool: 'source-map',
   entry: {
@@ -15,7 +17,30 @@ module.exports = {
     rules: [
       {
         test: /\.ts$/,
+        include: [path.join(__dirname, 'src/local')],
         loader: 'ts-loader',
+        options: {
+          instance: 'localMain',
+          configFile: path.join(__dirname, 'src/local/tsconfig.json'),
+        },
+      },
+      {
+        test: /\.ts$/,
+        include: [path.join(__dirname, 'src/remote')],
+        loader: 'ts-loader',
+        options: {
+          instance: 'remoteMain',
+          configFile: path.join(__dirname, 'src/remote/tsconfig.json'),
+        },
+      },
+      {
+        test: /\.ts$/,
+        include: [path.join(__dirname, 'src/worker')],
+        loader: 'ts-loader',
+        options: {
+          instance: 'workerMain',
+          configFile: path.join(__dirname, 'src/worker/tsconfig.json'),
+        },
       },
     ],
   },

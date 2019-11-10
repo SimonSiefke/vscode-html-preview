@@ -1,11 +1,10 @@
 {
   "compilerOptions": {
-    "lib": ["dom", "esnext", "webworker", "scripthost"],
+    "lib": [],
     "module": "esnext",
     "outDir": "dist",
     "rootDir": "src",
     "moduleResolution": "node"
   },
-  "include": ["src/**/*.ts"],
-  "exclude": ["src/worker/**/*.ts"]
+  "include": ["src/**/*.ts"]
 }

@@ -19,11 +19,13 @@
     "update-highlight-css": "postcss packages/injected-code/src/plugins/remote-plugin-highlight/highlight-service/highlight.css --no-map --output packages/injected-code/src/plugins/remote-plugin-highlight/highlight-service/highlight.min.css && node scripts/update-highlight-css",
     "e2e": "cd packages/extension && npm run e2e",
     "autoreload": "nodemon --watch **/dist/** --exec node scripts/update-extension-new.js",
-    "kill-whatever-is-on-port-3000": "fuser -k -TERM -n tcp 3000"
+    "kill-whatever-is-on-port-3000": "fuser -k -TERM -n tcp 3000",
+    "generate:website": "node scripts/generate-website"
   },
   "devDependencies": {
     "@babel/core": "^7.7.2",
     "@babel/node": "^7.7.0",
+    "@types/fs-extra": "^8.0.1",
     "@types/jest": "^24.0.22",
     "@types/lodash": "^4.14.146",
     "@types/puppeteer": "^1.20.2",
@@ -39,6 +41,7 @@
     "eslint-config-prettier": "^6.5.0",
     "eslint-config-xo": "^0.27.2",
     "eslint-plugin-jest": "^23.0.3",
+    "fs-extra": "^8.1.0",
     "jest": "^24.9.0",
     "jsonschema": "^1.2.4",
     "lerna": "^3.18.4",

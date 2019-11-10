@@ -1,0 +1,9 @@
+{
+  "compilerOptions": {
+    "lib": ["dom", "esnext"],
+    "module": "esnext",
+    "rootDir": ".",
+    "moduleResolution": "node"
+  },
+  "include": ["**/*.ts"]
+}
