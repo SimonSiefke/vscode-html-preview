@@ -6,6 +6,8 @@ import {
   workerPluginGetGeneratedHtml,
   workerPluginGetDiffs,
 } from 'html-preview-web'
+// @ts-ignore
+import remoteScript from 'raw-loader!../../../dist/remoteMain.js'
 
 const resolvers: {
   [method: string]: (params: any) => any
@@ -23,7 +25,7 @@ export const onRequest: WorkerConnectionProxy['onRequest'] = (() => {
 const api: WorkerPluginApi = {
   connectionProxy: createWorkerConnectionProxy({ onRequest }),
   state: {},
-  remoteScriptUrl: '/dist/remoteMain.js',
+  remoteScript,
 }
 
 workerPluginGetGeneratedHtml(api)

@@ -1,32 +1,28 @@
-/// <reference types="Cypress" />
-
-Cypress.Commands.add('asNewIframe', { prevSubject: 'element' }, $iframe => {
-  return new Cypress.Promise(resolve => {
-    $iframe.on('load', () => {
-      resolve($iframe.contents().find('body'))
-    })
-  })
-})
-
-Cypress.Commands.add('asIframe', { prevSubject: 'element' }, $iframe =>
-  $iframe.contents().find('body')
-)
-
 beforeEach(() => {
   cy.visit('http://localhost:3000')
+  cy.wait(100)
+
+  // copied from https://github.com/cypress-io/cypress/issues/136#issuecomment-479438963
+  cy.get('iframe').then($iframe => {
+    const $body = $iframe.contents().find('body')
+    cy.wrap($body).as('iframe')
+  })
 })
 
 it('shows the preview', () => {
   cy.get('iframe')
-    .asNewIframe()
+    .should('have.attr', 'sandbox', 'allow-scripts')
+    .should('have.attr', 'title', 'Html Preview')
+
+  cy.get('@iframe')
     .find('h1')
     .contains('hello world')
 })
 
 it('updates the preview', () => {
-  cy.get('textarea').type('{leftarrow}'.repeat(5) + '!')
-  cy.get('iframe')
-    .asIframe()
+  cy.get('textarea')
+    .type('{leftarrow}'.repeat(5) + '!')
+    .get('@iframe')
     .find('h1')
     .contains('hello world!')
 })

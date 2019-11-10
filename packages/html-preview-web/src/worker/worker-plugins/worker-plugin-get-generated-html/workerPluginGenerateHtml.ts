@@ -32,7 +32,7 @@ export const workerPluginGetGeneratedHtml: WorkerPlugin = api => {
     api.state.previousText = text
     api.state.previousNodeMap = api.state.parser.nodeMap
     const bodyIndex = gen.lastIndexOf('</body')
-    const $script = '<script type="module" src="/dist/remoteMain.js"></script>'
+    const $script = `<script type="module">${api.remoteScript}</script>`
     const $nodeMap = `<script id="nodeMap" type="application.json">${JSON.stringify(
       dom!.children!,
       getCircularReplacer(),

@@ -3,9 +3,17 @@
   "version": "0.0.0-development",
   "license": "MIT",
   "scripts": {
-    "dev": "concurrently \"webpack --mode production --watch\" \"webpack-dev-server --open\"",
-    "build": "webpack --mode production",
-    "e2e": "npm run build && start-server-and-test \"webpack-dev-server\" http-get://localhost:3000 \"cypress run\""
+    "dev": "npm run build:remote && concurrently \"npm run watch\" \"http-server -o -p 3000\"",
+    "e2e": "npm run build && start-server-and-test \"http-server -p 3000\" http://localhost:3000 \"cypress run\"",
+    "e2e:open": "npm run build && start-server-and-test \"http-server -p 3000\" http://localhost:3000 \"cypress open\"",
+    "build:local": "webpack --config ./webpack/local.webpack.config.js",
+    "build:remote": "webpack --config ./webpack/remote.webpack.config.js",
+    "build:worker": "webpack --config ./webpack/worker.webpack.config.js",
+    "build": "npm run build:local && npm run build:remote && npm run build:worker",
+    "watch:local": "webpack --watch --config ./webpack/local.webpack.config.js",
+    "watch:remote": "webpack --watch --config ./webpack/remote.webpack.config.js",
+    "watch:worker": "webpack --watch --config ./webpack/worker.webpack.config.js",
+    "watch": "concurrently \"npm run watch:local\" \"npm run watch:remote\" \"npm run watch:worker\""
   },
   "dependencies": {
     "html-preview-web": "^0.0.0-development"
@@ -13,6 +21,8 @@
   "devDependencies": {
     "concurrently": "^5.0.0",
     "cypress": "^3.6.1",
+    "merge-options": "^2.0.0",
+    "raw-loader": "^3.1.0",
     "start-server-and-test": "^1.10.6",
     "ts-loader": "^6.2.1",
     "typescript": "^3.7.2",
