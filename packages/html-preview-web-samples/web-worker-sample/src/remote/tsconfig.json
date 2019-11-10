@@ -1,9 +1,7 @@
 {
+  "extends": "../../tsconfig-base",
   "compilerOptions": {
-    "lib": ["dom", "esnext"],
-    "module": "esnext",
-    "rootDir": ".",
-    "moduleResolution": "node"
+    "lib": ["dom", "esnext"]
   },
   "include": ["**/*.ts"]
 }

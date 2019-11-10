@@ -1,3 +1,5 @@
+// const path = require('path')
+
 module.exports = {
   devtool: 'source-map',
   entry: {
@@ -11,7 +13,32 @@ module.exports = {
     extensions: ['.ts', '.js'],
   },
   module: {
-    rules: [{ test: /\.ts$/, loader: 'ts-loader' }],
+    rules: [
+      {
+        test: /\.ts$/,
+        loader: 'ts-loader',
+      },
+    ],
+    // rules: [
+    //   {
+    //     test: /\.ts$/,
+    //     include: [path.join(__dirname, 'src/local')],
+    //     loader: 'ts-loader',
+    //     options: {
+    //       instance: 'localMain',
+    //       configFile: path.join(__dirname, 'src/local/tsconfig.json'),
+    //     },
+    //   },
+    //   {
+    //     test: /\.ts$/,
+    //     include: [path.join(__dirname, 'src/remote')],
+    //     loader: 'ts-loader',
+    //     options: {
+    //       instance: 'remoteMain',
+    //       configFile: path.join(__dirname, 'src/remote/tsconfig.json'),
+    //     },
+    //   },
+    // ],
   },
   devServer: {
     contentBase: __dirname,

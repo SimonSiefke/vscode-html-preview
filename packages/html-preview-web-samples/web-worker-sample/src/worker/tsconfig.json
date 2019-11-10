@@ -1,9 +1,7 @@
 {
+  "extends": "../../tsconfig-base",
   "compilerOptions": {
-    "lib": ["esnext", "webworker", "scripthost"],
-    "module": "esnext",
-    "rootDir": ".",
-    "moduleResolution": "node"
+    "lib": ["esnext", "webworker", "scripthost"]
   },
   "include": ["**/*.ts"]
 }
