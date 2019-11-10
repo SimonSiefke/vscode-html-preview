@@ -16,18 +16,20 @@ module.exports = {
     rules: [
       {
         test: /\.ts$/,
-        include: [path.join(__dirname, 'src/local')],
+        include: [path.resolve(__dirname, 'src/local')],
         loader: 'ts-loader',
         options: {
-          configFile: path.join(__dirname, 'src/local/tsconfig.json'),
+          configFile: path.resolve(__dirname, 'src/local/tsconfig.json'),
+          transpileOnly: true,
         },
       },
       {
         test: /\.ts$/,
-        include: [path.join(__dirname, 'src/remote')],
+        include: [path.resolve(__dirname, 'src/remote')],
         loader: 'ts-loader',
         options: {
-          configFile: path.join(__dirname, 'src/remote/tsconfig.json'),
+          configFile: path.resolve(__dirname, 'src/remote/tsconfig.json'),
+          transpileOnly: true,
         },
       },
     ],
