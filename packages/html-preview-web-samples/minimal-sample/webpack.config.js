@@ -1,5 +1,5 @@
 module.exports = {
-  devtool: 'inline-source-map',
+  devtool: 'source-map',
   entry: {
     localMain: './src/local/localMain.ts',
     remoteMain: './src/remote/remoteMain.ts',

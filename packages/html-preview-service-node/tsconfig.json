@@ -4,7 +4,10 @@
     "outDir": "dist",
     "rootDir": "src",
     "strictNullChecks": false,
-    "types": ["node", "jest"]
+    "types": ["node", "jest"],
+    "module": "commonjs",
+    "declaration": true,
+    "declarationMap": true
   },
   "include": ["src"],
   "references": []

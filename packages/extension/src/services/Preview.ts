@@ -130,7 +130,7 @@ const httpMiddlewareSendHtml = (api: PreviewApi) => async (
       state.previousText = text
       state.previousNodeMap = state.parser.nodeMap
     }
-    let { gen } = genDom(text, state.parser.dom)
+    let { gen } = genDom(text, state.parser)
     const bodyIndex = gen.lastIndexOf('</body')
     const $script = '<script type="module" src="/html-preview.js"></script>'
 
@@ -331,6 +331,7 @@ export const Preview = (() => {
       return previewState
     },
     async open(uri?: vscode.Uri) {
+      console.log('open')
       if (previewState === 'opening') {
         return
       }
@@ -350,10 +351,14 @@ export const Preview = (() => {
       try {
         openingPromise = new Promise(async (resolve, reject) => {
           try {
+            console.log('start server')
             await startServer(previewApi)
+            console.log('started server')
             await open({ uri })
+            console.log('opened')
             resolve()
           } catch (error) {
+            console.error(error)
             reject(error)
           }
         })
