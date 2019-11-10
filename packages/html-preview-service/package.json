@@ -5,7 +5,7 @@
   "main": "dist/htmlPreviewServiceMain.js",
   "sideEffects": false,
   "scripts": {
-    "generate:genDomTests": "babel-node --presets latest-node src/genDom/genDom-test-util/generateGenDomTestCases.js",
+    "generate:genDomTests": "node src/genDom/genDom-test-util/generateGenDomTestCases.js",
     "generate:watch:genDomTests": "nodemon --watch src/genDom/genDom.test.txt --exec npm run generate:genDomTests"
   },
   "dependencies": {

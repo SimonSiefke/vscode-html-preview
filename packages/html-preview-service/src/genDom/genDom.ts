@@ -1,6 +1,6 @@
-import { Parser } from 'virtual-dom'
+import { Parser, createParser } from 'virtual-dom'
 
-export function genDom(orig, parser: Parser) {
+export function genDom(orig, parser: Parser = createParser()) {
   const dom = parser.parse(orig).htmlDocument
   if (dom === undefined) {
     console.log('no 1')

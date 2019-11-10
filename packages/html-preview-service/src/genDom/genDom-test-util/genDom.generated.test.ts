@@ -1,13 +1,13 @@
 import { genDom } from '../genDom'
 
 test(`only text node`, () => {
-  const output = genDom(`hello world`)
+  const output = genDom(`hello world`).gen
   const expectedOutput = `hello world`
   expect(output).toBe(expectedOutput)
 })
 
 test(`only element node`, () => {
-  const output = genDom(`<h1></h1>`)
+  const output = genDom(`<h1></h1>`).gen
   const expectedOutput = `<h1 data-id="1"></h1>`
   expect(output).toBe(expectedOutput)
 })
@@ -16,7 +16,7 @@ test(`comments before doctype`, () => {
   const output = genDom(`<!-- ## Introduction -->
 <!doctype html>
 <html ⚡>
-</html>`)
+</html>`).gen
   const expectedOutput = `<!-- ## Introduction -->
 <!doctype html>
 <html data-id="5" ⚡>
@@ -25,20 +25,20 @@ test(`comments before doctype`, () => {
 })
 
 test(`only self-closing element node`, () => {
-  const output = genDom(`<br>`)
+  const output = genDom(`<br>`).gen
   const expectedOutput = `<br data-id="1">`
   expect(output).toBe(expectedOutput)
 })
 
 test(`multiple element nodes and text nodes #1`, () => {
-  const output = genDom(`<h1>hello</h1>world`)
+  const output = genDom(`<h1>hello</h1>world`).gen
   const expectedOutput = `<h1 data-id="1">hello</h1>world`
   expect(output).toBe(expectedOutput)
 })
 
 test(`multiple element nodes and text nodes #1`, () => {
   const output = genDom(`<h1>hello</h1>world
-<h2>!!!</h2>`)
+<h2>!!!</h2>`).gen
   const expectedOutput = `<h1 data-id="1">hello</h1>world
 <h2 data-id="4">!!!</h2>`
   expect(output).toBe(expectedOutput)
@@ -48,7 +48,7 @@ test(`with !DOCTYPE`, () => {
   const output = genDom(`<!DOCTYPE html>
 <html>
   <h1>hello</h1>
-</html>`)
+</html>`).gen
   const expectedOutput = `<!DOCTYPE html>
 <html data-id="3">
   <h1 data-id="5">hello</h1>
@@ -60,7 +60,7 @@ test(`with !doctype`, () => {
   const output = genDom(`<!doctype html>
 <html>
   <h1>hello</h1>
-</html>`)
+</html>`).gen
   const expectedOutput = `<!doctype html>
 <html data-id="3">
   <h1 data-id="5">hello</h1>
@@ -134,7 +134,7 @@ This is a sample showing how to implement client-side filtering.
   </div>
 
 </body>
-</html>`)
+</html>`).gen
   const expectedOutput = `<!-- ## Introduction -->
 <!--
 This is a sample showing how to implement client-side filtering.
@@ -245,7 +245,7 @@ test(`example html5 boilerplate`, () => {
   <script src="https://www.google-analytics.com/analytics.js" async></script>
 </body>
 
-</html>`)
+</html>`).gen
   const expectedOutput = `<!doctype html>
 <html data-id="3" class="no-js" lang="">
 
