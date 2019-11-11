@@ -98,7 +98,8 @@
     "*.md",
     "*.generated.test.js",
     "serveStaticOriginal.js",
-    "dist"
+    "dist",
+    "e2e"
   ],
   "jest": {
     "preset": "ts-jest",
