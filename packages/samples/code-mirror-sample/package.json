@@ -3,15 +3,11 @@
   "version": "0.0.0-development",
   "license": "MIT",
   "scripts": {
-    "dev": "npm run build:remote && concurrently \"npm run watch\" \"http-server -s -o -p 3000\"",
+    "dev": "concurrently \"npm run watch\" \"http-server -s -o -p 3000\"",
     "e2e": "npm run build && start-server-and-test \"http-server -s -p 3000\" http://localhost:3000 \"cypress run\"",
     "e2e:open": "npm run build && start-server-and-test \"http-server -s -p 3000\" http://localhost:3000 \"cypress open\"",
-    "build:local": "rollup --config ./rollup/local.rollup.config.js",
-    "build:remote": "rollup --config ./rollup/remote.rollup.config.js",
-    "build": "npm run build:remote && npm run build:local",
-    "watch:local": "npm run build:local -- --watch",
-    "watch:remote": "npm run build:remote -- --watch",
-    "watch": "concurrently \"npm run watch:local\" \"npm run watch:remote\""
+    "build": "rollup --config rollup.config.js",
+    "watch": "npm run build -- --watch"
   },
   "dependencies": {
     "@emmetio/codemirror-plugin": "^0.5.4",

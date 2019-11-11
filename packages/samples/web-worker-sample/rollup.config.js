@@ -4,12 +4,12 @@ import typescript from 'rollup-plugin-typescript2'
 import { terser } from 'rollup-plugin-terser'
 import sourcemaps from 'rollup-plugin-sourcemaps'
 
-const root = path.join(__dirname, '..')
+const root = __dirname
 
 /**
  * @type {(options: {folder:'local'|'remote'|'worker'}) => import('rollup').RollupOptions}
  */
-export const withDefaults = ({ folder }) => ({
+const withDefaults = ({ folder }) => ({
   input: path.join(root, `src/${folder}/${folder}Main.ts`),
   output: [
     {
@@ -31,3 +31,9 @@ export const withDefaults = ({ folder }) => ({
     sourcemaps(),
   ],
 })
+
+export default [
+  withDefaults({ folder: 'local' }),
+  withDefaults({ folder: 'remote' }),
+  withDefaults({ folder: 'worker' }),
+]
