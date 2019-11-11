@@ -28,7 +28,9 @@ const getSelections: EditorProxy['getSelections'] = () => {
   const lineLengths = text.split('\n').map(line => line.length)
   return editor.listSelections().map(({ anchor }) => {
     const start =
-      lineLengths.slice(0, anchor.line).reduce((total, current) => total + current, 0) + anchor.ch
+      lineLengths.slice(0, anchor.line + 1).reduce((total, current) => total + current, 0) +
+      anchor.ch
+    console.log('start' + start)
     return [start, start]
   })
 }
