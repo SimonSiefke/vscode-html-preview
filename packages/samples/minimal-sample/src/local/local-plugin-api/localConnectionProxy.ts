@@ -3,6 +3,7 @@ import {
   WorkerPluginApi,
   WorkerConnectionProxy,
   workerPluginCore,
+  workerPluginGetHighlights,
 } from 'html-preview-web/dist/worker/workerMain'
 
 const resolvers: {
@@ -25,6 +26,7 @@ const api: WorkerPluginApi = {
 }
 
 workerPluginCore(api)
+workerPluginGetHighlights(api)
 
 const sendRequest: LocalConnectionProxy['sendRequest'] = (requestType, params) => {
   if (!resolvers[requestType]) {

@@ -1,4 +1,8 @@
-import { RemotePluginApi, remotePluginCore } from 'html-preview-web/dist/remote/remoteMain'
+import {
+  RemotePluginApi,
+  remotePluginCore,
+  remotePluginHighlight,
+} from 'html-preview-web/dist/remote/remoteMain'
 import { remoteConnectionProxy } from './remote-plugin-api/remoteConnectionProxy'
 
 const api: RemotePluginApi = {
@@ -6,3 +10,4 @@ const api: RemotePluginApi = {
 }
 
 remotePluginCore(api)
+remotePluginHighlight(api)

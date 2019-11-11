@@ -1,0 +1,179 @@
+:host,
+.margin,
+.padding {
+  position: absolute;
+}
+
+/*
+ *                 Creating a frame structure with CSS for highlighting padding and margin
+ *                 ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+ *
+ * 1. Understand the structure
+ * ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+ *
+ *                                              full width
+ *                                    |‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾|
+ *
+ *                         A-------------------------------------------------J
+ *               |‾‾        |█████████████████████████████████████████████████|          ‾‾|
+ *               |         |█████████████████████████████████████████████████|            | top
+ *               |         |█████████████████████████████████████████████████|            |
+ *               |         |█████████████████████████████████████████████████|          __|
+ *               |         |█████████████D---------------------E█████████████|
+ *               |         |█████████████|                     |█████████████|
+ *               |         |█████████████|                     |█████████████|
+ *               |         |█████████████|                     |█████████████|
+ *  full height  |         |█████████████|                     |█████████████|
+ *               |         |█████████████|                     |█████████████|
+ *               |         |█████████████|                     |█████████████|
+ *               |         |█████████████|                     |█████████████|
+ *               |         |█████████████|                     |█████████████|
+ *               |         |█████████████G---------------------F█████████████|
+ *               |         |█████████████|███████████████████████████████████|           ‾‾|
+ *               |         |█████████████|███████████████████████████████████|            | bottom
+ *               |         |█████████████|███████████████████████████████████|            |
+ *               |__       |█████████████|███████████████████████████████████|          __|
+ *                         B------------C,H----------------------------------I
+ *
+ *                         |_____________|                      |____________|
+ *                              left                                right
+ *
+ *
+ *
+ * 2. Connect the points with clip-path
+ * ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+ * clip-path: polygon(
+ *                    A: 0 0,
+ *                    B: 0 100%,
+ *                    C: var(--left) 100%,
+ *                    D: var(--left) var(--top),
+ *                    E: calc(var(--full-width) - var(--right)) var(--top),
+ *                    F: calc(var(--full-width) - var(--right)) calc(var(--full-height) - var(--bottom)),
+ *                    G: var(--left) calc(var(--full-height) - var(--bottom)),
+ *                    H: var(--left) 100%,
+ *                    I: 100% 100%,
+ *                    J: 100% 0
+ *                   );
+*/
+
+:host {
+  display: block;
+  --padding-horizontal: calc(var(--padding-left) + var(--padding-right));
+  --padding-vertical: calc(var(--padding-top) + var(--padding-bottom));
+  --margin-horizontal: calc(var(--margin-left) + var(--margin-right));
+  --margin-vertical: calc(var(--margin-top) + var(--margin-bottom));
+  /* make the highlight element "invisible" for clicks */
+  pointer-events: none;
+  /* the width of the highlighted element */
+  width: calc(var(--width) + var(--padding-horizontal));
+  /* the height of the highlighted element*/
+  height: calc(var(--height) + var(--padding-vertical));
+  /* should be on top of everything */
+  z-index: 2000000;
+  /* padding: var(--padding-top) var(--padding-right) var(--padding-bottom) var(--padding-left); */
+  /* "left": offsetLeft + "px",
+                "margin": 0,
+                "padding": 0,
+                "position": "absolute",
+                "pointer-events": "none",
+                "box-shadow": "0 0 1px #fff",
+                "box-sizing": elementStyling.getPropertyValue('box-sizing'),
+                "border-right": elementStyling.getPropertyValue('border-right'),
+                "border-left": elementStyling.getPropertyValue('border-left'),
+                "border-top": elementStyling.getPropertyValue('border-top'),
+                "border-bottom": elementStyling.getPropertyValue('border-bottom'),
+                "transform": elementStyling.getPropertyValue('transform'),
+                "transform-origin": elementStyling.getPropertyValue('transform-origin'),
+                "border-color": config.remoteHighlight.borderColor */
+}
+
+:host {
+  /* --color-padding:#A398DD;
+  --color-margin: yellow;
+  --color-content:  rgba(93, 162, 252, 0.452); */
+  /* padding: 10px 20px 30px 40px; */
+  /* margin: 10px; */
+}
+
+.content {
+  background: var(--color-content);
+  width: var(--width);
+  height: var(--height);
+  transform: translate(var(--padding-left), var(--padding-top));
+  /* transform: translate(-10px, -10px); */
+}
+
+.padding {
+  --top: var(--padding-top);
+  --right: var(--padding-right);
+  --bottom: var(--padding-bottom);
+  --left: var(--padding-left);
+  --full-width: calc(var(--width) + var(--padding-horizontal));
+  --full-height: calc(var(--height) + var(--padding-vertical));
+  clip-path: polygon(
+    /* A */ 0 0,
+    /* B */ 0% 100%,
+    /* C */ var(--left) 100%,
+    /*D*/ var(--left) var(--top),
+    /* E */ calc(var(--full-width) - var(--right)) var(--top),
+    /* F */ calc(var(--full-width) - var(--right)) calc(var(--full-height) - var(--bottom)),
+    /* G */ var(--left) calc(var(--full-height) - var(--bottom)),
+    /*H*/ var(--left) 100%,
+    /*I*/ 100% 100%,
+    /*J*/ 100% 0%
+  );
+  width: var(--full-width);
+  height: var(--full-height);
+  background: var(--color-padding);
+}
+
+.margin {
+  --top: var(--margin-top);
+  --right: var(--margin-right);
+  --bottom: var(--margin-bottom);
+  --left: var(--margin-left);
+  --full-width: calc(var(--width) + var(--margin-horizontal) + var(--padding-horizontal));
+  --full-height: calc(var(--height) + var(--margin-vertical) + var(--padding-vertical));
+  clip-path: polygon(
+    /* A */ 0 0,
+    /* B */ 0% 100%,
+    /* C */ var(--left) 100%,
+    /*D*/ var(--left) var(--top),
+    /* E */ calc(var(--full-width) - var(--right)) var(--top),
+    /* F */ calc(var(--full-width) - var(--right)) calc(var(--full-height) - var(--bottom)),
+    /* G */ var(--left) calc(var(--full-height) - var(--bottom)),
+    /*H*/ var(--left) 100%,
+    /*I*/ 100% 100%,
+    /*J*/ 100% 0%
+  );
+  width: var(--full-width);
+  height: var(--full-height);
+  background: var(--color-margin);
+  transform: translate(calc(-1 * var(--margin-left)), calc(-1 * var(--margin-top)));
+}
+
+:host(.border-box) {
+  width: calc(var(--width) + var(--margin-horizontal));
+  height: calc(var(--height) + var(--margin-vertical));
+}
+
+:host(.border-box) .margin {
+  --full-width: calc(var(--width) + var(--margin-horizontal));
+  --full-height: calc(var(--height) + var(--margin-vertical));
+  transform: none;
+}
+
+:host(.border-box) .padding {
+  --full-width: calc(var(--width));
+  --full-height: calc(var(--height));
+  transform: translate(var(--margin-left), var(--margin-top));
+}
+
+:host(.border-box) .content {
+  width: calc(var(--width) - var(--padding-horizontal));
+  height: calc(var(--height) - var(--padding-vertical));
+  transform: translate(
+    calc(var(--padding-left) + var(--margin-left)),
+    calc(var(--padding-top) + var(--margin-top))
+  );
+}

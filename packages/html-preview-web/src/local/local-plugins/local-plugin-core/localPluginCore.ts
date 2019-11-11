@@ -24,7 +24,8 @@ const localPluginInit: LocalPlugin = async api => {
  * @param api - the local plugin api
  */
 const localPluginCoreUpdateOnChange: LocalPlugin = api => {
-  api.editorProxy.onDidChangeTextDocument(async text => {
+  api.editorProxy.onDidChangeTextDocument(async () => {
+    const text = api.editorProxy.getText()
     const edits: Edit[] = [
       {
         rangeOffset: 0,
@@ -32,17 +33,17 @@ const localPluginCoreUpdateOnChange: LocalPlugin = api => {
         text,
       },
     ]
-    const diffs = await api.connectionProxy.sendRequest<{ text: string; edits: Edit[] }, any[]>(
+    const commands = await api.connectionProxy.sendRequest<{ text: string; edits: Edit[] }, any[]>(
       'html-preview/get-diffs',
       {
         text,
         edits,
       }
     )
-    if (diffs.length === 0) {
+    if (commands.length === 0) {
       return
     }
-    await api.previewProxy.sendMessage(JSON.stringify(diffs))
+    await api.previewProxy.sendMessage(JSON.stringify(commands))
   })
 }
 

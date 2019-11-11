@@ -6,3 +6,4 @@ export { PreviewProxy } from './local-plugin-api/preview-proxy/previewProxy'
 
 // local plugins
 export { localPluginCore } from './local-plugins/local-plugin-core/localPluginCore'
+export { localPluginHighlight } from './local-plugins/local-plugin-highlight/localPluginHighlight'

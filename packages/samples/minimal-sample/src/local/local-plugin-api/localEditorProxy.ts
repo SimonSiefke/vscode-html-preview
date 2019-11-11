@@ -2,21 +2,47 @@ import { EditorProxy } from 'html-preview-web/dist/local/localMain'
 
 const $textarea = document.querySelector('textarea') as HTMLTextAreaElement
 
+const getSelections: EditorProxy['getSelections'] = () => [
+  [$textarea.selectionStart, $textarea.selectionEnd],
+]
+
 const getText: EditorProxy['getText'] = () => $textarea.value
 
-const onDidChangeTextDocument: EditorProxy['onDidChangeTextDocument'] = (() => {
-  const listeners: ((text: string) => void)[] = []
-  $textarea.addEventListener('input', () => {
-    for (const listener of listeners) {
-      listener($textarea.value)
+const onDidChangeSelection: EditorProxy['onDidChangeSelection'] = (() => {
+  const listeners: (() => void)[] = []
+  const handleSelection = () => {
+    if (document.activeElement !== $textarea) {
+      return
     }
-  })
-  return (listener: (text: string) => void) => {
-    listeners.push(listener)
+    for (const listener of listeners) {
+      listener()
+    }
   }
+  document.addEventListener('selectionchange', handleSelection)
+  $textarea.addEventListener('mouseup', handleSelection) // workaround for firefox
+  $textarea.addEventListener('keyup', handleSelection) // workaround for firefox
+  $textarea.addEventListener('input', handleSelection)
+  return <EditorProxy['onDidChangeSelection']>(listener => {
+    listeners.push(listener)
+  })
+})()
+
+const onDidChangeTextDocument: EditorProxy['onDidChangeTextDocument'] = (() => {
+  const listeners: (() => void)[] = []
+  const handleInput = () => {
+    for (const listener of listeners) {
+      listener()
+    }
+  }
+  $textarea.addEventListener('input', handleInput)
+  return <EditorProxy['onDidChangeTextDocument']>(listener => {
+    listeners.push(listener)
+  })
 })()
 
 export const editorProxy: EditorProxy = {
+  getSelections,
   getText,
+  onDidChangeSelection,
   onDidChangeTextDocument,
 }

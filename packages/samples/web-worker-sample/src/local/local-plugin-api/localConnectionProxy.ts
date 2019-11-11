@@ -5,7 +5,8 @@ const worker = new Worker('./dist/workerMain.js')
 const waitForIdle: () => Promise<void> = () =>
   new Promise(resolve => {
     if ('requestIdleCallback' in window) {
-      window['requestIdleCallback'](() => resolve())
+      // @ts-ignore
+      window.requestIdleCallback(() => resolve())
     } else {
       requestAnimationFrame(() => resolve())
     }

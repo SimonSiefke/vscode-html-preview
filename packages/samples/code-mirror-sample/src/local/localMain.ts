@@ -1,4 +1,8 @@
-import { LocalPluginApi, localPluginCore } from 'html-preview-web/dist/local/localMain'
+import {
+  LocalPluginApi,
+  localPluginCore,
+  localPluginHighlight,
+} from 'html-preview-web/dist/local/localMain'
 import { localConnectionProxy } from './local-plugin-api/localConnectionProxy'
 import { editorProxy } from './local-plugin-api/localEditorProxy'
 import { previewProxy } from './local-plugin-api/localPreviewProxy'
@@ -10,3 +14,4 @@ const api: LocalPluginApi = {
 }
 
 localPluginCore(api)
+localPluginHighlight(api)

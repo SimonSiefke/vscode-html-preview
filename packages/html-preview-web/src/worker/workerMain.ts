@@ -5,3 +5,4 @@ export { WorkerState } from './worker-plugin-api/worker-state/workerState'
 
 // worker plugins
 export { workerPluginCore } from './worker-plugins/worker-plugin-core/workerPluginCore'
+export { workerPluginGetHighlights } from './worker-plugins/worker-plugin-get-highlights/workerPluginGetHighlights'

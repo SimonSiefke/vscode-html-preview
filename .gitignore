@@ -1,6 +1,8 @@
 dist
 .vscode-test
 .rpt2_cache
+cypress
+
 # Logs
 logs
 *.log

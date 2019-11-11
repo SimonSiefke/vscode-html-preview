@@ -1,4 +1,8 @@
-import { WorkerPluginApi, workerPluginCore } from 'html-preview-web/dist/worker/workerMain'
+import {
+  WorkerPluginApi,
+  workerPluginCore,
+  workerPluginGetHighlights,
+} from 'html-preview-web/dist/worker/workerMain'
 import { workerConnectionProxy } from './worker-plugin-api/workerConnectionProxy'
 
 const api: WorkerPluginApi = {
@@ -8,3 +12,4 @@ const api: WorkerPluginApi = {
 }
 
 workerPluginCore(api)
+workerPluginGetHighlights(api)

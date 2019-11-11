@@ -4,3 +4,4 @@ export { RemoteConnectionProxy } from './remote-plugin-api/remote-connection-pro
 
 // remote plugins
 export { remotePluginCore } from './remote-plugins/remote-plugin-core/remotePluginCore'
+export { remotePluginHighlight } from './remote-plugins/remote-plugin-highlight/remotePluginHighlight'

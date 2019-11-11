@@ -23,3 +23,10 @@ it('updates the preview', () => {
     .find('h1')
     .contains('hello world!')
 })
+
+it('shows highlights', () => {
+  cy.get('textarea')
+    .type('{leftarrow}'.repeat(5))
+    .get('@iframe')
+    .find('highlight-dom-element')
+})
