@@ -179,27 +179,47 @@
       "compression": "none"
     },
     {
-      "path": "./packages/html-preview-web-samples/minimal-sample/dist/localMain.js",
+      "path": "./packages/samples/code-mirror-sample/dist/localMain.js",
+      "maxSize": "350 kB",
+      "compression": "none"
+    },
+    {
+      "path": "./packages/samples/code-mirror-sample/dist/remoteMain.js",
+      "maxSize": "10 kB",
+      "compression": "none"
+    },
+    {
+      "path": "./packages/samples/minimal-sample/dist/localMain.js",
       "maxSize": "50 kB",
       "compression": "none"
     },
     {
-      "path": "./packages/html-preview-web-samples/minimal-sample/dist/remoteMain.js",
-      "maxSize": "5 kB",
+      "path": "./packages/samples/minimal-sample/dist/remoteMain.js",
+      "maxSize": "10 kB",
       "compression": "none"
     },
     {
-      "path": "./packages/html-preview-web-samples/web-worker-sample/dist/localMain.js",
+      "path": "./packages/samples/source-map-sample/dist/localMain.js",
+      "maxSize": "50 kB",
+      "compression": "none"
+    },
+    {
+      "path": "./packages/samples/source-map-sample/dist/remoteMain.js",
+      "maxSize": "10 kB",
+      "compression": "none"
+    },
+    {
+      "path": "./packages/samples/web-worker-sample/dist/localMain.js",
       "maxSize": "4 kB",
       "compression": "none"
     },
     {
-      "path": "./packages/html-preview-web-samples/web-worker-sample/dist/remoteMain.js",
-      "maxSize": "5 kB",
+      "path": "./packages/samples/web-worker-sample/dist/remoteMain.js",
+      "maxSize": "10 kB",
       "compression": "none"
     },
     {
-      "path": "./packages/html-preview-web-samples/web-worker-sample/dist/workerMain.js",
+      "path": "./packages/samples/web-worker-sample/dist/workerMain.js",
       "maxSize": "50 kB",
       "compression": "none"
     }
