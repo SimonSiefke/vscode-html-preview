@@ -1,4 +1,4 @@
-import { LocalPluginApi, localPluginCore } from 'html-preview-web'
+import { LocalPluginApi, localPluginCore } from 'html-preview-web/dist/local/localMain'
 import { localConnectionProxy } from './local-plugin-api/localConnectionProxy'
 import { editorProxy } from './local-plugin-api/localEditorProxy'
 import { previewProxy } from './local-plugin-api/localPreviewProxy'

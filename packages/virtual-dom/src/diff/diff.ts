@@ -1,5 +1,4 @@
 import { createParser } from '../parse/parse'
-import * as assert from 'assert'
 
 // TODO optimize all this spaghetti code
 
@@ -72,7 +71,7 @@ const newNodeHasMoved = (newNode, oldNodeMap) => {
 }
 
 const elementMove = (node: any, parentId: number, index: number, nodeMap: any) => {
-  assert(typeof parentId === 'number')
+  console.assert(typeof parentId === 'number')
   const beforeElement = nodeMap[parentId].children[index - 1]
   const beforeElementId = (beforeElement && beforeElement.id) || 0
   return {

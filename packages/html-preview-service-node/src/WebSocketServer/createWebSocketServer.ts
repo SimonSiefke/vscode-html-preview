@@ -1,6 +1,10 @@
 import * as WebSocket from 'ws'
 import { HttpServer } from '../HttpServer/createHttpServerNew'
-import { urlParsePathname, urlParseQuery, urlParseHtmlPathname } from 'html-preview-service'
+import {
+  urlParsePathname,
+  urlParseQuery,
+  urlParseHtmlPathname,
+} from 'html-preview-service/dist/url/url'
 import * as http from 'http'
 
 export interface WebSocketServer {
@@ -88,9 +92,10 @@ export function createWebSocketServer(httpServer: HttpServer): WebSocketServer {
   const listeners: {
     [command: string]: Array<({ normalizedPath: string, payload: any }) => void>
   } = {}
-  const onConnectionListeners: Array<
-    (webSocket: WebSocket, request: http.IncomingMessage) => void
-  > = []
+  const onConnectionListeners: Array<(
+    webSocket: WebSocket,
+    request: http.IncomingMessage
+  ) => void> = []
   const broadcast = ({
     commands,
     skip,

@@ -3,11 +3,9 @@ import { Parser, createParser } from 'virtual-dom'
 export function genDom(orig, parser: Parser = createParser()) {
   const dom = parser.parse(orig).htmlDocument
   if (dom === undefined) {
-    console.log('no 1')
     return { gen: orig }
   }
   let gen = ''
-  console.log('2')
   let lastIndex = 0
   // parser.dom;
   // // @ts-ignore

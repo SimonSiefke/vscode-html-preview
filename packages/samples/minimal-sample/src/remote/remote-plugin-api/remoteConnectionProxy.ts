@@ -1,4 +1,4 @@
-import { RemoteConnectionProxy } from 'html-preview-web'
+import { RemoteConnectionProxy } from 'html-preview-web/dist/remote/remoteMain'
 
 const listeners: {
   [method: string]: ((params: any) => any)[]
@@ -13,7 +13,6 @@ onmessage = ({ data }) => {
   const commands = JSON.parse(data)
   for (const { command, payload } of commands) {
     if (!listeners[command]) {
-      console.log(listeners)
       throw new Error(`no listener for command "${command}"`)
     }
     for (const listener of listeners[command]) {

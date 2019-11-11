@@ -3,14 +3,9 @@ import { parse as parseUrl } from 'url'
 import * as fs from 'fs'
 import * as path from 'path'
 import { config } from '../config'
-import {
-  genDom,
-  Parser,
-  createParser,
-  urlParsePathname,
-  urlParseHtmlPathname,
-  urlParseQuery,
-} from 'html-preview-service'
+import { genDom } from 'html-preview-service/dist/genDom/genDom'
+import { Parser, createParser } from 'html-preview-service/dist/createParser/createParser'
+import { urlParsePathname, urlParseHtmlPathname, urlParseQuery } from 'html-preview-service-node'
 import {
   HttpServer,
   WebSocketServer,

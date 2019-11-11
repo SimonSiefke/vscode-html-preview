@@ -1,4 +1,4 @@
-import { LocalConnectionProxy } from 'html-preview-web'
+import { LocalConnectionProxy } from 'html-preview-web/dist/local/localMain'
 
 const worker = new Worker('./dist/workerMain.js')
 

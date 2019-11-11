@@ -1,11 +1,9 @@
+import { LocalConnectionProxy } from 'html-preview-web/dist/local/localMain'
 import {
-  LocalConnectionProxy,
   WorkerPluginApi,
   WorkerConnectionProxy,
   workerPluginCore,
-} from 'html-preview-web'
-// @ts-ignore
-import remoteScript from 'raw-loader!../../../dist/remoteMain.js'
+} from 'html-preview-web/dist/worker/workerMain'
 
 const resolvers: {
   [method: string]: (params: any) => any
@@ -23,7 +21,7 @@ const onRequest: WorkerConnectionProxy['onRequest'] = (() => {
 const api: WorkerPluginApi = {
   connectionProxy: { onRequest },
   state: {},
-  $remoteScript: `<script>${remoteScript}</script>`,
+  $remoteScript: `<script src="./dist/remoteMain.js"></script>`,
 }
 
 workerPluginCore(api)

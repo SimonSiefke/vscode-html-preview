@@ -1,4 +1,4 @@
-import { EditorProxy } from 'html-preview-web'
+import { EditorProxy } from 'html-preview-web/dist/local/localMain'
 
 const $textarea = document.querySelector('textarea') as HTMLTextAreaElement
 

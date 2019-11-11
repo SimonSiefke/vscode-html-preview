@@ -1,6 +1,6 @@
 import { WorkerPlugin } from '../../workerPlugin'
 import { Edit } from '../../../../shared/edit'
-import { diff } from 'html-preview-service'
+import { diff } from 'html-preview-service/dist/diff/diff'
 
 const minimizeEdits: (previousText: string, edits: readonly Edit[]) => readonly Edit[] = (
   previousText,

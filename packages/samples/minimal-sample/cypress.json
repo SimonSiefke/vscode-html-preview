@@ -3,5 +3,5 @@
   "video": false,
   "pluginsFile": false,
   "supportFile": false,
-  "chromeWebSecurity": false
+  "screenshotsFolder": false
 }

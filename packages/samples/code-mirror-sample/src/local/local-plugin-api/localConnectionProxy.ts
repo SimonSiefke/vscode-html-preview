@@ -1,9 +1,9 @@
+import { LocalConnectionProxy } from 'html-preview-web/dist/local/localMain'
 import {
-  LocalConnectionProxy,
   WorkerPluginApi,
   WorkerConnectionProxy,
   workerPluginCore,
-} from 'html-preview-web'
+} from 'html-preview-web/dist/worker/workerMain'
 
 const resolvers: {
   [method: string]: (params: any) => any

@@ -1,4 +1,5 @@
-import { createParser, genDom } from 'html-preview-service'
+import { genDom } from 'html-preview-service/dist/genDom/genDom'
+import { createParser } from 'html-preview-service/dist/createParser/createParser'
 import { WorkerPlugin } from '../../workerPlugin'
 
 const getCircularReplacer = () => {

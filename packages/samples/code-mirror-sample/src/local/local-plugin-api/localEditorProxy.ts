@@ -1,12 +1,13 @@
-import { EditorProxy } from 'html-preview-web'
+import { EditorProxy } from 'html-preview-web/dist/local/localMain'
 import * as CodeMirror from 'codemirror'
 import 'codemirror/mode/xml/xml.js'
 import 'codemirror/mode/css/css.js'
 import 'codemirror/mode/javascript/javascript.js'
 import 'codemirror/mode/htmlmixed/htmlmixed.js'
-import emmet from '@emmetio/codemirror-plugin'
+import emmet from '@emmetio/codemirror-plugin/dist/emmet-codemirror-plugin.es.js'
 
-emmet(CodeMirror)
+// @ts-ignore
+emmet(CodeMirror.default)
 
 const editor = CodeMirror.fromTextArea(document.querySelector('textarea'), {
   lineNumbers: true,

@@ -4,23 +4,21 @@ import { hydrate } from './hydrate'
 
 const remotePluginCoreHydrate: RemotePlugin = api => {
   const $virtualDom = document.getElementById('nodeMap') as HTMLScriptElement
-  console.log($virtualDom)
   const virtualDom = JSON.parse($virtualDom.innerHTML)
   const { nodeMap } = hydrate(virtualDom) as { nodeMap: any }
   api.nodeMap = nodeMap
   api.virtualDom = virtualDom
 }
 
+const entityParsingNode = document.createElement('div')
+
 /**
  *  Given a string containing encoded entity references, returns the string with the entities decoded.
  */
-const parseEntities = (() => {
-  const entityParsingNode = document.createElement('div')
-  return (text: string) => {
-    entityParsingNode.innerHTML = text
-    return entityParsingNode.textContent as string
-  }
-})()
+const parseEntities: (text: string) => string = text => {
+  entityParsingNode.innerHTML = text
+  return entityParsingNode.textContent as string
+}
 
 const fixAttributeValue: (value: string | null) => string = value => {
   if (value === null) {

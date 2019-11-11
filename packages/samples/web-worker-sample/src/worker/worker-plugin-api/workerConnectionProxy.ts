@@ -1,4 +1,4 @@
-import { WorkerConnectionProxy } from 'html-preview-web'
+import { WorkerConnectionProxy } from 'html-preview-web/dist/worker/workerMain'
 
 const resolvers: {
   [method: string]: (params: any) => any

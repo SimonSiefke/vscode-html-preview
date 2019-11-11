@@ -1,11 +1,9 @@
-import { WorkerPluginApi, workerPluginCore } from 'html-preview-web'
+import { WorkerPluginApi, workerPluginCore } from 'html-preview-web/dist/worker/workerMain'
 import { workerConnectionProxy } from './worker-plugin-api/workerConnectionProxy'
-// @ts-ignore
-import remoteScript from 'raw-loader!../../dist/remoteMain.js'
 
 const api: WorkerPluginApi = {
   connectionProxy: workerConnectionProxy,
-  $remoteScript: `<script>${remoteScript}</script>`,
+  $remoteScript: `<script src="./dist/remoteMain.js"></script>`,
   state: {},
 }
 

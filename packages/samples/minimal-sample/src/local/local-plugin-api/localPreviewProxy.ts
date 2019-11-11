@@ -1,4 +1,4 @@
-import { PreviewProxy } from 'html-preview-web'
+import { PreviewProxy } from 'html-preview-web/dist/local/localMain'
 
 const $iframe = document.querySelector('iframe') as HTMLIFrameElement
 

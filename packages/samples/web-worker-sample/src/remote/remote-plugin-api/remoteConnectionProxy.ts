@@ -1,4 +1,4 @@
-import { RemoteConnectionProxy } from 'html-preview-web'
+import { RemoteConnectionProxy } from 'html-preview-web/dist/remote/remoteMain'
 
 const listeners: {
   [method: string]: ((params: any) => any)[]

@@ -10,10 +10,7 @@ beforeEach(() => {
 })
 
 it('shows the preview', () => {
-  cy.get('iframe')
-    .should('have.attr', 'sandbox', 'allow-scripts allow-same-origin')
-    .should('have.attr', 'title', 'Html Preview')
-
+  cy.get('iframe').should('have.attr', 'title', 'Html Preview')
   cy.get('@iframe')
     .find('h1')
     .contains('hello world')

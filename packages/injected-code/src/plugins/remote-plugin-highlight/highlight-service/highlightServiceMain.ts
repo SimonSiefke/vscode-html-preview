@@ -296,6 +296,7 @@ export const addHighlights = ($elements: HTMLElement[]) => {
     different = true
   } else {
     for (let i = 0; i < highlights.length; i++) {
+      // TODO bug?
       if (highlights[i].$element !== $elements[i]) {
         different = true
         break
