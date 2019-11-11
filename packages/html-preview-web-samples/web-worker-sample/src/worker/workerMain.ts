@@ -9,7 +9,7 @@ import remoteScript from 'raw-loader!../../dist/remoteMain.js'
 
 const api: WorkerPluginApi = {
   connectionProxy: createWorkerConnectionProxy(),
-  remoteScript,
+  remoteScript: `<script>${remoteScript}</script>`,
   state: {},
 }
 

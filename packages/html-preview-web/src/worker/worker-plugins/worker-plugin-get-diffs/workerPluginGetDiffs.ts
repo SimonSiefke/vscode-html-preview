@@ -2,7 +2,7 @@ import { WorkerPlugin } from '../workerPlugin'
 import { Edit } from '../../../shared/edit'
 import { diff } from 'html-preview-service'
 
-const minimizeEdits: (previousText: string, edits: readonly Edit[]) => Edit[] = (
+const minimizeEdits: (previousText: string, edits: readonly Edit[]) => readonly Edit[] = (
   previousText,
   edits
 ) => {
@@ -39,8 +39,11 @@ export const workerPluginGetDiffs: WorkerPlugin = api => {
       const minimizedEdits = minimizeEdits(text, edits)
       const oldNodeMap = api.state.previousNodeMap
       const { htmlDocument: nextDom } = api.state.parser.edit(text, minimizedEdits)
+      if (!nextDom) {
+        return []
+      }
       const newNodeMap = api.state.parser.nodeMap
-      const diffs = diff(api.state.previousDom.children, nextDom!.children, {
+      const diffs = diff(api.state.previousDom.children, nextDom.children, {
         oldNodeMap,
         newNodeMap,
       })

@@ -3,4 +3,5 @@ import { RemoteConnectionProxy } from './remote-connection-proxy/remoteConnectio
 export interface RemotePluginApi {
   readonly connectionProxy: RemoteConnectionProxy
   nodeMap?: any
+  virtualDom?: any
 }

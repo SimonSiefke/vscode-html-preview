@@ -11,7 +11,7 @@ export interface WorkerPluginApi {
    */
   readonly state: WorkerState
   /**
-   * The remote script which will be injected in the html of the preview
+   * The remote script which will be injected in the html of the preview, e.g. `<script src="/dist/remoteMain.js"></script>`
    */
-  readonly remoteScript: string
+  readonly $remoteScript: string
 }

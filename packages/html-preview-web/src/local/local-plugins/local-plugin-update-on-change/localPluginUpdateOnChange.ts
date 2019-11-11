@@ -22,6 +22,9 @@ export const localPluginUpdateOnChange: LocalPlugin = api => {
         edits,
       }
     )
+    if (diffs.length === 0) {
+      return
+    }
     await api.previewProxy.sendMessage(JSON.stringify(diffs))
   })
 }

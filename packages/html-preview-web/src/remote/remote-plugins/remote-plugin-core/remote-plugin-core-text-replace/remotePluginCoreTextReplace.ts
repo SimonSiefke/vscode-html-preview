@@ -1,4 +1,4 @@
-import { RemotePlugin } from '../remotePlugin'
+import { RemotePlugin } from '../../remotePlugin'
 
 /**
  *  Given a string containing encoded entity references, returns the string with the entities decoded.
@@ -16,7 +16,7 @@ const parseEntities = (() => {
  *
  * @param api - the remote plugin api
  */
-export const remotePluginTextReplace: RemotePlugin = api => {
+export const remotePluginCoreTextReplace: RemotePlugin = api => {
   api.connectionProxy.onRequest<{ id: number; text: string }, void>('textReplace', payload => {
     const $node = api.nodeMap[payload.id] as Comment | Text
     if ($node === undefined) {
