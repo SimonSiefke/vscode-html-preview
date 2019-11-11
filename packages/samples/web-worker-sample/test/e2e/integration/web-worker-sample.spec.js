@@ -1,6 +1,6 @@
 beforeEach(() => {
   cy.visit('http://localhost:3000')
-  cy.wait(8000)
+  cy.wait(10000)
 
   // copied from https://github.com/cypress-io/cypress/issues/136#issuecomment-479438963
   cy.get('iframe').then($iframe => {
