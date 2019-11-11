@@ -5,7 +5,7 @@
     "rootDir": "src",
     "strict": false,
     "strictNullChecks": true,
-    "module": "esnext",
+    "module": "commonjs",
     "types": ["node", "jest"]
   },
   "include": ["src", "../../global.d.ts"],
