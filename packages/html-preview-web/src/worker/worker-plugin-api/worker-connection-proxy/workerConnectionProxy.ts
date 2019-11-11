@@ -6,13 +6,3 @@ export interface WorkerConnectionProxy {
     resolver: (params: Params) => Thenable<Result>
   ) => void
 }
-
-export const createWorkerConnectionProxy: ({
-  onRequest,
-}: {
-  onRequest: WorkerConnectionProxy['onRequest']
-}) => WorkerConnectionProxy = ({ onRequest }) => {
-  return {
-    onRequest,
-  }
-}

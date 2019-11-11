@@ -2,7 +2,7 @@ const fs = require('fs-extra')
 const path = require('path')
 
 const root = path.join(__dirname, '..')
-const samples = ['minimal-sample', 'web-worker-sample', 'source-map-sample']
+const samples = fs.readdirSync(path.join(root, 'packages/samples'))
 
 fs.ensureDirSync(path.join(root, 'website'))
 fs.ensureDirSync(path.join(root, 'website/samples'))
@@ -17,7 +17,7 @@ for (const sample of samples) {
     path.join(root, `packages/html-preview-web-samples/${sample}/dist`),
     path.join(root, `website/samples/${sample}/dist`)
   )
-  if (!['source-map-sample'].includes(sample)) {
+  if (['minimal-sample', 'web-worker-sample'].includes(sample)) {
     fs.removeSync(path.join(root, `website/samples/${sample}/dist/remoteMain.js`))
     fs.removeSync(path.join(root, `website/samples/${sample}/dist/remoteMain.js.map`))
   }

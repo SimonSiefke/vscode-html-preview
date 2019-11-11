@@ -201,3 +201,42 @@ bug: when clicking on the red text, live highlight doesn't work
   </body>
 </html>
 ```
+
+<!-- TODO bug
+<h1>hello world</h1>
+
+type new line before h1, shows duplicate h1
+ -->
+
+<!-- TODO bug
+<h1>hello world</h1>
+
+<button >button</button>
+<button>button</button>
+<button>button</button>
+<button>button</button>
+<button>button</button>
+
+start only with h1
+add new line
+add 5 buttons with emmet
+type space inside first button attribute
+more than 5 buttons
+ -->
+
+<!-- TODO bug
+<h1>hello world</h1>
+
+<button style="color:red">click me
+</button>
+
+
+start only with h1
+add new line
+add button with text "click me"
+add style="color: red"
+type new line after "click me"
+
+node 21 is undefined
+
+ -->

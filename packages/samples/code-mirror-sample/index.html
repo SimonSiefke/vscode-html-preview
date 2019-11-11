@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <head http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>CodeMirror Sample</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.13.4/codemirror.css" />
+    <link rel="stylesheet" href="https:///cdnjs.cloudflare.com/ajax/libs/codemirror/5.13.4/theme/material.css" />
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        height: 100%;
+      }
+      body {
+        margin: 0;
+        display: grid;
+        grid-template-columns: 1fr auto 1fr;
+      }
+      .CodeMirror {
+        height:100%;
+      }
+      .divider {
+        width: 13px;
+        background: linear-gradient(to right, #fff 6px, #ccc 6px, #ccc 7px, #fff 7px, #fff 13px);
+      }
+    </style>
+  </head>
+  <body>
+    <textarea autocomplete="off" spellcheck="false">&lt;h1&gt;hello world&lt;&#x2F;h1&gt;</textarea>
+    <div class="divider"></div>
+    <iframe frameborder="0" sandbox="allow-scripts allow-same-origin" title="Html Preview"></iframe>
+    <script src="./dist/localMain.js"></script>
+    <script src="https://unpkg.com/split-grid/dist/split-grid.js"></script>
+    <script>
+      Split({
+        columnGutters: [
+          {
+            track: 1,
+            element: document.querySelector('.divider'),
+          },
+        ],
+      })
+    </script>
+  </body>
+</html>

@@ -1,0 +1,12 @@
+import { LocalPluginApi, localPluginCore } from 'html-preview-web'
+import { localConnectionProxy } from './local-plugin-api/localConnectionProxy'
+import { editorProxy } from './local-plugin-api/localEditorProxy'
+import { previewProxy } from './local-plugin-api/localPreviewProxy'
+
+const api: LocalPluginApi = {
+  connectionProxy: localConnectionProxy,
+  editorProxy,
+  previewProxy,
+}
+
+localPluginCore(api)

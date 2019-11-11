@@ -1,5 +1,4 @@
 import { RemotePlugin } from '../remotePlugin'
-
 import { mergePlugins } from '../../../shared/mergePlugins'
 import { hydrate } from './hydrate'
 
