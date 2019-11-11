@@ -10,11 +10,11 @@ fs.ensureDirSync(path.join(root, 'website/samples'))
 for (const sample of samples) {
   fs.ensureDirSync(path.join(root, `website/samples/${sample}`))
   fs.copySync(
-    path.join(root, `packages/html-preview-web-samples/${sample}/index.html`),
+    path.join(root, `packages/samples/${sample}/index.html`),
     path.join(root, `website/samples/${sample}/index.html`)
   )
   fs.copySync(
-    path.join(root, `packages/html-preview-web-samples/${sample}/dist`),
+    path.join(root, `packages/samples/${sample}/dist`),
     path.join(root, `website/samples/${sample}/dist`)
   )
   if (['minimal-sample', 'web-worker-sample'].includes(sample)) {
