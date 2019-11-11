@@ -8,9 +8,9 @@ import commonjs from 'rollup-plugin-commonjs'
 const root = __dirname
 
 /**
- * @type {(options: {folder:'local'|'remote', additionalPlugins?: any[]}) => import('rollup').RollupOptions}
+ * @type {(options: {folder:'local'|'remote', commonjsPlugin?: any}) => import('rollup').RollupOptions}
  */
-const withDefaults = ({ folder, additionalPlugins = [] }) => ({
+const withDefaults = ({ folder, commonjsPlugin = commonjs() }) => ({
   input: path.join(root, `src/${folder}/${folder}Main.ts`),
   output: [
     {
@@ -30,20 +30,18 @@ const withDefaults = ({ folder, additionalPlugins = [] }) => ({
     resolve(),
     // @ts-ignore
     sourcemaps(),
-    ...additionalPlugins,
+    commonjsPlugin,
   ],
 })
 
 export default [
   withDefaults({
     folder: 'local',
-    additionalPlugins: [
-      commonjs({
-        namedExports: {
-          'node_modules/codemirror/lib/codemirror.js': ['fromTextArea'],
-        },
-      }),
-    ],
+    commonjsPlugin: commonjs({
+      namedExports: {
+        'node_modules/codemirror/lib/codemirror.js': ['fromTextArea'],
+      },
+    }),
   }),
   withDefaults({ folder: 'remote' }),
 ]
