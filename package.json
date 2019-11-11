@@ -180,7 +180,7 @@
     },
     {
       "path": "./packages/samples/code-mirror-sample/dist/localMain.js",
-      "maxSize": "350 kB",
+      "maxSize": "470 kB",
       "compression": "none"
     },
     {
@@ -200,7 +200,7 @@
     },
     {
       "path": "./packages/samples/web-worker-sample/dist/localMain.js",
-      "maxSize": "4 kB",
+      "maxSize": "5 kB",
       "compression": "none"
     },
     {
