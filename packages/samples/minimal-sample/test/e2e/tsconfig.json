@@ -4,6 +4,7 @@
     "lib": ["esnext"],
     "types": ["cypress"],
     "allowJs": true,
-    "checkJs": true
+    "checkJs": true,
+    "noEmit": true
   }
 }
