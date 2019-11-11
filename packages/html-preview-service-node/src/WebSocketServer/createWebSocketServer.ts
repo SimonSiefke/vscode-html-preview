@@ -1,10 +1,6 @@
 import * as WebSocket from 'ws'
 import { HttpServer } from '../HttpServer/createHttpServerNew'
-import {
-  urlParsePathname,
-  urlParseQuery,
-  urlParseHtmlPathname,
-} from 'html-preview-service/dist/url/url'
+import { urlParsePathname, urlParseQuery, urlParseHtmlPathname } from '../url/url'
 import * as http from 'http'
 
 export interface WebSocketServer {
