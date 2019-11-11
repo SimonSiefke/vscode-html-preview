@@ -34,7 +34,7 @@ const onDidChangeTextDocument: EditorProxy['onDidChangeTextDocument'] = (() => {
       listener()
     }
   })
-  return <EditorProxy['onDidChangeSelection']>( (listener) => {
+  return <EditorProxy['onDidChangeSelection']>(listener => {
     listeners.push(listener)
   })
 })()
