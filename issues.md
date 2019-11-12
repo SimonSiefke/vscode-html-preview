@@ -249,3 +249,55 @@ node 21 is undefined
 start only with h1
 start to type button
  -->
+
+<!-- TODO bug
+<h1>hello world</h1>
+
+
+<p>does it work</p>
+
+
+
+<p>now</p>
+
+
+
+<p>i hope it does</p>
+
+
+
+<p>
+
+
+
+  and it seems like it does
+</p>
+
+
+
+
+<p>which is good to know</p>
+
+<style>
+
+  p{
+  	color:red;
+    padding: 0.5rem;
+
+  border: 1px solid;
+    transform: rotate(-10deg)
+
+  }
+
+  p:nth-child(even){
+      transform: rotate(10deg)
+
+
+  }
+</style>
+
+<p>because thats what i want from a html ditor</p>
+
+
+when editing after style or style things below disappear
+ -->

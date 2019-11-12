@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Monaco Sample</title>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      html,
+      body,
+      main {
+        height: 100%;
+      }
+      body {
+        margin: 0;
+      }
+
+      main {
+        display: grid;
+        grid-template-columns: 1fr auto 1fr;
+      }
+
+      .divider {
+        width: 1px;
+        padding: 0 8px;
+        margin: 0 -8px;
+        background: linear-gradient(
+          to right,
+          transparent 8px,
+          #ccc 8px,
+          #ccc 9px,
+          transparent 9px,
+          transparent 17px
+        );
+        display: inline-block;
+        position: relative;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <div class="editor"></div>
+      <div class="divider"></div>
+      <iframe
+        class="preview"
+        frameborder="0"
+        sandbox="allow-scripts allow-same-origin"
+        title="Html Preview"
+      ></iframe>
+    </main>
+
+    <script src="./dist/localMain.js"></script>
+    <script src="https://unpkg.com/split-grid/dist/split-grid.js"></script>
+    <script>
+      Split({
+        columnGutters: [
+          {
+            track: 1,
+            element: document.querySelector('.divider'),
+          },
+        ],
+      })
+    </script>
+  </body>
+</html>

@@ -1,6 +1,6 @@
 beforeEach(() => {
   cy.visit('http://localhost:3000')
-  cy.wait(15000)
+  cy.wait(5000)
 
   // copied from https://github.com/cypress-io/cypress/issues/136#issuecomment-479438963
   cy.get('iframe').then($iframe => {
@@ -17,7 +17,9 @@ it('shows the preview', () => {
 })
 
 it('updates the preview', () => {
-  cy.get('textarea')
+  cy.get('.editor')
+    .click()
+    .focused()
     .type('{leftarrow}'.repeat(5) + '!')
     .get('@iframe')
     .find('h1')
@@ -25,7 +27,9 @@ it('updates the preview', () => {
 })
 
 it('shows highlights', () => {
-  cy.get('textarea')
+  cy.get('.editor')
+    .click()
+    .focused()
     .type('{leftarrow}'.repeat(5))
     .get('@iframe')
     .find('highlight-dom-element')
