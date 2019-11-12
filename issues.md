@@ -205,28 +205,6 @@ bug: when clicking on the red text, live highlight doesn't work
 <!-- TODO bug
 <h1>hello world</h1>
 
-type new line before h1, shows duplicate h1
- -->
-
-<!-- TODO bug
-<h1>hello world</h1>
-
-<button >button</button>
-<button>button</button>
-<button>button</button>
-<button>button</button>
-<button>button</button>
-
-start only with h1
-add new line
-add 5 buttons with emmet
-type space inside first button attribute
-more than 5 buttons
- -->
-
-<!-- TODO bug
-<h1>hello world</h1>
-
 <button style="color:red">click me
 </button>
 
@@ -241,13 +219,14 @@ node 21 is undefined
 
  -->
 
-<!-- TODO bug
+<!-- TODO bug (fixed, needs test)
 <h1>hello world</h1>
 
 <button
 
 start only with h1
 start to type button
+highlight error
  -->
 
 <!-- TODO bug
@@ -300,4 +279,45 @@ start to type button
 
 
 when editing after style or style things below disappear
+ -->
+<!-- TODO bug
+1. start with <h1>hello world</h1>
+2. select all
+3. replace it with
+<style>
+
+  p{
+  	color:red;
+    padding: 0.5rem;
+
+  border: 1px solid;
+    transform: rotate(-10deg)
+
+  }
+
+  p:nth-child(even){
+      transform: rotate(10deg)
+
+
+  }
+</style>
+
+highlight error, node 2 doesn't exist
+
+ -->
+
+<!-- TODO bug
+1. start only with <h1>hello world</h1>
+2. select all
+3. replace with     console.log(JSON.stringify(edits))
+4. select all
+5. replace with
+<h1>hello world</h1>
+
+<button>button</button>
+<button>button</button>
+<button>button</button>
+<button>button</button>
+
+highlight errors and $node is undefined and getComputedStyle is not an object
  -->

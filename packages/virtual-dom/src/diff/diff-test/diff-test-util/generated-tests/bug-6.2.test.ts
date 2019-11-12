@@ -20,19 +20,20 @@ function adjustExpectedEdits(expectedEdits){
   return expectedEdits
 }
 
-test(`delete-200-delete-comment-between-text-and-text.test.txt`, () => {
+test(`bug-6.2.test.txt`, () => {
 	const parser = createParser()
 	let previousDom
 	  {
 
 
-  previousDom = parser.parse("a<!--b-->c").htmlDocument
+  previousDom = parser.parse("<h1>hello world</h1>").htmlDocument
   const oldNodeMap = parser.nodeMap
-  const {htmlDocument:nextDom, error} = parser.edit(`ac`, [
+  const {htmlDocument:nextDom, error} = parser.edit(`
+<h1>hello world</h1>`, [
     {
-      "rangeOffset": 1,
-      "rangeLength": 8,
-      "text": ""
+      "rangeOffset": 0,
+      "rangeLength": 21,
+      "text": "\n<h1>hello world</h1>"
     }
   ])
 	const expectedError = undefined;
@@ -40,7 +41,8 @@ test(`delete-200-delete-comment-between-text-and-text.test.txt`, () => {
 		console.error(error)
 		throw new Error('did not expect error')
 	} else if(expectedError && !error){
-		throw new Error(`expected error for ac`)
+		throw new Error(`expected error for 
+<h1>hello world</h1>`)
 	} else if(!expectedError && !error){
 
 		const newNodeMap = parser.nodeMap
@@ -51,13 +53,24 @@ test(`delete-200-delete-comment-between-text-and-text.test.txt`, () => {
       "payload": {}
     },
     {
-      "command": "elementDelete",
-      "payload": {}
+      "command": "elementInsert",
+      "payload": {
+        "nodeType": "TextNode",
+        "text": "\n"
+      }
     },
     {
-      "command": "textReplace",
+      "command": "elementInsert",
       "payload": {
-        "text": "ac"
+        "nodeType": "ElementNode",
+        "tag": "h1"
+      }
+    },
+    {
+      "command": "elementInsert",
+      "payload": {
+        "nodeType": "TextNode",
+        "text": "hello world"
       }
     }
   ]

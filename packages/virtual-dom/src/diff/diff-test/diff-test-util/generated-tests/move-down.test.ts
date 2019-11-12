@@ -63,14 +63,14 @@ test(`move-down.test.txt`, () => {
 		const edits = diff((previousDom && previousDom.children) || [], nextDom!.children, {oldNodeMap, newNodeMap})
 		const expectedEdits = [
     {
+      "command": "elementDelete",
+      "payload": {}
+    },
+    {
       "command": "textReplace",
       "payload": {
         "text": "\n"
       }
-    },
-    {
-      "command": "elementDelete",
-      "payload": {}
     },
     {
       "command": "elementInsert",

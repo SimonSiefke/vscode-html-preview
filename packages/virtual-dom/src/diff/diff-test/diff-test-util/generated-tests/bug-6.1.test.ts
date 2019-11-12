@@ -20,23 +20,22 @@ function adjustExpectedEdits(expectedEdits){
   return expectedEdits
 }
 
-test(`delete-across-tags-complex.test.txt`, () => {
+test(`bug-6.1.test.txt`, () => {
 	const parser = createParser()
 	let previousDom
 	  {
 
 
-  previousDom = parser.parse("<p>\n  Hello\n</p>\n<p>\n    <em>World</em>\n</p>").htmlDocument
+  previousDom = parser.parse("<h1>hello world</h1>\n\n<button>button</button>\n<button>button</button>").htmlDocument
   const oldNodeMap = parser.nodeMap
-  const {htmlDocument:nextDom, error} = parser.edit(`<p>
-  Hello
+  const {htmlDocument:nextDom, error} = parser.edit(`<h1>hello world</h1>
 
-    <em>World</em>
-</p>`, [
+<button >button</button>
+<button>button</button>`, [
     {
-      "rangeOffset": 12,
-      "rangeLength": 8,
-      "text": ""
+      "rangeOffset": 0,
+      "rangeLength": 118,
+      "text": "<h1>hello world</h1>\n\n<button >button</button>\n<button>button</button>"
     }
   ])
 	const expectedError = undefined;
@@ -44,11 +43,10 @@ test(`delete-across-tags-complex.test.txt`, () => {
 		console.error(error)
 		throw new Error('did not expect error')
 	} else if(expectedError && !error){
-		throw new Error(`expected error for <p>
-  Hello
+		throw new Error(`expected error for <h1>hello world</h1>
 
-    <em>World</em>
-</p>`)
+<button >button</button>
+<button>button</button>`)
 	} else if(!expectedError && !error){
 
 		const newNodeMap = parser.nodeMap
@@ -63,18 +61,54 @@ test(`delete-across-tags-complex.test.txt`, () => {
       "payload": {}
     },
     {
-      "command": "textReplace",
+      "command": "elementDelete",
+      "payload": {}
+    },
+    {
+      "command": "elementDelete",
+      "payload": {}
+    },
+    {
+      "command": "elementInsert",
       "payload": {
-        "text": "\n  Hello\n\n    "
+        "nodeType": "TextNode",
+        "text": "\n\n"
       }
     },
     {
-      "command": "elementMove",
-      "payload": {}
+      "command": "elementInsert",
+      "payload": {
+        "nodeType": "ElementNode",
+        "tag": "button"
+      }
     },
     {
-      "command": "elementMove",
-      "payload": {}
+      "command": "elementInsert",
+      "payload": {
+        "nodeType": "TextNode",
+        "text": "button"
+      }
+    },
+    {
+      "command": "elementInsert",
+      "payload": {
+        "nodeType": "TextNode",
+        "text": "\n"
+      }
+    },
+    {
+      "command": "elementInsert",
+      "payload": {
+        "nodeType": "ElementNode",
+        "tag": "button"
+      }
+    },
+    {
+      "command": "elementInsert",
+      "payload": {
+        "nodeType": "TextNode",
+        "text": "button"
+      }
     }
   ]
 			expect(adjustEdits(edits)).toEqual(adjustExpectedEdits(expectedEdits))

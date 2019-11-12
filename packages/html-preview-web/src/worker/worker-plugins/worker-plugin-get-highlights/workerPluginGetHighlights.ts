@@ -6,6 +6,9 @@ export const workerPluginGetHighlights: WorkerPlugin = api => {
   api.connectionProxy.onRequest<{ selections: readonly Selection[] }, any>(
     'getHighlights',
     ({ selections }) => {
+      if (api.state.error) {
+        return []
+      }
       const offset = selections[0][0]
       const parser = api.state.parser
       let found: number

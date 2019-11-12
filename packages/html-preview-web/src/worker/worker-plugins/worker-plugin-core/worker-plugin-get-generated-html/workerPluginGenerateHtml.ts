@@ -27,6 +27,7 @@ export const workerPluginGetGeneratedHtml: WorkerPlugin = api => {
       api.state.previousDom = api.state.parser.dom
       api.state.previousText = text
       api.state.previousNodeMap = api.state.parser.nodeMap
+      api.state.error = false
       const genWithoutComments = gen.replace(/(<!--[\s\S]*?-->)/g, (_: any, match: string) =>
         ' '.repeat(match.length)
       )

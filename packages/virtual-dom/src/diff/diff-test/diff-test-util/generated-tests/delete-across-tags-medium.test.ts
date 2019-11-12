@@ -47,6 +47,10 @@ test(`delete-across-tags-medium.test.txt`, () => {
 		const edits = diff((previousDom && previousDom.children) || [], nextDom!.children, {oldNodeMap, newNodeMap})
 		const expectedEdits = [
     {
+      "command": "elementDelete",
+      "payload": {}
+    },
+    {
       "command": "textReplace",
       "payload": {
         "text": "ab"
@@ -54,10 +58,6 @@ test(`delete-across-tags-medium.test.txt`, () => {
     },
     {
       "command": "elementMove",
-      "payload": {}
-    },
-    {
-      "command": "elementDelete",
       "payload": {}
     }
   ]

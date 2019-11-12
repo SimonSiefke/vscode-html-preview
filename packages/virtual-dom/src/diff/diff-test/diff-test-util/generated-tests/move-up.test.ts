@@ -63,6 +63,10 @@ test(`move-up.test.txt`, () => {
 		const edits = diff((previousDom && previousDom.children) || [], nextDom!.children, {oldNodeMap, newNodeMap})
 		const expectedEdits = [
     {
+      "command": "elementDelete",
+      "payload": {}
+    },
+    {
       "command": "textReplace",
       "payload": {
         "text": "\n  "
@@ -78,10 +82,6 @@ test(`move-up.test.txt`, () => {
         "nodeType": "TextNode",
         "text": "\n"
       }
-    },
-    {
-      "command": "elementDelete",
-      "payload": {}
     }
   ]
 			expect(adjustEdits(edits)).toEqual(adjustExpectedEdits(expectedEdits))

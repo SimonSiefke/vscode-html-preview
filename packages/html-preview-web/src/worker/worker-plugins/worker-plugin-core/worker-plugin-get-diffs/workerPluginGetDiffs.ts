@@ -40,6 +40,7 @@ export const workerPluginGetDiffs: WorkerPlugin = api => {
       const oldNodeMap = api.state.previousNodeMap
       const { htmlDocument: nextDom } = api.state.parser.edit(text, minimizedEdits)
       if (!nextDom) {
+        api.state.error = true
         return []
       }
       const newNodeMap = api.state.parser.nodeMap
@@ -50,6 +51,7 @@ export const workerPluginGetDiffs: WorkerPlugin = api => {
       api.state.previousDom = nextDom
       api.state.previousText = text
       api.state.previousNodeMap = newNodeMap
+      api.state.error = false
       return diffs
     }
   )

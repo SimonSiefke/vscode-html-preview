@@ -15,15 +15,15 @@ hello world
 
 expectedEdits:
 [
+  {
+    command: elementDelete
+    payload: {}
+  }
    {
      command: elementInsert
      payload: {
        nodeType: TextNode
        text: "hello world"
      }
-  }
-  {
-    command: elementDelete
-    payload: {}
   }
 ]

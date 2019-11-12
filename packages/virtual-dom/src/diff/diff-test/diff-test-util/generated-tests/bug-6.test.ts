@@ -20,19 +20,24 @@ function adjustExpectedEdits(expectedEdits){
   return expectedEdits
 }
 
-test(`delete-200-delete-comment-between-text-and-text.test.txt`, () => {
+test(`bug-6.test.txt`, () => {
 	const parser = createParser()
 	let previousDom
 	  {
 
 
-  previousDom = parser.parse("a<!--b-->c").htmlDocument
+  previousDom = parser.parse("<h1>hello world</h1>\n\n<button>button</button>\n<button>button</button>\n<button>button</button>\n<button>button</button>").htmlDocument
   const oldNodeMap = parser.nodeMap
-  const {htmlDocument:nextDom, error} = parser.edit(`ac`, [
+  const {htmlDocument:nextDom, error} = parser.edit(`<h1>hello world</h1>
+
+<button >button</button>
+<button>button</button>
+<button>button</button>
+<button>button</button>`, [
     {
-      "rangeOffset": 1,
-      "rangeLength": 8,
-      "text": ""
+      "rangeOffset": 29,
+      "rangeLength": 0,
+      "text": " "
     }
   ])
 	const expectedError = undefined;
@@ -40,27 +45,17 @@ test(`delete-200-delete-comment-between-text-and-text.test.txt`, () => {
 		console.error(error)
 		throw new Error('did not expect error')
 	} else if(expectedError && !error){
-		throw new Error(`expected error for ac`)
+		throw new Error(`expected error for <h1>hello world</h1>
+
+<button >button</button>
+<button>button</button>
+<button>button</button>
+<button>button</button>`)
 	} else if(!expectedError && !error){
 
 		const newNodeMap = parser.nodeMap
 		const edits = diff((previousDom && previousDom.children) || [], nextDom!.children, {oldNodeMap, newNodeMap})
-		const expectedEdits = [
-    {
-      "command": "elementDelete",
-      "payload": {}
-    },
-    {
-      "command": "elementDelete",
-      "payload": {}
-    },
-    {
-      "command": "textReplace",
-      "payload": {
-        "text": "ac"
-      }
-    }
-  ]
+		const expectedEdits = []
 			expect(adjustEdits(edits)).toEqual(adjustExpectedEdits(expectedEdits))
 			previousDom = nextDom
 		}

@@ -224,8 +224,8 @@ export function diff(
           }
         } else {
           edits = [
-            ...edits,
             elementDelete(oldNode),
+            ...edits,
             ...elementInsert(newNode, parentId, newIndex, newNodeMap),
           ]
         }
@@ -235,7 +235,7 @@ export function diff(
         continue
       } else if (!newNodeMap[oldNode.id]) {
         oldNode
-        edits = [...edits, elementDelete(oldNode)]
+        edits = [elementDelete(oldNode), ...edits]
         oldIndex++
         continue
       } else if (!oldNodeMap[newNode.id]) {
@@ -271,7 +271,7 @@ export function diff(
 
     if (newNode.nodeType === 'ElementNode' && oldNode.nodeType !== 'ElementNode') {
       if (!newNodeMap[oldNode.id]) {
-        edits = [...edits, elementDelete(oldNode)]
+        edits = [elementDelete(oldNode), ...edits]
         oldIndex++
         continue
       } else if (!oldNodeMap[newNode.id]) {
@@ -279,8 +279,8 @@ export function diff(
         newIndex++
       } else {
         edits = [
-          ...edits,
           elementDelete(oldNode),
+          ...edits,
           ...elementInsert(newNode, parentId, newIndex, newNodeMap),
         ]
         oldIndex++
@@ -308,7 +308,7 @@ export function diff(
         newIndex++
         continue
       } else {
-        edits = [...edits, elementDelete(oldNode)]
+        edits = [elementDelete(oldNode), ...edits]
         oldIndex++
         continue
       }
@@ -323,7 +323,7 @@ export function diff(
         newIndex++
         continue
       } else if (!newNodeMap[oldNode.id]) {
-        edits = [...edits, elementDelete(oldNode)]
+        edits = [elementDelete(oldNode), ...edits]
         oldIndex++
         continue
       } else if (!oldNodeMap[newNode.id]) {
@@ -332,8 +332,8 @@ export function diff(
         continue
       } else {
         edits = [
-          ...edits,
           elementDelete(oldNode),
+          ...edits,
           ...elementInsert(newNode, parentId, newIndex, newNodeMap),
         ]
         oldIndex++
@@ -354,7 +354,7 @@ export function diff(
         newIndex++
         continue
       } else if (!newNodeMap[oldNode.id]) {
-        edits = [...edits, elementDelete(oldNode)]
+        edits = [elementDelete(oldNode), ...edits]
         oldIndex++
         continue
       } else if (!oldNodeMap[newNode.id]) {
@@ -363,8 +363,8 @@ export function diff(
         continue
       } else {
         edits = [
-          ...edits,
           elementDelete(oldNode),
+          ...edits,
           ...elementInsert(newNode, parentId, newIndex, newNodeMap),
         ]
         oldIndex++
@@ -394,7 +394,7 @@ export function diff(
       continue
     }
     oldIndex++
-    edits = [...edits, elementDelete(oldNode)]
+    edits = [elementDelete(oldNode), ...edits]
   }
 
   /**

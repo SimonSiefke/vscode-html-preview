@@ -1,0 +1,27 @@
+previousText:
+<h1>hello world</h1>
+
+<button>button</button>
+<button>button</button>
+<button>button</button>
+<button>button</button>
+
+edits:
+[
+  {
+    rangeOffset: 29
+    rangeLength: 0
+    text: " "
+  }
+]
+
+nextText:
+<h1>hello world</h1>
+
+<button >button</button>
+<button>button</button>
+<button>button</button>
+<button>button</button>
+
+expectedEdits:
+[]

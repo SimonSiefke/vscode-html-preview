@@ -47,14 +47,14 @@ test(`delete-across-tags-simple.test.txt`, () => {
 		const edits = diff((previousDom && previousDom.children) || [], nextDom!.children, {oldNodeMap, newNodeMap})
 		const expectedEdits = [
     {
+      "command": "elementDelete",
+      "payload": {}
+    },
+    {
       "command": "textReplace",
       "payload": {
         "text": "ab"
       }
-    },
-    {
-      "command": "elementDelete",
-      "payload": {}
     }
   ]
 			expect(adjustEdits(edits)).toEqual(adjustExpectedEdits(expectedEdits))

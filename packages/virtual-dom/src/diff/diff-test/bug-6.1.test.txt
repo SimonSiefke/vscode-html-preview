@@ -1,0 +1,82 @@
+previousText:
+<h1>hello world</h1>
+
+<button>button</button>
+<button>button</button>
+
+edits:
+[
+  {
+    rangeOffset: 0
+    rangeLength: 118
+    text: "<h1>hello world</h1>\n\n<button >button</button>\n<button>button</button>"
+  }
+]
+
+nextText:
+<h1>hello world</h1>
+
+<button >button</button>
+<button>button</button>
+
+expectedEdits:
+[
+  {
+    command: elementDelete
+    payload: {}
+  }
+  {
+    command: elementDelete
+    payload: {}
+  }
+  {
+    command: elementDelete
+    payload: {}
+  }
+  {
+    command: elementDelete
+    payload: {}
+  }
+  {
+    command: elementInsert
+    payload: {
+      nodeType: TextNode
+      text: "\n\n"
+    }
+  }
+  {
+    command: elementInsert
+    payload: {
+      nodeType: ElementNode
+      tag: button
+    }
+  }
+  {
+    command: elementInsert
+    payload: {
+      nodeType: TextNode
+      text: button
+    }
+  }
+  {
+    command: elementInsert
+    payload: {
+      nodeType: TextNode
+      text: "\n"
+    }
+  }
+  {
+    command: elementInsert
+    payload: {
+      nodeType: ElementNode
+      tag: button
+    }
+  }
+  {
+    command: elementInsert
+    payload: {
+      nodeType: TextNode
+      text: button
+    }
+  }
+]

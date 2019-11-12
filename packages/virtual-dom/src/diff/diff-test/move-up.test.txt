@@ -32,6 +32,10 @@ nextText:
 expectedEdits:
 [
   {
+    command: elementDelete
+    payload: {}
+  }
+  {
     command: textReplace,
     payload: {
       text: "\n  "
@@ -47,9 +51,5 @@ expectedEdits:
       nodeType: TextNode
       text: "\n"
     }
-  }
-  {
-    command: elementDelete
-    payload: {}
   }
 ]

@@ -47,15 +47,15 @@ test(`replace-element-with-text.test.txt`, () => {
 		const edits = diff((previousDom && previousDom.children) || [], nextDom!.children, {oldNodeMap, newNodeMap})
 		const expectedEdits = [
     {
+      "command": "elementDelete",
+      "payload": {}
+    },
+    {
       "command": "elementInsert",
       "payload": {
         "nodeType": "TextNode",
         "text": "hello world"
       }
-    },
-    {
-      "command": "elementDelete",
-      "payload": {}
     }
   ]
 			expect(adjustEdits(edits)).toEqual(adjustExpectedEdits(expectedEdits))

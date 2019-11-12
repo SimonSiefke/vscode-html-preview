@@ -47,18 +47,18 @@ test(`delete-100-delete-element-between-text-and-text.test.txt`, () => {
 		const edits = diff((previousDom && previousDom.children) || [], nextDom!.children, {oldNodeMap, newNodeMap})
 		const expectedEdits = [
     {
+      "command": "elementDelete",
+      "payload": {}
+    },
+    {
+      "command": "elementDelete",
+      "payload": {}
+    },
+    {
       "command": "textReplace",
       "payload": {
         "text": "ac"
       }
-    },
-    {
-      "command": "elementDelete",
-      "payload": {}
-    },
-    {
-      "command": "elementDelete",
-      "payload": {}
     }
   ]
 			expect(adjustEdits(edits)).toEqual(adjustExpectedEdits(expectedEdits))

@@ -23,6 +23,14 @@ nextText:
 expectedEdits:
 [
   {
+    command: elementDelete
+    payload: {}
+  }
+  {
+    command: elementDelete
+    payload: {}
+  }
+  {
     command: elementInsert,
     payload: {
       nodeType: ElementNode
@@ -42,13 +50,5 @@ expectedEdits:
       nodeType: TextNode
       text: "\n"
     }
-  }
-  {
-    command: elementDelete
-    payload: {}
-  }
-  {
-    command: elementDelete
-    payload: {}
   }
 ]
