@@ -27,7 +27,10 @@ export const workerPluginGetGeneratedHtml: WorkerPlugin = api => {
       api.state.previousDom = api.state.parser.dom
       api.state.previousText = text
       api.state.previousNodeMap = api.state.parser.nodeMap
-      const bodyIndex = gen.lastIndexOf('</body')
+      const genWithoutComments = gen.replace(/(<!--[\s\S]*?-->)/g, (_: any, match: string) =>
+        ' '.repeat(match.length)
+      )
+      const bodyIndex = genWithoutComments.lastIndexOf('</body')
       const $script = api.$remoteScript
       const $nodeMap = `<script id="nodeMap" type="application.json">${JSON.stringify(
         dom!.children!,
