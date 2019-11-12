@@ -2,7 +2,7 @@
 
 # Html Preview for VSCode
 
-**New:** Available as a web version &rightarrow; [Demo](https://wizardly-ride-0e91ad.netlify.com/samples/code-mirror-sample)
+**New:** Web version available &rightarrow; [Demo](https://wizardly-ride-0e91ad.netlify.com/samples/code-mirror-sample)
 
 ![demo](./demo.png)
 
