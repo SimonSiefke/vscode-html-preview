@@ -61,15 +61,15 @@ const remotePluginCoreTextReplace: RemotePlugin = api => {
     if ($node.data === newData) {
       return
     }
-    console.log($node.data.replace(/ /g, 'SPACE'))
-    console.log(newData.replace(/ /g, 'SPACE'))
+    // console.log($node.data.replace(/ /g, 'SPACE'))
+    // console.log(newData.replace(/ /g, 'SPACE'))
     if ($node.data.length !== newData.length) {
-      console.log('diff length')
-      console.log($node.data.length, newData.length)
+      // console.log('diff length')
+      // console.log($node.data.length, newData.length)
     }
-    console.log($node.data === newData.slice(0, $node.data.length))
-    console.log(newData[newData.length - 1] === '\n')
-    console.log('different data')
+    // console.log($node.data === newData.slice(0, $node.data.length))
+    // console.log(newData[newData.length - 1] === '\n')
+    // console.log('different data')
     $node.data = newData
   })
 }
@@ -213,9 +213,9 @@ const remotePluginCoreElementInsert: RemotePlugin = api => {
       }
     }
 
-    console.log($parent)
+    // console.log($parent)
     if (payload.beforeId === 0) {
-      console.log('prepend')
+      // console.log('prepend')
       $parent.prepend($node)
     } else {
       const $referenceNode = api.nodeMap[payload.beforeId]
@@ -236,9 +236,9 @@ const remotePluginCoreElementInsert: RemotePlugin = api => {
 
 const remotePluginCoreElementMove: RemotePlugin = api => {
   api.connectionProxy.onRequest<any, void>('elementMove', payload => {
-    console.log('elemetn move')
+    // console.log('elemetn move')
     const $node = api.nodeMap[payload.id] as HTMLElement | Text | Comment | DocumentType
-    console.log($node)
+    // console.log($node)
     let $parent = api.nodeMap[payload.parentId] as HTMLElement
     if (!$parent) {
       debugger
@@ -256,9 +256,9 @@ const remotePluginCoreElementMove: RemotePlugin = api => {
       }
     }
 
-    console.log($parent)
+    // console.log($parent)
     if (payload.beforeId === 0) {
-      console.log('prepend')
+      // console.log('prepend')
       $parent.prepend($node)
     } else {
       const $referenceNode = api.nodeMap[payload.beforeId]
@@ -271,7 +271,7 @@ const remotePluginCoreElementMove: RemotePlugin = api => {
         )
         return
       }
-      console.log('ref', $referenceNode)
+      // console.log('ref', $referenceNode)
       $parent.insertBefore($node, $referenceNode.nextSibling)
     }
   })

@@ -317,7 +317,7 @@ export const addHighlights = ($elements: HTMLElement[]) => {
 }
 
 export const updateHighlights = () => {
-  console.log('hu')
+  // console.log('hu')
   for (const highlight of highlights) {
     highlight.$highlight.update()
   }
