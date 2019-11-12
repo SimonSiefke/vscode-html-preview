@@ -7,7 +7,7 @@ import { workerConnectionProxy } from './worker-plugin-api/workerConnectionProxy
 
 const api: WorkerPluginApi = {
   connectionProxy: workerConnectionProxy,
-  $remoteScript: `<script src="./dist/remoteMain.js"></script>`,
+  $remoteScript: `<script src="./dist/remoteMain.js" data-html-preview></script>`,
   state: {},
 }
 

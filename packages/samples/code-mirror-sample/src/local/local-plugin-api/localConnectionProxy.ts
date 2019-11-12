@@ -22,7 +22,7 @@ const onRequest: WorkerConnectionProxy['onRequest'] = (() => {
 const api: WorkerPluginApi = {
   connectionProxy: { onRequest },
   state: {},
-  $remoteScript: '<script type="module" src="./dist/remoteMain.js"></script>',
+  $remoteScript: '<script type="module" src="./dist/remoteMain.js" data-html-preview></script>',
 }
 
 workerPluginCore(api)

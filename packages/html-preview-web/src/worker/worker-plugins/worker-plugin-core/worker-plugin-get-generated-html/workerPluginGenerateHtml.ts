@@ -32,7 +32,7 @@ export const workerPluginGetGeneratedHtml: WorkerPlugin = api => {
       )
       const bodyIndex = genWithoutComments.lastIndexOf('</body')
       const $script = api.$remoteScript
-      const $nodeMap = `<script id="nodeMap" type="application.json">${JSON.stringify(
+      const $nodeMap = `<script id="nodeMap" type="application.json" data-html-preview>${JSON.stringify(
         dom!.children!,
         getCircularReplacer(),
         2

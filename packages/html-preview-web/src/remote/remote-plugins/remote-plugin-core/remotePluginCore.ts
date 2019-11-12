@@ -8,6 +8,7 @@ const remotePluginCoreHydrate: RemotePlugin = api => {
   const { nodeMap } = hydrate(virtualDom) as { nodeMap: any }
   api.nodeMap = nodeMap
   api.virtualDom = virtualDom
+  document.querySelectorAll('[data-html-preview]').forEach($injectedNode => $injectedNode.remove())
 }
 
 const entityParsingNode = document.createElement('div')
