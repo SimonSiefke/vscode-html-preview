@@ -2,6 +2,5 @@
   "extends": "../../tsconfig-base",
   "compilerOptions": {
     "lib": ["esnext", "webworker", "scripthost"]
-  },
-  "include": ["**/*.ts"]
+  }
 }
