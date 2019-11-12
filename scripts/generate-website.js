@@ -17,7 +17,7 @@ for (const sample of samples) {
     path.join(root, `packages/samples/${sample}/dist`),
     path.join(root, `website/samples/${sample}/dist`)
   )
-  if (['minimal-sample', 'web-worker-sample'].includes(sample)) {
+  if ([].includes(sample)) {
     fs.removeSync(path.join(root, `website/samples/${sample}/dist/remoteMain.js`))
     fs.removeSync(path.join(root, `website/samples/${sample}/dist/remoteMain.js.map`))
   }
