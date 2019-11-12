@@ -24,11 +24,10 @@ const editor = CodeMirror.fromTextArea(document.querySelector('textarea') as HTM
 
 const getSelections: EditorProxy['getSelections'] = () => {
   const text = editor.getValue()
-  const lineLengths = text.split('\n').map(line => line.length)
+  const lineLengths = text.split('\n').map(line => line.length + 1)
   return editor.listSelections().map(({ anchor }) => {
     const start =
-      lineLengths.slice(0, anchor.line + 1).reduce((total, current) => total + current, 0) +
-      anchor.ch
+      lineLengths.slice(0, anchor.line).reduce((total, current) => total + current, 0) + anchor.ch
     return [start, start]
   })
 }
