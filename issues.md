@@ -321,3 +321,24 @@ highlight error, node 2 doesn't exist
 
 highlight errors and $node is undefined and getComputedStyle is not an object
  -->
+
+<!-- TODO test for
+https://github.com/adobe/brackets/issues/4711
+
+ -->
+
+<!-- TODO bug
+
+<h1>hello world</h1>
+
+
+<main style="margin:40px">
+
+  almost always workssssss
+</main>
+
+
+first type main, then text inside main, then style="margin:40px"
+
+preview doesn't update anymore
+ -->
