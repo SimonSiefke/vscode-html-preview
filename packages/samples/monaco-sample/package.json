@@ -28,5 +28,5 @@
     "webpack-cli": "^3.3.10",
     "webpack-dev-server": "^3.9.0"
   },
-  "version": "0.0.1"
+  "version": "0.0.2"
 }
