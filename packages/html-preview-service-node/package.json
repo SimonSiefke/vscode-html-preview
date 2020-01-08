@@ -1,5 +1,5 @@
 {
-  "name": "html-preview-service-node",
+  "name": "@htmlpit/html-preview-service-node",
   "version": "0.0.4",
   "description": "",
   "main": "dist/htmlPreviewServiceNodeMain.js",
@@ -10,10 +10,10 @@
   },
   "dependencies": {
     "event-stream": "^4.0.1",
-    "html-preview-service": "^0.0.0-development",
+    "@htmlpit/html-preview-service": "^0.0.4",
     "open": "^7.0.0",
     "send": "^0.17.1",
-    "virtual-dom": "^0.0.0-development",
+    "@htmlpit/virtual-dom": "^0.0.4",
     "ws": "^7.1.2"
   },
   "devDependencies": {

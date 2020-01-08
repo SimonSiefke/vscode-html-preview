@@ -13,7 +13,7 @@
   "dependencies": {
     "@emmetio/codemirror-plugin": "^0.5.4",
     "codemirror": "^5.49.2",
-    "html-preview-web": "^0.0.0-development"
+    "@htmlpit/html-preview-web": "^0.0.4"
   },
   "devDependencies": {
     "@types/codemirror": "0.0.80",

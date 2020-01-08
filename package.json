@@ -1,7 +1,4 @@
 {
-  "engines": {
-    "node": "12"
-  },
   "license": "MIT",
   "name": "vscode-html-preview",
   "scripts": {

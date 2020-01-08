@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "emmet-monaco-es": "^4.3.1",
-    "html-preview-web": "^0.0.0-development",
+    "@htmlpit/html-preview-web": "^0.0.4",
     "monaco-editor": "^0.18.1"
   },
   "devDependencies": {
