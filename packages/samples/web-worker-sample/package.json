@@ -1,6 +1,6 @@
 {
   "name": "web-worker-sample",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "private": true,
   "license": "MIT",
   "scripts": {
@@ -11,7 +11,7 @@
     "watch": "npm run build -- --watch"
   },
   "dependencies": {
-    "@htmlpit/html-preview-web": "^0.0.5"
+    "@htmlpit/html-preview-web": "^0.0.6"
   },
   "devDependencies": {
     "concurrently": "^5.0.0",

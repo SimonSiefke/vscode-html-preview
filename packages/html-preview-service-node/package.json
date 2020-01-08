@@ -1,6 +1,6 @@
 {
   "name": "@htmlpit/html-preview-service-node",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "",
   "main": "dist/htmlPreviewServiceNodeMain.js",
   "private": true,
@@ -9,8 +9,8 @@
     "generate:watch:genDomTests": "nodemon --watch src/genDom/genDom.test.txt --exec npm run generate:genDomTests"
   },
   "dependencies": {
-    "@htmlpit/html-preview-service": "^0.0.5",
-    "@htmlpit/virtual-dom": "^0.0.5",
+    "@htmlpit/html-preview-service": "^0.0.6",
+    "@htmlpit/virtual-dom": "^0.0.6",
     "event-stream": "^4.0.1",
     "open": "^7.0.0",
     "send": "^0.17.1",

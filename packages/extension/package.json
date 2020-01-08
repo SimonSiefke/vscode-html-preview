@@ -2,7 +2,7 @@
   "name": "html-preview",
   "displayName": "Html Preview",
   "description": "Preview for Html files",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "private": true,
   "publisher": "SimonSiefke",
   "license": "MIT",
@@ -115,8 +115,8 @@
   },
   "main": "dist/extensionMain.js",
   "dependencies": {
-    "@htmlpit/html-preview-service": "^0.0.5",
-    "@htmlpit/html-preview-service-node": "^0.0.5",
+    "@htmlpit/html-preview-service": "^0.0.6",
+    "@htmlpit/html-preview-service-node": "^0.0.6",
     "vsls": "^0.3.1291"
   },
   "devDependencies": {

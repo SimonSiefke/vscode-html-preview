@@ -1,6 +1,6 @@
 {
   "name": "@htmlpit/html-preview-web",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "main": "dist/index.js",
   "sideEffects": "false",
   "publishConfig": {
@@ -10,7 +10,7 @@
     "dev": "tsc -b --watch"
   },
   "dependencies": {
-    "@htmlpit/html-preview-service": "^0.0.5"
+    "@htmlpit/html-preview-service": "^0.0.6"
   },
   "license": "MIT",
   "devDependencies": {

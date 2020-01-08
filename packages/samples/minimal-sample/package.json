@@ -1,6 +1,6 @@
 {
   "name": "minimal-sample",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "private": true,
   "license": "MIT",
   "scripts": {
@@ -24,6 +24,6 @@
     "typescript": "^3.7.2"
   },
   "dependencies": {
-    "@htmlpit/html-preview-web": "^0.0.5"
+    "@htmlpit/html-preview-web": "^0.0.6"
   }
 }
