@@ -1,4 +1,4 @@
-// import { Parser, createParser, ParsingResult, diff } from 'virtual-dom'
+// import { Parser, createParser, ParsingResult, diff } from '@htmlpit/virtual-dom'
 // import { genDom as genDomWithoutInjectedScript } from '../genDom/genDom'
 
 // const genDomWithInjectedScript = (dom: any) => {

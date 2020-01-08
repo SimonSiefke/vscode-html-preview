@@ -11,7 +11,7 @@ import * as http from 'http';
 import {genDom} from 'html-preview-service';
 import * as fs from 'fs';
 import * as path from 'path';
-import {diff, createParser} from 'virtual-dom';
+import {diff, createParser} from '@htmlpit/virtual-dom';
 
 // Create a connection for the server
 const connection: IConnection = createConnection();

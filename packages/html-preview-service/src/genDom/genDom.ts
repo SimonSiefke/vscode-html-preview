@@ -1,4 +1,4 @@
-import { Parser, createParser } from 'virtual-dom'
+import { Parser, createParser } from '@htmlpit/virtual-dom'
 
 export function genDom(orig, parser: Parser = createParser()) {
   const dom = parser.parse(orig).htmlDocument

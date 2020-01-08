@@ -1,7 +1,7 @@
 import * as vscode from 'vscode'
 import { LocalPlugin } from '../localPluginApi'
-import { findCssSelectorAtOffset } from 'html-preview-service/dist/findCssSelectorAtPosition/findCssSelectorAtPosition'
-import { urlParseQuery, urlParseHtmlPathname } from 'html-preview-service-node'
+import { findCssSelectorAtOffset } from '@htmlpit/html-preview-service/dist/findCssSelectorAtPosition/findCssSelectorAtPosition'
+import { urlParseQuery, urlParseHtmlPathname } from '@htmlpit/html-preview-service-node'
 
 interface HighlightState {
   highlightedId: number

@@ -1,5 +1,5 @@
 import * as vscode from 'vscode'
-import { diff } from 'html-preview-service/dist/diff/diff'
+import { diff } from '@htmlpit/html-preview-service/dist/diff/diff'
 import { LocalPlugin } from '../localPluginApi'
 import { minimizeEdits } from '../../services/Commands-util/minimizeEdits/minimizeEdits'
 

@@ -3,15 +3,19 @@ import { parse as parseUrl } from 'url'
 import * as fs from 'fs'
 import * as path from 'path'
 import { config } from '../config'
-import { genDom } from 'html-preview-service/dist/genDom/genDom'
-import { Parser, createParser } from 'html-preview-service/dist/createParser/createParser'
-import { urlParsePathname, urlParseHtmlPathname, urlParseQuery } from 'html-preview-service-node'
+import { genDom } from '@htmlpit/html-preview-service/dist/genDom/genDom'
+import { Parser, createParser } from '@htmlpit/html-preview-service/dist/createParser/createParser'
+import {
+  urlParsePathname,
+  urlParseHtmlPathname,
+  urlParseQuery,
+} from '@htmlpit/html-preview-service-node'
 import {
   HttpServer,
   WebSocketServer,
   createWebSocketServer,
   createHttpServer,
-} from 'html-preview-service-node'
+} from '@htmlpit/html-preview-service-node'
 import { localPluginCore } from '../plugins/local-plugin-core/localPluginCore'
 import { localPluginRedirect } from '../plugins/local-plugin-redirect/localPluginRedirect'
 import { localPluginHighlight } from '../plugins/local-plugin-highlight/localPluginHighlight'

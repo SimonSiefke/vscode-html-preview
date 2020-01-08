@@ -13,7 +13,7 @@ import {
 	TextDocumentChangeEvent
 } from 'vscode-languageserver';
 import {genDom} from 'html-preview-service';
-import {createParser, diff} from 'virtual-dom';
+import {createParser, diff} from '@htmlpit/virtual-dom';
 import {createWebSocketServer} from 'html-preview-service';
 import {createConnectionProxy} from './connectionProxy';
 

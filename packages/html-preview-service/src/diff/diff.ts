@@ -1,1 +1,1 @@
-export { diff } from 'virtual-dom'
+export { diff } from '@htmlpit/virtual-dom'
