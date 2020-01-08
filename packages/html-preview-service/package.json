@@ -4,6 +4,9 @@
   "description": "",
   "main": "dist/htmlPreviewServiceMain.js",
   "sideEffects": false,
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "dev": "tsc -b --watch",
     "generate:genDomTests": "node src/genDom/genDom-test-util/generateGenDomTestCases.js",
@@ -11,5 +14,6 @@
   },
   "dependencies": {
     "@html-pit/virtual-dom": "^0.0.0-development"
-  }
+  },
+  "gitHead": "27207b89a9c86712c9e29843a4d87f72e9759a9a"
 }

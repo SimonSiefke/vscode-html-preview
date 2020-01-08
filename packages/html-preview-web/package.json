@@ -3,6 +3,9 @@
   "version": "0.0.1",
   "main": "dist/index.js",
   "sideEffects": "false",
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "dev": "tsc -b --watch"
   },
@@ -12,5 +15,6 @@
   "license": "MIT",
   "devDependencies": {
     "typescript": "^3.7.2"
-  }
+  },
+  "gitHead": "27207b89a9c86712c9e29843a4d87f72e9759a9a"
 }

@@ -2,6 +2,9 @@
   "name": "@html-pit/virtual-dom",
   "version": "0.0.1",
   "main": "dist/virtualDomMain.js",
+    "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "dev": "cd ../../ && npm run dev",
     "generate:diffTests": "babel-node --presets latest-node src/diff/diff-test/diff-test-util/generateDiffTestCases.js",
@@ -15,5 +18,6 @@
   },
   "quokka": {
     "ignoreExternalFileChanges": true
-  }
+  },
+  "gitHead": "27207b89a9c86712c9e29843a4d87f72e9759a9a"
 }
