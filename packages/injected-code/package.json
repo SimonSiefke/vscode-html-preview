@@ -2,6 +2,7 @@
   "name": "injected-code",
   "version": "0.0.0-development",
   "main": "dist/html-preview.js",
+  "private": true,
   "scripts": {
     "build": "rollup -c rollup.config.js",
     "dev": "rollup -c -w rollup.config.js"

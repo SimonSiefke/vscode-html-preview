@@ -1,6 +1,7 @@
 {
   "name": "monaco-sample",
   "license": "MIT",
+  "private": true,
   "scripts": {
     "dev": "concurrently \"npm run watch\" \"http-server -s -o -p 3000\"",
     "e2e": "npm run build && start-server-and-test \"http-server -s -p 3000\" http://localhost:3000 \"cypress run\"",

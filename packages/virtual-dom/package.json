@@ -1,6 +1,6 @@
 {
-  "name": "virtual-dom",
-  "version": "0.0.0-development",
+  "name": "@html-pit/virtual-dom",
+  "version": "0.0.1",
   "main": "dist/virtualDomMain.js",
   "scripts": {
     "dev": "cd ../../ && npm run dev",

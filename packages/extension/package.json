@@ -3,6 +3,7 @@
   "displayName": "Html Preview",
   "description": "Preview for Html files",
   "version": "1.0.0",
+  "private": true,
   "publisher": "SimonSiefke",
   "license": "MIT",
   "homepage": "https://github.com/SimonSiefke/vscode-html-preview",

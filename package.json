@@ -22,7 +22,8 @@
     "kill-whatever-is-on-port-3000": "fuser -k -TERM -n tcp 3000",
     "generate:website": "node scripts/generate-website",
     "test:samples": "cd packages/samples && cd code-mirror-sample && npm run e2e && cd .. && cd minimal-sample && npm run e2e && cd .. && cd web-worker-sample && npm run e2e && cd .. && cd monaco-sample && npm run e2e",
-    "build:samples": "cd packages/samples && cd code-mirror-sample && npm run build && cd .. && cd minimal-sample && npm run build && cd .. && cd web-worker-sample && npm run build && cd .. && cd monaco-sample && npm run build"
+    "build:samples": "cd packages/samples && cd code-mirror-sample && npm run build && cd .. && cd minimal-sample && npm run build && cd .. && cd web-worker-sample && npm run build && cd .. && cd monaco-sample && npm run build",
+    "package:npm": "cd packages/virtual-dom && npm publish --access public && cd ../ && cd packages/html-preview-service && npm publish --access public && cd .. && cd html-preview-web && npm publish --access public && cd .."
   },
   "devDependencies": {
     "@babel/core": "^7.7.2",
