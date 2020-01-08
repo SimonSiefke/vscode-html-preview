@@ -2,7 +2,7 @@
   "name": "html-preview",
   "displayName": "Html Preview",
   "description": "Preview for Html files",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "private": true,
   "publisher": "SimonSiefke",
   "license": "MIT",
@@ -116,7 +116,7 @@
   "main": "dist/extensionMain.js",
   "dependencies": {
     "html-preview-service": "^0.0.0-development",
-    "html-preview-service-node": "^0.0.3",
+    "html-preview-service-node": "^0.0.4",
     "vsls": "^0.3.1291"
   },
   "devDependencies": {
