@@ -1,5 +1,5 @@
 {
-  "name": "@html-pit/virtual-dom",
+  "name": "@htmlpit/virtual-dom",
   "version": "0.0.2",
   "main": "dist/virtualDomMain.js",
   "publishConfig": {
@@ -19,5 +19,5 @@
   "quokka": {
     "ignoreExternalFileChanges": true
   },
-  "gitHead": "27207b89a9c86712c9e29843a4d87f72e9759a9a"
+  "gitHead": "2a907b6afaa5c9382c18269866e5afebcc93fc90"
 }
