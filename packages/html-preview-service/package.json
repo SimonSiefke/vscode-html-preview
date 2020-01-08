@@ -1,6 +1,6 @@
 {
   "name": "@html-pit/html-preview-service",
-  "version": "0.0.0-development",
+  "version": "0.0.1",
   "description": "",
   "main": "dist/htmlPreviewServiceMain.js",
   "sideEffects": false,
