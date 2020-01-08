@@ -10,8 +10,8 @@
     "build": "webpack --mode production"
   },
   "dependencies": {
+    "@htmlpit/html-preview-web": "^0.0.5",
     "emmet-monaco-es": "^4.3.1",
-    "@htmlpit/html-preview-web": "^0.0.4",
     "monaco-editor": "^0.18.1"
   },
   "devDependencies": {
@@ -28,5 +28,5 @@
     "webpack-cli": "^3.3.10",
     "webpack-dev-server": "^3.9.0"
   },
-  "version": "0.0.4"
+  "version": "0.0.5"
 }

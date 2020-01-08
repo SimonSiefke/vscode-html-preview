@@ -1,6 +1,6 @@
 {
   "name": "code-mirror-sample",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "private": true,
   "license": "MIT",
   "scripts": {
@@ -12,8 +12,8 @@
   },
   "dependencies": {
     "@emmetio/codemirror-plugin": "^0.5.4",
-    "codemirror": "^5.49.2",
-    "@htmlpit/html-preview-web": "^0.0.4"
+    "@htmlpit/html-preview-web": "^0.0.5",
+    "codemirror": "^5.49.2"
   },
   "devDependencies": {
     "@types/codemirror": "0.0.80",
