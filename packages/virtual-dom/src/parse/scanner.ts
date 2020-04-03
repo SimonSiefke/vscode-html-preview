@@ -128,7 +128,7 @@ export function createScanner(
    * @return {any}
    */
   function scan() {
-    if (count++ > 1000) {
+    if (count++ > 100000) {
       throw new Error('endless loop detected')
     }
 

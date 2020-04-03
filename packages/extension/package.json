@@ -127,6 +127,7 @@
     "fs-extra": "^8.1.0",
     "mocha": "^6.2.0",
     "puppeteer": "^2.0.0",
+    "typescript": "^3.8.3",
     "vscode-test": "^1.2.0"
   }
 }

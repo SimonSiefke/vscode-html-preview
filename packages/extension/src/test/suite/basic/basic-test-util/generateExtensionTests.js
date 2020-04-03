@@ -268,12 +268,13 @@ function validateTestCase(testCase, testCaseName) {
         console.log(
           'expected',
           en
-            .slice(n, n + 10)
+            .slice(n, n + 20)
             .replace(/ /g, 'SPACE')
             .replace(/\n/g, 'NEWLINE'),
           '\ngot',
           testCase.nextText
-            .slice(n, n + 10)
+            .slice(n, n + 20)
+            .replace(/\t/g, 'TAB')
             .replace(/ /g, 'SPACE')
             .replace(/\n/g, 'NEWLINE')
         )
