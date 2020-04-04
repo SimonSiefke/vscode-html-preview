@@ -49,7 +49,7 @@ test('delete-text-before-element', async () => {
   const browser = await getBrowser()
   const page = await browser.newPage()
   await vscode.commands.executeCommand('htmlPreview.openPreview')
-  await page.goto('http://localhost:3000/delete-text-before-element.html', {waitUntil: 'load', timeout: 15000})
+  await page.goto('http://localhost:3000/delete-text-before-element.html', {waitUntil: 'networkidle2', timeout: 15000})
   //await page.goto('http://localhost:3000/delete-text-before-element.html')
 	
 	{

@@ -49,7 +49,7 @@ test('attribute-value-insertion-at-the-end', async () => {
   const browser = await getBrowser()
   const page = await browser.newPage()
   await vscode.commands.executeCommand('htmlPreview.openPreview')
-  await page.goto('http://localhost:3000/attribute-value-insertion-at-the-end.html', {waitUntil: 'load', timeout: 15000})
+  await page.goto('http://localhost:3000/attribute-value-insertion-at-the-end.html', {waitUntil: 'networkidle2', timeout: 15000})
   //await page.goto('http://localhost:3000/attribute-value-insertion-at-the-end.html')
 	
 	{

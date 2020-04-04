@@ -3,7 +3,7 @@ import * as fs from 'fs-extra'
 import { runTests } from 'vscode-test'
 
 const extensionRoot = path.join(__dirname, '../../')
-const vscodeVersion = '1.40.0'
+const vscodeVersion = '1.43.1'
 interface Test {
   testPath: string
   workspace: string
