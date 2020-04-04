@@ -52,7 +52,7 @@ test('text-insertion-in-nested-html', async () => {
   const browser = await getBrowser()
   const page = await browser.newPage()
   await vscode.commands.executeCommand('htmlPreview.openPreview')
-  await page.goto('http://localhost:3000/text-insertion-in-nested-html.html', {waitUntil: 'networkidle2', timeout: 10000})
+  await page.goto('http://localhost:3000/text-insertion-in-nested-html.html', {waitUntil: 'load', timeout: 15000})
   //await page.goto('http://localhost:3000/text-insertion-in-nested-html.html')
 	
 	{
