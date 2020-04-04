@@ -46,9 +46,10 @@ test('delete-101-delete-element-between-text-and-element', async () => {
 	const uri = await createTestFile('delete-101-delete-element-between-text-and-element.html')
   await setText(`a<h1>b</h1><h1>c</h1>`)
   await activateExtension()
+  await vscode.commands.executeCommand('htmlPreview.openPreview')
   const browser = await getBrowser()
   const page = await browser.newPage()
-  await vscode.commands.executeCommand('htmlPreview.openPreview')
+  await new Promise(resolve => setTimeout(resolve, 10))
   await page.goto('http://localhost:3000/delete-101-delete-element-between-text-and-element.html', {waitUntil: 'networkidle2', timeout: 15000})
   //await page.goto('http://localhost:3000/delete-101-delete-element-between-text-and-element.html')
 	

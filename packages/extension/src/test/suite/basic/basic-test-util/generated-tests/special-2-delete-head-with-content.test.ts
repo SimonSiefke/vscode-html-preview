@@ -48,9 +48,10 @@ test('special-2-delete-head-with-content', async () => {
   <title>hello world</title>
 </head>`)
   await activateExtension()
+  await vscode.commands.executeCommand('htmlPreview.openPreview')
   const browser = await getBrowser()
   const page = await browser.newPage()
-  await vscode.commands.executeCommand('htmlPreview.openPreview')
+  await new Promise(resolve => setTimeout(resolve, 10))
   await page.goto('http://localhost:3000/special-2-delete-head-with-content.html', {waitUntil: 'networkidle2', timeout: 15000})
   //await page.goto('http://localhost:3000/special-2-delete-head-with-content.html')
 	

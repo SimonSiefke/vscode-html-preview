@@ -46,9 +46,10 @@ test('emmet', async () => {
 	const uri = await createTestFile('emmet.html')
   await setText(`h1`)
   await activateExtension()
+  await vscode.commands.executeCommand('htmlPreview.openPreview')
   const browser = await getBrowser()
   const page = await browser.newPage()
-  await vscode.commands.executeCommand('htmlPreview.openPreview')
+  await new Promise(resolve => setTimeout(resolve, 10))
   await page.goto('http://localhost:3000/emmet.html', {waitUntil: 'networkidle2', timeout: 15000})
   //await page.goto('http://localhost:3000/emmet.html')
 	

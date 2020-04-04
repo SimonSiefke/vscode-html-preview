@@ -46,9 +46,10 @@ test('insert-001-insert-text-between-text-and-element', async () => {
 	const uri = await createTestFile('insert-001-insert-text-between-text-and-element.html')
   await setText(`a<h1>c</h1>`)
   await activateExtension()
+  await vscode.commands.executeCommand('htmlPreview.openPreview')
   const browser = await getBrowser()
   const page = await browser.newPage()
-  await vscode.commands.executeCommand('htmlPreview.openPreview')
+  await new Promise(resolve => setTimeout(resolve, 10))
   await page.goto('http://localhost:3000/insert-001-insert-text-between-text-and-element.html', {waitUntil: 'networkidle2', timeout: 15000})
   //await page.goto('http://localhost:3000/insert-001-insert-text-between-text-and-element.html')
 	
