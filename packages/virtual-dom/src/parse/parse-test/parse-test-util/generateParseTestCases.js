@@ -3,7 +3,7 @@ import * as path from 'path'
 import { toJson } from 'really-relaxed-json'
 import { validate } from 'jsonschema'
 
-const failing = ['angle-bracket-in-quoted-attribute.test.txt']
+const failing = ['angle-bracket-in-quoted-attribute.test.txt', 'base.test.txt']
 const testFileNames = [
   'invalid-or-missing-closing-tag.test.txt',
   'angle-bracket-in-quoted-attribute.test.txt',

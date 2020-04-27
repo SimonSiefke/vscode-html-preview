@@ -10,7 +10,9 @@ import { remotePluginEditText } from './plugins/remote-plugin-edit-text/remotePl
 import { createMessageChannel } from './messageChannel'
 import { remotePluginHighlightSelection } from './plugins/remote-plugin-highlight-selection/remotePluginHighlightSelection'
 
-const $script = document.querySelector('script[src="/html-preview.js"]') as HTMLScriptElement
+const $script = document.querySelector(
+  'script[src="http://localhost:3000/html-preview.js"]'
+) as HTMLScriptElement
 $script.remove()
 
 function walk(dom, fn, childrenFirst = false) {
@@ -106,9 +108,9 @@ function isUsuallyInHead(node) {
 
 async function fetchNodeMap() {
   const nodeMap = { 0: document }
-  const virtualDom = await fetch(`/virtual-dom.json?originalUrl=${location.href}`).then(res =>
-    res.json()
-  )
+  const virtualDom = await fetch(
+    `http://localhost:3000/virtual-dom.json?originalUrl=${location.href}`
+  ).then(res => res.json())
   if (virtualDom === 'invalid') {
     return {
       error: 'invalid',

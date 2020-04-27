@@ -1,0 +1,9 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base href=http://www.example.com/ target=_self />
+  </head>
+  <body>
+    asdasdasdasdasdasdf
+  </body>
+</html>

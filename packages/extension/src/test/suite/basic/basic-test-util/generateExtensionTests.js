@@ -7,6 +7,7 @@ const headless = true
 
 // TODO
 const failingTests = [
+  'base-tag.test.txt',
   'replace-element-with-text.test.txt',
   'delete-first-element-node.test.txt',
   'delete-element-before-element.test.txt',

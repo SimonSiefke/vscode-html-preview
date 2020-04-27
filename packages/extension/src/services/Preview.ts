@@ -127,7 +127,7 @@ const httpMiddlewareSendHtml = (api: PreviewApi) => async (
     }
     let { gen } = genDom(text, state.parser)
     const bodyIndex = gen.lastIndexOf('</body')
-    const $script = '<script type="module" src="/html-preview.js"></script>'
+    const $script = '<script type="module" src="http://localhost:3000/html-preview.js"></script>'
 
     if (bodyIndex !== -1) {
       gen = gen.slice(0, bodyIndex) + $script + gen.slice(bodyIndex)
@@ -219,7 +219,7 @@ const startServer = async (api: PreviewApi): Promise<void> => {
   api.httpServer.use(httpMiddlewareSendCss(api))
   try {
     await api.httpServer.start({
-      injectedCode: '<script type="module" src="html-preview.js"></script>',
+      injectedCode: '<script type="module" src="http://localhost:3000/html-preview.js"></script>',
       directory: vscode.workspace.workspaceFolders[0].uri.fsPath,
       port: 3000,
     })
