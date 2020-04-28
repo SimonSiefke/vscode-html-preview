@@ -1,61 +1,19 @@
 {
   "[html]": {
-    "editor.formatOnSave": false
-  },
-  "files.exclude": {
-    "**/.git": false,
-    "**/.svn": false,
-    "**/.hg": false,
-    "**/CVS": false,
-    "**/.DS_Store": false,
-    "**/dist": false,
-    "**/.vscode": false,
-    "deprecated": false,
-    "**/node_modules": false,
-    "playground": false,
-    "webpack": false,
-    ".gitignore": false,
-    ".travis.yml": false,
-    "CHANGELOG.md": false,
-    "lerna.json": false,
-    "LICENSE": false,
-    "**/package-lock.json": false,
-    "ThirdPartyNotices.txt": false,
-    "tsconfig-base.json": false,
-    "tsconfig-noncomposite-base.json": false,
-    "tsconfig.json": false,
-    "scripts": false,
-    "**/tsconfig.tsbuildinfo": false,
-    "i18n": false,
-    "**/.rpt2_cache": false,
-    "**/.vscode-test": false,
-    "debug.log": false,
-    "global.d.ts": false,
-    "open.js": false,
-    "perfomance-observer.html": false,
-    "process.js": false,
-    "tempdir.js": false,
-    "**/rollup.config.js": false,
-    "**/images": false,
-    "**/(deprecated)*": false,
-    "examples": false,
-    "**/html-preview-service": false,
-    ".prettierignore": false,
-    "**/tsconfig.json": false,
-    "**/README.md": false
+    "editor.formatOnSave": true
   },
   "search.exclude": {
-    "**/node_modules": false,
-    "**/bower_components": false,
-    "**/dist": false
+    "**/node_modules": true,
+    "**/bower_components": true,
+    "**/dist": true
   },
   "files.watcherExclude": {
-    "**/.git/objects/**": true,
+    "**/.git/**": true,
     "**/.git/subtree-cache/**": true,
     "**/node_modules/**": true,
     "**/dist/**": true
   },
-  "files.trimTrailingWhitespace": false,
+  "files.trimTrailingWhitespace": true,
   "editor.formatOnSave": true,
   "json.schemas": [
     {

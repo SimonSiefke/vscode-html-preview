@@ -2,8 +2,6 @@
   "recommendations": [
     "esbenp.prettier-vscode",
     "dbaeumer.vscode-eslint",
-    "eamodio.toggle-excluded-files",
-    "hbenl.vscode-test-explorer",
-    "rtbenfield.vscode-jest-test-adapter"
+    "eamodio.toggle-excluded-files"
   ]
 }
