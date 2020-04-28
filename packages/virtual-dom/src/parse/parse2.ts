@@ -1,4 +1,4 @@
-import { scan, TokenType } from './scanner2'
+import { scan, TokenType, Token } from './scanner2'
 
 const SELF_CLOSING_TAGS = new Set(['input'])
 
@@ -67,10 +67,8 @@ export const parse: (text: string) => SuccessResult | ErrorResult = text => {
   let parent: ElementNode = htmlDocument
 
   let child: any
-  let attributeName: any
   for (let i = 0; i < tokens.length; i++) {
     const token = tokens[i]
-    token
     switch (token.type) {
       case TokenType.Content: {
         child = createTextNode(token.text)
@@ -101,7 +99,6 @@ export const parse: (text: string) => SuccessResult | ErrorResult = text => {
         }
         break
       }
-
       case TokenType.EndTagName: {
         // if (token.text === child.tag) {
         //   parent.children.push(child)
@@ -110,11 +107,11 @@ export const parse: (text: string) => SuccessResult | ErrorResult = text => {
         // token
         break
       }
-      case TokenType.CommentStart: {
-        // const start = tokens[i++]
-        // const content = tokens[i++]
-        // const end = tokens[i++]
-        // initNode(createCommentNode(content.text))
+      case TokenType.Comment: {
+        child = createCommentNode(token.text.slice(4, -3))
+        parent.children.push(child)
+        child = undefined
+        break
       }
       case TokenType.AttributeName: {
         if (token.text in child.attributes) {
@@ -123,14 +120,30 @@ export const parse: (text: string) => SuccessResult | ErrorResult = text => {
             index: -1,
           }
         }
-        attributeName = token.text
-        child.attributes[attributeName] = null
+        const attributeName = token.text
+        let nextToken = tokens[++i]
+        if (nextToken.type === TokenType.Whitespace) {
+          nextToken = tokens[++i]
+        }
+        if (nextToken.type === TokenType.AttributeEqualSign) {
+          nextToken = tokens[++i]
+          if (nextToken.type === TokenType.Whitespace) {
+            nextToken = tokens[++i]
+          }
+          if (nextToken.type === TokenType.AttributeValue) {
+            child.attributes[attributeName] = nextToken.text
+          } else if (nextToken.type === TokenType.QuotedAttributeValue) {
+            child.attributes[attributeName] = nextToken.text.slice(1, -1) // TODO check if opening quote is more performant
+          }
+        } else if (nextToken.type === TokenType.AttributeName) {
+          child.attributes[attributeName] = null
+          i--
+        } else {
+          child.attributes[attributeName] = null
+        }
         break
       }
-      case TokenType.AttributeValue: {
-        child.attributes[attributeName] = token.text
-        break
-      }
+
       default: {
         break
       }
@@ -159,7 +172,7 @@ const pretty = node => {
   }
 }
 
-const doc = parse(`<h1 class="">hello world</h1>`)
+const doc = parse(`<!--what-->`)
 
 // @ts-ignore
 JSON.stringify(pretty(doc.htmlDocument).children, null, 2) //?

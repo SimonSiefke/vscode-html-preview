@@ -27,10 +27,7 @@ test('basic', () => {
 })
 
 test('comment', () => {
-  expectTokens(`<!---->`).toEqual([
-    { text: '<!--', type: 'CommentStart' },
-    { text: '-->', type: 'CommentEnd' },
-  ])
+  expectTokens(`<!---->`).toEqual([{ text: '<!---->', type: 'Comment' }])
 })
 
 test('self closing tag', () => {
@@ -87,8 +84,7 @@ test('attribute with double quotes', () => {
     { text: ' ', type: 'Whitespace' },
     { text: 'class', type: 'AttributeName' },
     { text: '=', type: 'AttributeEqualSign' },
-    { text: '"', type: 'OpeningDoubleQuote' },
-    { text: '"', type: 'ClosingDoubleQuote' },
+    { text: '""', type: 'QuotedAttributeValue' },
     { text: '>', type: 'StartTagClosingBracket' },
   ])
 })
@@ -100,8 +96,7 @@ test('attribute with single quotes', () => {
     { text: ' ', type: 'Whitespace' },
     { text: 'class', type: 'AttributeName' },
     { text: '=', type: 'AttributeEqualSign' },
-    { text: "'", type: 'OpeningSingleQuote' },
-    { text: "'", type: 'ClosingSingleQuote' },
+    { text: "''", type: 'QuotedAttributeValue' },
     { text: '>', type: 'StartTagClosingBracket' },
   ])
 })
@@ -113,8 +108,7 @@ test('dashed attribute name', () => {
     { text: ' ', type: 'Whitespace' },
     { text: 'aria-label', type: 'AttributeName' },
     { text: '=', type: 'AttributeEqualSign' },
-    { text: '"', type: 'OpeningDoubleQuote' },
-    { text: '"', type: 'ClosingDoubleQuote' },
+    { text: '""', type: 'QuotedAttributeValue' },
     { text: '>', type: 'StartTagClosingBracket' },
   ])
 })
@@ -163,9 +157,7 @@ test('doctype and html', () => {
     { text: ' ', type: 'Whitespace' },
     { text: 'lang', type: 'AttributeName' },
     { text: '=', type: 'AttributeEqualSign' },
-    { text: '"', type: 'OpeningDoubleQuote' },
-    { text: 'en', type: 'AttributeValue' },
-    { text: '"', type: 'ClosingDoubleQuote' },
+    { text: '"en"', type: 'QuotedAttributeValue' },
     { text: '>', type: 'StartTagClosingBracket' },
     { text: '<', type: 'StartTagOpeningBracket' },
     { text: 'head', type: 'StartTagName' },
@@ -185,31 +177,22 @@ test('multiple attributes', () => {
     { text: ' ', type: 'Whitespace' },
     { text: 'itemscope', type: 'AttributeName' },
     { text: '=', type: 'AttributeEqualSign' },
-    { text: '"', type: 'OpeningDoubleQuote' },
-    { text: '"', type: 'ClosingDoubleQuote' },
+    { text: '""', type: 'QuotedAttributeValue' },
     { text: ' ', type: 'Whitespace' },
     { text: 'itemtype', type: 'AttributeName' },
     { text: '=', type: 'AttributeEqualSign' },
-    { text: '"', type: 'OpeningDoubleQuote' },
-    { text: 'http://schema.org/SearchResultsPage', type: 'AttributeValue' },
-    { text: '"', type: 'ClosingDoubleQuote' },
+    { text: '"http://schema.org/SearchResultsPage"', type: 'QuotedAttributeValue' },
     { text: ' ', type: 'Whitespace' },
     { text: 'lang', type: 'AttributeName' },
     { text: '=', type: 'AttributeEqualSign' },
-    { text: '"', type: 'OpeningDoubleQuote' },
-    { text: 'en', type: 'AttributeValue' },
-    { text: '"', type: 'ClosingDoubleQuote' },
+    { text: '"en"', type: 'QuotedAttributeValue' },
     { text: '>', type: 'StartTagClosingBracket' },
   ])
 })
 
 test('multiline comment', () => {
   expectTokens(`<!--
--->`).toEqual([
-    { text: '<!--', type: 'CommentStart' },
-    { text: '\n', type: 'Comment' },
-    { text: '-->', type: 'CommentEnd' },
-  ])
+-->`).toEqual([{ text: '<!--\n-->', type: 'Comment' }])
 })
 
 test('whitespace around attribute equal sign', () => {
@@ -221,9 +204,7 @@ test('whitespace around attribute equal sign', () => {
     { text: ' ', type: 'Whitespace' },
     { text: '=', type: 'AttributeEqualSign' },
     { text: ' ', type: 'Whitespace' },
-    { text: '"', type: 'OpeningDoubleQuote' },
-    { text: '1', type: 'AttributeValue' },
-    { text: '"', type: 'ClosingDoubleQuote' },
+    { text: `"1"`, type: 'QuotedAttributeValue' },
   ])
 })
 
@@ -293,9 +274,7 @@ test('attribute with colon', () => {
     { text: ' ', type: 'Whitespace' },
     { text: 'xml:space', type: 'AttributeName' },
     { text: '=', type: 'AttributeEqualSign' },
-    { text: '"', type: 'OpeningDoubleQuote' },
-    { text: 'preserve', type: 'AttributeValue' },
-    { text: '"', type: 'ClosingDoubleQuote' },
+    { text: '"preserve"', type: 'QuotedAttributeValue' },
     { text: '>', type: 'StartTagClosingBracket' },
   ])
 })
@@ -306,6 +285,44 @@ test('attribute without value', () => {
     { text: 'h1', type: 'StartTagName' },
     { text: ' ', type: 'Whitespace' },
     { text: 'class', type: 'AttributeName' },
+    { text: '>', type: 'StartTagClosingBracket' },
+    { text: 'hello world', type: 'Content' },
+    { text: '</', type: 'EndTagOpeningBracket' },
+    { text: 'h1', type: 'EndTagName' },
+    { text: '>', type: 'EndTagOpeningBracket' },
+  ])
+})
+
+test('mixed attributes', () => {
+  expectTokens(`<h1 class x=2>hello world</h1>`).toEqual([
+    { text: '<', type: 'StartTagOpeningBracket' },
+    { text: 'h1', type: 'StartTagName' },
+    { text: ' ', type: 'Whitespace' },
+    { text: 'class', type: 'AttributeName' },
+    { text: ' ', type: 'Whitespace' },
+    { text: 'x', type: 'AttributeName' },
+    { text: '=', type: 'AttributeEqualSign' },
+    { text: '2', type: 'AttributeValue' },
+    { text: '>', type: 'StartTagClosingBracket' },
+    { text: 'hello world', type: 'Content' },
+    { text: '</', type: 'EndTagOpeningBracket' },
+    { text: 'h1', type: 'EndTagName' },
+    { text: '>', type: 'EndTagOpeningBracket' },
+  ])
+})
+
+test('multiple unquoted attribute values', () => {
+  expectTokens(`<h1 x=2 x=2>hello world</h1>`).toEqual([
+    { text: '<', type: 'StartTagOpeningBracket' },
+    { text: 'h1', type: 'StartTagName' },
+    { text: ' ', type: 'Whitespace' },
+    { text: 'x', type: 'AttributeName' },
+    { text: '=', type: 'AttributeEqualSign' },
+    { text: '2', type: 'AttributeValue' },
+    { text: ' ', type: 'Whitespace' },
+    { text: 'x', type: 'AttributeName' },
+    { text: '=', type: 'AttributeEqualSign' },
+    { text: '2', type: 'AttributeValue' },
     { text: '>', type: 'StartTagClosingBracket' },
     { text: 'hello world', type: 'Content' },
     { text: '</', type: 'EndTagOpeningBracket' },

@@ -7,11 +7,8 @@ const enum State {
   Comment = 'Comment',
   AfterAttributeName = 'AfterAttributeName',
   AfterAttributeEqualSign = 'AfterAttributeEqualSign',
-  AfterOpeningDoubleQuote = 'AfterOpeningDoubleQuote',
-  AfterAttributeValue = 'AfterAttributeValue',
-  AfterOpeningSingleQuote = 'AfterOpeningSingleQuote',
-  AfterClosingSingleQuote = 'AfterClosingSingleQuote',
   InsideStartTagAndHasSeenWhitespace = 'InsideStartTagAndHasSeenWhitespace',
+  AfterAttributeNameAndHasSeenWhitespace = 'AfterAttributeNameAndHasSeenWhitespace',
 }
 
 export enum TokenType {
@@ -20,25 +17,20 @@ export enum TokenType {
   EndTagOpeningBracket = 'EndTagOpeningBracket',
   Content = 'Content',
   EndTagName = 'EndTagName',
-  CommentStart = 'CommentStart',
-  CommentEnd = 'CommentEnd',
   StartTagSelfClosingBracket = 'StartTagSelfClosingBracket',
   StartTagClosingBracket = 'StartTagClosingBracket',
   StartTagOpeningBracket = 'StartTagOpeningBracket',
   AttributeName = 'AttributeName',
   AttributeEqualSign = 'AttributeEqualSign',
-  OpeningDoubleQuote = 'OpeningDoubleQuote',
-  ClosingDoubleQuote = 'ClosingDoubleQuote',
-  OpeningSingleQuote = 'OpeningSingleQuote',
-  ClosingSingleQuote = 'ClosingSingleQuote',
   AttributeValue = 'AttributeValue',
+  QuotedAttributeValue = 'QuotedAttributeValue',
   DocType = 'DocType',
   Comment = 'Comment',
   Script = 'Script',
   ScriptEndTag = 'ScriptEndTag',
 }
 
-interface Token {
+export interface Token {
   readonly type: TokenType
   readonly text: string
 }
@@ -46,9 +38,9 @@ interface Token {
 const DOCTYPE_RE = /^!DOCTYPE\s+html/i
 const TAG_NAME_RE = /^[a-zÀ-ž][a-zÀ-ž\d\-]*/i
 const ATTRIBUTE_NAME_RE = /^[a-zÀ-ž][a-zÀ-ž\d\-:]*/i
-const ATTRIBUTE_VALUE_SINGLE_QUOTE_RE = /^[^<>']+/
-const ATTRIBUTE_VALUE_DOUBLE_QUOTE_RE = /^[^<>"]+/
-const ATTRIBUTE_VALUE_RE = /^[^<>]/
+const ATTRIBUTE_VALUE_SINGLE_QUOTE_RE = /^'[^<>']*'/
+const ATTRIBUTE_VALUE_DOUBLE_QUOTE_RE = /^"[^<>"]*"/
+const ATTRIBUTE_VALUE_RE = /^[^<>\s]*/
 const WHITESPACE_RE = /^\s+/
 
 type SuccessResult = {
@@ -109,14 +101,14 @@ export const scan: (text: string) => SuccessResult | ErrorResult = text => {
             break
           }
           case undefined: {
-            if ((next = text.slice(index).match(/^<!--/))) {
+            if ((next = text.slice(index).match(/^<!--(.|\s)*?-->/))) {
               const tokenText = next[0]
               index += tokenText.length
               tokens.push({
-                type: TokenType.CommentStart,
+                type: TokenType.Comment,
                 text: tokenText,
               })
-              state = State.Comment
+              state = State.Content
             } else if ((next = text.slice(index).match(/^<\//))) {
               const tokenText = next[0]
               index += tokenText.length
@@ -249,31 +241,7 @@ export const scan: (text: string) => SuccessResult | ErrorResult = text => {
         }
         break
       }
-      case State.Comment: {
-        if ((next = text.slice(index).match(/^-->/))) {
-          const tokenText = next[0]
-          index += tokenText.length
-          tokens.push({
-            type: TokenType.CommentEnd,
-            text: tokenText,
-          })
-          state = State.Content
-        } else if ((next = text.slice(index).match(/^(.|\s)*?(?:-->)/))) {
-          const tokenText = next[1]
-          index += tokenText.length
-          tokens.push({
-            type: TokenType.Comment,
-            text: tokenText,
-          })
-          state = State.Comment
-        } else {
-          return {
-            status: 'invalid',
-            index,
-          }
-        }
-        break
-      }
+
       case State.InsideStartTagAndHasSeenWhitespace: {
         if ((next = text.slice(index).match(/^\/>/))) {
           const tokenText = next[0]
@@ -323,7 +291,7 @@ export const scan: (text: string) => SuccessResult | ErrorResult = text => {
             type: TokenType.Whitespace,
             text: tokenText,
           })
-          state = State.AfterAttributeName
+          state = State.AfterAttributeNameAndHasSeenWhitespace
         } else if ((next = text.slice(index).match(/^>/))) {
           const tokenText = next[0]
           index += tokenText.length
@@ -341,6 +309,9 @@ export const scan: (text: string) => SuccessResult | ErrorResult = text => {
           })
           state = State.Content
         } else {
+          console.log('ok')
+          tokens
+          text.slice(index).startsWith('x') //?
           return {
             status: 'invalid',
             index,
@@ -348,23 +319,46 @@ export const scan: (text: string) => SuccessResult | ErrorResult = text => {
         }
         break
       }
+      case State.AfterAttributeNameAndHasSeenWhitespace: {
+        if ((next = text.slice(index).match(/^=/))) {
+          const tokenText = next[0]
+          index += tokenText.length
+          tokens.push({
+            type: TokenType.AttributeEqualSign,
+            text: tokenText,
+          })
+          state = State.AfterAttributeEqualSign
+        } else if ((next = text.slice(index).match(ATTRIBUTE_NAME_RE))) {
+          const tokenText = next[0]
+          index += tokenText.length
+          tokens.push({
+            type: TokenType.AttributeName,
+            text: tokenText,
+          })
+          state = State.AfterAttributeName
+        } else {
+          text.slice(index) //?
+          throw new Error('no')
+        }
+        break
+      }
       case State.AfterAttributeEqualSign: {
-        if ((next = text.slice(index).match(/^"/))) {
+        if ((next = text.slice(index).match(ATTRIBUTE_VALUE_SINGLE_QUOTE_RE))) {
           const tokenText = next[0]
           index += tokenText.length
           tokens.push({
-            type: TokenType.OpeningDoubleQuote,
+            type: TokenType.QuotedAttributeValue,
             text: tokenText,
           })
-          state = State.AfterOpeningDoubleQuote
-        } else if ((next = text.slice(index).match(/^'/))) {
+          state = State.InsideStartTag
+        } else if ((next = text.slice(index).match(ATTRIBUTE_VALUE_DOUBLE_QUOTE_RE))) {
           const tokenText = next[0]
           index += tokenText.length
           tokens.push({
-            type: TokenType.OpeningSingleQuote,
+            type: TokenType.QuotedAttributeValue,
             text: tokenText,
           })
-          state = State.AfterOpeningSingleQuote
+          state = State.InsideStartTag
         } else if ((next = text.slice(index).match(WHITESPACE_RE))) {
           const tokenText = next[0]
           index += tokenText.length
@@ -380,123 +374,7 @@ export const scan: (text: string) => SuccessResult | ErrorResult = text => {
             type: TokenType.AttributeValue,
             text: tokenText,
           })
-          state = State.AfterAttributeValue
-        } else {
-          return {
-            status: 'invalid',
-            index,
-          }
-        }
-        break
-      }
-      case State.AfterOpeningSingleQuote: {
-        if ((next = text.slice(index).match(/^'/))) {
-          const tokenText = next[0]
-          index += tokenText.length
-          tokens.push({
-            type: TokenType.ClosingSingleQuote,
-            text: tokenText,
-          })
-          state = State.AfterClosingSingleQuote
-        } else if ((next = text.slice(index).match(ATTRIBUTE_VALUE_SINGLE_QUOTE_RE))) {
-          const tokenText = next[0]
-          index += tokenText.length
-          tokens.push({
-            type: TokenType.AttributeValue,
-            text: tokenText,
-          })
-          state = State.AfterOpeningSingleQuote
-        } else {
-          return {
-            status: 'invalid',
-            index,
-          }
-        }
-        break
-      }
-      case State.AfterClosingSingleQuote: {
-        if ((next = text.slice(index).match(/^>/))) {
-          const tokenText = next[0]
-          index += tokenText.length
-          tokens.push({
-            type: TokenType.StartTagClosingBracket,
-            text: tokenText,
-          })
-          state = State.Content
-        } else if ((next = text.slice(index).match(/^\/>/))) {
-          const tokenText = next[0]
-          index += tokenText.length
-          tokens.push({
-            type: TokenType.StartTagSelfClosingBracket,
-            text: tokenText,
-          })
-          state = State.Content
-        } else if ((next = text.slice(index).match(WHITESPACE_RE))) {
-          const tokenText = next[0]
-          index += tokenText.length
-          tokens.push({
-            type: TokenType.Whitespace,
-            text: tokenText,
-          })
-          state = State.InsideStartTagAndHasSeenWhitespace
-        } else {
-          return {
-            status: 'invalid',
-            index,
-          }
-        }
-        break
-      }
-      case State.AfterOpeningDoubleQuote: {
-        if ((next = text.slice(index).match(/^"/))) {
-          const tokenText = next[0]
-          index += tokenText.length
-          tokens.push({
-            type: TokenType.ClosingDoubleQuote,
-            text: tokenText,
-          })
-          state = State.AfterAttributeValue
-        } else if ((next = text.slice(index).match(ATTRIBUTE_VALUE_DOUBLE_QUOTE_RE))) {
-          const tokenText = next[0]
-          index += tokenText.length
-          tokens.push({
-            type: TokenType.AttributeValue,
-            text: tokenText,
-          })
-          state = State.AfterOpeningDoubleQuote
-        } else {
-          return {
-            status: 'invalid',
-            index,
-          }
-        }
-        break
-      }
-      case State.AfterAttributeValue: {
-        if ((next = text.slice(index).match(/^>/))) {
-          const tokenText = next[0]
-          index += tokenText.length
-          tokens.push({
-            type: TokenType.StartTagClosingBracket,
-            text: tokenText,
-          })
-          state = State.Content
-        } else if ((next = text.slice(index).match(/^\/>/))) {
-          const tokenText = next[0]
-          index += tokenText.length
-          tokens.push({
-            type: TokenType.StartTagSelfClosingBracket,
-            text: tokenText,
-          })
-          state = State.Content
-        } else if ((next = text.slice(index).match(WHITESPACE_RE))) {
-          const tokenText = next[0]
-          index += tokenText.length
-          tokens.push({
-            type: TokenType.Whitespace,
-            text: tokenText,
-          })
-          state = State.InsideStartTagAndHasSeenWhitespace
+          state = State.InsideStartTag
         } else {
           return {
             status: 'invalid',
@@ -521,4 +399,9 @@ export const scan: (text: string) => SuccessResult | ErrorResult = text => {
 //   scan(`<svg xml:space="preserve">`) //?.
 // }
 
-scan(`<h1 class>hello world</h1>`) //?
+scan(`<!---->`) //?
+
+// start tag h1
+// attribute class null
+// content hello world
+// end tag h1

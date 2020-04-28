@@ -1,8 +1,7 @@
 {
   "compilerOptions": {
-    "pretty": true,
-    "lib": ["esnext"],
-    "target": "esnext",
+    "lib": ["ESNext"],
+    "target": "ESNext",
     "module": "commonjs",
 
     "declaration": true,
