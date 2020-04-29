@@ -41,9 +41,9 @@ const DOCTYPE_HTML4_TRANSITIONAL_RE = /!DOCTYPE\s+HTML\s+PUBLIC\s+"-\/\/W3C\/\/D
 const DOCTYPE_HTML4_FRAMESET_RE = /!DOCTYPE\s+HTML\s+PUBLIC\s+"-\/\/W3C\/\/DTD HTML 4.01 Frameset\/\/EN"\s+"http:\/\/www.w3.org\/TR\/html4\/frameset.dtd"/i
 const DOCTYPE_RE_5 = /!DOCTYPE\s+html/i
 const TAG_NAME_RE = /^[a-zÀ-ž][a-zÀ-ž\d\-]*/i
-const ATTRIBUTE_NAME_RE = /^[a-zÀ-ž][a-zÀ-ž\d\-:]*/i
-const ATTRIBUTE_VALUE_SINGLE_QUOTE_RE = /^'[^<>']*'/
-const ATTRIBUTE_VALUE_DOUBLE_QUOTE_RE = /^"[^<>"]*"/
+const ATTRIBUTE_NAME_RE = /^[a-zÀ-ž][a-zÀ-ž\d\-:_]*/i
+const ATTRIBUTE_VALUE_SINGLE_QUOTE_RE = /^'[^']*'/
+const ATTRIBUTE_VALUE_DOUBLE_QUOTE_RE = /^"[^"]*"/
 const ATTRIBUTE_VALUE_RE = /^[^<>\s]*/
 const WHITESPACE_RE = /^\s+/
 
@@ -345,7 +345,26 @@ export const scan: (text: string) => SuccessResult | ErrorResult = text => {
             text: tokenText,
           })
           state = State.AfterAttributeName
+        } else if ((next = text.slice(index).match(/^>/))) {
+          const tokenText = next[0]
+          index += tokenText.length
+          tokens.push({
+            type: TokenType.StartTagClosingBracket,
+            text: tokenText,
+          })
+          state = State.Content
+        } else if ((next = text.slice(index).match(/^\/>/))) {
+          const tokenText = next[0]
+          index += tokenText.length
+          tokens.push({
+            type: TokenType.StartTagSelfClosingBracket,
+            text: tokenText,
+          })
+          state = State.Content
         } else {
+          tokens
+          console.log(index)
+          console.log(text.slice(index, index + 30))
           text.slice(index) //?
           throw new Error('no')
         }
@@ -404,14 +423,4 @@ export const scan: (text: string) => SuccessResult | ErrorResult = text => {
   }
 }
 
-// for (let i = 0; i < 100000; i++) {
-//   scan(`<svg xml:space="preserve">`) //?.
-// }
-
-// scan(`<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-// <html xmlns="http://www.w3.org/1999/xhtml" dir="ltr"  lang="en-US" >`) //?
-
-// start tag h1
-// attribute class null
-// content hello world
-// end tag h1
+scan(`<div aria-label="Add bold text <ctrl+b>">`) //?

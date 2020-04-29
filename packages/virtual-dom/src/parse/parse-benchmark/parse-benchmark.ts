@@ -1,19 +1,30 @@
-import * as fs from 'fs';
-import * as path from 'path';
-import {performance} from 'perf_hooks';
-import {parseHtml} from '../parse';
+import * as fs from 'fs'
+import * as path from 'path'
+import { scan } from '../scanner2'
+import { measureStart, measureEnd } from './measure'
+import * as assert from 'assert'
+import { parseHtml } from '../parse'
 
-const html5Spec = fs.readFileSync(path.join(__dirname, 'fixtures/html5-spec.html'), 'utf-8');
+const fixtures = [
+  fs.readFileSync(path.join(__dirname, 'fixtures/html5-spec.txt')).toString(),
+  fs.readFileSync(path.join(__dirname, 'fixtures/github.txt')).toString(),
+  fs.readFileSync(path.join(__dirname, 'fixtures/google.txt')).toString(),
+  fs.readFileSync(path.join(__dirname, 'fixtures/codepen.txt')).toString(),
+]
 
-function run() {
-	parseHtml(html5Spec);
+scan2: {
+  measureStart('scan2')
+  for (const fixture of fixtures) {
+    const result = scan(fixture)
+    assert.equal(result.status, 'success')
+  }
+  measureEnd('scan2')
 }
 
-const t0 = performance.now();
-run();
-const t1 = performance.now();
-console.log('took ' + (t1 - t0) + ' milliseconds.');
-
-const t2 = performance.now();
-const t3 = performance.now();
-console.log('took ' + (t3 - t2) + ' milliseconds.');
+// parse1: {
+//   measureStart('parse1')
+//   for (const fixture of fixtures) {
+//     const result = parseHtml(fixture)
+//     assert.equal(result.htmlDocument !== undefined, true)
+//   }
+// }

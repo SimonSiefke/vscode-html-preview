@@ -360,3 +360,91 @@ test('older doctype', () => {
     { text: '>', type: 'StartTagClosingBracket' },
   ])
 })
+
+test('small document', () => {
+  expectTokens(`<!DOCTYPE html>
+<html>
+  <head>
+    <base href=http://www.example.com/ target=_self />
+  </head>
+  <body>
+    asdasdasdasdasdasd
+  </body>
+</html>`).toEqual([
+    { text: '<', type: 'StartTagOpeningBracket' },
+    { text: '!DOCTYPE html', type: 'DocType' },
+    { text: '>', type: 'StartTagClosingBracket' },
+    { text: '\n', type: 'Content' },
+    { text: '<', type: 'StartTagOpeningBracket' },
+    { text: 'html', type: 'StartTagName' },
+    { text: '>', type: 'StartTagClosingBracket' },
+    { text: '\n  ', type: 'Content' },
+    { text: '<', type: 'StartTagOpeningBracket' },
+    { text: 'head', type: 'StartTagName' },
+    { text: '>', type: 'StartTagClosingBracket' },
+    { text: '\n    ', type: 'Content' },
+    { text: '<', type: 'StartTagOpeningBracket' },
+    { text: 'base', type: 'StartTagName' },
+    { text: ' ', type: 'Whitespace' },
+    { text: 'href', type: 'AttributeName' },
+    { text: '=', type: 'AttributeEqualSign' },
+    { text: 'http://www.example.com/', type: 'AttributeValue' },
+    { text: ' ', type: 'Whitespace' },
+    { text: 'target', type: 'AttributeName' },
+    { text: '=', type: 'AttributeEqualSign' },
+    { text: '_self', type: 'AttributeValue' },
+    { text: ' ', type: 'Whitespace' },
+    { text: '/>', type: 'StartTagSelfClosingBracket' },
+    { text: '\n  ', type: 'Content' },
+    { text: '</', type: 'EndTagOpeningBracket' },
+    { text: 'head', type: 'EndTagName' },
+    { text: '>', type: 'EndTagOpeningBracket' },
+    { text: '\n  ', type: 'Content' },
+    { text: '<', type: 'StartTagOpeningBracket' },
+    { text: 'body', type: 'StartTagName' },
+    { text: '>', type: 'StartTagClosingBracket' },
+    { text: '\n    asdasdasdasdasdasd\n  ', type: 'Content' },
+    { text: '</', type: 'EndTagOpeningBracket' },
+    { text: 'body', type: 'EndTagName' },
+    { text: '>', type: 'EndTagOpeningBracket' },
+    { text: '\n', type: 'Content' },
+    { text: '</', type: 'EndTagOpeningBracket' },
+    { text: 'html', type: 'EndTagName' },
+    { text: '>', type: 'EndTagOpeningBracket' },
+  ])
+})
+
+test('whitespace after attribute without value', () => {
+  expectTokens(`<div data-pjax-container >`).toEqual([
+    { text: '<', type: 'StartTagOpeningBracket' },
+    { text: 'div', type: 'StartTagName' },
+    { text: ' ', type: 'Whitespace' },
+    { text: 'data-pjax-container', type: 'AttributeName' },
+    { text: ' ', type: 'Whitespace' },
+    { text: '>', type: 'StartTagClosingBracket' },
+  ])
+})
+
+test('underscore in attribute name', () => {
+  expectTokens(`<div vertical_align="text_bottom">`).toEqual([
+    { text: '<', type: 'StartTagOpeningBracket' },
+    { text: 'div', type: 'StartTagName' },
+    { text: ' ', type: 'Whitespace' },
+    { text: 'vertical_align', type: 'AttributeName' },
+    { text: '=', type: 'AttributeEqualSign' },
+    { text: '"text_bottom"', type: 'QuotedAttributeValue' },
+    { text: '>', type: 'StartTagClosingBracket' },
+  ])
+})
+
+test('angle brackets inside quoted attribute value', () => {
+  expectTokens(`<div aria-label="Add bold text <ctrl+b>">`).toEqual([
+    { text: '<', type: 'StartTagOpeningBracket' },
+    { text: 'div', type: 'StartTagName' },
+    { text: ' ', type: 'Whitespace' },
+    { text: 'aria-label', type: 'AttributeName' },
+    { text: '=', type: 'AttributeEqualSign' },
+    { text: '"Add bold text <ctrl+b>"', type: 'QuotedAttributeValue' },
+    { text: '>', type: 'StartTagClosingBracket' },
+  ])
+})
