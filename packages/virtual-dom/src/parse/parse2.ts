@@ -1,6 +1,6 @@
 import { scan, TokenType, Token } from './scanner2'
 
-const SELF_CLOSING_TAGS = new Set(['input'])
+const SELF_CLOSING_TAGS = new Set(['input', '!DOCTYPE', '!doctype'])
 
 const isSelfClosingTag: (tagName: string) => boolean = tagName => SELF_CLOSING_TAGS.has(tagName)
 
@@ -54,6 +54,13 @@ const createTextNode: (text: string) => TextNode = text => ({
   parent: undefined,
 })
 
+interface DoctypeNode {
+  readonly nodeType: 'Doctype'
+  readonly tag: '!DOCTYPE'
+}
+
+const createDoctypeNode: () => DoctypeNode = () => ({ nodeType: 'Doctype', tag: '!DOCTYPE' })
+
 export const parse: (text: string) => SuccessResult | ErrorResult = text => {
   const result = scan(text)
   if (result.status === 'invalid') {
@@ -105,6 +112,11 @@ export const parse: (text: string) => SuccessResult | ErrorResult = text => {
         //   child = undefined
         // }
         // token
+        break
+      }
+      case TokenType.DocType: {
+        parent.children.pop()
+        child = createDoctypeNode()
         break
       }
       case TokenType.Comment: {
@@ -172,7 +184,8 @@ const pretty = node => {
   }
 }
 
-const doc = parse(`<!--what-->`)
+const doc = parse(`<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" dir="ltr"  lang="en-US" >`)
 
 // @ts-ignore
 JSON.stringify(pretty(doc.htmlDocument).children, null, 2) //?

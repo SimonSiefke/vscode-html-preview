@@ -23,6 +23,10 @@ const expectNodes = (text: string) => ({
     expect(result.status).toBe('success')
     expect((result as any).htmlDocument.children).toEqual(expectedNodes)
   },
+  toFail: () => {
+    const result = parse(text)
+    expect(result.status).toBe('invalid')
+  },
 })
 
 test('basic', () => {
@@ -119,4 +123,23 @@ body {
       ],
     },
   ])
+})
+
+test('older doctype', () => {
+  expectNodes(`<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+  <html xmlns="http://www.w3.org/1999/xhtml" dir="ltr"  lang="en-US" >`).toEqual([
+    { nodeType: 'Doctype', tag: '!DOCTYPE' },
+    { nodeType: 'TextNode', parent: undefined, text: '\n  ' },
+    {
+      attributes: { dir: 'ltr', lang: 'en-US', xmlns: 'http://www.w3.org/1999/xhtml' },
+      children: [],
+      nodeType: 'ElementNode',
+      parent: undefined,
+      tag: 'html',
+    },
+  ])
+})
+
+test('invalid doctype', () => {
+  expectNodes(`<!DOCTYPE ht>`).toFail()
 })

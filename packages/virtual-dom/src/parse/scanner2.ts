@@ -35,7 +35,11 @@ export interface Token {
   readonly text: string
 }
 
-const DOCTYPE_RE = /^!DOCTYPE\s+html/i
+const DOCTYPE_XHTML_STRICT_RE = /^!DOCTYPE\s+html\s+PUBLIC\s+"-\/\/W3C\/\/DTD XHTML 1.0 Strict\/\/EN"\s+"http:\/\/www.w3.org\/TR\/xhtml1\/DTD\/xhtml1-strict.dtd"/i
+const DOCTYPE_HTML4_STRICT_RE = /!DOCTYPE\s+HTML\s+PUBLIC\s+"-\/\/W3C\/\/DTD HTML 4.01\/\/EN"\s+"http:\/\/www.w3.org\/TR\/html4\/strict.dtd"/i
+const DOCTYPE_HTML4_TRANSITIONAL_RE = /!DOCTYPE\s+HTML\s+PUBLIC\s+"-\/\/W3C\/\/DTD HTML 4.01 Transitional\/\/EN"\s+"http:\/\/www.w3.org\/TR\/html4\/loose.dtd"/i
+const DOCTYPE_HTML4_FRAMESET_RE = /!DOCTYPE\s+HTML\s+PUBLIC\s+"-\/\/W3C\/\/DTD HTML 4.01 Frameset\/\/EN"\s+"http:\/\/www.w3.org\/TR\/html4\/frameset.dtd"/i
+const DOCTYPE_RE_5 = /!DOCTYPE\s+html/i
 const TAG_NAME_RE = /^[a-zÀ-ž][a-zÀ-ž\d\-]*/i
 const ATTRIBUTE_NAME_RE = /^[a-zÀ-ž][a-zÀ-ž\d\-:]*/i
 const ATTRIBUTE_VALUE_SINGLE_QUOTE_RE = /^'[^<>']*'/
@@ -60,7 +64,6 @@ export const scan: (text: string) => SuccessResult | ErrorResult = text => {
   let special: 'script' | 'style' | undefined
   let next: RegExpMatchArray | null
   while (index < text.length) {
-    state
     switch (state) {
       case State.Content: {
         switch (special) {
@@ -159,7 +162,13 @@ export const scan: (text: string) => SuccessResult | ErrorResult = text => {
           if (tokenText === 'script' || tokenText === 'style') {
             special = tokenText
           }
-        } else if ((next = text.slice(index).match(DOCTYPE_RE))) {
+        } else if (
+          (next = text.slice(index).match(DOCTYPE_XHTML_STRICT_RE)) ||
+          (next = text.slice(index).match(DOCTYPE_HTML4_FRAMESET_RE)) ||
+          (next = text.slice(index).match(DOCTYPE_HTML4_STRICT_RE)) ||
+          (next = text.slice(index).match(DOCTYPE_HTML4_TRANSITIONAL_RE)) ||
+          (next = text.slice(index).match(DOCTYPE_RE_5))
+        ) {
           const tokenText = next[0]
           index += tokenText.length
           tokens.push({
@@ -399,7 +408,8 @@ export const scan: (text: string) => SuccessResult | ErrorResult = text => {
 //   scan(`<svg xml:space="preserve">`) //?.
 // }
 
-scan(`<!---->`) //?
+// scan(`<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+// <html xmlns="http://www.w3.org/1999/xhtml" dir="ltr"  lang="en-US" >`) //?
 
 // start tag h1
 // attribute class null

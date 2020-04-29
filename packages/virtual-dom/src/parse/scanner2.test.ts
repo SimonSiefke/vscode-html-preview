@@ -330,3 +330,33 @@ test('multiple unquoted attribute values', () => {
     { text: '>', type: 'EndTagOpeningBracket' },
   ])
 })
+
+test('older doctype', () => {
+  expectTokens(`<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" dir="ltr"  lang="en-US" >`).toEqual([
+    { text: '<', type: 'StartTagOpeningBracket' },
+    {
+      text:
+        '!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"',
+      type: 'DocType',
+    },
+    { text: '>', type: 'StartTagClosingBracket' },
+    { text: '\n', type: 'Content' },
+    { text: '<', type: 'StartTagOpeningBracket' },
+    { text: 'html', type: 'StartTagName' },
+    { text: ' ', type: 'Whitespace' },
+    { text: 'xmlns', type: 'AttributeName' },
+    { text: '=', type: 'AttributeEqualSign' },
+    { text: '"http://www.w3.org/1999/xhtml"', type: 'QuotedAttributeValue' },
+    { text: ' ', type: 'Whitespace' },
+    { text: 'dir', type: 'AttributeName' },
+    { text: '=', type: 'AttributeEqualSign' },
+    { text: '"ltr"', type: 'QuotedAttributeValue' },
+    { text: '  ', type: 'Whitespace' },
+    { text: 'lang', type: 'AttributeName' },
+    { text: '=', type: 'AttributeEqualSign' },
+    { text: '"en-US"', type: 'QuotedAttributeValue' },
+    { text: ' ', type: 'Whitespace' },
+    { text: '>', type: 'StartTagClosingBracket' },
+  ])
+})
