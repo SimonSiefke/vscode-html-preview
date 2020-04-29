@@ -1,0 +1,641 @@
+
+
+
+<!DOCTYPE html>
+<html lang="en-US" dir="ltr" class="no-js">
+<head prefix="og: http://ogp.me/ns#">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+  <script>(function(d) { d.className = d.className.replace(/\bno-js/, ''); })(document.documentElement);</script>
+  <title>MDN Web Docs</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="index, follow">
+
+
+<link rel="preload" href="/static/fonts/locales/ZillaSlab-Regular.subset.bbc33fb47cf6.woff2" as="font" type="font/woff2"
+    crossorigin />
+<link rel="preload" href="/static/fonts/locales/ZillaSlab-Bold.subset.e96c15f68c68.woff2" as="font" type="font/woff2"
+    crossorigin />
+
+  <link rel="home" href="/en-US/">
+  <link rel="license" href="#license">
+
+
+
+    <link href="/static/build/styles/react-header.b8f80567be6b.css" rel="stylesheet" type="text/css" />
+<link href="/static/build/styles/auth-modal.be43f0f58a73.css" rel="stylesheet" type="text/css" />
+<link href="/static/build/styles/react-mdn.bd8546f95186.css" rel="stylesheet" type="text/css" />
+<link href="/static/build/styles/subscriptions.6fc80696f1c5.css" rel="stylesheet" type="text/css" />
+
+  <link href="/static/build/styles/home_base.5a71889ec141.css" rel="stylesheet" type="text/css" />
+<link href="/static/build/styles/callout.07b5a3a1a83e.css" rel="stylesheet" type="text/css" />
+<link href="/static/build/styles/home_newsletter.8655c7f5a076.css" rel="stylesheet" type="text/css" />
+    <link href="/static/build/styles/home_featured.2b435ed886aa.css" rel="stylesheet" type="text/css" />
+
+<link href="/static/build/styles/banners.92084d28db45.css" rel="stylesheet" type="text/css" />
+
+
+
+<link href="/static/build/styles/mdn-subscriptions.dbb82432d74c.css" rel="stylesheet" type="text/css" />
+
+
+
+<style>
+    @font-face {
+        font-family: zillaslab;
+        font-display: swap;
+        src: url(/static/fonts/locales/ZillaSlab-Regular.subset.bbc33fb47cf6.woff2) format('woff2'),
+             url(/static/fonts/locales/ZillaSlab-Regular.subset.0357f12613a7.woff) format('woff');
+        font-weight: normal;
+        font-style: normal;
+    }
+
+    @font-face {
+        font-family: zillaslab;
+        font-display: swap;
+        src: url(/static/fonts/locales/ZillaSlab-Bold.subset.e96c15f68c68.woff2) format('woff2'),
+             url(/static/fonts/locales/ZillaSlab-Bold.subset.da0ccde4ca4a.woff) format('woff');
+        font-weight: bold;
+        font-style: normal;
+    }
+</style>
+
+
+
+<script>
+    // Mozilla DNT Helper
+    /* This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/. */ if(typeof Mozilla==='undefined'){var Mozilla={}}Mozilla.dntEnabled=function(dnt,ua){'use strict';var dntStatus=dnt||navigator.doNotTrack||window.doNotTrack||navigator.msDoNotTrack;var userAgent=ua||navigator.userAgent;var anomalousWinVersions=['Windows NT 6.1','Windows NT 6.2','Windows NT 6.3'];var fxMatch=userAgent.match(/Firefox\/(\d+)/);var ieRegEx=/MSIE|Trident/i;var isIE=ieRegEx.test(userAgent);var platform=userAgent.match(/Windows.+?(?=;)/g);if(isIE&&typeof Array.prototype.indexOf!=='function'){return false}else if(fxMatch&&parseInt(fxMatch[1],10)<32){dntStatus='Unspecified'}else if(isIE&&platform&&anomalousWinVersions.indexOf(platform.toString())!==-1){dntStatus='Unspecified'}else{dntStatus={'0':'Disabled','1':'Enabled'}[dntStatus]||'Unspecified'}return dntStatus==='Enabled'?true:false};
+    // only load GA if DNT is not enabled
+    if (Mozilla && !Mozilla.dntEnabled()) {
+        window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+        ga('create', 'UA-36116321-5', 'mozilla.org');
+        ga('set', 'anonymizeIp', true);
+    }
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+    <script>
+LUX=(function(){var a=("undefined"!==typeof(LUX)&&"undefined"!==typeof(LUX.gaMarks)?LUX.gaMarks:[]);var d=("undefined"!==typeof(LUX)&&"undefined"!==typeof(LUX.gaMeasures)?LUX.gaMeasures:[]);var j="LUX_start";var k=window.performance;var l=("undefined"!==typeof(LUX)&&LUX.ns?LUX.ns:(Date.now?Date.now():+(new Date())));if(k&&k.timing&&k.timing.navigationStart){l=k.timing.navigationStart}function f(){if(k&&k.now){return k.now()}var o=Date.now?Date.now():+(new Date());return o-l}function b(n){if(k){if(k.mark){return k.mark(n)}else{if(k.webkitMark){return k.webkitMark(n)}}}a.push({name:n,entryType:"mark",startTime:f(),duration:0});return}function m(p,t,n){if("undefined"===typeof(t)&&h(j)){t=j}if(k){if(k.measure){if(t){if(n){return k.measure(p,t,n)}else{return k.measure(p,t)}}else{return k.measure(p)}}else{if(k.webkitMeasure){return k.webkitMeasure(p,t,n)}}}var r=0,o=f();if(t){var s=h(t);if(s){r=s.startTime}else{if(k&&k.timing&&k.timing[t]){r=k.timing[t]-k.timing.navigationStart}else{return}}}if(n){var q=h(n);if(q){o=q.startTime}else{if(k&&k.timing&&k.timing[n]){o=k.timing[n]-k.timing.navigationStart}else{return}}}d.push({name:p,entryType:"measure",startTime:r,duration:(o-r)});return}function h(n){return c(n,g())}function c(p,o){for(i=o.length-1;i>=0;i--){var n=o[i];if(p===n.name){return n}}return undefined}function g(){if(k){if(k.getEntriesByType){return k.getEntriesByType("mark")}else{if(k.webkitGetEntriesByType){return k.webkitGetEntriesByType("mark")}}}return a}return{mark:b,measure:m,gaMarks:a,gaMeasures:d}})();LUX.ns=(Date.now?Date.now():+(new Date()));LUX.ac=[];LUX.cmd=function(a){LUX.ac.push(a)};LUX.init=function(){LUX.cmd(["init"])};LUX.send=function(){LUX.cmd(["send"])};LUX.addData=function(a,b){LUX.cmd(["addData",a,b])};LUX_ae=[];window.addEventListener("error",function(a){LUX_ae.push(a)});LUX_al=[];if("function"===typeof(PerformanceObserver)){var LongTaskObserver=new PerformanceObserver(function(c){var b=c.getEntries();for(var a=0;a<b.length;a++){var d=b[a];LUX_al.push(d)}});try{LongTaskObserver.observe({entryTypes:["longtask"],buffered:true})}catch(e){}};
+</script>
+<script src="https://cdn.speedcurve.com/js/lux.js?id=108906238" async defer crossorigin="anonymous"></script>
+
+
+
+  <!-- common social tags -->
+
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="https://developer.mozilla.org/static/img/opengraph-logo.72382e605ce3.png">
+  <meta property="og:site_name" content="MDN Web Docs">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:image" content="https://developer.mozilla.org/static/img/opengraph-logo.72382e605ce3.png">
+  <meta name="twitter:site" content="@MozDevNet">
+  <meta name="twitter:creator" content="@MozDevNet">
+  <link rel="search" type="application/opensearchdescription+xml" href="https://developer.mozilla.org/en-US/search/xml" title="MDN Web Docs">
+
+  <!-- third-generation iPad with high-resolution Retina display: -->
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/static/img/favicon144.e7e21ca263ca.png">
+  <!-- iPhone with high-resolution Retina display: -->
+  <link rel="apple-touch-icon-precomposed" sizes="114x114" href="/static/img/favicon114.d526f38b09c5.png">
+  <!-- first- and second-generation iPad: -->
+  <link rel="apple-touch-icon-precomposed" sizes="72x72" href="/static/img/favicon72.cc65d1d762a0.png">
+  <!-- non-Retina iPhone, iPod Touch, and Android 2.1+ devices: -->
+  <link rel="apple-touch-icon-precomposed" href="/static/img/favicon57.de33179910ae.png">
+  <!-- basic favicon -->
+  <link rel="shortcut icon" href="/static/img/favicon32.7f3da72dcea1.png">
+
+  <script>
+  window.fetch || document.write('<script src="/static/build/js/fetch-polyfill.63fdc379c7eb.js"><\/script>');
+</script>
+<script>
+  // Only include the fat polyfill for browsers that seem to not have
+  // certain JS features. E.g. Firefox 38.
+  Array.prototype.includes || document.write('<script src="/static/build/js/js-polyfill.6f2e22100487.js"><\/script>');
+</script>
+
+
+  <meta name="google-site-verification" content="Phj8dHc2oKwic3FGPsKIhdOBk_1wnCTnKwjcjiLgJPc">
+  <meta name="google-site-verification" content="TH9rA27HbfjO_XqYWTIPrW1E7E7Dtgsh7ULzHi3UTVA">
+
+
+
+  <meta property="og:description" content="The MDN Web Docs site provides information about Open Web technologies including HTML, CSS, and APIs for both Web sites and progressive web apps. It also has some developer-oriented documentation for Mozilla products, such as Firefox Developer Tools.">
+  <meta name="description" content="The MDN Web Docs site provides information about Open Web technologies including HTML, CSS, and APIs for both Web sites and progressive web apps. It also has some developer-oriented documentation for Mozilla products, such as Firefox Developer Tools.">
+  <meta name="twitter:description" content="The MDN Web Docs site provides information about Open Web technologies including HTML, CSS, and APIs for both Web sites and progressive web apps. It also has some developer-oriented documentation for Mozilla products, such as Firefox Developer Tools.">
+  <meta name="twitter:title" content="MDN Web Docs">
+  <meta property="og:title" content="MDN Web Docs">
+
+
+
+
+    <link href="/static/build/styles/print.ca192a439743.css" rel="stylesheet" type="text/css" media="print" />
+
+</head>
+<body id="home" class="">
+
+  <script>
+    // make sure global mdn object exists
+    var mdn = window.mdn || {};
+
+    (function(win) {
+        'use strict';
+
+        win.mdn.features = {};
+        win.mdn.stripePublicKey = 'pk_live_GZl4tCi8J5mWhKbJeRey4DSy';
+        win.mdn.contributionSupportEmail = 'mdn-support@mozilla.com';
+
+        win.mdn.siteUrl = 'https://developer.mozilla.org';
+        win.mdn.wikiSiteUrl = 'https://wiki.developer.mozilla.org';
+        win.mdn.staticPath = '/static/';
+        win.mdn.wiki = {
+            autosuggestTitleUrl: '/en-US/docs/get-documents'
+        };
+
+        win.mdn.notifications = [];
+
+
+
+        // interactive editor config
+        win.mdn.interactiveEditor = {
+            siteUrl: "https://developer.mozilla.org",
+            editorUrl: "https://interactive-examples.mdn.mozilla.net"
+        };
+        win.mdn.langCookieName = "django_language";
+
+    })(this);
+</script>
+
+
+  <!-- Header -->
+
+<div id="react-container" data-component-name="landing"><ul id="nav-access" data-testid="a11y-nav"><li><a id="skip-main" href="#content">Skip to main content</a></li><li><a id="skip-language" href="#language">Select language</a></li><li><a id="skip-search" href="#main-q">Skip to search</a></li></ul><header class="page-header" data-testid="header"><a href="/en-US/" class="logo" aria-label="MDN Web Docs"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 219 48" role="img"><path d="M49.752 30.824h59.917v17.132H49.75zm57.23 12.3c-.103.03-.21.048-.316.05-.338 0-.514-.15-.514-.582v-3.256c0-1.71-1.352-2.543-2.976-2.543a7.206 7.206 0 00-3.21.676l-.29 1.724 1.71.182.245-.842a2.338 2.338 0 011.147-.216c1.214 0 1.23.913 1.23 1.69v.234c-.407-.048-.818-.07-1.23-.068-1.71 0-3.49.433-3.49 2.276 0 1.563 1.23 2.144 2.31 2.144a2.7 2.7 0 002.41-1.494c.018.88.77 1.563 1.648 1.494a2.89 2.89 0 001.353-.338zm-4.604-.05a.787.787 0 01-.88-.867c0-.815.677-1.015 1.432-1.015.36.008.722.04 1.078.098-.05 1.235-.852 1.783-1.63 1.783zM97.388 33l-3.24 11.433h2.11L99.5 33.002zm-4.353 0l-3.24 11.433h2.11L95.145 33zm-6.89 6.645h2.243V36.94h-2.242zm0 4.802h2.243v-2.706h-2.242zm-3.617-1.64H80.1l4.156-4.736-.166-1.13h-6.58l-.268 2.63 1.546.164.338-1.163h2.343l-4.123 4.734.216 1.13h6.544l.467-2.63-1.69-.164zM72.143 36.79c-2.706 0-4.02 1.812-4.02 4.004 0 2.394 1.595 3.804 3.905 3.804 2.394 0 4.122-1.51 4.122-3.905-.003-2.093-1.32-3.906-4.01-3.906zm-.054 6.154c-1.165 0-1.763-.997-1.763-2.292 0-1.414.676-2.23 1.778-2.23 1.015 0 1.83.677 1.83 2.196 0 1.438-.73 2.327-1.846 2.327zm-5.906-3.564c0-1.78-1.224-2.594-2.577-2.594a2.51 2.51 0 00-2.44 1.612c-.367-1.1-1.364-1.613-2.443-1.613a2.48 2.48 0 00-2.276 1.278v-1.13h-3.14v1.63h.996v4.24h-.997v1.63h4.572v-1.63h-1.432V40.2c0-1.048.433-1.78 1.448-1.78.845 0 1.278.502 1.278 1.797v4.224h3.14v-1.63h-.996v-2.612c0-1.048.433-1.78 1.447-1.78.846 0 1.278.502 1.278 1.797v4.214h3.142V42.8h-.998zm78.791-22.39h-6.29c.23-1.935 1.16-3.558 3.274-3.558 2.245 0 3.2 1.857 3.016 3.558zM218.952 0v29.137h-169.2V0zM71.706 6.885h-3.85L61.51 20.01h-.104L54.882 6.884h-3.84v1.65h2.19V21.98H51.12v1.65h5.927v-1.65h-2.012V11.24h.1l5.75 11.553H61.9l5.62-11.474h.105v10.66h-1.962v1.65h5.942v-1.65h-2.09V8.536h2.19zm9.993 16.76c5.285 0 8.484-3.48 8.484-8.42 0-4.847-3.094-8.353-8.56-8.353H74.12v1.623h2.114v13.527H74.12v1.623zm27.05-16.76h-6.426v1.65h2.526v11.268h-.1L95.21 6.885H91.6v1.65h2.22V21.98h-1.935v1.65h6.385v-1.65h-2.655V10.444h.1l9.724 13.202h1.21V8.535h2.09zm26.71 5.29h-5.156v1.467h1.83l-1.857 7.247h-.128l-3.586-8.716h-1.21l-3.423 8.718h-.127l-2.14-7.247h1.933v-1.47h-5.41v1.467h1.522l3.25 10.003h1.352l3.432-8.766h.13l3.496 8.765h1.393l3.122-10.003h1.573zm6.704 11.727c2.837 0 4.514-1.583 4.83-3.568l-1.523-.338c-.36 1.42-1.365 2.347-3.17 2.347-2.283 0-3.53-1.468-3.636-4.02h8.058c.1-.445.153-.898.156-1.354-.024-2.71-1.728-5.03-4.873-5.03-3.246 0-5.26 2.58-5.26 6.14 0 3.712 2.162 5.825 5.412 5.825zm13.408 0c3.663 0 5.134-3.25 5.134-6.294 0-3.642-2.063-5.67-4.924-5.67-2.19 0-3.402 1.186-4.1 2.603V5.905h-3.53v1.47h1.692v12.923a22.8 22.8 0 01-.338 3.35h1.805a44.05 44.05 0 00.235-1.906c.747 1.39 2.242 2.165 4.02 2.165zm26.198-1.728h-1.985V5.904h-4.6v1.47h2.798v6.653c-.748-1.342-2.15-2.09-3.842-2.09-3.74 0-5.183 3.2-5.183 6.267 0 3.584 1.958 5.698 4.924 5.698 2.087 0 3.352-1.224 4.1-2.577v2.323h3.784zm6.963 1.728c3.53 0 5.75-2.526 5.742-6.006 0-3.25-1.934-5.982-5.647-5.982s-5.67 2.735-5.67 6.087c0 3.457 2.09 5.905 5.568 5.905zm12.942 0c3.172 0 4.538-2.114 4.866-4.112l-1.548-.34c-.334 1.885-1.315 2.917-3.094 2.917-2.27 0-3.507-1.637-3.507-4.397 0-2.475.982-4.487 3.43-4.487a4.4 4.4 0 012.45.646l.42 1.936 1.496-.18-.44-2.758c-1.16-.876-2.397-1.187-3.92-1.187-3.556 0-5.362 2.966-5.362 6.14 0 3.685 2.036 5.825 5.208 5.825zm11.166 0c2.76 0 4.874-1.34 4.847-3.595 0-4.565-7.1-2.195-7.1-5.184 0-1.177 1.03-1.69 2.474-1.69.826-.015 1.64.18 2.368.567l.267 1.864 1.495-.18-.284-2.68a8.135 8.135 0 00-3.997-1.06c-2.088 0-4.255.903-4.255 3.328 0 4.46 7.193 2.063 7.193 5.208 0 1.315-1.495 1.934-3.095 1.934a5.812 5.812 0 01-2.553-.568l.078-1.522-1.444-.156-.362 2.604c.977.643 2.736 1.133 4.36 1.133zm-54.042-6.11c0 2.373-1.058 4.564-3.584 4.564a3.455 3.455 0 01-3.534-3.456v-1.728c.05-1.7 1.444-3.686 3.635-3.686 1.948 0 3.48 1.444 3.483 4.305zm19.18-1.06v1.833c-.076 1.73-1.57 3.79-3.634 3.79-1.985 0-3.48-1.47-3.48-4.28 0-2.425 1.133-4.59 3.686-4.59a3.36 3.36 0 013.43 3.248zm14.597 1.133c0 2.58-1.34 4.488-3.79 4.488-2.453 0-3.74-1.958-3.74-4.46 0-2.55 1.34-4.434 3.74-4.434 2.397 0 3.79 1.778 3.79 4.405zm-104.39-2.593c0 4.16-2.32 6.763-6.574 6.763h-3.478V8.508h3.466c4.254 0 6.574 2.71 6.587 6.764zM.116 0h47.956v47.956H.116zM42.01 22.02c-.036-.723-.12-1.448-.17-2.166a1.74 1.74 0 00-.395-.98 2.465 2.465 0 00-1.026-.74c-.808-.314-1.622-.664-2.435-.975a21.509 21.509 0 01-3.342-1.472 2.626 2.626 0 01-1.296-1.972 2.954 2.954 0 00-1.47-2.228 4.062 4.062 0 00-2.958-.35c-.734.176-1.5.165-2.23-.033l-1.112-.34-.302-.09-.873-.26c-1.57-.468-2.228-.713-4.773-.278a14.678 14.678 0 00-7.09 3.897l-6.37 6.76h5.72l-3.504 3.71h6.026l-3.503 3.71h4.844l-1.548 4.06c5.93 6.07 12.25 7.295 12.25 7.295 0-1.673.38-8.24.826-9.34a5.25 5.25 0 01.762-1.54 4.211 4.211 0 013.393-1.547c1.303 0 2.597.238 3.815.702.74.31 1.577.264 2.277-.122a38.42 38.42 0 001.498-.94.839.839 0 01.556-.18c.54.06 1.054-.237 1.27-.734.16-.33.35-.64.524-.97.472-.884.69-1.88.633-2.88z"></path></svg></a><nav class="main-nav" role="navigation"><ul><li class="top-level-entry-container"><button type="button" class="top-level-entry" aria-haspopup="true">Technologies<span class="main-menu-arrow" aria-hidden="true">▼</span></button><ul><li data-item="Technologies" role="menuitem"><a href="/en-US/docs/Web">Technologies Overview</a></li><li data-item="Technologies" role="menuitem"><a href="/en-US/docs/Web/HTML">HTML</a></li><li data-item="Technologies" role="menuitem"><a href="/en-US/docs/Web/CSS">CSS</a></li><li data-item="Technologies" role="menuitem"><a href="/en-US/docs/Web/JavaScript">JavaScript</a></li><li data-item="Technologies" role="menuitem"><a href="/en-US/docs/Web/Guide/Graphics">Graphics</a></li><li data-item="Technologies" role="menuitem"><a href="/en-US/docs/Web/HTTP">HTTP</a></li><li data-item="Technologies" role="menuitem"><a href="/en-US/docs/Web/API">APIs / DOM</a></li><li data-item="Technologies" role="menuitem"><a href="/en-US/docs/Mozilla/Add-ons/WebExtensions">Browser Extensions</a></li><li data-item="Technologies" role="menuitem"><a href="/en-US/docs/Web/MathML">MathML</a></li></ul></li><li class="top-level-entry-container"><button type="button" class="top-level-entry" aria-haspopup="true">References &amp; Guides<span class="main-menu-arrow" aria-hidden="true">▼</span></button><ul><li data-item="References &amp; Guides" role="menuitem"><a href="/en-US/docs/Learn">Learn web development</a></li><li data-item="References &amp; Guides" role="menuitem"><a href="/en-US/docs/Web/Tutorials">Tutorials</a></li><li data-item="References &amp; Guides" role="menuitem"><a href="/en-US/docs/Web/Reference">References</a></li><li data-item="References &amp; Guides" role="menuitem"><a href="/en-US/docs/Web/Guide">Developer Guides</a></li><li data-item="References &amp; Guides" role="menuitem"><a href="/en-US/docs/Web/Accessibility">Accessibility</a></li><li data-item="References &amp; Guides" role="menuitem"><a href="/en-US/docs/Games">Game development</a></li><li data-item="References &amp; Guides" role="menuitem"><a href="/en-US/docs/Web">...more docs</a></li></ul></li><li class="top-level-entry-container"><button type="button" class="top-level-entry" aria-haspopup="true">Feedback<span class="main-menu-arrow" aria-hidden="true">▼</span></button><ul><li data-item="Feedback" role="menuitem"><a href="/en-US/docs/MDN/Feedback">Send Feedback</a></li><li data-item="Feedback" role="menuitem"><a target="_blank" rel="noopener noreferrer" href="https://support.mozilla.org/">Get Firefox help<!-- --> 🌐</a></li><li data-item="Feedback" role="menuitem"><a target="_blank" rel="noopener noreferrer" href="https://stackoverflow.com/">Get web development help<!-- --> 🌐</a></li><li data-item="Feedback" role="menuitem"><a href="/en-US/docs/MDN/Community">Join the MDN community</a></li><li data-item="Feedback" role="menuitem"><a target="_blank" rel="noopener noreferrer" href="https://github.com/mdn/sprints/issues/new?template=issue-template.md&amp;projects=mdn/sprints/2&amp;labels=user-report&amp;title=%2Fen-US">Report a content problem<!-- --> 🌐</a></li><li data-item="Feedback" role="menuitem"><a target="_blank" rel="noopener noreferrer" href="https://github.com/mdn/kuma/issues/new">Report an issue<!-- --> 🌐</a></li></ul></li></ul></nav><form class="header-search" id="nav-main-search" action="/en-US/search" method="get" role="search"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 26 28" aria-hidden="true" class="search-icon"><path d="M18 13c0-3.859-3.141-7-7-7s-7 3.141-7 7 3.141 7 7 7 7-3.141 7-7zm8 13c0 1.094-.906 2-2 2a1.96 1.96 0 01-1.406-.594l-5.359-5.344a10.971 10.971 0 01-6.234 1.937c-6.078 0-11-4.922-11-11s4.922-11 11-11 11 4.922 11 11c0 2.219-.672 4.406-1.937 6.234l5.359 5.359c.359.359.578.875.578 1.406z"></path></svg><label for="main-q" class="visually-hidden">Search MDN</label><input type="search" class="search-input-field" id="main-q" name="q" placeholder="Search MDN" pattern="(.|\s)*\S(.|\s)*" required=""/></form></header></div>
+<script>window._react_data = JSON.parse("{\"locale\":\"en-US\",\"stringCatalog\":{},\"pluralExpression\":null,\"url\":\"/en-US/\",\"documentData\":null}");</script>
+
+
+
+  <!-- Content will go here -->
+  <main id="content">
+
+
+<!-- top search area -->
+<div id="content" class="home-masthead home-masthead-no-search">
+    <div class="center">
+        <h1 class="highlight highlight-spanned"><span class="highlight-span">Resources for developers, by developers.</span></h1>
+
+        <ul class="home-features">
+          <li>
+              <a href="/en-US/docs/Web" class="cta-link">
+                  Web Technologies<svg class="icon icon-arrow" xmlns="http://www.w3.org/2000/svg" width="23" height="28" viewBox="0 0 23 28" aria-hidden="true">
+    <path d="M23 15a2.01 2.01 0 0 1-.578 1.422L12.25 26.594c-.375.359-.891.578-1.422.578s-1.031-.219-1.406-.578L8.25 25.422c-.375-.375-.594-.891-.594-1.422s.219-1.047.594-1.422L12.828 18h-11C.703 18 0 17.062 0 16v-2c0-1.062.703-2 1.828-2h11L8.25 7.406a1.96 1.96 0 0 1 0-2.812l1.172-1.172c.375-.375.875-.594 1.406-.594s1.047.219 1.422.594l10.172 10.172c.375.359.578.875.578 1.406z"/>
+</svg>
+              </a>
+          </li>
+          <li>
+              <a href="/en-US/docs/Learn" class="cta-link">
+                  Learn web development<svg class="icon icon-arrow" xmlns="http://www.w3.org/2000/svg" width="23" height="28" viewBox="0 0 23 28" aria-hidden="true">
+    <path d="M23 15a2.01 2.01 0 0 1-.578 1.422L12.25 26.594c-.375.359-.891.578-1.422.578s-1.031-.219-1.406-.578L8.25 25.422c-.375-.375-.594-.891-.594-1.422s.219-1.047.594-1.422L12.828 18h-11C.703 18 0 17.062 0 16v-2c0-1.062.703-2 1.828-2h11L8.25 7.406a1.96 1.96 0 0 1 0-2.812l1.172-1.172c.375-.375.875-.594 1.406-.594s1.047.219 1.422.594l10.172 10.172c.375.359.578.875.578 1.406z"/>
+</svg>
+              </a>
+          </li>
+          <li>
+              <a href="/en-US/docs/Tools" class="cta-link">
+                  Developer Tools<svg class="icon icon-arrow" xmlns="http://www.w3.org/2000/svg" width="23" height="28" viewBox="0 0 23 28" aria-hidden="true">
+    <path d="M23 15a2.01 2.01 0 0 1-.578 1.422L12.25 26.594c-.375.359-.891.578-1.422.578s-1.031-.219-1.406-.578L8.25 25.422c-.375-.375-.594-.891-.594-1.422s.219-1.047.594-1.422L12.828 18h-11C.703 18 0 17.062 0 16v-2c0-1.062.703-2 1.828-2h11L8.25 7.406a1.96 1.96 0 0 1 0-2.812l1.172-1.172c.375-.375.875-.594 1.406-.594s1.047.219 1.422.594l10.172 10.172c.375.359.578.875.578 1.406z"/>
+</svg>
+              </a>
+          </li>
+        </ul>
+    </div>
+</div>
+
+
+
+<div class="center clear">
+  <!-- callout area -->
+  <div class="home-callouts">
+    <h2 class="offscreen">Featured</h2>
+    <div class="column-container center">
+        <div class="column-callout callout-standard callout-featured">
+  <a
+    href="https://www.mozilla.org/firefox/developer/?utm_campaign=deved_inactive_css&utm_medium=referral&utm_source=developer.mozilla.org">
+    <p class="main-copy">The browser built for devs</p>
+    <button type="button">Get Firefox DevEdition</button>
+  </a>
+</div>
+
+
+      <div class="column-callout callout-newsletter">
+        <div class="newsletter">
+    <form id="newsletterForm" class="newsletter-form nodisable" name="newsletter-form" action="https://www.mozilla.org/en-US/newsletter/" method="post">
+        <div class="newsletter-head">
+            <h2 class="newsletter-teaser">Learn the best of web development</h2>
+            <p class="newsletter-description">Get the latest and greatest from MDN delivered straight to your inbox.</p>
+
+        </div>
+
+        <div class="newsletter-fields">
+            <input type="hidden" id="fmt" name="fmt" value="H">
+            <input type="hidden" id="newsletterNewslettersInput" name="newsletters" value="app-dev" />
+            <div id="newsletterErrors" class="newsletter-errors"></div>
+
+            <div id="newsletterEmail" class="form-group newsletter-group-email">
+                <label for="newsletterEmailInput" class="form-label offscreen">E-mail</label>
+                <input type="email" id="newsletterEmailInput" name="email" class="form-input newsletter-input-email" required placeholder="you@example.com" size="30">
+            </div>
+
+            <div id="newsletterPrivacy" class="form-group form-group-agree newsletter-group-privacy">
+                <input type="checkbox" id="newsletterPrivacyInput" name="privacy" required>
+                <label for="newsletterPrivacyInput">
+                I'm okay with Mozilla handling my info as explained in this <a href="https://www.mozilla.org/privacy/">Privacy Policy</a>.
+                </label>
+            </div>
+            <div id="newsletterSubmit" class="newsletter-group-submit">
+                <button id="newsletter-submit" type="submit" class="button neutral newsletter-submit">
+                    Sign up now<svg class="icon icon-arrow" xmlns="http://www.w3.org/2000/svg" width="23" height="28" viewBox="0 0 23 28" aria-hidden="true">
+    <path d="M23 15a2.01 2.01 0 0 1-.578 1.422L12.25 26.594c-.375.359-.891.578-1.422.578s-1.031-.219-1.406-.578L8.25 25.422c-.375-.375-.594-.891-.594-1.422s.219-1.047.594-1.422L12.828 18h-11C.703 18 0 17.062 0 16v-2c0-1.062.703-2 1.828-2h11L8.25 7.406a1.96 1.96 0 0 1 0-2.812l1.172-1.172c.375-.375.875-.594 1.406-.594s1.047.219 1.422.594l10.172 10.172c.375.359.578.875.578 1.406z"/>
+</svg>
+                </button>
+            </div>
+        </div>
+    </form>
+    <div id="newsletterThanks" class="newsletter-thanks hidden">
+        <h2>Thanks! Please check your inbox to confirm your subscription.</h2>
+        <p>If you haven’t previously confirmed a subscription to a Mozilla-related newsletter you may have to do so. Please check your inbox or your spam filter for an email from us.
+        </p>
+    </div>
+    <button id="newsletterHide" type="button" class="only-icon newsletter-hide hidden">
+        <span>Hide Newsletter Sign-up</span>
+        <svg class="icon icon-close" xmlns="http://www.w3.org/2000/svg" width="22" height="28" viewBox="0 0 22 28" aria-hidden="true" role="img"><title></title><path d="M20.281 20.656c0 .391-.156.781-.438 1.062l-2.125 2.125c-.281.281-.672.438-1.062.438s-.781-.156-1.062-.438L11 19.249l-4.594 4.594c-.281.281-.672.438-1.062.438s-.781-.156-1.062-.438l-2.125-2.125c-.281-.281-.438-.672-.438-1.062s.156-.781.438-1.062L6.751 15l-4.594-4.594c-.281-.281-.438-.672-.438-1.062s.156-.781.438-1.062l2.125-2.125c.281-.281.672-.438 1.062-.438s.781.156 1.062.438L11 10.751l4.594-4.594c.281-.281.672-.438 1.062-.438s.781.156 1.062.438l2.125 2.125c.281.281.438.672.438 1.062s-.156.781-.438 1.062L15.249 15l4.594 4.594c.281.281.438.672.438 1.062z"/></svg>
+    </button>
+</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- hacks area -->
+  <div class="home-hacks">
+    <div class="column-container center">
+      <div class="column-hacks" dir="ltr">
+        <h2>
+            <svg class="icon icon-star" xmlns="http://www.w3.org/2000/svg" width="26" height="28" viewBox="0 0 26 28" aria-hidden="true">
+    <path d="M26 10.109c0 .281-.203.547-.406.75l-5.672 5.531 1.344 7.812c.016.109.016.203.016.313 0 .406-.187.781-.641.781a1.27 1.27 0 0 1-.625-.187L13 21.422l-7.016 3.687c-.203.109-.406.187-.625.187-.453 0-.656-.375-.656-.781 0-.109.016-.203.031-.313l1.344-7.812L.39 10.859c-.187-.203-.391-.469-.391-.75 0-.469.484-.656.875-.719l7.844-1.141 3.516-7.109c.141-.297.406-.641.766-.641s.625.344.766.641l3.516 7.109 7.844 1.141c.375.063.875.25.875.719z"/>
+</svg> Hacks Blog
+            <span class="heading-link">
+                <a href="http://hacks.mozilla.org">
+                  read more at hacks.mozilla.org
+                  <svg class="icon icon-arrow" xmlns="http://www.w3.org/2000/svg" width="23" height="28" viewBox="0 0 23 28" aria-hidden="true">
+    <path d="M23 15a2.01 2.01 0 0 1-.578 1.422L12.25 26.594c-.375.359-.891.578-1.422.578s-1.031-.219-1.406-.578L8.25 25.422c-.375-.375-.594-.891-.594-1.422s.219-1.047.594-1.422L12.828 18h-11C.703 18 0 17.062 0 16v-2c0-1.062.703-2 1.828-2h11L8.25 7.406a1.96 1.96 0 0 1 0-2.812l1.172-1.172c.375-.375.875-.594 1.406-.594s1.047.219 1.422.594l10.172 10.172c.375.359.578.875.578 1.406z"/>
+</svg>
+                </a>
+            </span>
+        </h2>
+        <ul class="hfeed">
+
+
+    <li class="hentry">
+      <h2 class="entry-title"><a href="https://hacks.mozilla.org/2020/04/experimental-webgpu-in-firefox/" rel="bookmark">A Taste of WebGPU in Firefox</a></h2>
+      <p class="entry-summary">We are excited to bring WebGPU support to Firefox because it will allow richer and more complex graphics applications to run portably on the web. WebGPU is an emerging API, designed from the ground up within the W3C, to provide access to the graphics and computing capabilities of hardware on …</p>
+      <p class="entry-meta vcard">
+
+
+      Posted <time class="updated" datetime="2020-04-23" title="2020-04-23">April 23, 2020</time> by <cite class="author fn">Dzmitry Malyshau</cite>
+      </p>
+    </li>
+
+
+
+    <li class="hentry">
+      <h2 class="entry-title"><a href="https://hacks.mozilla.org/2020/04/code-quality-tools-at-mozilla/" rel="bookmark">Engineering code quality in the Firefox browser: A look at our tools and challenges</a></h2>
+      <p class="entry-summary">Here&#39;s an insider&#39;s look at Firefox&#39;s code quality toolchain that&#39;s been designed to manage the ongoing development and monthly releases of our desktop browser. This post explores the architecture, challenges, and ongoing evolution of the process for managing code quality and patches for dealing with 21 million lines of code. …</p>
+      <p class="entry-meta vcard">
+
+
+      Posted <time class="updated" datetime="2020-04-21" title="2020-04-21">April 21, 2020</time> by <cite class="author fn">Bastien Abadie</cite>
+      </p>
+    </li>
+
+
+
+    <li class="hentry">
+      <h2 class="entry-title"><a href="https://hacks.mozilla.org/2020/04/firefox-75-ambitions-for-april/" rel="bookmark">Firefox 75: Ambitions for April</a></h2>
+      <p class="entry-summary">Firefox 75 is chock full of handy new dev tooling: instant evaluation in the web console, event breakpoints for WebSockets, and more. New web platform features include HTML lazy loading for images, the CSS min(), max(), and clamp() functions, public static class fields, and additions to Web Animations API support. …</p>
+      <p class="entry-meta vcard">
+
+
+      Posted <time class="updated" datetime="2020-04-07" title="2020-04-07">April 07, 2020</time> by <cite class="author fn">Chris Mills</cite>
+      </p>
+    </li>
+
+
+
+    <li class="hentry">
+      <h2 class="entry-title"><a href="https://hacks.mozilla.org/2020/04/twitter-direct-message-caching-and-firefox/" rel="bookmark">Twitter Direct Message Caching and Firefox</a></h2>
+      <p class="entry-summary">Distinguished engineer Martin Thomson explains how this problem occurred, the implications for people who might be affected, and how problems of this nature might be avoided in future. To get there, we need to dig a little into how web caching works. The post Twitter Direct Message Caching and Firefox …</p>
+      <p class="entry-meta vcard">
+
+
+      Posted <time class="updated" datetime="2020-04-03" title="2020-04-03">April 03, 2020</time> by <cite class="author fn">Martin Thomson</cite>
+      </p>
+    </li>
+
+
+
+    <li class="hentry">
+      <h2 class="entry-title"><a href="https://hacks.mozilla.org/2020/03/web-monetization-coil-and-firefox-reality/" rel="bookmark">Innovating on Web Monetization: Coil and Firefox Reality</a></h2>
+      <p class="entry-summary">An in-depth introduction to web monetization with Coil. Coil is a payments platform that doesn&#39;t really on advertising or personal data collection to support digital content creators directly. Firefox Reality is rolling out a Coil-based experiment for creators and consumers, and you&#39;re invited to participate or learn more about how …</p>
+      <p class="entry-meta vcard">
+
+
+      Posted <time class="updated" datetime="2020-03-31" title="2020-03-31">March 31, 2020</time> by <cite class="author fn">Anselm Hook</cite>
+      </p>
+    </li>
+
+
+</ul>
+      </div>
+      <div class="column-involved">
+        <!-- contributions section -->
+        <h2><svg class="icon icon-smile" xmlns="http://www.w3.org/2000/svg" width="24" height="28" aria-hidden="true"><path d="M17.719 16.797C16.938 19.313 14.641 21 12 21s-4.937-1.687-5.719-4.203c-.172-.531.125-1.078.656-1.25.516-.172 1.078.125 1.25.656C8.703 17.875 10.25 19 12 19s3.297-1.125 3.813-2.797a1.006 1.006 0 0 1 1.266-.656.994.994 0 0 1 .641 1.25zM10 10c0 1.109-.891 2-2 2s-2-.891-2-2 .891-2 2-2 2 .891 2 2zm8 0c0 1.109-.891 2-2 2s-2-.891-2-2 .891-2 2-2 2 .891 2 2zm4 4c0-5.516-4.484-10-10-10S2 8.484 2 14s4.484 10 10 10 10-4.484 10-10zm2 0c0 6.625-5.375 12-12 12S0 20.625 0 14 5.375 2 12 2s12 5.375 12 12z"/></svg> Help improve MDN</h2>
+        <p>All parts of MDN (docs and the site itself) are created by an open community of developers. Please join us! Pick one of these ways to help:</p>
+        <ul>
+          <li><a href="/en-US/docs/MDN/Getting_started">Getting started</a></li>
+          <li><a href="/en-US/docs/MDN/Contribute/Howto/Do_an_editorial_review">Editorial review</a></li>
+          <li><a href="/en-US/docs/MDN/Contribute/Howto/Do_a_technical_review">Technical review</a></li>
+          <li><a href="/en-US/docs/MDN/Contribute/Localize/Translating_pages">Translating</a></li>
+          <li><a href="/en-US/docs/MDN/Promote">Promoting MDN</a></li>
+          <li><a href="https://github.com/mdn/kuma#readme">Contributing to the MDN codebase</a></li>
+          <li><a href="https://github.com/mdn/browser-compat-data">Updating browser compatibility data</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+  </main>
+
+
+    <!-- Footer -->
+    <footer id="nav-footer" class="nav-footer">
+      <div class="center">
+          <a href="/en-US/" class="nav-footer-logo">MDN Web Docs</a>
+<div class="footer-group footer-group-mdn">
+  <h2 class="footer-title">MDN</h2>
+  <ul class="footer-list">
+    <li><a href="/en-US/docs/Web">Web Technologies</a></li>
+    <li><a href="/en-US/docs/Learn">Learn Web Development</a></li>
+    <li><a href="/docs/MDN/About">About MDN</a></li>
+    <li><a href="/en-US/docs/MDN/Feedback">Feedback</a></li>
+    <li class="footer-social">
+        <a href="https://twitter.com/mozdevnet">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-twitter" width="26" height="28" viewBox="0 0 26 28" aria-label="Twitter" role="img" focusable="false">
+    <title>Twitter</title>
+    <path d="M25.312 6.375a10.85 10.85 0 0 1-2.531 2.609c.016.219.016.438.016.656 0 6.672-5.078 14.359-14.359 14.359-2.859 0-5.516-.828-7.75-2.266.406.047.797.063 1.219.063 2.359 0 4.531-.797 6.266-2.156a5.056 5.056 0 0 1-4.719-3.5c.313.047.625.078.953.078.453 0 .906-.063 1.328-.172a5.048 5.048 0 0 1-4.047-4.953v-.063a5.093 5.093 0 0 0 2.281.641 5.044 5.044 0 0 1-2.25-4.203c0-.938.25-1.797.688-2.547a14.344 14.344 0 0 0 10.406 5.281 5.708 5.708 0 0 1-.125-1.156 5.045 5.045 0 0 1 5.047-5.047 5.03 5.03 0 0 1 3.687 1.594 9.943 9.943 0 0 0 3.203-1.219 5.032 5.032 0 0 1-2.219 2.781c1.016-.109 2-.391 2.906-.781z"></path>
+</svg>
+        </a>
+    </li>
+    <li class="footer-social">
+        <a href="https://github.com/mdn/">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-github" width="24" height="28" viewBox="0 0 24 28" aria-label="GitHub" role="img" focusable="false">
+    <title>GitHub</title>
+    <path d="M12 2c6.625 0 12 5.375 12 12 0 5.297-3.437 9.797-8.203 11.391-.609.109-.828-.266-.828-.578 0-.391.016-1.687.016-3.297 0-1.125-.375-1.844-.812-2.219 2.672-.297 5.484-1.313 5.484-5.922 0-1.313-.469-2.375-1.234-3.219.125-.313.531-1.531-.125-3.187-1-.313-3.297 1.234-3.297 1.234a11.28 11.28 0 0 0-6 0S6.704 6.656 5.704 6.969c-.656 1.656-.25 2.875-.125 3.187-.766.844-1.234 1.906-1.234 3.219 0 4.594 2.797 5.625 5.469 5.922-.344.313-.656.844-.766 1.609-.688.313-2.438.844-3.484-1-.656-1.141-1.844-1.234-1.844-1.234-1.172-.016-.078.734-.078.734.781.359 1.328 1.75 1.328 1.75.703 2.141 4.047 1.422 4.047 1.422 0 1 .016 1.937.016 2.234 0 .313-.219.688-.828.578C3.439 23.796.002 19.296.002 13.999c0-6.625 5.375-12 12-12zM4.547 19.234c.031-.063-.016-.141-.109-.187-.094-.031-.172-.016-.203.031-.031.063.016.141.109.187.078.047.172.031.203-.031zm.484.532c.063-.047.047-.156-.031-.25-.078-.078-.187-.109-.25-.047-.063.047-.047.156.031.25.078.078.187.109.25.047zm.469.703c.078-.063.078-.187 0-.297-.063-.109-.187-.156-.266-.094-.078.047-.078.172 0 .281s.203.156.266.109zm.656.656c.063-.063.031-.203-.063-.297-.109-.109-.25-.125-.313-.047-.078.063-.047.203.063.297.109.109.25.125.313.047zm.891.391c.031-.094-.063-.203-.203-.25-.125-.031-.266.016-.297.109s.063.203.203.234c.125.047.266 0 .297-.094zm.984.078c0-.109-.125-.187-.266-.172-.141 0-.25.078-.25.172 0 .109.109.187.266.172.141 0 .25-.078.25-.172zm.906-.156c-.016-.094-.141-.156-.281-.141-.141.031-.234.125-.219.234.016.094.141.156.281.125s.234-.125.219-.219z"></path>
+</svg>
+        </a>
+    </li>
+  </ul>
+</div>
+
+          <a href="https://mozilla.org" class="nav-footer-mozilla">Mozilla</a>
+<div class="footer-group footer-group-mozilla">
+  <h2 class="footer-title">Mozilla</h2>
+  <ul class="footer-list">
+    <li><a href="https://www.mozilla.org/about/">About</a></li>
+    <li><a href="https://www.mozilla.org/contact/">Contact Us</a></li>
+    <li><a href="https://www.mozilla.org/firefox/?utm_source=developer.mozilla.org&utm_campaign=footer&utm_medium=referral">Firefox</a></li>
+    <li class="footer-social">
+        <a href="https://twitter.com/mozilla">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-twitter" width="26" height="28" viewBox="0 0 26 28" aria-label="Twitter" role="img" focusable="false">
+    <title>Twitter</title>
+    <path d="M25.312 6.375a10.85 10.85 0 0 1-2.531 2.609c.016.219.016.438.016.656 0 6.672-5.078 14.359-14.359 14.359-2.859 0-5.516-.828-7.75-2.266.406.047.797.063 1.219.063 2.359 0 4.531-.797 6.266-2.156a5.056 5.056 0 0 1-4.719-3.5c.313.047.625.078.953.078.453 0 .906-.063 1.328-.172a5.048 5.048 0 0 1-4.047-4.953v-.063a5.093 5.093 0 0 0 2.281.641 5.044 5.044 0 0 1-2.25-4.203c0-.938.25-1.797.688-2.547a14.344 14.344 0 0 0 10.406 5.281 5.708 5.708 0 0 1-.125-1.156 5.045 5.045 0 0 1 5.047-5.047 5.03 5.03 0 0 1 3.687 1.594 9.943 9.943 0 0 0 3.203-1.219 5.032 5.032 0 0 1-2.219 2.781c1.016-.109 2-.391 2.906-.781z"></path>
+</svg>
+        </a>
+    </li>
+    <li class="footer-social">
+        <a href="https://www.instagram.com/mozillagram/">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-instagram" width="24" height="28" viewBox="0 0 24 28" aria-label="Instagram" role="img" focusable="false">
+    <title>Instagram</title>
+    <path d="M16 14c0-2.203-1.797-4-4-4s-4 1.797-4 4 1.797 4 4 4 4-1.797 4-4zm2.156 0c0 3.406-2.75 6.156-6.156 6.156S5.844 17.406 5.844 14 8.594 7.844 12 7.844s6.156 2.75 6.156 6.156zm1.688-6.406c0 .797-.641 1.437-1.437 1.437S16.97 8.39 16.97 7.594s.641-1.437 1.437-1.437 1.437.641 1.437 1.437zM12 4.156c-1.75 0-5.5-.141-7.078.484-.547.219-.953.484-1.375.906s-.688.828-.906 1.375c-.625 1.578-.484 5.328-.484 7.078s-.141 5.5.484 7.078c.219.547.484.953.906 1.375s.828.688 1.375.906c1.578.625 5.328.484 7.078.484s5.5.141 7.078-.484c.547-.219.953-.484 1.375-.906s.688-.828.906-1.375c.625-1.578.484-5.328.484-7.078s.141-5.5-.484-7.078c-.219-.547-.484-.953-.906-1.375s-.828-.688-1.375-.906C17.5 4.015 13.75 4.156 12 4.156zM24 14c0 1.656.016 3.297-.078 4.953-.094 1.922-.531 3.625-1.937 5.031s-3.109 1.844-5.031 1.937c-1.656.094-3.297.078-4.953.078s-3.297.016-4.953-.078c-1.922-.094-3.625-.531-5.031-1.937S.173 20.875.08 18.953C-.014 17.297.002 15.656.002 14s-.016-3.297.078-4.953c.094-1.922.531-3.625 1.937-5.031s3.109-1.844 5.031-1.937c1.656-.094 3.297-.078 4.953-.078s3.297-.016 4.953.078c1.922.094 3.625.531 5.031 1.937s1.844 3.109 1.937 5.031C24.016 10.703 24 12.344 24 14z"></path>
+</svg>
+        </a>
+    </li>
+  </ul>
+</div>
+
+
+
+
+<form class="languages go" method="get" action="#">
+  <label for="language">Other languages:</label>
+
+  <select id="language" class="autosubmit" name="lang">
+    <option title="English (US)" data-locale="en-US" value="en-US">
+      English (US) (en-US)
+    </option>
+
+        <option title="Arabic" data-locale="ar" value="ar">
+          عربي (ar)
+        </option>
+
+        <option title="Bulgarian" data-locale="bg" value="bg">
+          Български (bg)
+        </option>
+
+        <option title="Bambara" data-locale="bm" value="bm">
+          Bamanankan (bm)
+        </option>
+
+        <option title="Bengali" data-locale="bn" value="bn">
+          বাংলা (bn)
+        </option>
+
+        <option title="Catalan" data-locale="ca" value="ca">
+          Català (ca)
+        </option>
+
+        <option title="German" data-locale="de" value="de">
+          Deutsch (de)
+        </option>
+
+        <option title="Greek" data-locale="el" value="el">
+          Ελληνικά (el)
+        </option>
+
+        <option title="Spanish" data-locale="es" value="es">
+          Español (es)
+        </option>
+
+        <option title="Persian" data-locale="fa" value="fa">
+          فارسی (fa)
+        </option>
+
+        <option title="Finnish" data-locale="fi" value="fi">
+          suomi (fi)
+        </option>
+
+        <option title="French" data-locale="fr" value="fr">
+          Français (fr)
+        </option>
+
+        <option title="Hebrew" data-locale="he" value="he">
+          עברית (he)
+        </option>
+
+        <option title="Hindi (India)" data-locale="hi-IN" value="hi-IN">
+          हिन्दी (भारत) (hi-IN)
+        </option>
+
+        <option title="Hungarian" data-locale="hu" value="hu">
+          magyar (hu)
+        </option>
+
+        <option title="Indonesian" data-locale="id" value="id">
+          Bahasa Indonesia (id)
+        </option>
+
+        <option title="Italian" data-locale="it" value="it">
+          Italiano (it)
+        </option>
+
+        <option title="Japanese" data-locale="ja" value="ja">
+          日本語 (ja)
+        </option>
+
+        <option title="Kabyle" data-locale="kab" value="kab">
+          Taqbaylit (kab)
+        </option>
+
+        <option title="Korean" data-locale="ko" value="ko">
+          한국어 (ko)
+        </option>
+
+        <option title="Malay" data-locale="ms" value="ms">
+          Melayu (ms)
+        </option>
+
+        <option title="Burmese" data-locale="my" value="my">
+          မြန်မာဘာသာ (my)
+        </option>
+
+        <option title="Dutch" data-locale="nl" value="nl">
+          Nederlands (nl)
+        </option>
+
+        <option title="Polish" data-locale="pl" value="pl">
+          Polski (pl)
+        </option>
+
+        <option title="Portuguese (Brazilian)" data-locale="pt-BR" value="pt-BR">
+          Português (do Brasil) (pt-BR)
+        </option>
+
+        <option title="Portuguese (Portugal)" data-locale="pt-PT" value="pt-PT">
+          Português (Europeu) (pt-PT)
+        </option>
+
+        <option title="Russian" data-locale="ru" value="ru">
+          Русский (ru)
+        </option>
+
+        <option title="Swedish" data-locale="sv-SE" value="sv-SE">
+          Svenska (sv-SE)
+        </option>
+
+        <option title="Thai" data-locale="th" value="th">
+          ไทย (th)
+        </option>
+
+        <option title="Turkish" data-locale="tr" value="tr">
+          Türkçe (tr)
+        </option>
+
+        <option title="Ukrainian" data-locale="uk" value="uk">
+          Українська (uk)
+        </option>
+
+        <option title="Vietnamese" data-locale="vi" value="vi">
+          Tiếng Việt (vi)
+        </option>
+
+        <option title="Chinese (Simplified)" data-locale="zh-CN" value="zh-CN">
+          中文 (简体) (zh-CN)
+        </option>
+
+        <option title="Chinese (Traditional)" data-locale="zh-TW" value="zh-TW">
+          正體中文 (繁體) (zh-TW)
+        </option>
+
+  </select>
+  <noscript><button type="submit">Go</button></noscript>
+</form>
+
+
+
+            <ul class="footer-tos">
+              <li><a href="https://www.mozilla.org/about/legal/terms/mozilla">Terms</a></li>
+              <li><a href="https://www.mozilla.org/privacy/websites/">Privacy</a></li>
+              <li><a href="https://www.mozilla.org/privacy/websites/#cookies">Cookies</a></li>
+            </ul>
+
+            <div id="license" class="contentinfo">
+              <p>&copy; 2005-2020 Mozilla and individual contributors.</p> <p>Content is available under <a href="/en-US/docs/MDN/About#Copyrights_and_licenses">these licenses</a>.</p>
+            </div>
+
+      </div>
+    </footer>
+
+
+
+    <div id="auth-modal" class="modal hidden">
+    <section class="auth-providers" tabindex="-1" role="dialog" aria-modal="true"
+        aria-labelledby="modal-main-heading">
+        <header>
+            <h2 id="modal-main-heading">Sign In</h2>
+        </header>
+
+  <p>
+    Sign in to enjoy the benefits of an MDN account. If you haven’t already created an account, you will be prompted to do so after signing in.
+</p>
+<div class="auth-button-container">
+    <a href="/users/github/login/?next=%2Fen-US%2F" class="github-auth" data-first-focusable="true">
+        Sign in with Github
+    </a>
+    <a href="/users/google/login/?next=%2Fen-US%2F" class="google-auth">
+        Sign in with Google
+    </a>
+</div>
+
+        <button id="close-modal" class="close-modal" data-last-focusable="true">
+            <span>Close modal</span>
+        </button>
+    </section>
+</div>
+
+
+  <!-- site js -->
+
+
+
+    <script defer type="text/javascript" src="/static/build/js/react-main.f09071cb3cf6.js" charset="utf-8"></script>
+    <script defer type="text/javascript" src="/static/build/js/auth-modal.119e5d70465f.js" charset="utf-8"></script>
+
+
+
+
+
+
+    <script defer type="text/javascript" src="/static/build/js/newsletter.fbbd9c048490.js" charset="utf-8"></script>
+
+
+</body>
+</html>

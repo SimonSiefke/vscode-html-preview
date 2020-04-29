@@ -1,15 +1,24 @@
+import * as assert from 'assert'
 import * as fs from 'fs'
 import * as path from 'path'
 import { scan } from '../scanner2'
-import { measureStart, measureEnd } from './measure'
-import * as assert from 'assert'
-import { parseHtml } from '../parse'
+import { measureEnd, measureStart } from './measure'
 
 const fixtures = [
   fs.readFileSync(path.join(__dirname, 'fixtures/html5-spec.txt')).toString(),
   fs.readFileSync(path.join(__dirname, 'fixtures/github.txt')).toString(),
   fs.readFileSync(path.join(__dirname, 'fixtures/google.txt')).toString(),
   fs.readFileSync(path.join(__dirname, 'fixtures/codepen.txt')).toString(),
+  fs.readFileSync(path.join(__dirname, 'fixtures/vscode.txt')).toString(),
+  fs.readFileSync(path.join(__dirname, 'fixtures/soundcloud.txt')).toString(),
+  fs.readFileSync(path.join(__dirname, 'fixtures/riot.txt')).toString(),
+  fs.readFileSync(path.join(__dirname, 'fixtures/discord.txt')).toString(),
+  fs.readFileSync(path.join(__dirname, 'fixtures/mozilla-addons.txt')).toString(),
+  fs.readFileSync(path.join(__dirname, 'fixtures/mdn.txt')).toString(),
+  fs.readFileSync(path.join(__dirname, 'fixtures/arch-linux.txt')).toString(),
+  fs.readFileSync(path.join(__dirname, 'fixtures/stackoverflow.txt')).toString(),
+  fs.readFileSync(path.join(__dirname, 'fixtures/travis.txt')).toString(),
+  fs.readFileSync(path.join(__dirname, 'fixtures/wikipedia.txt')).toString(),
 ]
 
 scan2: {
@@ -20,11 +29,3 @@ scan2: {
   }
   measureEnd('scan2')
 }
-
-// parse1: {
-//   measureStart('parse1')
-//   for (const fixture of fixtures) {
-//     const result = parseHtml(fixture)
-//     assert.equal(result.htmlDocument !== undefined, true)
-//   }
-// }

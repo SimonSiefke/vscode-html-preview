@@ -370,7 +370,7 @@ export function createScanner(
   }
 }
 
-// const scanner = createScanner('<p class=>some text</p>');
+// const scanner = createScanner('<div id="tweet-0_1" class="col-md-4">')//?
 
 // scanner.scan(); // ?
 // scanner.getTokenText(); // ?

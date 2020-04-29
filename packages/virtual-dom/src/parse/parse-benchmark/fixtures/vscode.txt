@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="google-site-verification" content="cn5-gurGUvjtlzniBhOIPjfKHzuAplh_R9Ju9tuL0DM" />
+
+  <!-- Twitter and Facebook OpenGraph Metadata-->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:site" content="@code" />
+
+  <meta itemprop="applicationCategory" content="Text Editor">
+  <meta itemprop="datePublished" content="2016-04-14">
+  <meta itemprop="operatingSystem" content="Mac, Linux, Windows" />
+
+              <meta name="description" content="Visual Studio Code is a code editor redefined and optimized for building and debugging modern web and cloud applications.  Visual Studio Code is free and available on your favorite platform - Linux, macOS, and Windows." />
+            <meta name="msvalidate.01" content="D7003A550372D1205E5408F00BF1923B" />
+            <!-- Twitter and Facebook OpenGraph Metadata-->
+            <meta property="og:title" content="Visual Studio Code - Code Editing. Redefined"/>
+            <meta property="og:description" content="Visual Studio Code is a code editor redefined and optimized for building and debugging modern web and cloud applications.  Visual Studio Code is free and available on your favorite platform - Linux, macOS, and Windows."/>
+            <meta property="og:image" content="https://code.visualstudio.com/opengraphimg/opengraph-home.png"/>
+            <meta property="og:url" content="https://code.visualstudio.com/"/>
+            <link href="https://code.visualstudio.com" rel="canonical" />
+
+
+  <link rel="shortcut icon" href="/favicon.ico" sizes="128x128" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+
+  <title>Visual Studio Code - Code Editing. Redefined</title>
+
+  <link rel="stylesheet" href="/vendor/bootstrap/css/bootstrap.min.css">
+  <!-- EU Cookie Compliance CSS -->
+  <link rel="stylesheet" href="//uhf.microsoft.com/mscc/statics/mscc-0.3.6.min.css">
+  <link rel="stylesheet" href="/dist/style.css">
+
+  <!--Google Analytics-->
+  <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  </script>
+  <!-- End Google Analytics -->
+
+  <!-- Global site tag (gtag.js) - Google AdWords: 881159895 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=AW-881159895"></script>
+  <script>
+  function loadGA () {
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'AW-881159895');
+    window.gtag = gtag;
+  }
+
+  if (document.cookie.indexOf('MSCC=') !== -1) {
+    loadGA();
+  } else {
+    if (mscc && mscc.on) {
+      mscc.on('consent', function () {
+        loadGA();
+      })
+    }
+  }
+  </script>
+  <script src="https://az725175.vo.msecnd.net/scripts/jsll-4.js" type="text/javascript"></script>
+
+  <link rel="alternate" type="application/atom+xml" title="RSS Feed for code.visualstudio.com" href="/feed.xml" />
+</head>
+
+<body class="home">
+  <!-- EU Cookie Compliance JS -->
+  <script src="//uhf.microsoft.com/mscc/statics/mscc-0.3.6.min.js"></script>
+
+  <div id='mscc-cookie-container'>
+    <div id='msccBanner' dir='ltr' data-site-name='uhf-vscode' data-mscc-version='0.3.4' data-nver='aspnet-2.0.5' data-sver='0.1.2' class='cc-banner' role='alert'>
+      <div class='cc-container'>
+        <svg class='cc-icon cc-v-center' x='0px' y='0px' viewBox='0 0 44 44' height='30px' fill='none' stroke='currentColor'>
+          <circle cx='22' cy='22' r='20' stroke-width='2'></circle>
+          <line x1='22' x2='22' y1='18' y2='33' stroke-width='3'></line>
+          <line x1='22' x2='22' y1='12' y2='15' stroke-width='3'></line>
+          </svg>
+            <span class='cc-v-center cc-text'>This site uses cookies for analytics, personalized content and ads. By continuing to browse this site, you agree to this use.</span>
+            <a
+              href='https://go.microsoft.com/fwlink/?linkid=845480'
+              aria-label='Learn more about Microsoft’s Cookie Policy'
+              id='msccLearnMore'
+              data-mscc-ic="false"
+              class='cc-link cc-v-center cc-float-right'
+            >Learn more</a>
+      </div>
+    </div>
+  </div>
+  <div id="main" itemscope itemtype="http://schema.org/SoftwareApplication">
+          <a role="button" id="skip-to-content" class="link-button" href="#main-content">Skip to content<i>&nbsp;</i><span class="glyphicon glyphicon-menu-down"></span></a>
+          <div class="navbar-fixed-container">
+          	<div class="navbar navbar-inverse navbar-fixed-top " data-spy="affix" data-offset-top="1">
+          	    <nav role="navigation" aria-label="Top Level">
+          	        <div class="container">
+          	            <div class="nav navbar-header">
+          	                <a class="navbar-brand" href="/"><span itemprop="name">Visual Studio Code</span></a>
+          			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse" aria-label="Expand and Collapse Menu">
+          	                        <span class="icon-bar"></span>
+          	                        <span class="icon-bar"></span>
+          	                        <span class="icon-bar"></span>
+          		    	</button>
+          	            </div>
+          	            <div class="navbar-collapse collapse">
+          	                <ul class="nav navbar-nav navbar-left">
+          	                    <li ><a id="nav-docs" href="/docs">Docs</a></li>
+          	                    <li ><a id="nav-updates" href="/updates">Updates</a></li>
+          	                    <li ><a id="nav-blogs" href="/blogs">Blog</a></li>
+          	                    <li ><a id="nav-extend" href="/api">API</a></li>
+                                  <li><a href="https://marketplace.visualstudio.com/VSCode" target="_blank" id="nav-extensions">Extensions</a></li>
+          	                    <li ><a id="nav-faqs" href="/docs/supporting/faq">FAQ</a></li>
+          	                    <li class='search visible-xs'
+          	                        ><a href="/Search">Search</a></li>
+          	                </ul>
+
+          	                <ul class="nav navbar-nav navbar-right">
+          	                    <li>
+          	                        <a href="/Search" title="Search" class="btn search-btn" id="nav-search">
+          							<img class="search-icon" src="/assets/icons/search.svg" width="16px" height="16px" alt="Search" />
+          							<img class="search-icon-inverted" src="/assets/icons/search_dark.svg" width="16px" height="16px" alt="Search" />
+          	                        </a>
+          	                    </li>
+          	                    <li class="search">
+          	                        <form class="nav-search search-form" aria-label="Search">
+          	                            <div class="input-group">
+          	                                <input type="text" name="q" class="search-box form-control" placeholder="Search Docs" aria-label="Search text"/>
+          	                                <span class="input-group-btn">
+          	                                    <button tabindex="0" class="btn" type="submit" aria-label="Search">
+          	                                            <img class="search-icon" src="/assets/icons/search.svg" width="16px" height="16px" alt="Search" />
+          	                                            <img class="search-icon-inverted" src="/assets/icons/search_dark.svg" width="16px" height="16px" alt="Search" />
+          	                                    </button>
+          	                                </span>
+          	                            </div>
+          	                        </form>	                    </li>
+          	                    <!-- this was hiden in the home and download page, keeping it for now -->
+          	                    <li><a itemprop="downloadUrl" class="link-button" href="/Download" id="nav-download">
+          							<img class="download-icon" src="/assets/icons/download.svg" width="16px" height="16px" alt="Download VS Code" />
+          							<img class="download-icon-inverted" src="/assets/icons/download-black.svg" width="16px" height="16px" alt="Download VS Code" />
+          						<span class="hidden-sm">Download</span></a></li>
+          	                </ul>
+          	            </div>
+          	        </div>
+          	    </nav>
+          	</div>
+          </div>          <div class="updates-banner home ">
+              <div class="container">
+                  <p class="message"><a href="/updates" id="banner-link-updates">Version <span itemprop="softwareVersion">1.44</span></a> is now available! Read about the new features and fixes from March.</p>
+              </div>
+              <div tabindex="0" role="button" title="Dismiss this update" class="dismiss-btn" id="banner-dismiss-btn"><span class="sr-only">Dismiss this update</span><span aria-hidden="true" class="glyph-icon"></span></div>
+          </div>      <div role="main" id="main-content">
+        <div class="jumbotron home">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 copy">
+                <h1>Code editing. <strong>Redefined.</strong></h1>
+                <div class="lead">
+                    <p>
+                        <span itemprop="offers" itemscope itemtype="http://schema.org/Offer">
+                            <span itemprop="description">Free</span>.
+                            <meta itemprop="price" content="0" />
+                            <meta itemprop="priceCurrency" content="USD" />
+                        </span> Built on open source. Runs everywhere.</p>
+                </div>
+
+                <div id="download-buttons" class="download-hero alt-downloads">
+                    <!-- Download for user's current OS -->
+                    <div class="primary-buttons">
+                        <button class="link-button dlink" data-os="osx">Download for Mac<small class="build-type">Stable Build</small></button>
+                        <button class="link-button dlink" data-os="win">Download for Windows<small class="build-type">Stable Build</small></button>
+                        <div class="linux">
+                            <div class="flex-box">
+                                <button class="link-button dlink" data-os="linux64_deb"><img src="/assets/icons/download.svg" width="18px" height="18px" alt="Download VS Code"/>.deb<small>Debian, Ubuntu...</small></button>
+                                <button class="link-button dlink" data-os="linux64_rpm_repo"><img src="/assets/icons/download.svg" width="18px" height="18px" alt="Download VS Code"/>.rpm<small>Red Hat, Fedora...</small></button>
+                            </div>
+                            <div class="collapse" id="linux32-downloads-insiders">
+                                <ul class="list-unstyled text-center">
+                                    <li><a id="home-deb-download-link" class="dlink" data-os="linux32_deb"><strong>.deb</strong> (32 bit)</a></li>
+                                    <li><a id="home-rpm-download-link" class="dlink" data-os="linux32_rpm"><strong>.rpm</strong> (32 bit)</a></li>
+                                    <li><a id="home-zip-download-link" class="dlink" data-os="linux32"><strong>.tar.gz</strong> (32 bit)</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    <a class="link-button other-os" href="/Download">Download<small class="build-type">Stable Build</small></a>
+                    </div>
+                    <button id="download-dropdown" class="link-button download-dropdown" type="button" aria-haspopup="true" aria-labelledby="download-matrix-label"></button>
+                    <div id="download-matrix" aria-expanded="false" aria-labelledby="download-matrix-label" role="menu">
+                        <table>
+                            <colgroup>
+                                <col span="3"/>
+                                <col span="2" class="insiders-column"/>
+                            </colgroup>
+                            <thead>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <th class="build-header" scope="col">Stable</th>
+                                    <th class="build-header" scope="col">Insiders</th>
+                                </tr>
+                            </thead>
+
+                            <tbody class="os-group">
+                                <tr>
+                                    <td class="os" rowspan="1" scope="row">macOS</td>
+                                    <td class="download-type">Package</td>
+                                    <td><a role="link" href="javascript:void(0)" class="dlink" data-os="osx">
+                                        <img class="download-stable-icon" src="/assets/icons/download_blue.svg" alt="Download Stable">
+                                        <img class="download-stable-icon-accessible" src="/assets/icons/download_yellow.svg" alt="Download Stable">
+                                        </a>
+                                    </td>
+                                    <td><a role="link" href="javascript:void(0)" class="dlink" data-os="osx" data-build="insiders">
+                                        <img class="download-insiders-icon" src="/assets/icons/download_dark.svg" alt="Download Insiders">
+                                        <img class="download-insiders-icon-accessible" src="/assets/icons/download_yellow.svg" alt="Download Insiders">
+                                        </a>
+                                    </td>
+                                </tr>
+                            </tbody>
+
+                            <tbody class="os-group">
+                                <tr>
+                                    <td class="os" scope="row">Windows x64 <a id="windows-32-bit-toggle" href="javascript:void(0)" role="link" aria-haspopup="true" class="windows-32-bit"><span class="sr-only"> Windows</span></a></td>
+                                    <td class="download-type">User Installer</td>
+                                    <td><a role="link" href="javascript:void(0)" class="dlink" data-os="win64user">
+                                        <img class="download-stable-icon" src="/assets/icons/download_blue.svg" alt="Download Stable">
+                                        <img class="download-stable-icon-accessible" src="/assets/icons/download_yellow.svg" alt="Download Stable">
+                                        </a>
+                                    </td>
+                                    <td><a role="link" href="javascript:void(0)" class="dlink" data-os="win64user" data-build="insiders">
+                                        <img class="download-insiders-icon" src="/assets/icons/download_dark.svg" alt="Download Insiders">
+                                        <img class="download-insiders-icon-accessible" src="/assets/icons/download_yellow.svg" alt="Download Insiders">
+                                        </a>
+                                    </td>
+                                </tr>
+                            </tbody>
+
+                            <tbody class="os-group">
+                                <tr>
+                                    <td class="os" scope="row">Linux x64 <a id="linux-32-bit-toggle" href="javascript:void(0)" role="link" aria-haspopup="true" class="linux-32-bit"><span class="sr-only"> Linux</span></a></td>
+                                    <td class="download-type">.deb</td>
+                                    <td><a role="link" href="javascript:void(0)" class="dlink" data-os="linux64_deb">
+                                        <img class="download-stable-icon" src="/assets/icons/download_blue.svg" alt="Download Stable">
+                                        <img class="download-stable-icon-accessible" src="/assets/icons/download_yellow.svg" alt="Download Stable">
+                                        </a>
+                                        </td>
+                                    <td><a role="link" href="javascript:void(0)" class="dlink" data-os="linux64_deb" data-build="insiders">
+                                        <img class="download-insiders-icon" src="/assets/icons/download_dark.svg" alt="Download Insiders">
+                                        <img class="download-insiders-icon-accessible" src="/assets/icons/download_yellow.svg" alt="Download Insiders">
+                                        </a></td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td class="download-type">.rpm</td>
+                                    <td><a role="link" href="javascript:void(0)" class="dlink" data-os="linux64_rpm_repo">
+                                        <img class="download-stable-icon" src="/assets/icons/download_blue.svg" alt="Download Stable">
+                                        <img class="download-stable-icon-accessible" src="/assets/icons/download_yellow.svg" alt="Download Stable">
+                                        </a></td>
+                                    <td><a role="link" href="javascript:void(0)" class="dlink" data-os="linux64_rpm" data-build="insiders">
+                                        <img class="download-insiders-icon" src="/assets/icons/download_dark.svg" alt="Download Insiders">
+                                        <img class="download-insiders-icon-accessible" src="/assets/icons/download_yellow.svg" alt="Download Insiders">
+                                        </a></td>
+                                </tr>
+                            </tbody>
+
+                            <tbody id="other-downloads">
+                              <tr>
+                                <td colspan="4" rowspan="2">
+                                  <a href="#alt-downloads">Other downloads</a>
+                                </td>
+                              </tr>
+                            </tbody>
+
+                        </table>
+                    </div>
+                    <p id="download-matrix-label" class="subtext text-center"><a  href="#alt-downloads">Other platforms</a> and <a href="/insiders">Insiders Edition</a>
+                    </p>
+                    <p class="terms">By using VS Code, you agree to its <span class="wrap-together"><a id="home-terms-link" href="#home-terms">license and privacy statement</a>.</span></p>
+                </div>            </div>
+            <div class="col-md-8">
+                <div class="screenshot"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="value-props">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-3 col-xs-6"><a class="value-prop" id="home-value-prop-intellisense-link" href="#meet-intellisense"><div class="value-prop-icon intellisense"></div>IntelliSense</a></div>
+            <div class="col-sm-3 col-xs-6"><a class="value-prop" id="home-value-prop-debugging-link" href="#powerful-debugging"><div class="value-prop-icon debugging"></div>Debugging</a></div>
+            <div class="col-sm-3 col-xs-6"><a class="value-prop" id="home-value-prop-git-link" href="#built-in-git"><div class="value-prop-icon git"></div>Built-in Git</a></div>
+            <div class="col-sm-3 col-xs-6"><a class="value-prop" id="home-value-prop-extensions-link" href="#hundreds-of-extensions"><div class="value-prop-icon extensions-icon"></div>Extensions</a></div>
+        </div>
+    </div>
+</div>
+
+<!-- Swimlanes -->
+<div class="swimlane-container">
+
+    <div class="swimlane social-proof">
+
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div id="carousel-social-proof" class="carousel slide" data-ride="carousel" data-interval="false">
+
+                        <div aria-label="twitter carousel" class="carousel-inner" role="list">
+
+                            <div class="item active" role="listitem">
+                                <div class="container-fluid">
+                                    <div class="row tweets" tabindex="0" aria-label="Tweets list contains 6 tweets">
+                                        <!-- Tweet -->
+                                        <div id="tweet-0_0" class="col-md-4">
+                                                <a class="profile-image" href="https://twitter.com/Una/status/1127957563876753409" target="_blank" role="img" aria-labelledby="tweet-0_0-name" style="background-image: url('/assets/socialproof/twitterprofiles/Una.jpg')"></a>
+                                                <div class="text-content">
+                                                    <a class="attribution" href="https://twitter.com/Una/status/1127957563876753409" target="_blank">
+                                                        <strong id="tweet-0_0-name" class="name">Una Kravets</strong>
+                                                        <span class="handle" src="#">@Una</span>
+                                                    </a>
+                                                    <div class="tweet-body">
+                                                        VS <a href="https://twitter.com/code" target="_blank">@code</a> does so many things right. I’m constantly impressed by the UX, and customizing workspace / user preferences is no exception. 🙌🏼💯 It just keeps getting better ❤️
+                                                    </div>
+                                                </div>
+                                        </div>
+                                        <div id="tweet-0_1" class="col-md-4">
+                                                <a class="profile-image" href="https://twitter.com/jadbox/status/1124055202930339852" target="_blank" role="img" aria-labelledby="tweet-0_1-name" style="background-image: url('/assets/socialproof/twitterprofiles/jadbox.jpg')"></a>
+                                                <div class="text-content">
+                                                    <a class="attribution" href="https://twitter.com/jadbox/status/1124055202930339852" target="_blank">
+                                                        <strong id="tweet-0_1-name" class="name">Jonathan Dunlap</strong>
+                                                        <span class="handle" src="#">@jadbox</span>
+                                                    </a>
+                                                    <div class="tweet-body">
+                                                        Awesome - VS Code will have deep remote development: you can connect to a container running a different OS and be able to use any VS Code plugins/linting/debugging for that environment. 🔥🔥🔥
+                                                    </div>
+                                                </div>
+                                        </div>
+                                        <div id="tweet-0_2" class="col-md-4">
+                                                <a class="profile-image" href="https://twitter.com/PKodmad/" target="_blank" role="img" aria-labelledby="tweet-0_2-name" style="background-image: url('/assets/socialproof/twitterprofiles/PKodmad.jpg')"></a>
+                                                <div class="text-content">
+                                                    <a class="attribution" href="https://twitter.com/PKodmad/" target="_blank">
+                                                        <strong id="tweet-0_2-name" class="name">Pavithra Kodmad</strong>
+                                                        <span class="handle" src="#">@PKodmad</span>
+                                                    </a>
+                                                    <div class="tweet-body">
+                                                        VS Code is my most used and favorite editor. I love being able to customize the editor - changing the layout, the icons, fonts and color scheme is so easy!
+                                                    </div>
+                                                </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="item " role="listitem">
+                                <div class="container-fluid">
+                                    <div class="row tweets" tabindex="0" aria-label="Tweets list contains 6 tweets">
+                                        <!-- Tweet -->
+                                        <div id="tweet-1_0" class="col-md-4">
+                                                <a class="profile-image" href="https://twitter.com/MrDarrenV/status/1144005978901372928" target="_blank" role="img" aria-labelledby="tweet-1_0-name" style="background-image: url('/assets/socialproof/twitterprofiles/MrDarrenV.jpg')"></a>
+                                                <div class="text-content">
+                                                    <a class="attribution" href="https://twitter.com/MrDarrenV/status/1144005978901372928" target="_blank">
+                                                        <strong id="tweet-1_0-name" class="name">Darren</strong>
+                                                        <span class="handle" src="#">@MrDarrenV</span>
+                                                    </a>
+                                                    <div class="tweet-body">
+                                                        Just as I thought <a href="https://twitter.com/code" target="_blank">@code</a> couldn't get better, out comes its Remote Development plugins in the Stable version that let you remote into containers as a dev environment! 😍
+                                                    </div>
+                                                </div>
+                                        </div>
+                                        <div id="tweet-1_1" class="col-md-4">
+                                                <a class="profile-image" href="https://twitter.com/cassidoo/" target="_blank" role="img" aria-labelledby="tweet-1_1-name" style="background-image: url('/assets/socialproof/twitterprofiles/cassidoo.jpg')"></a>
+                                                <div class="text-content">
+                                                    <a class="attribution" href="https://twitter.com/cassidoo/" target="_blank">
+                                                        <strong id="tweet-1_1-name" class="name">Cassidy Williams</strong>
+                                                        <span class="handle" src="#">@cassidoo</span>
+                                                    </a>
+                                                    <div class="tweet-body">
+                                                        I was a vim fan, but then discovered VS Code's Vim plugin, which lets me add in my vim keybindings. I can maintain my coding style without having to compromise on speed.
+                                                    </div>
+                                                </div>
+                                        </div>
+                                        <div id="tweet-1_2" class="col-md-4">
+                                                <a class="profile-image" href="https://twitter.com/lauragift21/" target="_blank" role="img" aria-labelledby="tweet-1_2-name" style="background-image: url('/assets/socialproof/twitterprofiles/lauragift21.jpg')"></a>
+                                                <div class="text-content">
+                                                    <a class="attribution" href="https://twitter.com/lauragift21/" target="_blank">
+                                                        <strong id="tweet-1_2-name" class="name">Gift Egwuenu</strong>
+                                                        <span class="handle" src="#">@lauragift21</span>
+                                                    </a>
+                                                    <div class="tweet-body">
+                                                        I love <a href="https://twitter.com/code," target="_blank">@code,</a> the built-in markdown previewer is awesome and the plugin system allows me to use GitLens, which makes my workflow so much easier.
+                                                    </div>
+                                                </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <a class="left carousel-control" href="#carousel-social-proof" role="button" data-slide="prev">
+                            <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                            <span class="sr-only">Previous</span>
+                        </a>
+                        <a class="right carousel-control" href="#carousel-social-proof" role="button" data-slide="next">
+                            <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                            <span class="sr-only">Next</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        </div>
+    <div id="meet-intellisense" class="swimlane">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-4">
+                    <img src='/assets/images/home-intellisense.svg' alt="Intellisense" class="screenshot"/>
+                </div>
+                <div class="col-sm-7 col-sm-push-1">
+                    <h2>Meet IntelliSense.</h2>
+                    <p>Go beyond syntax highlighting and autocomplete with IntelliSense, which provides smart completions based on variable types, function definitions, and imported modules.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="powerful-debugging" class="swimlane">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-4 col-sm-push-8">
+                    <img src='/assets/images/home-debug.svg' alt="Debugging" class="screenshot"/>
+                </div>
+                <div class="col-sm-7 col-sm-pull-4">
+                    <h2>Print statement debugging is a thing of the past.</h2>
+                    <p>Debug code right from the editor. Launch or attach to your running apps and debug with break points, call stacks, and an interactive console.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="built-in-git" class="swimlane">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-4">
+                    <img src='/assets/images/home-git.svg' alt="Git" class="screenshot"/>
+                </div>
+                <div class="col-sm-7 col-sm-push-1">
+                    <h2>Git commands built-in.</h2>
+                    <p>Working with Git and other SCM providers has never been easier. Review diffs, stage files, and make commits right from the editor. Push and pull from any hosted SCM service.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="hundreds-of-extensions" class="swimlane hundreds-extensions">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-4 col-sm-push-8">
+                    <a id="home-marketplace-link" href="https://marketplace.visualstudio.com/VSCode" target="_blank"><img src="/assets/images/Hundreds-of-Extensions.png" class="hundreds-extensions-img" alt="Easily use extensions in VS Code" /></a>
+                </div>
+                <div class="col-sm-7 col-sm-pull-4">
+                    <h2>Extensible and customizable.</h2>
+                    <p>Want even more features? Install extensions to add new languages, themes, debuggers, and to connect to additional services. Extensions run in separate processes, ensuring they won't slow down your editor. <a id="home-extension-gallery-doc-link" href="/docs/editor/extension-gallery">Learn more about extensions.</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="deploy" class="swimlane">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-4">
+                    <img src='/assets/images/home-azure.svg' alt="Git" class="screenshot"/>
+                </div>
+                <div class="col-sm-7 col-sm-push-1">
+                    <h2>Deploy with confidence and ease</h2>
+                    <p>With <a href="https://azure.microsoft.com">Microsoft Azure</a> you can deploy and host your React, Angular, Vue, Node, Python (and more!) sites, store and query relational and document based data, and scale with serverless computing, all with ease, <a href="https://code.visualstudio.com/docs/azure/extensions">all from within VS Code</a>.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="swimlane getting-started">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-6 vscode-for">
+                    <h2>VS Code for</h2>
+                </div>
+                <div class="col-sm-6 home-languages-list-parent">
+                    <div class="mask"></div>
+                    <div class="supported-languages-list"></div>
+                </div>
+
+            </div>
+            <div class="row caption">
+                <div class="col-sm-12">
+                    <a id="home-get-started-now-link" class="link-button" href="/docs">Get Started Now</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="alt-downloads" class="swimlane alt-downloads download-buttons">
+      <div class="buttons">
+        <div class="download">
+          <div class="logo windows"></div>
+          <button class="link-button dlink" data-os="win" aria-label="Windows download" role="link">
+            <img class="download-icon" src="/assets/icons/download.svg" width="18px" height="18px" alt="Download VS Code" />
+            <img class="download-icon-accessible" src="/assets/icons/download-black.svg" width="18px" height="18px" alt="Download VS Code"
+            /> Windows
+            <small>Windows 7, 8, 10</small>
+          </button>
+
+          <table class="win-downloads">
+            <colgroup>
+              <col />
+              <col />
+              <col />
+            </colgroup>
+            <tbody>
+              <tr>
+                <td><strong>User Installer</strong></td>
+                <td><a class="dlink" data-os="win64user" href="#" role="link" aria-label="Windows User install 64 bit">64 bit</a></td>
+                <td><a class="dlink" data-os="win32user" href="#" role="link" aria-label="Windows User install 32 bit">32 bit</a></td>
+              </tr>
+              <tr>
+                <td><strong>System Installer</strong></td>
+                <td><a class="dlink" data-os="win64" href="#" role="link" aria-label="Windows System install 64 bit">64 bit</a></td>
+                <td><a class="dlink" data-os="win32" href="#" role="link" aria-label="Windows System install 32 bit">32 bit</a></td>
+              </tr>
+              <tr>
+                <td><strong>.zip</strong></td>
+                <td><a class="dlink" data-os="winzip" href="#" role="link" aria-label="Windows ZIP 64 bit">64 bit</a></td>
+                <td><a class="dlink" data-os="win32zip" href="#" role="link" aria-label="Windows ZIP 32 bit">32 bit</a></td>
+              </tr>
+            </tbody>
+          </table>
+
+        </div>
+
+        <div class="download">
+          <div class="logo linux"></div>
+          <button class="link-button dlink" data-os="linux64_deb" aria-label="Linux Debian Ubuntu download" role="link">
+            <img class="download-icon" src="/assets/icons/download.svg" width="18px" height="18px" alt="Download VS Code" />
+            <img class="download-icon-accessible" src="/assets/icons/download-black.svg" width="18px" height="18px" alt="Download VS Code"
+            /> .deb
+            <small>Debian, Ubuntu</small></button>
+          <button class="link-button dlink" data-os="linux64_rpm" aria-label="Linux Red Hat Fedora SUSE download" role="link">
+            <img class="download-icon" src="/assets/icons/download.svg" width="18px" height="18px" alt="Download VS Code" />
+            <img class="download-icon-accessible" src="/assets/icons/download-black.svg" width="18px" height="18px" alt="Download VS Code"
+            /> .rpm
+            <small>Red Hat, Fedora, SUSE</small>
+          </button>
+
+          <table class="linux-downloads">
+            <colgroup>
+              <col />
+              <col />
+            </colgroup>
+            <tbody>
+              <tr>
+                <td><strong>.deb</strong></td>
+                <td><a class="dlink" data-os="linux64_deb" href="#" role="link" aria-label="Linux Debian Ubuntu 64 bit download">64 bit</a></td>
+              </tr>
+              <tr>
+                <td><strong>.rpm</strong></td>
+                <td><a class="dlink" data-os="linux64_rpm" href="#" role="link" aria-label="Linux Red Hat Fedora SUSE 64 bit download">64 bit</a></td>
+              </tr>
+              <tr>
+                <td><strong>.tar.gz</strong></td>
+                <td><a class="dlink" data-os="linux64" href="#" role="link" aria-label="Linux .tar.gz 64 bit download">64 bit</a></td>
+              </tr>
+              <tr>
+                <td colspan="2" style="padding-top: 6px;"><strong><a href="https://snapcraft.io/code">Snap Store</a></strong></td>
+              </tr>
+            </tbody>
+          </table>
+
+        </div>
+        <div class="download">
+          <div class="logo mac"></div>
+          <button class="link-button dlink" data-os="osx" aria-label="Mac download" role="link">
+            <img class="download-icon" src="/assets/icons/download.svg" width="18px" height="18px" alt="Download VS Code" />
+            <img class="download-icon-accessible" src="/assets/icons/download-black.svg" width="18px" height="18px" alt="Download VS Code"
+            /> Mac
+            <small>macOS 10.10+</small></button>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="alt-downloads swimlane-container insiders-callout">
+        <div class="swimlane">
+            <div class="container">
+                <div class="row">
+                    <div class="terms text-center">
+                        <h2 class="faux-h3">Want new features sooner?</h2>
+                        <p class="call-to-action">Get the <a href="/insiders">Insiders build</a> instead.</p>
+                    </div>
+                </div>
+                <div class="alt-downloads">
+                    <div id="home-terms" class="terms">
+                        <h3 class="faux-h4">License and Privacy Terms</h3>
+                        <p>
+                            By downloading and using Visual Studio Code, you agree to the <a id="home-license-link" href="/License/">license terms</a>                        and <a href="https://go.microsoft.com/fwlink/?LinkID=528096&clcid=0x409">privacy statement</a>. VS
+                            Code automatically sends telemetry data and crash dumps to help us improve the product. If you would
+                            prefer not to have this data sent please go see <a href="https://code.visualstudio.com/docs/supporting/FAQ#_how-to-disable-crash-reporting">How to Disable Crash Reporting</a>                        to learn how to disable it.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+      </div>
+  </div>
+
+  <footer role="contentinfo">
+      <div class="container">
+          <div class="row">
+              <div class="left col-md-7">
+                  <ul class="links">
+                      <li>
+                          <span class="message">Hello from Seattle.</span>
+                      </li>
+                      <li>
+                          <a href="https://go.microsoft.com/fwlink/?LinkID=533687" onclick="followOnTwitter()" role="button" tabindex="0">Follow @code</a>
+                      </li>
+                      <li>
+                          <div class="github-star-button">
+                              <iframe src="/assets/github-button.html?user=Microsoft&repo=vscode&type=star&count=true"
+                                  frameborder="0" scrolling="0" width="130px" height="20px" title="GitHub follow button" aria-label="GitHub follow button"></iframe>
+                          </div>
+                      </li>
+
+                      <script>
+                          function followOnTwitter() {
+                              var windowFeatures = "location=yes,height=600,width=550,scrollbars=yes,status=yes";
+                              var originalReferer = "&original_referer=" + document.URL;
+                              var screenName = "&screen_name=code";
+                              var URL = "https://twitter.com/intent/follow?" + originalReferer + screenName;
+                              window.open(URL, "_blank", windowFeatures);
+                          }
+                      </script>
+                  </ul>
+              </div>
+              <div class="right col-md-5">
+                  <ul class="links">
+                      <li><a id="footer-support-link" href="https://support.microsoft.com/en-us/getsupport?wf=0&tenant=ClassicCommercial&oaspworkflow=start_1.0.0.0&locale=en-us&supportregion=en-us&pesid=16064&ccsid=636196895839595242"
+                              target="_blank">Support</a></li>
+                      <li><a id="footer-privacy-link" href="https://privacy.microsoft.com/en-us/privacystatement"
+                              target="_blank">Privacy</a></li>
+                      <li><a id="footer-terms-link" href="https://www.microsoft.com/en-us/legal/intellectualproperty/copyright/default.aspx"
+                              target="_blank">Terms of Use</a></li>
+                      <li><a id="footer-license-link" href="/License">License</a></li>
+                  </ul>
+                  <div class="copyright">
+                      <a id="footer-microsoft-link" class="logo" href="https://www.microsoft.com">
+                          <img class="microsoft-logo" src="/assets/images/microsoft-logo.png" height="20" alt="Microsoft homepage"/>
+                          <img class="microsoft-logo-inverted" src="/assets/images/microsoft-logo-inverted.png" height="20" alt="Microsoft homepage" />
+                      </a>
+                      <span>&copy; 2020 <span itemprop="publisher" itemscope itemtype="https://schema.org/Organization">
+  <span itemprop="name">Microsoft</span></span>
+                      </span>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </footer>
+  <script src="/dist/index.js"></script>
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context" : "http://schema.org",
+      "@type" : "Product",
+      "name" : "Visual Studio Code",
+      "logo": "https://code.visualstudio.com/assets/favicon.ico",
+      "url" : "https://code.visualstudio.com",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://code.visualstudio.com/Search?q={search_term_string}",
+        "query-input": "required name=search_term_string"
+      },
+      "sameAs" : [
+      "https://en.wikipedia.org/wiki/Visual_Studio_Code",
+      "https://www.facebook.com/visualstudio",
+      "https://twitter.com/code",
+      "https://blogs.msdn.com/b/vscode"
+      ]
+    }
+  </script>
+
+  <!-- [Begin] JSLL script includes -->
+
+  <script type="text/javascript">
+    var config = {
+      coreData: {
+        appId: "vscode"
+      }
+    };
+    if (awa) {
+      awa.init(config);
+    }
+  </script>
+  <!-- [End] JSLL script includes --></body>
+</html>

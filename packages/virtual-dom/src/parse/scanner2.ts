@@ -104,14 +104,21 @@ export const scan: (text: string) => SuccessResult | ErrorResult = text => {
             break
           }
           case undefined: {
-            if ((next = text.slice(index).match(/^<!--(.|\s)*?-->/))) {
+            if ((next = text.slice(index).match(/^<!--(.|\s)*?--/))) {
               const tokenText = next[0]
               index += tokenText.length
-              tokens.push({
-                type: TokenType.Comment,
-                text: tokenText,
-              })
-              state = State.Content
+              if (text[index++] === '>') {
+                tokens.push({
+                  type: TokenType.Comment,
+                  text: tokenText + '>',
+                })
+                state = State.Content
+              } else {
+                return {
+                  status: 'invalid',
+                  index,
+                }
+              }
             } else if ((next = text.slice(index).match(/^<\//))) {
               const tokenText = next[0]
               index += tokenText.length
@@ -198,6 +205,14 @@ export const scan: (text: string) => SuccessResult | ErrorResult = text => {
           index += tokenText.length
           tokens.push({
             type: TokenType.StartTagClosingBracket,
+            text: tokenText,
+          })
+          state = State.Content
+        } else if ((next = text.slice(index).match(/^\/>/))) {
+          const tokenText = next[0]
+          index += tokenText.length
+          tokens.push({
+            type: TokenType.StartTagSelfClosingBracket,
             text: tokenText,
           })
           state = State.Content
@@ -422,5 +437,3 @@ export const scan: (text: string) => SuccessResult | ErrorResult = text => {
     tokens,
   }
 }
-
-scan(`<div aria-label="Add bold text <ctrl+b>">`) //?

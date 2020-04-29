@@ -448,3 +448,33 @@ test('angle brackets inside quoted attribute value', () => {
     { text: '>', type: 'StartTagClosingBracket' },
   ])
 })
+
+test('self closing bracket directly after attribute value quote', () => {
+  expectTokens(
+    `<meta property="og:title" content="Visual Studio Code - Code Editing. Redefined"/>`
+  ).toEqual([
+    { text: '<', type: 'StartTagOpeningBracket' },
+    { text: 'meta', type: 'StartTagName' },
+    { text: ' ', type: 'Whitespace' },
+    { text: 'property', type: 'AttributeName' },
+    { text: '=', type: 'AttributeEqualSign' },
+    { text: '"og:title"', type: 'QuotedAttributeValue' },
+    { text: ' ', type: 'Whitespace' },
+    { text: 'content', type: 'AttributeName' },
+    { text: '=', type: 'AttributeEqualSign' },
+    { text: '"Visual Studio Code - Code Editing. Redefined"', type: 'QuotedAttributeValue' },
+    { text: '/>', type: 'StartTagSelfClosingBracket' },
+  ])
+})
+
+test('conditional comments', () => {
+  expectTokens(`<!--[if IE 6]>
+<style type="text/css"><!--
+
+--></style>
+<![endif]-->`).toFail()
+})
+
+test('double dashes in comment', () => {
+  expectTokens(`<!-- ------------------ HEADER BEGINS HERE -------------------- -->`).toFail()
+})
