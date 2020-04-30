@@ -23,7 +23,7 @@ interface ElementNode {
 }
 
 const createElementNode: () => ElementNode = () => ({
-  attributes: {},
+  attributes: Object.create(null),
   children: [],
   nodeType: 'ElementNode',
   parent: undefined,
@@ -184,8 +184,15 @@ const pretty = node => {
   }
 }
 
-const doc = parse(`<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" dir="ltr"  lang="en-US" >`)
+const doc = parse(`<!DOCTYPE html>
+<html>
+  <head>
+    <base href=http://www.example.com/ target=_self />
+  </head>
+  <body>
+    asdasdasdasdasdasd
+  </body>
+</html>`)
 
 // @ts-ignore
 JSON.stringify(pretty(doc.htmlDocument).children, null, 2) //?

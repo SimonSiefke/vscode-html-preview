@@ -143,3 +143,59 @@ test('older doctype', () => {
 test('invalid doctype', () => {
   expectNodes(`<!DOCTYPE ht>`).toFail()
 })
+
+test('small document', () => {
+  expectNodes(`<!DOCTYPE html>
+<html>
+  <head>
+    <base href=http://www.example.com/ target=_self />
+  </head>
+  <body>
+    asdasdasdasdasdasd
+  </body>
+</html>`).toEqual([
+    {
+      nodeType: 'Doctype',
+      tag: '!DOCTYPE',
+    },
+    {
+      nodeType: 'TextNode',
+      text: '\n',
+    },
+    {
+      nodeType: 'ElementNode',
+      tag: 'html',
+      attributes: {},
+      children: [
+        {
+          nodeType: 'TextNode',
+          text: '\n  ',
+        },
+        {
+          nodeType: 'ElementNode',
+          tag: 'head',
+          attributes: {},
+          children: [
+            { nodeType: 'TextNode', text: '\n    ' },
+            {
+              attributes: { href: 'http://www.example.com/', target: '_self' },
+              children: [],
+              nodeType: 'ElementNode',
+
+              tag: 'base',
+            },
+            { nodeType: 'TextNode', text: '\n' },
+            { nodeType: 'TextNode', text: '\n' },
+            {
+              attributes: {},
+              children: [{ nodeType: 'TextNode', text: '\n    asdasdasdasdasdasd\n  ' }],
+              nodeType: 'ElementNode',
+
+              tag: 'body',
+            },
+          ],
+        },
+      ],
+    },
+  ])
+})
