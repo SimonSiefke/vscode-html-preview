@@ -21,7 +21,7 @@ const expectNodes = (text: string) => ({
   toEqual: (expectedNodes: any) => {
     const result = parse(text)
     expect(result.status).toBe('success')
-    expect((result as any).htmlDocument.children).toEqual(expectedNodes)
+    expect((result as any).nodes).toEqual(expectedNodes)
   },
   toFail: () => {
     const result = parse(text)
@@ -154,26 +154,13 @@ test('small document', () => {
     asdasdasdasdasdasd
   </body>
 </html>`).toEqual([
+    { nodeType: 'Doctype', tag: '!DOCTYPE' },
+    { nodeType: 'TextNode', text: '\n' },
     {
-      nodeType: 'Doctype',
-      tag: '!DOCTYPE',
-    },
-    {
-      nodeType: 'TextNode',
-      text: '\n',
-    },
-    {
-      nodeType: 'ElementNode',
-      tag: 'html',
       attributes: {},
       children: [
+        { nodeType: 'TextNode', text: '\n  ' },
         {
-          nodeType: 'TextNode',
-          text: '\n  ',
-        },
-        {
-          nodeType: 'ElementNode',
-          tag: 'head',
           attributes: {},
           children: [
             { nodeType: 'TextNode', text: '\n    ' },
@@ -181,21 +168,24 @@ test('small document', () => {
               attributes: { href: 'http://www.example.com/', target: '_self' },
               children: [],
               nodeType: 'ElementNode',
-
               tag: 'base',
             },
-            { nodeType: 'TextNode', text: '\n' },
-            { nodeType: 'TextNode', text: '\n' },
-            {
-              attributes: {},
-              children: [{ nodeType: 'TextNode', text: '\n    asdasdasdasdasdasd\n  ' }],
-              nodeType: 'ElementNode',
-
-              tag: 'body',
-            },
+            { nodeType: 'TextNode', text: '\n  ' },
           ],
+          nodeType: 'ElementNode',
+          tag: 'head',
         },
+        { nodeType: 'TextNode', text: '\n  ' },
+        {
+          attributes: {},
+          children: [{ nodeType: 'TextNode', text: '\n    asdasdasdasdasdasd\n  ' }],
+          nodeType: 'ElementNode',
+          tag: 'body',
+        },
+        { nodeType: 'TextNode', text: '\n' },
       ],
+      nodeType: 'ElementNode',
+      tag: 'html',
     },
   ])
 })

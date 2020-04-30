@@ -38,6 +38,8 @@ type Operation =
         readonly id: number
         readonly nodeType: 'ElementNode'
         readonly tag: string
+        readonly parentId: number
+        readonly index: number
       }
     }
   | {
@@ -46,6 +48,8 @@ type Operation =
         readonly id: number
         readonly nodeType: 'TextNode'
         readonly text: string
+        readonly parentId: number
+        readonly index: number
       }
     }
   | {
@@ -54,6 +58,8 @@ type Operation =
         readonly id: number
         readonly nodeType: 'CommentNode'
         readonly text: string
+        readonly parentId: number
+        readonly index: number
       }
     }
   | {
@@ -86,6 +92,14 @@ type Operation =
         readonly attributeName: string
       }
     }
+  | {
+      readonly command: 'elementMove'
+      readonly payload: {
+        readonly id: number
+        readonly index: number
+        readonly parentId: number
+      }
+    }
 
 const elementDelete: (
   edits: Operation[],
@@ -99,10 +113,28 @@ const elementDelete: (
   })
 }
 
+const elementMove: (
+  edits: Operation[],
+  node: CommentNode | ElementNode | TextNode | DoctypeNode,
+  parentId: number,
+  index: number
+) => void = (edits, node, parentId, index) => {
+  edits.push({
+    command: 'elementMove',
+    payload: {
+      id: node.id,
+      parentId,
+      index,
+    },
+  })
+}
+
 const elementInsert: (
   edits: Operation[],
-  node: CommentNode | DoctypeNode | ElementNode | TextNode
-) => void = (edits, node) => {
+  node: CommentNode | DoctypeNode | ElementNode | TextNode,
+  parentId: number,
+  index: number
+) => void = (edits, node, parentId, index) => {
   switch (node.nodeType) {
     case 'Doctype': {
       break
@@ -114,10 +146,12 @@ const elementInsert: (
           nodeType: node.nodeType,
           id: node.id,
           tag: node.tag,
+          parentId,
+          index,
         },
       })
-      for (const child of node.children) {
-        elementInsert(edits, child)
+      for (let i = 0; i < node.children.length; i++) {
+        elementInsert(edits, node.children[i], node.id, i)
       }
       break
     }
@@ -128,6 +162,8 @@ const elementInsert: (
           nodeType: node.nodeType,
           id: node.id,
           text: node.text,
+          parentId,
+          index,
         },
       })
       break
@@ -139,6 +175,8 @@ const elementInsert: (
           nodeType: node.nodeType,
           id: node.id,
           text: node.text,
+          parentId,
+          index,
         },
       })
       break
@@ -237,8 +275,9 @@ const childEdits: (
   oldNodes: readonly (CommentNode | DoctypeNode | ElementNode | TextNode)[],
   newNodes: readonly (CommentNode | DoctypeNode | ElementNode | TextNode)[],
   oldNodeMap: any,
-  newNodeMap: any
-) => void = (edits, oldNodes, newNodes, oldNodeMap, newNodeMap) => {
+  newNodeMap: any,
+  parentId: number
+) => void = (edits, oldNodes, newNodes, oldNodeMap, newNodeMap, parentId) => {
   let oldIndex = 0
   let newIndex = 0
   /**
@@ -264,8 +303,7 @@ const childEdits: (
       oldNode.id === newNode.id
     ) {
       attributeEdits(edits, oldNode, newNode)
-      childEdits(edits, oldNode.children, newNode.children, oldNodeMap, newNodeMap)
-      // attributeAdd()
+      childEdits(edits, oldNode.children, newNode.children, oldNodeMap, newNodeMap, newNode.id)
       oldIndex++
       newIndex++
       continue
@@ -286,7 +324,7 @@ const childEdits: (
       oldIndex++
     }
     if (!oldNodeMap[newNode.id]) {
-      elementInsert(edits, newNode)
+      elementInsert(edits, newNode, parentId, newIndex)
       newIndex++
     }
   }
@@ -303,8 +341,12 @@ const childEdits: (
    */
   while (newIndex < newNodes.length) {
     const newNode = newNodes[newIndex]
+    if (newNode.id in oldNodeMap) {
+      elementMove(edits, newNode, parentId, newIndex)
+    } else {
+      elementInsert(edits, newNode, parentId, newIndex)
+    }
     newIndex++
-    elementInsert(edits, newNode)
   }
   return edits
 }
@@ -314,57 +356,110 @@ export const diff: (oldState: State, newState: State) => readonly Operation[] = 
   newState
 ) => {
   const edits: Operation[] = []
-  childEdits(edits, oldState.nodes, newState.nodes, oldState.nodeMap, newState.nodeMap)
+  childEdits(edits, oldState.nodes, newState.nodes, oldState.nodeMap, newState.nodeMap, -1)
   return edits
 }
+const oldNodes = [
+  {
+    tag: 'p',
+    nodeType: 'ElementNode',
+    id: 0,
+    attributes: {},
+    children: [
+      {
+        nodeType: 'TextNode',
+        text: '\n  Hello\n',
+        id: 1,
+      },
+    ],
+  },
+  {
+    text: '\n',
+    nodeType: 'TextNode',
+    id: 2,
+  },
+  {
+    nodeType: 'ElementNode',
+    attributes: {},
+    id: 3,
+    tag: 'p',
+    children: [
+      {
+        nodeType: 'TextNode',
+        text: '\n  ',
+        id: 4,
+      },
+      {
+        nodeType: 'ElementNode',
+        tag: 'em',
+        id: 5,
+        attributes: {},
+        children: [
+          {
+            nodeType: 'TextNode',
+            text: 'World',
+            id: 6,
+          },
+        ],
+      },
+      {
+        nodeType: 'TextNode',
+        text: '\n\n',
+        id: 7,
+      },
+    ],
+  },
+] as const
 
-// const node0: CommentNode = { nodeType: 'CommentNode', text: 'h1', id: 0 }
-// const node1: CommentNode = { nodeType: 'CommentNode', text: 'h12', id: 0 }
-
-// const oldNodeMap = {
-//   0: node0,
-// }
-// const newNodeMap = {
-//   0: node1,
-// }
-
-// diff({ nodes: [node0], nodeMap: oldNodeMap }, { nodes: [node1], nodeMap: newNodeMap }) //?
-
-const node0: ElementNode = {
-  nodeType: 'ElementNode',
-  children: [
-    {
-      nodeType: 'TextNode',
-      text: 'hello world',
-      id: 1,
-    },
-  ],
-  id: 0,
-  tag: 'h1',
-  attributes: {},
-}
-
-const node1: ElementNode = {
-  nodeType: 'ElementNode',
-  children: [
-    {
-      nodeType: 'TextNode',
-      text: 'hello world!',
-      id: 1,
-    },
-  ],
-  id: 0,
-  tag: 'h1',
-  attributes: {},
-}
-
+const newNodes = [
+  {
+    tag: 'p',
+    nodeType: 'ElementNode',
+    id: 0,
+    attributes: {},
+    children: [
+      {
+        nodeType: 'TextNode',
+        text: '\n  Hello\n\n    ',
+        id: 1,
+      },
+      {
+        nodeType: 'ElementNode',
+        tag: 'em',
+        id: 5,
+        attributes: {},
+        children: [
+          {
+            nodeType: 'TextNode',
+            text: 'World',
+            id: 6,
+          },
+        ],
+      },
+      {
+        nodeType: 'TextNode',
+        text: '\n\n',
+        id: 7,
+      },
+    ],
+  },
+] as const
 const oldNodeMap = {
-  0: node0,
+  0: oldNodes[0],
+  1: oldNodes[0].children[0],
+  2: oldNodes[1],
+  3: oldNodes[2],
+  4: oldNodes[2].children[0],
+  5: oldNodes[2].children[1],
+  6: oldNodes[2].children[1].children[0],
+  7: oldNodes[2].children[2],
 }
 const newNodeMap = {
-  1: node1,
+  0: newNodes[0],
+  1: newNodes[0].children[0],
+  5: newNodes[0].children[1],
+  6: newNodes[0].children[1].children[0],
+  7: newNodes[0].children[2],
 }
 
-// for (let i = 0; i < 1000; i++) {
-diff({ nodes: [node0], nodeMap: oldNodeMap }, { nodes: [node1], nodeMap: newNodeMap }) //?.
-// }
+diff({ nodes: oldNodes, nodeMap: oldNodeMap }, { nodes: newNodes, nodeMap: newNodeMap }) //?

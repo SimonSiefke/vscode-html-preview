@@ -4,8 +4,27 @@ const SELF_CLOSING_TAGS = new Set(['input', '!DOCTYPE', '!doctype'])
 
 const isSelfClosingTag: (tagName: string) => boolean = tagName => SELF_CLOSING_TAGS.has(tagName)
 
+interface ElementNode {
+  attributes: {
+    [key: string]: string
+  }
+  children: (ElementNode | CommentNode | TextNode)[]
+  tag: string
+}
+
+interface CommentNode {
+  readonly nodeType: 'CommentNode'
+  readonly text: string
+}
+
+interface TextNode {
+  readonly nodeType: 'TextNode'
+  readonly text: string
+}
+
 type SuccessResult = {
   readonly status: 'success'
+  readonly nodes: readonly (ElementNode | CommentNode | TextNode)[]
 }
 
 type ErrorResult = {
@@ -13,45 +32,21 @@ type ErrorResult = {
   readonly index: number
 }
 
-interface ElementNode {
-  attributes: {
-    [key: string]: string
-  }
-  children: (ElementNode | CommentNode | TextNode)[]
-  parent: ElementNode | undefined
-  tag: string
-}
-
 const createElementNode: () => ElementNode = () => ({
   attributes: Object.create(null),
   children: [],
   nodeType: 'ElementNode',
-  parent: undefined,
   tag: '',
 })
-
-interface CommentNode {
-  readonly nodeType: 'CommentNode'
-  readonly text: string
-  readonly parent: ElementNode | undefined
-}
 
 const createCommentNode: (text: string) => CommentNode = text => ({
   text,
   nodeType: 'CommentNode',
-  parent: undefined,
 })
-
-interface TextNode {
-  readonly nodeType: 'TextNode'
-  readonly text: string
-  parent: ElementNode | undefined
-}
 
 const createTextNode: (text: string) => TextNode = text => ({
   nodeType: 'TextNode',
   text,
-  parent: undefined,
 })
 
 interface DoctypeNode {
@@ -72,7 +67,7 @@ export const parse: (text: string) => SuccessResult | ErrorResult = text => {
   const { tokens } = result
   const htmlDocument = createElementNode()
   let parent: ElementNode = htmlDocument
-
+  const stack = [parent]
   let child: any
   for (let i = 0; i < tokens.length; i++) {
     const token = tokens[i]
@@ -84,8 +79,12 @@ export const parse: (text: string) => SuccessResult | ErrorResult = text => {
         break
       }
       case TokenType.StartTagOpeningBracket: {
+        if (parent.tag === 'h1') {
+          parent
+        }
         child = createElementNode()
         parent.children.push(child)
+        stack.push(child)
         break
       }
       case TokenType.StartTagName: {
@@ -94,6 +93,14 @@ export const parse: (text: string) => SuccessResult | ErrorResult = text => {
       }
       case TokenType.StartTagSelfClosingBracket: {
         child = undefined
+        stack.pop()
+        break
+      }
+      case TokenType.EndTagName: {
+        if (parent.tag === token.text) {
+          stack.pop()
+          parent = stack[stack.length - 1]
+        }
         break
       }
       case TokenType.StartTagClosingBracket: {
@@ -104,14 +111,6 @@ export const parse: (text: string) => SuccessResult | ErrorResult = text => {
           parent = child
           child = undefined
         }
-        break
-      }
-      case TokenType.EndTagName: {
-        // if (token.text === child.tag) {
-        //   parent.children.push(child)
-        //   child = undefined
-        // }
-        // token
         break
       }
       case TokenType.DocType: {
@@ -163,7 +162,7 @@ export const parse: (text: string) => SuccessResult | ErrorResult = text => {
   }
   return {
     status: 'success',
-    htmlDocument,
+    nodes: htmlDocument.children,
   }
 }
 
@@ -184,15 +183,7 @@ const pretty = node => {
   }
 }
 
-const doc = parse(`<!DOCTYPE html>
-<html>
-  <head>
-    <base href=http://www.example.com/ target=_self />
-  </head>
-  <body>
-    asdasdasdasdasdasd
-  </body>
-</html>`)
+const doc = parse(`<h1></h1><h2></h2>`)
 
 // @ts-ignore
-JSON.stringify(pretty(doc.htmlDocument).children, null, 2) //?
+JSON.stringify(doc.nodes.map(pretty), null, 2) //?

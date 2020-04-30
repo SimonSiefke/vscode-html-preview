@@ -1,4 +1,4 @@
-import { diff, ElementNode, State } from './diff2'
+import { diff, ElementNode, State, TextNode } from './diff2'
 
 const expectDiff = (oldState: State, newState: State) => ({
   toEqual: expectedDiff => {
@@ -7,106 +7,133 @@ const expectDiff = (oldState: State, newState: State) => ({
 })
 
 test('delete element node at start', () => {
-  const node0: ElementNode = {
-    nodeType: 'ElementNode',
-    tag: 'h1',
-    id: 0,
-    attributes: {},
-    children: [],
-  }
-  const node1: ElementNode = {
-    nodeType: 'ElementNode',
-    tag: 'h2',
-    id: 1,
-    attributes: {},
-    children: [],
-  }
+  const oldNodes = [
+    {
+      nodeType: 'ElementNode',
+      tag: 'h1',
+      id: 0,
+      attributes: {},
+      children: [],
+    },
+    {
+      nodeType: 'ElementNode',
+      tag: 'h2',
+      id: 1,
+      attributes: {},
+      children: [],
+    },
+  ] as const
+  const newNodes = [
+    {
+      nodeType: 'ElementNode',
+      tag: 'h2',
+      id: 1,
+      attributes: {},
+      children: [],
+    },
+  ] as const
+
   const oldNodeMap = {
-    0: node0,
-    1: node1,
+    0: oldNodes[0],
+    1: oldNodes[1],
   }
   const newNodeMap = {
-    1: node1,
+    1: newNodes[0],
   }
   expectDiff(
     {
-      nodes: [node0, node1],
+      nodes: oldNodes,
       nodeMap: oldNodeMap,
     },
     {
-      nodes: [node1],
+      nodes: newNodes,
       nodeMap: newNodeMap,
     }
   ).toEqual([{ command: 'elementDelete', payload: { id: 0 } }])
 })
 
 test('delete element node at end', () => {
-  const node0: ElementNode = {
-    nodeType: 'ElementNode',
-    tag: 'h1',
-    id: 0,
-    attributes: {},
-    children: [],
-  }
-  const node1: ElementNode = {
-    nodeType: 'ElementNode',
-    tag: 'h2',
-    id: 1,
-    attributes: {},
-    children: [],
-  }
+  const oldNodes = [
+    {
+      nodeType: 'ElementNode',
+      tag: 'h1',
+      id: 0,
+      attributes: {},
+      children: [],
+    },
+    {
+      nodeType: 'ElementNode',
+      tag: 'h2',
+      id: 1,
+      attributes: {},
+      children: [],
+    },
+  ] as const
+  const newNodes = [
+    {
+      nodeType: 'ElementNode',
+      tag: 'h1',
+      id: 0,
+      attributes: {},
+      children: [],
+    },
+  ] as const
+
   const oldNodeMap = {
-    0: node0,
-    1: node1,
+    0: oldNodes[0],
+    1: oldNodes[1],
   }
   const newNodeMap = {
-    0: node0,
+    0: newNodes[0],
   }
   expectDiff(
     {
-      nodes: [node0, node1],
+      nodes: oldNodes,
       nodeMap: oldNodeMap,
     },
     {
-      nodes: [node0],
+      nodes: newNodes,
       nodeMap: newNodeMap,
     }
   ).toEqual([{ command: 'elementDelete', payload: { id: 1 } }])
 })
 
 test('attribute changes', () => {
-  const node0: ElementNode = {
-    nodeType: 'ElementNode',
-    children: [],
-    id: 0,
-    tag: 'h1',
-    attributes: {
-      a: '1',
-      class: 'big',
+  const oldNodes = [
+    {
+      nodeType: 'ElementNode',
+      children: [],
+      id: 0,
+      tag: 'h1',
+      attributes: {
+        a: '1',
+        class: 'big',
+      },
     },
-  }
-
-  const node1: ElementNode = {
-    nodeType: 'ElementNode',
-    children: [],
-    id: 0,
-    tag: 'h1',
-    attributes: {
-      x: '2',
-      a: '2',
+  ] as const
+  const newNodes = [
+    {
+      nodeType: 'ElementNode',
+      children: [],
+      id: 0,
+      tag: 'h1',
+      attributes: {
+        x: '2',
+        a: '2',
+      },
     },
-  }
+  ] as const
 
   const oldNodeMap = {
-    0: node0,
+    0: oldNodes[0],
   }
   const newNodeMap = {
-    1: node1,
+    0: newNodes[0],
   }
 
   expectDiff(
-    { nodes: [node0], nodeMap: oldNodeMap },
-    { nodes: [node1], nodeMap: newNodeMap }
+    { nodes: oldNodes, nodeMap: oldNodeMap },
+    { nodes: newNodes, nodeMap: newNodeMap }
   ).toEqual([
     {
       command: 'attributeChange',
@@ -122,40 +149,258 @@ test('attribute changes', () => {
 })
 
 test('text change', () => {
-  const node0: ElementNode = {
-    nodeType: 'ElementNode',
-    tag: 'h1',
-    attributes: {},
-    id: 0,
-    children: [
-      {
-        id: 1,
-        nodeType: 'TextNode',
-        text: 'hello world',
-      },
-    ],
-  }
-  const node1: ElementNode = {
-    nodeType: 'ElementNode',
-    tag: 'h1',
-    attributes: {},
-    id: 0,
-    children: [
-      {
-        id: 1,
-        nodeType: 'TextNode',
-        text: 'hello world!',
-      },
-    ],
-  }
+  const oldNodes = [
+    {
+      nodeType: 'ElementNode',
+      tag: 'h1',
+      attributes: {},
+      id: 0,
+      children: [
+        {
+          id: 1,
+          nodeType: 'TextNode',
+          text: 'hello world',
+        },
+      ],
+    },
+  ] as const
+  const newNodes = [
+    {
+      nodeType: 'ElementNode',
+      tag: 'h1',
+      attributes: {},
+      id: 0,
+      children: [
+        {
+          id: 1,
+          nodeType: 'TextNode',
+          text: 'hello world!',
+        },
+      ],
+    },
+  ] as const
+
   const oldNodeMap = {
-    0: node0,
+    0: oldNodes[0],
   }
   const newNodeMap = {
-    0: node1,
+    0: newNodes[0],
   }
   expectDiff(
-    { nodes: [node0], nodeMap: oldNodeMap },
-    { nodes: [node1], nodeMap: newNodeMap }
+    { nodes: oldNodes, nodeMap: oldNodeMap },
+    { nodes: newNodes, nodeMap: newNodeMap }
   ).toEqual([{ command: 'textReplace', payload: { id: 1, text: 'hello world!' } }])
+})
+
+test('add two tags at once', () => {
+  const oldNodes = [
+    {
+      nodeType: 'ElementNode',
+      tag: 'body',
+      attributes: {},
+      id: 0,
+      children: [
+        {
+          nodeType: 'ElementNode',
+          tag: 'main',
+          attributes: {},
+          children: [],
+          id: 1,
+        },
+      ],
+    },
+  ] as const
+  const newNodes = [
+    {
+      nodeType: 'ElementNode',
+      tag: 'body',
+      attributes: {},
+      id: 0,
+      children: [
+        {
+          nodeType: 'ElementNode',
+          tag: 'main',
+          attributes: {},
+          id: 1,
+          children: [
+            {
+              nodeType: 'ElementNode',
+              tag: 'div',
+              attributes: {},
+              id: 2,
+              children: [
+                {
+                  nodeType: 'TextNode',
+                  text: 'New Content',
+                  id: 3,
+                },
+              ],
+            },
+            {
+              nodeType: 'ElementNode',
+              tag: 'div',
+              attributes: {},
+              children: [
+                {
+                  nodeType: 'TextNode',
+                  id: 5,
+                  text: 'More new Content',
+                },
+              ],
+              id: 4,
+            },
+          ],
+        },
+      ],
+    },
+  ] as const
+
+  const oldNodeMap = {
+    0: oldNodes[0],
+    1: oldNodes[0].children[0],
+  }
+  const newNodeMap = {
+    0: newNodes[0],
+    1: newNodes[0].children[0],
+    2: newNodes[0].children[0].children[0],
+    3: newNodes[0].children[0].children[0].children[0],
+    4: newNodes[0].children[0].children[1],
+    5: newNodes[0].children[0].children[1].children[0],
+  }
+  expectDiff(
+    { nodes: oldNodes, nodeMap: oldNodeMap },
+    { nodes: newNodes, nodeMap: newNodeMap }
+  ).toEqual([
+    {
+      command: 'elementInsert',
+      payload: { id: 2, parentId: 1, index: 0, nodeType: 'ElementNode', tag: 'div' },
+    },
+    {
+      command: 'elementInsert',
+      payload: { id: 3, parentId: 2, index: 0, nodeType: 'TextNode', text: 'New Content' },
+    },
+    {
+      command: 'elementInsert',
+      payload: { id: 4, parentId: 1, index: 1, nodeType: 'ElementNode', tag: 'div' },
+    },
+    {
+      command: 'elementInsert',
+      payload: { id: 5, parentId: 4, index: 0, nodeType: 'TextNode', text: 'More new Content' },
+    },
+  ])
+})
+
+test('delete across tags', () => {
+  const oldNodes = [
+    {
+      tag: 'p',
+      nodeType: 'ElementNode',
+      id: 0,
+      attributes: {},
+      children: [
+        {
+          nodeType: 'TextNode',
+          text: '\n  Hello\n',
+          id: 1,
+        },
+      ],
+    },
+    {
+      text: '\n',
+      nodeType: 'TextNode',
+      id: 2,
+    },
+    {
+      nodeType: 'ElementNode',
+      attributes: {},
+      id: 3,
+      tag: 'p',
+      children: [
+        {
+          nodeType: 'TextNode',
+          text: '\n  ',
+          id: 4,
+        },
+        {
+          nodeType: 'ElementNode',
+          tag: 'em',
+          id: 5,
+          attributes: {},
+          children: [
+            {
+              nodeType: 'TextNode',
+              text: 'World',
+              id: 6,
+            },
+          ],
+        },
+        {
+          nodeType: 'TextNode',
+          text: '\n\n',
+          id: 7,
+        },
+      ],
+    },
+  ] as const
+
+  const newNodes = [
+    {
+      tag: 'p',
+      nodeType: 'ElementNode',
+      id: 0,
+      attributes: {},
+      children: [
+        {
+          nodeType: 'TextNode',
+          text: '\n  Hello\n\n    ',
+          id: 1,
+        },
+        {
+          nodeType: 'ElementNode',
+          tag: 'em',
+          id: 5,
+          attributes: {},
+          children: [
+            {
+              nodeType: 'TextNode',
+              text: 'World',
+              id: 6,
+            },
+          ],
+        },
+        {
+          nodeType: 'TextNode',
+          text: '\n\n',
+          id: 7,
+        },
+      ],
+    },
+  ] as const
+  const oldNodeMap = {
+    0: oldNodes[0],
+    1: oldNodes[0].children[0],
+    2: oldNodes[1],
+    3: oldNodes[2],
+    4: oldNodes[2].children[0],
+    5: oldNodes[2].children[1],
+    6: oldNodes[2].children[1].children[0],
+    7: oldNodes[2].children[2],
+  }
+  const newNodeMap = {
+    0: newNodes[0],
+    1: newNodes[0].children[0],
+    5: newNodes[0].children[1],
+    6: newNodes[0].children[1].children[0],
+    7: newNodes[0].children[2],
+  }
+  expectDiff(
+    { nodes: oldNodes, nodeMap: oldNodeMap },
+    { nodes: newNodes, nodeMap: newNodeMap }
+  ).toEqual([
+    { command: 'textReplace', payload: { id: 1, text: '\n  Hello\n\n    ' } },
+    { command: 'elementMove', payload: { id: 5, index: 1, parentId: 0 } },
+    { command: 'elementMove', payload: { id: 7, index: 2, parentId: 0 } },
+    { command: 'elementDelete', payload: { id: 2 } },
+    { command: 'elementDelete', payload: { id: 3 } },
+  ])
 })

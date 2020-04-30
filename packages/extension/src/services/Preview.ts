@@ -12,7 +12,7 @@ import {
   createWebSocketServer,
   createHttpServer,
 } from 'html-preview-service-node'
-import { localPluginCore } from '../plugins/local-plugin-core/localPluginCore'
+// import { localPluginCore } from '../plugins/local-plugin-core/localPluginCore'
 import { localPluginRedirect } from '../plugins/local-plugin-redirect/localPluginRedirect'
 import { localPluginHighlight } from '../plugins/local-plugin-highlight/localPluginHighlight'
 import * as http from 'http'
@@ -21,6 +21,7 @@ import { open } from '../open/open'
 import * as assert from 'assert'
 import { localPluginEditText } from '../plugins/local-plugin-edit-text/localPluginEditText'
 import { localPluginHighlightSelection } from '../plugins/local-plugin-highlight-selection/localPluginHighlightSelection'
+import { localPluginCore2 } from '../plugins/local-plugin-core/localPluginCore2'
 
 export const invariant = (message: string, value: any) => assert.ok(value, message)
 
@@ -285,7 +286,8 @@ const doDispose = async (api: PreviewApi): Promise<void> => {
 }
 
 const plugins: LocalPlugin[] = []
-plugins.push(localPluginCore)
+// plugins.push(localPluginCore)
+plugins.push(localPluginCore2)
 if (process.env.NODE_ENV !== 'test') {
   plugins.push(localPluginRedirect)
 }
