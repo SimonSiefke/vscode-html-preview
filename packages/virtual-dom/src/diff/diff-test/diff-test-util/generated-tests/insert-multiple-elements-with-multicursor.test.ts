@@ -1,5 +1,6 @@
-import { diff } from '../../../diff'
-import { createParser } from '../../../../parse/parse'
+import { diff } from '../../../diff2'
+import { parse } from '../../../../parse/parse2'
+import { updateOffsetMap } from '../../../../parse/updateOffsetMap'
 
 function adjustEdits(edits){
   for(const edit of edits){
@@ -21,16 +22,18 @@ function adjustExpectedEdits(expectedEdits){
 }
 
 test(`insert-multiple-elements-with-multicursor.test.txt`, () => {
-	const parser = createParser()
-	let previousDom
-	  {
+  let offsetMap = Object.create(null)
 
+  let id = 0
+  const p1 = parse(`
 
-  previousDom = parser.parse("\n\n").htmlDocument
-  const oldNodeMap = parser.nodeMap
-  const {htmlDocument:nextDom, error} = parser.edit(`<
-<
-<`, [
+`, offset => {
+    const nextId = id++
+    offsetMap[offset] = nextId
+    return nextId
+  })
+
+  offsetMap = updateOffsetMap(offsetMap, [
     {
       "rangeOffset": 0,
       "rangeLength": 0,
@@ -47,309 +50,30 @@ test(`insert-multiple-elements-with-multicursor.test.txt`, () => {
       "text": "<"
     }
   ])
-	const expectedError = true;
-	if(error && !expectedError){
-		console.error(error)
-		throw new Error('did not expect error')
-	} else if(expectedError && !error){
-		throw new Error(`expected error for <
+
+  let newOffsetMap = Object.create(null)
+
+  const p2 = parse(`<
 <
-<`)
-	} else if(!expectedError && !error){
-
-		const newNodeMap = parser.nodeMap
-		const edits = diff((previousDom && previousDom.children) || [], nextDom!.children, {oldNodeMap, newNodeMap})
-		const expectedEdits = []
-			expect(adjustEdits(edits)).toEqual(adjustExpectedEdits(expectedEdits))
-			previousDom = nextDom
-		}
-	
-  }
-  {
-
-
-  
-  const oldNodeMap = parser.nodeMap
-  const {htmlDocument:nextDom, error} = parser.edit(`<li
-<li
-<li`, [
-    {
-      "rangeOffset": 1,
-      "rangeLength": 0,
-      "text": "li"
-    },
-    {
-      "rangeOffset": 3,
-      "rangeLength": 0,
-      "text": "li"
-    },
-    {
-      "rangeOffset": 5,
-      "rangeLength": 0,
-      "text": "li"
-    }
-  ])
-	const expectedError = true;
-	if(error && !expectedError){
-		console.error(error)
-		throw new Error('did not expect error')
-	} else if(expectedError && !error){
-		throw new Error(`expected error for <li
-<li
-<li`)
-	} else if(!expectedError && !error){
-
-		const newNodeMap = parser.nodeMap
-		const edits = diff((previousDom && previousDom.children) || [], nextDom!.children, {oldNodeMap, newNodeMap})
-		const expectedEdits = []
-			expect(adjustEdits(edits)).toEqual(adjustExpectedEdits(expectedEdits))
-			previousDom = nextDom
-		}
-	
-  }
-  {
-
-
-  
-  const oldNodeMap = parser.nodeMap
-  const {htmlDocument:nextDom, error} = parser.edit(`<li>
-<li>
-<li>`, [
-    {
-      "rangeOffset": 3,
-      "rangeLength": 0,
-      "text": ">"
-    },
-    {
-      "rangeOffset": 7,
-      "rangeLength": 0,
-      "text": ">"
-    },
-    {
-      "rangeOffset": 11,
-      "rangeLength": 0,
-      "text": ">"
-    }
-  ])
-	const expectedError = true;
-	if(error && !expectedError){
-		console.error(error)
-		throw new Error('did not expect error')
-	} else if(expectedError && !error){
-		throw new Error(`expected error for <li>
-<li>
-<li>`)
-	} else if(!expectedError && !error){
-
-		const newNodeMap = parser.nodeMap
-		const edits = diff((previousDom && previousDom.children) || [], nextDom!.children, {oldNodeMap, newNodeMap})
-		const expectedEdits = []
-			expect(adjustEdits(edits)).toEqual(adjustExpectedEdits(expectedEdits))
-			previousDom = nextDom
-		}
-	
-  }
-  {
-
-
-  
-  const oldNodeMap = parser.nodeMap
-  const {htmlDocument:nextDom, error} = parser.edit(`<li><
-<li><
-<li><`, [
-    {
-      "rangeOffset": 4,
-      "rangeLength": 0,
-      "text": "<"
-    },
-    {
-      "rangeOffset": 9,
-      "rangeLength": 0,
-      "text": "<"
-    },
-    {
-      "rangeOffset": 14,
-      "rangeLength": 0,
-      "text": "<"
-    }
-  ])
-	const expectedError = true;
-	if(error && !expectedError){
-		console.error(error)
-		throw new Error('did not expect error')
-	} else if(expectedError && !error){
-		throw new Error(`expected error for <li><
-<li><
-<li><`)
-	} else if(!expectedError && !error){
-
-		const newNodeMap = parser.nodeMap
-		const edits = diff((previousDom && previousDom.children) || [], nextDom!.children, {oldNodeMap, newNodeMap})
-		const expectedEdits = []
-			expect(adjustEdits(edits)).toEqual(adjustExpectedEdits(expectedEdits))
-			previousDom = nextDom
-		}
-	
-  }
-  {
-
-
-  
-  const oldNodeMap = parser.nodeMap
-  const {htmlDocument:nextDom, error} = parser.edit(`<li></
-<li></
-<li></`, [
-    {
-      "rangeOffset": 5,
-      "rangeLength": 0,
-      "text": "/"
-    },
-    {
-      "rangeOffset": 11,
-      "rangeLength": 0,
-      "text": "/"
-    },
-    {
-      "rangeOffset": 17,
-      "rangeLength": 0,
-      "text": "/"
-    }
-  ])
-	const expectedError = true;
-	if(error && !expectedError){
-		console.error(error)
-		throw new Error('did not expect error')
-	} else if(expectedError && !error){
-		throw new Error(`expected error for <li></
-<li></
-<li></`)
-	} else if(!expectedError && !error){
-
-		const newNodeMap = parser.nodeMap
-		const edits = diff((previousDom && previousDom.children) || [], nextDom!.children, {oldNodeMap, newNodeMap})
-		const expectedEdits = []
-			expect(adjustEdits(edits)).toEqual(adjustExpectedEdits(expectedEdits))
-			previousDom = nextDom
-		}
-	
-  }
-  {
-
-
-  
-  const oldNodeMap = parser.nodeMap
-  const {htmlDocument:nextDom, error} = parser.edit(`<li></li
-<li></li
-<li></li`, [
-    {
-      "rangeOffset": 6,
-      "rangeLength": 0,
-      "text": "li"
-    },
-    {
-      "rangeOffset": 13,
-      "rangeLength": 0,
-      "text": "li"
-    },
-    {
-      "rangeOffset": 20,
-      "rangeLength": 0,
-      "text": "li"
-    }
-  ])
-	const expectedError = true;
-	if(error && !expectedError){
-		console.error(error)
-		throw new Error('did not expect error')
-	} else if(expectedError && !error){
-		throw new Error(`expected error for <li></li
-<li></li
-<li></li`)
-	} else if(!expectedError && !error){
-
-		const newNodeMap = parser.nodeMap
-		const edits = diff((previousDom && previousDom.children) || [], nextDom!.children, {oldNodeMap, newNodeMap})
-		const expectedEdits = []
-			expect(adjustEdits(edits)).toEqual(adjustExpectedEdits(expectedEdits))
-			previousDom = nextDom
-		}
-	
-  }
-  {
-
-
-  
-  const oldNodeMap = parser.nodeMap
-  const {htmlDocument:nextDom, error} = parser.edit(`<li></li>
-<li></li>
-<li></li>`, [
-    {
-      "rangeOffset": 8,
-      "rangeLength": 0,
-      "text": ">"
-    },
-    {
-      "rangeOffset": 17,
-      "rangeLength": 0,
-      "text": ">"
-    },
-    {
-      "rangeOffset": 26,
-      "rangeLength": 0,
-      "text": ">"
-    }
-  ])
-	const expectedError = undefined;
-	if(error && !expectedError){
-		console.error(error)
-		throw new Error('did not expect error')
-	} else if(expectedError && !error){
-		throw new Error(`expected error for <li></li>
-<li></li>
-<li></li>`)
-	} else if(!expectedError && !error){
-
-		const newNodeMap = parser.nodeMap
-		const edits = diff((previousDom && previousDom.children) || [], nextDom!.children, {oldNodeMap, newNodeMap})
-		const expectedEdits = [
-    {
-      "command": "elementInsert",
-      "payload": {
-        "nodeType": "ElementNode",
-        "tag": "li"
+<`, (offset, tokenLength) => {
+    let nextId: number
+    nextId: if (offset in offsetMap) {
+      nextId = offsetMap[offset]
+    } else {
+      for (let i = offset + 1; i < offset + tokenLength; i++) {
+        if (i in offsetMap) {
+          nextId = offsetMap[i]
+          break nextId
+        }
       }
-    },
-    {
-      "command": "textReplace",
-      "payload": {
-        "text": "\n"
-      }
-    },
-    {
-      "command": "elementInsert",
-      "payload": {
-        "nodeType": "ElementNode",
-        "tag": "li"
-      }
-    },
-    {
-      "command": "elementInsert",
-      "payload": {
-        "nodeType": "TextNode",
-        "text": "\n"
-      }
-    },
-    {
-      "command": "elementInsert",
-      "payload": {
-        "nodeType": "ElementNode",
-        "tag": "li"
-      }
+      nextId = id++
     }
-  ]
-			expect(adjustEdits(edits)).toEqual(adjustExpectedEdits(expectedEdits))
-			previousDom = nextDom
-		}
-	
+    newOffsetMap[offset] = nextId
+    return nextId
+  })
+  if(p1.status === 'success' && p2.status === 'success'){
+    const edits = diff(p1, p2)
+    const expectedEdits = []
+    expect(adjustEdits(edits)).toEqual(adjustExpectedEdits(expectedEdits))
   }
 })

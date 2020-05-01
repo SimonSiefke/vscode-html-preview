@@ -16,17 +16,17 @@ ac
 expectedEdits:
 [
   {
-     command: elementDelete
-     payload: {}
-  }
-  {
-     command: elementDelete
-     payload: {}
-  }
-  {
     command: textReplace
     payload: {
       text: ac
     }
+  }
+  {
+     command: elementDelete
+     payload: {}
+  }
+  {
+     command: elementDelete
+     payload: {}
   }
 ]

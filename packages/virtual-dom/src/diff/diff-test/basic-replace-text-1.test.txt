@@ -15,10 +15,15 @@ nextText:
 
 expectedEdits:
 [
-   {
-     command: textReplace
-     payload: {
-       text: b
-     }
+  {
+    command: elementDelete,
+    payload: {}
+  }
+  {
+    command: elementInsert
+    payload: {
+      nodeType: TextNode
+      text: b
+    }
   }
 ]

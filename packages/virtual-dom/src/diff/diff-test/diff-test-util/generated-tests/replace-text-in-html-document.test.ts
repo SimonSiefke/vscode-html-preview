@@ -1,5 +1,6 @@
-import { diff } from '../../../diff'
-import { createParser } from '../../../../parse/parse'
+import { diff } from '../../../diff2'
+import { parse } from '../../../../parse/parse2'
+import { updateOffsetMap } from '../../../../parse/updateOffsetMap'
 
 function adjustEdits(edits){
   for(const edit of edits){
@@ -21,14 +22,10 @@ function adjustExpectedEdits(expectedEdits){
 }
 
 test(`replace-text-in-html-document.test.txt`, () => {
-	const parser = createParser()
-	let previousDom
-	  {
+  let offsetMap = Object.create(null)
 
-
-  previousDom = parser.parse("<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"UTF-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <meta http-equiv=\"X-UA-Compatible\" content=\"ie=edge\">\n  <title>Document</title>\n</head>\n<body>\n  hello world\n</body>\n</html>").htmlDocument
-  const oldNodeMap = parser.nodeMap
-  const {htmlDocument:nextDom, error} = parser.edit(`<!DOCTYPE html>
+  let id = 0
+  const p1 = parse(`<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -37,21 +34,25 @@ test(`replace-text-in-html-document.test.txt`, () => {
   <title>Document</title>
 </head>
 <body>
-  hello world!
+  hello world
 </body>
-</html>`, [
+</html>`, offset => {
+    const nextId = id++
+    offsetMap[offset] = nextId
+    return nextId
+  })
+
+  offsetMap = updateOffsetMap(offsetMap, [
     {
       "rangeOffset": 248,
       "rangeLength": 0,
       "text": "!"
     }
   ])
-	const expectedError = undefined;
-	if(error && !expectedError){
-		console.error(error)
-		throw new Error('did not expect error')
-	} else if(expectedError && !error){
-		throw new Error(`expected error for <!DOCTYPE html>
+
+  let newOffsetMap = Object.create(null)
+
+  const p2 = parse(`<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -62,22 +63,32 @@ test(`replace-text-in-html-document.test.txt`, () => {
 <body>
   hello world!
 </body>
-</html>`)
-	} else if(!expectedError && !error){
-
-		const newNodeMap = parser.nodeMap
-		const edits = diff((previousDom && previousDom.children) || [], nextDom!.children, {oldNodeMap, newNodeMap})
-		const expectedEdits = [
-    {
-      "command": "textReplace",
-      "payload": {
-        "text": "\n  hello world!\n"
+</html>`, (offset, tokenLength) => {
+    let nextId: number
+    nextId: if (offset in offsetMap) {
+      nextId = offsetMap[offset]
+    } else {
+      for (let i = offset + 1; i < offset + tokenLength; i++) {
+        if (i in offsetMap) {
+          nextId = offsetMap[i]
+          break nextId
+        }
       }
+      nextId = id++
     }
-  ]
-			expect(adjustEdits(edits)).toEqual(adjustExpectedEdits(expectedEdits))
-			previousDom = nextDom
-		}
-	
+    newOffsetMap[offset] = nextId
+    return nextId
+  })
+  if(p1.status === 'success' && p2.status === 'success'){
+    const edits = diff(p1, p2)
+    const expectedEdits = [
+      {
+        "command": "textReplace",
+        "payload": {
+          "text": "\n  hello world!\n"
+        }
+      }
+    ]
+    expect(adjustEdits(edits)).toEqual(adjustExpectedEdits(expectedEdits))
   }
 })

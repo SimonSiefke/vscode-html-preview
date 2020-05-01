@@ -1,5 +1,6 @@
-import { diff } from '../../../diff'
-import { createParser } from '../../../../parse/parse'
+import { diff } from '../../../diff2'
+import { parse } from '../../../../parse/parse2'
+import { updateOffsetMap } from '../../../../parse/updateOffsetMap'
 
 function adjustEdits(edits){
   for(const edit of edits){
@@ -21,49 +22,59 @@ function adjustExpectedEdits(expectedEdits){
 }
 
 test(`insert-122-insert-element-between-comment-and-comment.test.txt`, () => {
-	const parser = createParser()
-	let previousDom
-	  {
+  let offsetMap = Object.create(null)
 
+  let id = 0
+  const p1 = parse(`<!--a--><!--c-->`, offset => {
+    const nextId = id++
+    offsetMap[offset] = nextId
+    return nextId
+  })
 
-  previousDom = parser.parse("<!--a--><!--c-->").htmlDocument
-  const oldNodeMap = parser.nodeMap
-  const {htmlDocument:nextDom, error} = parser.edit(`<!--a--><h1>b</h1><!--c-->`, [
+  offsetMap = updateOffsetMap(offsetMap, [
     {
       "rangeOffset": 8,
       "rangeLength": 0,
       "text": "<h1>b</h1>"
     }
   ])
-	const expectedError = undefined;
-	if(error && !expectedError){
-		console.error(error)
-		throw new Error('did not expect error')
-	} else if(expectedError && !error){
-		throw new Error(`expected error for <!--a--><h1>b</h1><!--c-->`)
-	} else if(!expectedError && !error){
 
-		const newNodeMap = parser.nodeMap
-		const edits = diff((previousDom && previousDom.children) || [], nextDom!.children, {oldNodeMap, newNodeMap})
-		const expectedEdits = [
-    {
-      "command": "elementInsert",
-      "payload": {
-        "nodeType": "ElementNode",
-        "tag": "h1"
+  let newOffsetMap = Object.create(null)
+
+  const p2 = parse(`<!--a--><h1>b</h1><!--c-->`, (offset, tokenLength) => {
+    let nextId: number
+    nextId: if (offset in offsetMap) {
+      nextId = offsetMap[offset]
+    } else {
+      for (let i = offset + 1; i < offset + tokenLength; i++) {
+        if (i in offsetMap) {
+          nextId = offsetMap[i]
+          break nextId
+        }
       }
-    },
-    {
-      "command": "elementInsert",
-      "payload": {
-        "nodeType": "TextNode",
-        "text": "b"
-      }
+      nextId = id++
     }
-  ]
-			expect(adjustEdits(edits)).toEqual(adjustExpectedEdits(expectedEdits))
-			previousDom = nextDom
-		}
-	
+    newOffsetMap[offset] = nextId
+    return nextId
+  })
+  if(p1.status === 'success' && p2.status === 'success'){
+    const edits = diff(p1, p2)
+    const expectedEdits = [
+      {
+        "command": "elementInsert",
+        "payload": {
+          "nodeType": "ElementNode",
+          "tag": "h1"
+        }
+      },
+      {
+        "command": "elementInsert",
+        "payload": {
+          "nodeType": "TextNode",
+          "text": "b"
+        }
+      }
+    ]
+    expect(adjustEdits(edits)).toEqual(adjustExpectedEdits(expectedEdits))
   }
 })

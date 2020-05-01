@@ -1,5 +1,6 @@
-import { diff } from '../../../diff'
-import { createParser } from '../../../../parse/parse'
+import { diff } from '../../../diff2'
+import { parse } from '../../../../parse/parse2'
+import { updateOffsetMap } from '../../../../parse/updateOffsetMap'
 
 function adjustEdits(edits){
   for(const edit of edits){
@@ -21,48 +22,58 @@ function adjustExpectedEdits(expectedEdits){
 }
 
 test(`text-insertion-in-nested-html.test.txt`, () => {
-	const parser = createParser()
-	let previousDom
-	  {
+  let offsetMap = Object.create(null)
 
-
-  previousDom = parser.parse("<div>\n  <img src=\"https://source.unsplash.com/random\" alt=\"random image\">\n  <p>nested <strong>text</strong></p>\n</div>").htmlDocument
-  const oldNodeMap = parser.nodeMap
-  const {htmlDocument:nextDom, error} = parser.edit(`<div>
+  let id = 0
+  const p1 = parse(`<div>
   <img src="https://source.unsplash.com/random" alt="random image">
-  <p>nested <strong>text</strong>!!!</p>
-</div>`, [
+  <p>nested <strong>text</strong></p>
+</div>`, offset => {
+    const nextId = id++
+    offsetMap[offset] = nextId
+    return nextId
+  })
+
+  offsetMap = updateOffsetMap(offsetMap, [
     {
       "rangeOffset": 107,
       "rangeLength": 0,
       "text": "!!!"
     }
   ])
-	const expectedError = undefined;
-	if(error && !expectedError){
-		console.error(error)
-		throw new Error('did not expect error')
-	} else if(expectedError && !error){
-		throw new Error(`expected error for <div>
+
+  let newOffsetMap = Object.create(null)
+
+  const p2 = parse(`<div>
   <img src="https://source.unsplash.com/random" alt="random image">
   <p>nested <strong>text</strong>!!!</p>
-</div>`)
-	} else if(!expectedError && !error){
-
-		const newNodeMap = parser.nodeMap
-		const edits = diff((previousDom && previousDom.children) || [], nextDom!.children, {oldNodeMap, newNodeMap})
-		const expectedEdits = [
-    {
-      "command": "elementInsert",
-      "payload": {
-        "nodeType": "TextNode",
-        "text": "!!!"
+</div>`, (offset, tokenLength) => {
+    let nextId: number
+    nextId: if (offset in offsetMap) {
+      nextId = offsetMap[offset]
+    } else {
+      for (let i = offset + 1; i < offset + tokenLength; i++) {
+        if (i in offsetMap) {
+          nextId = offsetMap[i]
+          break nextId
+        }
       }
+      nextId = id++
     }
-  ]
-			expect(adjustEdits(edits)).toEqual(adjustExpectedEdits(expectedEdits))
-			previousDom = nextDom
-		}
-	
+    newOffsetMap[offset] = nextId
+    return nextId
+  })
+  if(p1.status === 'success' && p2.status === 'success'){
+    const edits = diff(p1, p2)
+    const expectedEdits = [
+      {
+        "command": "elementInsert",
+        "payload": {
+          "nodeType": "TextNode",
+          "text": "!!!"
+        }
+      }
+    ]
+    expect(adjustEdits(edits)).toEqual(adjustExpectedEdits(expectedEdits))
   }
 })

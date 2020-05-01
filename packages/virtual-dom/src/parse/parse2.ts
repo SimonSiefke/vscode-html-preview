@@ -1,5 +1,6 @@
 import { scan, TokenType, Token } from './scanner2'
 import * as assert from 'assert'
+import { updateOffsetMap } from './updateOffsetMap'
 
 const SELF_CLOSING_TAGS = new Set([
   '!DOCTYPE',
@@ -171,7 +172,7 @@ interface DoctypeNode {
 
 const createDoctypeNode: () => DoctypeNode = () => ({ nodeType: 'Doctype', tag: '!DOCTYPE' })
 
-type SuccessResult = {
+export type SuccessResult = {
   readonly status: 'success'
   readonly nodes: readonly (ElementNode | CommentNode | TextNode)[]
   readonly nodeMap: {
@@ -196,14 +197,12 @@ const walk: (
   }
 }
 
-export const parse: (text: string, initialId: number) => SuccessResult | ErrorResult = (
-  text,
-  initialId
-) => {
-  let id = initialId
+export const parse: (
+  text: string,
+  getId: (offset: number, tokenLength: number) => number
+) => SuccessResult | ErrorResult = (text, getId) => {
   const result = scan(text)
   if (result.status === 'invalid') {
-    console.error('error0')
     return {
       status: 'invalid',
       index: result.index,
@@ -219,6 +218,7 @@ export const parse: (text: string, initialId: number) => SuccessResult | ErrorRe
       .slice(0, tokenIndex)
       .map(token => token.text)
       .join('').length
+  let offset = 0
   for (let i = 0; i < tokens.length; i++) {
     if (stack.length === 0) {
       i
@@ -229,10 +229,11 @@ export const parse: (text: string, initialId: number) => SuccessResult | ErrorRe
     }
     assert(stack.length > 0)
     const token = tokens[i]
+
     switch (token.type) {
       case TokenType.Content: {
         assert(parent !== undefined)
-        child = createTextNode(token.text, id++)
+        child = createTextNode(token.text, getId(offset, token.text.length))
         if (!parent) {
           i
           tokens.length //?
@@ -250,7 +251,7 @@ export const parse: (text: string, initialId: number) => SuccessResult | ErrorRe
           stack.pop() as ElementNode
           parent = stack[stack.length - 1]
         }
-        child = createElementNode(token.text, id++)
+        child = createElementNode(token.text, getId(offset, token.text.length))
         stack.push(child)
         break
       }
@@ -282,12 +283,6 @@ export const parse: (text: string, initialId: number) => SuccessResult | ErrorRe
         } else if (parent.tag === 'li' && new Set(['ul', 'ol']).has(token.text)) {
           parent = stack.pop() as ElementNode
         } else {
-          console.log('unmatched')
-          tokens
-            .slice(i, i + 20)
-            .map(x => x.text)
-            .join('') //?
-          // JSON.stringify(htmlDocument.children, null, 2) //?
           return {
             status: 'invalid',
             index: findErrorIndex(i),
@@ -309,19 +304,15 @@ export const parse: (text: string, initialId: number) => SuccessResult | ErrorRe
       }
 
       case TokenType.Comment: {
-        child = createCommentNode(token.text.slice(4, -3), id++)
+        child = createCommentNode(token.text.slice(4, -3), getId(offset, token.text.length))
         parent.children.push(child)
         break
       }
       case TokenType.AttributeName: {
         if (token.text in child.attributes) {
-          child.attributes //?
-          token.text //?
-          console.log('no')
-          console.error('error1')
           return {
             status: 'invalid',
-            index: -1,
+            index: findErrorIndex(i),
           }
         }
         const attributeName = token.text
@@ -353,10 +344,9 @@ export const parse: (text: string, initialId: number) => SuccessResult | ErrorRe
         break
       }
     }
+    offset += token.text.length
   }
   if (stack.length > 1) {
-    // JSON.stringify(htmlDocument.children, null, 2) //?
-    console.error('error2')
     return {
       status: 'invalid',
       index: -1,
@@ -392,38 +382,97 @@ const pretty = node => {
   }
 }
 
-// const fs = require('fs')
-// const doc = parse(fs.readFileSync(`${__dirname}/fixture.txt`).toString(), 0) //?
+let offsetMap = Object.create(null)
 
-// fs.readFileSync(`${__dirname}/fixture.txt`)
-//   .toString()
-//   .slice(20694 - 1000, 20694 + 100) //?
-const doc = parse(
-  ` <ul class="home-features">
-  <li>
-      <a href="/en-US/docs/Web" class="cta-link">
-          Web Technologies<svg class="icon icon-arrow" xmlns="http://www.w3.org/2000/svg" width="23" height="28" viewBox="0 0 23 28" aria-hidden="true">
-<path d="M23 15a2.01 2.01 0 0 1-.578 1.422L12.25 26.594c-.375.359-.891.578-1.422.578s-1.031-.219-1.406-.578L8.25 25.422c-.375-.375-.594-.891-.594-1.422s.219-1.047.594-1.422L12.828 18h-11C.703 18 0 17.062 0 16v-2c0-1.062.703-2 1.828-2h11L8.25 7.406a1.96 1.96 0 0 1 0-2.812l1.172-1.172c.375-.375.875-.594 1.406-.594s1.047.219 1.422.594l10.172 10.172c.375.359.578.875.578 1.406z"/>
-</svg>
-      </a>
-  </li>
-  <li>
-      <a href="/en-US/docs/Learn" class="cta-link">
-          Learn web development<svg class="icon icon-arrow" xmlns="http://www.w3.org/2000/svg" width="23" height="28" viewBox="0 0 23 28" aria-hidden="true">
-<path d="M23 15a2.01 2.01 0 0 1-.578 1.422L12.25 26.594c-.375.359-.891.578-1.422.578s-1.031-.219-1.406-.578L8.25 25.422c-.375-.375-.594-.891-.594-1.422s.219-1.047.594-1.422L12.828 18h-11C.703 18 0 17.062 0 16v-2c0-1.062.703-2 1.828-2h11L8.25 7.406a1.96 1.96 0 0 1 0-2.812l1.172-1.172c.375-.375.875-.594 1.406-.594s1.047.219 1.422.594l10.172 10.172c.375.359.578.875.578 1.406z"/>
-</svg>
-      </a>
-  </li>
-  <li>
-      <a href="/en-US/docs/Tools" class="cta-link">
-          Developer Tools<svg class="icon icon-arrow" xmlns="http://www.w3.org/2000/svg" width="23" height="28" viewBox="0 0 23 28" aria-hidden="true">
-<path d="M23 15a2.01 2.01 0 0 1-.578 1.422L12.25 26.594c-.375.359-.891.578-1.422.578s-1.031-.219-1.406-.578L8.25 25.422c-.375-.375-.594-.891-.594-1.422s.219-1.047.594-1.422L12.828 18h-11C.703 18 0 17.062 0 16v-2c0-1.062.703-2 1.828-2h11L8.25 7.406a1.96 1.96 0 0 1 0-2.812l1.172-1.172c.375-.375.875-.594 1.406-.594s1.047.219 1.422.594l10.172 10.172c.375.359.578.875.578 1.406z"/>
-</svg>
-      </a>
-  </li>
-</ul>`,
-  0
-) //?
-if (doc.status === 'success') {
-  JSON.stringify(doc.nodeMap, null, 2) //?
-}
+// let id = 0
+// parse(`<h1>hello world</h1>`, offset => {
+//   const nextId = id++
+//   offsetMap[offset] = nextId
+//   return nextId
+// })
+// offsetMap
+
+// offsetMap = updateOffsetMap(offsetMap, [
+//   {
+//     inserted: 7,
+//     deleted: 0,
+//     offset: 4,
+//   },
+// ]) //?
+
+// let newOffsetMap = Object.create(null)
+
+// const doc2 = parse(`<h1><p></p>hello world</h1>`, offset => {
+//   let nextId
+//   if (offset in offsetMap) {
+//     nextId = offsetMap[offset]
+//   } else {
+//     nextId = id++
+//   }
+//   newOffsetMap[offset] = nextId
+//   return nextId
+// })
+
+// if (doc2.status === 'success') {
+//   JSON.stringify(doc2.nodes, null, 2) //?
+// }
+
+// // const fs = require('fs')
+// // const doc = parse(fs.readFileSync(`${__dirname}/fixture.txt`).toString(), 0) //?
+
+// // fs.readFileSync(`${__dirname}/fixture.txt`)
+// //   .toString()
+// //   .slice(20694 - 1000, 20694 + 100) //?
+// // const doc1 = parse(
+// //   `<h1>hello world</h1>`,
+// //   (() => {
+// //     let id = 0
+// //     return () => id++
+// //   })()
+// // )
+// // if (doc1.status === 'success') {
+// //   JSON.stringify(doc1.nodeMap, null, 2) //?
+// // }
+
+// // const doc2 = parse(
+// //   `<h1><p></p>hello world</h1>`,
+// //   (() => {
+// //     let id = 0
+// //     return () => id++
+// //   })()
+// // )
+
+// // if (doc2.status === 'success') {
+// //   JSON.stringify(doc2.nodeMap, null, 2) //?
+// // }
+
+// // export const edit: (
+// //   result: SuccessResult,
+// //   edits: readonly { readonly length: number; readonly offset: number }[]
+// // ) => any = (result, edits) => {
+// //   const newResult = scan('<h1><p></p>hello world</h1>')
+// //   if (newResult.status === 'invalid') {
+// //     return result
+// //   }
+// //   const { tokens } = newResult
+// //   let offset = 0
+// //   // const edit =
+// //   for (let i = 0; i < tokens.length; i++) {
+// //     const token = tokens[i]
+// //     offset += token.text.length
+// //     result.nodes //?
+// //     // if(offset === )
+// //   }
+// //   offset
+// // }
+
+// // edit(parse(`<h1>hello world</h1>`, 0) as SuccessResult, [
+// //   {
+// //     offset: 4,
+// //     length: 7,
+// //   },
+// // ]) //?
+
+// // for (let i = 0; i < 1000; i++) {
+// //   parse(`<h1>hello world</h1>`.repeat(20000), 0) //?.
+// // }

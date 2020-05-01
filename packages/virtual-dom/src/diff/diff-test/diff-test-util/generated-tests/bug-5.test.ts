@@ -1,5 +1,6 @@
-import { diff } from '../../../diff'
-import { createParser } from '../../../../parse/parse'
+import { diff } from '../../../diff2'
+import { parse } from '../../../../parse/parse2'
+import { updateOffsetMap } from '../../../../parse/updateOffsetMap'
 
 function adjustEdits(edits){
   for(const edit of edits){
@@ -21,57 +22,68 @@ function adjustExpectedEdits(expectedEdits){
 }
 
 test(`bug-5.test.txt`, () => {
-	const parser = createParser()
-	let previousDom
-	  {
+  let offsetMap = Object.create(null)
 
+  let id = 0
+  const p1 = parse(`<h1>hello world</h1>
 
-  previousDom = parser.parse("<h1>hello world</h1>\n\n<input type=\"checkbox\" />\n<br />\n<input type=\"checkbox\" />\n<br />\n<input type=\"checkbox\" />\n<br />\nthis is text").htmlDocument
-  const oldNodeMap = parser.nodeMap
-  const {htmlDocument:nextDom, error} = parser.edit(`<h1>hello world</h1>
-
+<input type="checkbox" />
 <br />
 <input type="checkbox" />
 <br />
 <input type="checkbox" />
 <br />
-this is text`, [
+this is text`, offset => {
+    const nextId = id++
+    offsetMap[offset] = nextId
+    return nextId
+  })
+
+  offsetMap = updateOffsetMap(offsetMap, [
     {
       "rangeOffset": 21,
       "rangeLength": 26,
       "text": ""
     }
   ])
-	const expectedError = undefined;
-	if(error && !expectedError){
-		console.error(error)
-		throw new Error('did not expect error')
-	} else if(expectedError && !error){
-		throw new Error(`expected error for <h1>hello world</h1>
+
+  let newOffsetMap = Object.create(null)
+
+  const p2 = parse(`<h1>hello world</h1>
 
 <br />
 <input type="checkbox" />
 <br />
 <input type="checkbox" />
 <br />
-this is text`)
-	} else if(!expectedError && !error){
-
-		const newNodeMap = parser.nodeMap
-		const edits = diff((previousDom && previousDom.children) || [], nextDom!.children, {oldNodeMap, newNodeMap})
-		const expectedEdits = [
-    {
-      "command": "elementDelete",
-      "payload": {}
-    },
-    {
-      "command": "elementDelete",
-      "payload": {}
+this is text`, (offset, tokenLength) => {
+    let nextId: number
+    nextId: if (offset in offsetMap) {
+      nextId = offsetMap[offset]
+    } else {
+      for (let i = offset + 1; i < offset + tokenLength; i++) {
+        if (i in offsetMap) {
+          nextId = offsetMap[i]
+          break nextId
+        }
+      }
+      nextId = id++
     }
-  ]
-			expect(adjustEdits(edits)).toEqual(adjustExpectedEdits(expectedEdits))
-			previousDom = nextDom
-		}
-	
+    newOffsetMap[offset] = nextId
+    return nextId
+  })
+  if(p1.status === 'success' && p2.status === 'success'){
+    const edits = diff(p1, p2)
+    const expectedEdits = [
+      {
+        "command": "elementDelete",
+        "payload": {}
+      },
+      {
+        "command": "elementDelete",
+        "payload": {}
+      }
+    ]
+    expect(adjustEdits(edits)).toEqual(adjustExpectedEdits(expectedEdits))
   }
 })

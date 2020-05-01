@@ -1,3 +1,6 @@
+import { parse } from '../parse/parse2'
+import { updateOffsetMap } from '../parse/updateOffsetMap'
+
 export interface TextNode {
   readonly nodeType: 'TextNode'
   readonly text: string
@@ -40,6 +43,9 @@ type Operation =
         readonly tag: string
         readonly parentId: number
         readonly index: number
+        readonly attributes: {
+          readonly [attributeName: string]: string | null
+        }
       }
     }
   | {
@@ -148,6 +154,7 @@ const elementInsert: (
           tag: node.tag,
           parentId,
           index,
+          attributes: node.attributes,
         },
       })
       for (let i = 0; i < node.children.length; i++) {
@@ -262,7 +269,7 @@ const attributeEdits: (edits: Operation[], oldNode: ElementNode, newNode: Elemen
 }
 
 interface NodeMap {
-  readonly [id: number]: any
+  readonly [id: number]: CommentNode | DoctypeNode | ElementNode | TextNode
 }
 
 export interface State {
@@ -280,10 +287,17 @@ const childEdits: (
 ) => void = (edits, oldNodes, newNodes, oldNodeMap, newNodeMap, parentId) => {
   let oldIndex = 0
   let newIndex = 0
+  let k = -1
+
   /**
    * Take care of common nodes
    */
   while (oldIndex < oldNodes.length && newIndex < newNodes.length) {
+    if (k++ > 100) {
+      console.log('force')
+      throw new Error('force')
+      break
+    }
     const oldNode = oldNodes[oldIndex]
     const newNode = newNodes[newIndex]
     if (
@@ -291,7 +305,11 @@ const childEdits: (
       newNode.nodeType === 'TextNode' &&
       oldNode.id === newNode.id
     ) {
-      if (oldNode.text !== newNode.text) {
+      if (oldNode.text === newNode.text) {
+        oldIndex++
+        newIndex++
+        continue
+      } else {
         textReplace(edits, newNode)
         oldIndex++
         newIndex++
@@ -327,6 +345,7 @@ const childEdits: (
       elementInsert(edits, newNode, parentId, newIndex)
       newIndex++
     }
+    // console.log('here')
   }
   /**
    * Take care of any remaining nodes in the old tree.
@@ -359,108 +378,54 @@ export const diff: (oldState: State, newState: State) => readonly Operation[] = 
   childEdits(edits, oldState.nodes, newState.nodes, oldState.nodeMap, newState.nodeMap, -1)
   return edits
 }
+let offsetMap = Object.create(null)
 
-const oldNodes = [
-  {
-    tag: 'p',
-    nodeType: 'ElementNode',
-    id: 0,
-    attributes: {},
-    children: [
-      {
-        nodeType: 'TextNode',
-        text: '\n  Hello\n',
-        id: 1,
-      },
-    ],
-  },
-  {
-    text: '\n',
-    nodeType: 'TextNode',
-    id: 2,
-  },
-  {
-    nodeType: 'ElementNode',
-    attributes: {},
-    id: 3,
-    tag: 'p',
-    children: [
-      {
-        nodeType: 'TextNode',
-        text: '\n  ',
-        id: 4,
-      },
-      {
-        nodeType: 'ElementNode',
-        tag: 'em',
-        id: 5,
-        attributes: {},
-        children: [
-          {
-            nodeType: 'TextNode',
-            text: 'World',
-            id: 6,
-          },
-        ],
-      },
-      {
-        nodeType: 'TextNode',
-        text: '\n\n',
-        id: 7,
-      },
-    ],
-  },
-] as const
+let id = 0
+const p1 = parse(`<h1>a</h1>`, offset => {
+  const nextId = id++
+  offsetMap[offset] = nextId
+  return nextId
+})
 
-const newNodes = [
+offsetMap = updateOffsetMap(offsetMap, [
   {
-    tag: 'p',
-    nodeType: 'ElementNode',
-    id: 0,
-    attributes: {},
-    children: [
-      {
-        nodeType: 'TextNode',
-        text: '\n  Hello\n\n    ',
-        id: 1,
-      },
-      {
-        nodeType: 'ElementNode',
-        tag: 'em',
-        id: 5,
-        attributes: {},
-        children: [
-          {
-            nodeType: 'TextNode',
-            text: 'World',
-            id: 6,
-          },
-        ],
-      },
-      {
-        nodeType: 'TextNode',
-        text: '\n\n',
-        id: 7,
-      },
-    ],
+    rangeOffset: 4,
+    rangeLength: 1,
+    text: 'b',
   },
-] as const
-const oldNodeMap = {
-  0: oldNodes[0],
-  1: oldNodes[0].children[0],
-  2: oldNodes[1],
-  3: oldNodes[2],
-  4: oldNodes[2].children[0],
-  5: oldNodes[2].children[1],
-  6: oldNodes[2].children[1].children[0],
-  7: oldNodes[2].children[2],
+])
+
+offsetMap
+
+let newOffsetMap = Object.create(null)
+
+const p2 = parse(`<h1>b</h1>`, (offset, tokenLength) => {
+  let nextId: number
+  nextId: if (offset in offsetMap) {
+    nextId = offsetMap[offset]
+  } else {
+    for (let i = offset + 1; i < offset + tokenLength; i++) {
+      if (i in offsetMap) {
+        nextId = offsetMap[i]
+        break nextId
+      }
+    }
+    nextId = id++
+  }
+  newOffsetMap[offset] = nextId
+  return nextId
+})
+if (p1.status === 'success' && p2.status === 'success') {
+  JSON.stringify(p1.nodes) //?
+  JSON.stringify(p2.nodes) //?
+  const edits = diff(p1, p2)
+  const expectedEdits = [
+    {
+      command: 'textReplace',
+      payload: {
+        text: 'b',
+      },
+    },
+  ]
+  edits //?
 }
-const newNodeMap = {
-  0: newNodes[0],
-  1: newNodes[0].children[0],
-  5: newNodes[0].children[1],
-  6: newNodes[0].children[1].children[0],
-  7: newNodes[0].children[2],
-}
-
-diff({ nodes: oldNodes, nodeMap: oldNodeMap }, { nodes: newNodes, nodeMap: newNodeMap }) //?

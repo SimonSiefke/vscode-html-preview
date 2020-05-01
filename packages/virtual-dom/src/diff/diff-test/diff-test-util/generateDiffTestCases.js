@@ -1,8 +1,7 @@
-import * as fs from 'fs-extra'
-import * as path from 'path'
-import { toJson } from 'really-relaxed-json'
-import { validate } from 'jsonschema'
-
+const fs = require('fs-extra')
+const path = require('path')
+const { toJson } = require('really-relaxed-json')
+const { validate } = require('jsonschema')
 const failingTests = ['diff.test.txt']
 
 const only = []
@@ -177,7 +176,6 @@ function generateTest(fileName) {
     const expectedNextCode = []
     let newIndex = 0
     testCase.edits = testCase.edits.sort((a, b) => a.rangeOffset - b.rangeOffset)
-    testCase.edits // ?
     for (const edit of testCase.edits) {
       while (newIndex < edit.rangeOffset) {
         expectedNextCode.push(testCase.previousText[newIndex])
@@ -231,62 +229,68 @@ function generateTest(fileName) {
   // 	}
   // }
 
-  const outer = inner => `test(\`${fileName}\`, () => {
-	const parser = createParser()
-	let previousDom
-	${inner.map(x => `  {\n${x}\n  }`).join('\n')}
+  const test = tests[0]
+  const { previousText } = test
+  validatePreviousText(previousText)
+  const { nextText } = test
+  validateNextText(nextText)
+  const edits = parseJson(test.edits)
+  validateEdits(edits)
+  const expectedEdits = parseJson(test.expectedEdits || '[]')
+  validateExpectedEdits(expectedEdits)
+  validateTestCase({ previousText, nextText, edits }, fileName)
+
+  const outer = `test(\`${fileName}\`, () => {
+  let offsetMap = Object.create(null)
+
+  let id = 0
+  const p1 = parse(\`${previousText}\`, offset => {
+    const nextId = id++
+    offsetMap[offset] = nextId
+    return nextId
+  })
+
+  offsetMap = updateOffsetMap(offsetMap, ${JSON.stringify(edits, null, 2)
+    .split('\n')
+    .map(l => `  ${l}`)
+    .join('\n')
+    .trimLeft()})
+
+  let newOffsetMap = Object.create(null)
+
+  const p2 = parse(\`${nextText}\`, (offset, tokenLength) => {
+    let nextId: number
+    nextId: if (offset in offsetMap) {
+      nextId = offsetMap[offset]
+    } else {
+      for (let i = offset + 1; i < offset + tokenLength; i++) {
+        if (i in offsetMap) {
+          nextId = offsetMap[i]
+          break nextId
+        }
+      }
+      nextId = id++
+    }
+    newOffsetMap[offset] = nextId
+    return nextId
+  })
+  if(p1.status === 'success' && p2.status === 'success'){
+    const edits = diff(p1, p2)
+    const expectedEdits = ${JSON.stringify(expectedEdits, null, 2)
+      .split('\n')
+      .map(l => `    ${l}`)
+      .join('\n')
+      .trimLeft()}
+    expect(adjustEdits(edits)).toEqual(adjustExpectedEdits(expectedEdits))
+  }
 })`
 
-  const inners = tests.map((test, testIndex) => {
-    const { previousText } = test
-    validatePreviousText(previousText)
-    const { nextText } = test
-    validateNextText(nextText)
-    const edits = parseJson(test.edits)
-    validateEdits(edits)
-    const expectedEdits = parseJson(test.expectedEdits || '[]')
-    validateExpectedEdits(expectedEdits)
-    validateTestCase({ previousText, nextText, edits }, fileName)
-    return `
-
-  ${
-    testIndex === 0 && !test.initialError
-      ? 'previousDom = parser.parse(' + JSON.stringify(previousText) + ').htmlDocument'
-      : ''
-  }
-  const oldNodeMap = parser.nodeMap
-  const {htmlDocument:nextDom, error} = parser.edit(\`${nextText}\`, ${JSON.stringify(
-      edits,
-      null,
-      2
-    )
-      .split('\n')
-      .map((x, index) => (index === 0 ? x : '  ' + x))
-      .join('\n')})
-	const expectedError = ${test.error};
-	if(error && !expectedError){
-		console.error(error)
-		throw new Error('did not expect error')
-	} else if(expectedError && !error){
-		throw new Error(\`expected error for ${nextText}\`)
-	} else if(!expectedError && !error){
-
-		const newNodeMap = parser.nodeMap
-		const edits = diff((previousDom && previousDom.children) || [], nextDom!.children, {oldNodeMap, newNodeMap})
-		const expectedEdits = ${JSON.stringify(expectedEdits, null, 2)
-      .split('\n')
-      .map((x, index) => (index === 0 ? x : '  ' + x))
-      .join('\n')}
-			expect(adjustEdits(edits)).toEqual(adjustExpectedEdits(expectedEdits))
-			previousDom = nextDom
-		}
-	` // ?
-  })
-  const outerCode = outer(inners)
+  // assert.equal(tests.length, 1)
 
   const importCode = [
-    "import { diff } from '../../../diff'",
-    "import { createParser } from '../../../../parse/parse'",
+    "import { diff } from '../../../diff2'",
+    "import { parse } from '../../../../parse/parse2'",
+    "import { updateOffsetMap } from '../../../../parse/updateOffsetMap'",
   ].join('\n')
   const functionCode = [
     `function adjustEdits(edits){
@@ -307,7 +311,7 @@ function generateTest(fileName) {
   return expectedEdits
 }`,
   ].join('\n\n')
-  const code = `${importCode}\n\n${functionCode}\n\n${outerCode}`
+  const code = `${importCode}\n\n${functionCode}\n\n${outer}`
 
   fs.writeFileSync(path.join(__dirname, 'generated-tests', fileName.replace('.txt', '.ts')), code)
 }

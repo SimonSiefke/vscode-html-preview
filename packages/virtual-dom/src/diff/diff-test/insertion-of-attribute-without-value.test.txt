@@ -18,8 +18,8 @@ expectedEdits:
   {
      command: attributeAdd
      payload: {
-       attribute: class
-       value: null
+       attributeName: class
+       attributeValue: null
      }
   }
 ]

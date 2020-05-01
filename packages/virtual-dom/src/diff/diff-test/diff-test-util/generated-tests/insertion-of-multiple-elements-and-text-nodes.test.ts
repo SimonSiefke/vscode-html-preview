@@ -1,5 +1,6 @@
-import { diff } from '../../../diff'
-import { createParser } from '../../../../parse/parse'
+import { diff } from '../../../diff2'
+import { parse } from '../../../../parse/parse2'
+import { updateOffsetMap } from '../../../../parse/updateOffsetMap'
 
 function adjustEdits(edits){
   for(const edit of edits){
@@ -21,90 +22,98 @@ function adjustExpectedEdits(expectedEdits){
 }
 
 test(`insertion-of-multiple-elements-and-text-nodes.test.txt`, () => {
-	const parser = createParser()
-	let previousDom
-	  {
+  let offsetMap = Object.create(null)
 
-
-  previousDom = parser.parse("<form>\n  First name:<br>\n  <input type=\"text\" name=\"firstName\"><br>\n</form>").htmlDocument
-  const oldNodeMap = parser.nodeMap
-  const {htmlDocument:nextDom, error} = parser.edit(`<form>
+  let id = 0
+  const p1 = parse(`<form>
   First name:<br>
   <input type="text" name="firstName"><br>
-  Last name:<br>
-  <input type="text" name="lastName"><br>
-</form>`, [
+</form>`, offset => {
+    const nextId = id++
+    offsetMap[offset] = nextId
+    return nextId
+  })
+
+  offsetMap = updateOffsetMap(offsetMap, [
     {
       "rangeOffset": 68,
       "rangeLength": 0,
       "text": "  Last name:<br>\n  <input type=\"text\" name=\"lastName\"><br>\n"
     }
   ])
-	const expectedError = undefined;
-	if(error && !expectedError){
-		console.error(error)
-		throw new Error('did not expect error')
-	} else if(expectedError && !error){
-		throw new Error(`expected error for <form>
+
+  let newOffsetMap = Object.create(null)
+
+  const p2 = parse(`<form>
   First name:<br>
   <input type="text" name="firstName"><br>
   Last name:<br>
   <input type="text" name="lastName"><br>
-</form>`)
-	} else if(!expectedError && !error){
-
-		const newNodeMap = parser.nodeMap
-		const edits = diff((previousDom && previousDom.children) || [], nextDom!.children, {oldNodeMap, newNodeMap})
-		const expectedEdits = [
-    {
-      "command": "textReplace",
-      "payload": {
-        "text": "\n  Last name:"
-      }
-    },
-    {
-      "command": "elementInsert",
-      "payload": {
-        "nodeType": "ElementNode",
-        "tag": "br"
-      }
-    },
-    {
-      "command": "elementInsert",
-      "payload": {
-        "nodeType": "TextNode",
-        "text": "\n  "
-      }
-    },
-    {
-      "command": "elementInsert",
-      "payload": {
-        "nodeType": "ElementNode",
-        "tag": "input",
-        "attributes": {
-          "name": "\"lastName\"",
-          "type": "\"text\""
+</form>`, (offset, tokenLength) => {
+    let nextId: number
+    nextId: if (offset in offsetMap) {
+      nextId = offsetMap[offset]
+    } else {
+      for (let i = offset + 1; i < offset + tokenLength; i++) {
+        if (i in offsetMap) {
+          nextId = offsetMap[i]
+          break nextId
         }
       }
-    },
-    {
-      "command": "elementInsert",
-      "payload": {
-        "nodeType": "ElementNode",
-        "tag": "br"
-      }
-    },
-    {
-      "command": "elementInsert",
-      "payload": {
-        "nodeType": "TextNode",
-        "text": "\n"
-      }
+      nextId = id++
     }
-  ]
-			expect(adjustEdits(edits)).toEqual(adjustExpectedEdits(expectedEdits))
-			previousDom = nextDom
-		}
-	
+    newOffsetMap[offset] = nextId
+    return nextId
+  })
+  if(p1.status === 'success' && p2.status === 'success'){
+    const edits = diff(p1, p2)
+    const expectedEdits = [
+      {
+        "command": "textReplace",
+        "payload": {
+          "text": "\n  Last name:"
+        }
+      },
+      {
+        "command": "elementInsert",
+        "payload": {
+          "nodeType": "ElementNode",
+          "tag": "br"
+        }
+      },
+      {
+        "command": "elementInsert",
+        "payload": {
+          "nodeType": "TextNode",
+          "text": "\n  "
+        }
+      },
+      {
+        "command": "elementInsert",
+        "payload": {
+          "nodeType": "ElementNode",
+          "tag": "input",
+          "attributes": {
+            "name": "lastName",
+            "type": "text"
+          }
+        }
+      },
+      {
+        "command": "elementInsert",
+        "payload": {
+          "nodeType": "ElementNode",
+          "tag": "br"
+        }
+      },
+      {
+        "command": "elementInsert",
+        "payload": {
+          "nodeType": "TextNode",
+          "text": "\n"
+        }
+      }
+    ]
+    expect(adjustEdits(edits)).toEqual(adjustExpectedEdits(expectedEdits))
   }
 })

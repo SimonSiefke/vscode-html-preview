@@ -18,8 +18,8 @@ expectedEdits:
   {
      command: attributeChange
      payload: {
-       attribute: class
-       value: '"bigger"'
+       attributeName: class
+       attributeValue: bigger
      }
   }
 ]

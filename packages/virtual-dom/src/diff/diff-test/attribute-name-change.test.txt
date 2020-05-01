@@ -16,16 +16,16 @@ nextText:
 expectedEdits:
 [
   {
-     command: attributeAdd
+     command: attributeDelete
      payload: {
-       attribute: class
-       value: null
+       attributeName: c
      }
   }
   {
-     command: attributeDelete
+     command: attributeAdd
      payload: {
-       attribute: c
+       attributeName: class
+       attributeValue: null
      }
   }
 ]

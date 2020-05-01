@@ -10,19 +10,11 @@ edits:
   }
 ]
 
-nextText: 
+nextText:
 <h1>before<i>Italic</i>after</h1>
 
 expectedEdits:
 [
-  {
-    command: elementDelete
-    payload: {}
-  }
-  {
-    command: elementDelete
-    payload: {}
-  }
   {
     command: elementDelete
     payload: {}
@@ -40,5 +32,14 @@ expectedEdits:
       nodeType: TextNode
       text: Italic
     }
+  }
+  {
+    command: elementDelete
+    payload: {}
+  }
+
+  {
+    command: elementDelete
+    payload: {}
   }
 ]

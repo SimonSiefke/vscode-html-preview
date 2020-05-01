@@ -1,6 +1,13 @@
 import { parse as _parse } from './parse2'
 
-const parse = (text: string) => _parse(text, 0)
+const parse = (text: string) =>
+  _parse(
+    text,
+    (() => {
+      let id = 0
+      return () => id++
+    })()
+  )
 
 const pretty = node => {
   if (node.nodeType === 'ElementNode') {
