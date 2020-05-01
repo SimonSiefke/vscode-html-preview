@@ -1,4 +1,5 @@
 import { scan, TokenType, Token } from './scanner2'
+import * as assert from 'assert'
 
 const SELF_CLOSING_TAGS = new Set([
   '!DOCTYPE',
@@ -23,49 +24,144 @@ const SELF_CLOSING_TAGS = new Set([
 
 const isSelfClosingTag: (tagName: string) => boolean = tagName => SELF_CLOSING_TAGS.has(tagName)
 
+const ALLOWED_SELF_CLOSING_TAGS = new Set([
+  '!DOCTYPE',
+  '!doctype',
+  'input',
+  'br',
+  'area',
+  'base',
+  'br',
+  'col',
+  'embed',
+  'hr',
+  'img',
+  'input',
+  'link',
+  'meta',
+  'param',
+  'source',
+  'track',
+  'wbr',
+  // https://developer.mozilla.org/en-US/docs/Web/SVG/Element
+  'a',
+  'animate',
+  'animateMotion',
+  'animateTransform',
+  'circle',
+  'clipPath',
+  'color-profile',
+  'defs',
+  'desc',
+  'discard',
+  'ellipse',
+  'feBlend',
+  'feColorMatrix',
+  'feComponentTransfer',
+  'feComposite',
+  'feConvolveMatrix',
+  'feDiffuseLighting',
+  'feDisplacementMap',
+  'feDistantLight',
+  'feDropShadow',
+  'feFlood',
+  'feFuncA',
+  'feFuncB',
+  'feFuncG',
+  'feFuncR',
+  'feGaussianBlur',
+  'feImage',
+  'feMerge',
+  'feMergeNode',
+  'feMorphology',
+  'feOffset',
+  'fePointLight',
+  'feSpecularLighting',
+  'feSpotlight',
+  'feTile',
+  'feTurbulence',
+  'filter',
+  'foreignObject',
+  'g',
+  'hatch',
+  'hatchpath',
+  'image',
+  'line',
+  'linearGradient',
+  'marker',
+  'mask',
+  'mesh',
+  'meshgradient',
+  'meshpath',
+  'meshrow',
+  'metadata',
+  'mpath',
+  'path',
+  'pattern',
+  'polygon',
+  'polyline',
+  'radialGradient',
+  'rect',
+  'script',
+  'set',
+  'solidColor',
+  'stop',
+  'style',
+  'svg',
+  'switch',
+  'symbol',
+  'text',
+  'textPath',
+  'title',
+  'tspan',
+  'unknown',
+  'use',
+  'view',
+])
+
+const isAllowedSelfClosingTag: (tagName: string) => boolean = tagName =>
+  ALLOWED_SELF_CLOSING_TAGS.has(tagName)
+
 interface ElementNode {
   attributes: {
     [key: string]: string
   }
   children: (ElementNode | CommentNode | TextNode)[]
-  tag: string
+  readonly tag: string
+  readonly id: number
+  readonly nodeType: 'ElementNode'
 }
 
 interface CommentNode {
   readonly nodeType: 'CommentNode'
   readonly text: string
+  readonly id: number
 }
 
 interface TextNode {
   readonly nodeType: 'TextNode'
   readonly text: string
+  readonly id: number
 }
 
-type SuccessResult = {
-  readonly status: 'success'
-  readonly nodes: readonly (ElementNode | CommentNode | TextNode)[]
-}
-
-type ErrorResult = {
-  readonly status: 'invalid'
-  readonly index: number
-}
-
-const createElementNode: () => ElementNode = () => ({
+const createElementNode: (tag: string, id: number) => ElementNode = (tag, id) => ({
   attributes: Object.create(null),
   children: [],
   nodeType: 'ElementNode',
-  tag: '',
+  tag,
+  id,
 })
 
-const createCommentNode: (text: string) => CommentNode = text => ({
+const createCommentNode: (text: string, id: number) => CommentNode = (text, id) => ({
   text,
   nodeType: 'CommentNode',
+  id,
 })
 
-const createTextNode: (text: string) => TextNode = text => ({
+const createTextNode: (text: string, id: number) => TextNode = (text, id) => ({
   nodeType: 'TextNode',
   text,
+  id,
 })
 
 interface DoctypeNode {
@@ -75,7 +171,36 @@ interface DoctypeNode {
 
 const createDoctypeNode: () => DoctypeNode = () => ({ nodeType: 'Doctype', tag: '!DOCTYPE' })
 
-export const parse: (text: string) => SuccessResult | ErrorResult = text => {
+type SuccessResult = {
+  readonly status: 'success'
+  readonly nodes: readonly (ElementNode | CommentNode | TextNode)[]
+  readonly nodeMap: {
+    readonly [id: number]: ElementNode | CommentNode | TextNode
+  }
+}
+
+type ErrorResult = {
+  readonly status: 'invalid'
+  readonly index: number
+}
+
+const walk: (
+  node: ElementNode | CommentNode | TextNode,
+  fn: (node: ElementNode | CommentNode | TextNode) => void
+) => void = (node, fn) => {
+  fn(node)
+  if (node.nodeType === 'ElementNode') {
+    for (const child of node.children) {
+      walk(child, fn)
+    }
+  }
+}
+
+export const parse: (text: string, initialId: number) => SuccessResult | ErrorResult = (
+  text,
+  initialId
+) => {
+  let id = initialId
   const result = scan(text)
   if (result.status === 'invalid') {
     console.error('error0')
@@ -85,34 +210,66 @@ export const parse: (text: string) => SuccessResult | ErrorResult = text => {
     }
   }
   const { tokens } = result
-  const htmlDocument = createElementNode()
+  const htmlDocument = createElementNode('root', -1)
   let parent: ElementNode = htmlDocument
   const stack = [parent]
   let child: any
+  const findErrorIndex = (tokenIndex: number) =>
+    tokens
+      .slice(0, tokenIndex)
+      .map(token => token.text)
+      .join('').length
   for (let i = 0; i < tokens.length; i++) {
+    if (stack.length === 0) {
+      i
+      tokens
+        .slice(i, i + 10)
+        .map(x => x.text)
+        .join('') //?
+    }
+    assert(stack.length > 0)
     const token = tokens[i]
     switch (token.type) {
       case TokenType.Content: {
-        child = createTextNode(token.text)
+        assert(parent !== undefined)
+        child = createTextNode(token.text, id++)
+        if (!parent) {
+          i
+          tokens.length //?
+          tokens
+            .slice(i)
+            .map(x => x.text)
+            .join('') //?
+          stack
+        }
         parent.children.push(child)
-        break
-      }
-      case TokenType.StartTagOpeningBracket: {
-        child = createElementNode()
-        stack.push(child)
         break
       }
       case TokenType.StartTagName: {
-        const top = stack[stack.length - 1]
-        if (top.tag === 'li') {
-          top
+        if (parent.tag === 'li' && token.text === 'li') {
+          stack.pop() as ElementNode
+          parent = stack[stack.length - 1]
         }
-        child.tag = token.text
+        child = createElementNode(token.text, id++)
+        stack.push(child)
+        break
+      }
+      case TokenType.DocType: {
+        parent.children.pop()
+        child = createDoctypeNode()
+        stack.push(child)
         break
       }
       case TokenType.StartTagSelfClosingBracket: {
+        if (!isAllowedSelfClosingTag(child.tag)) {
+          return {
+            status: 'invalid',
+            index: findErrorIndex(i),
+          }
+        }
         parent.children.push(child)
         stack.pop()
+        assert(stack.length > 0)
         break
       }
       case TokenType.EndTagName: {
@@ -130,26 +287,16 @@ export const parse: (text: string) => SuccessResult | ErrorResult = text => {
             .slice(i, i + 20)
             .map(x => x.text)
             .join('') //?
-          parent.tag //?
-          token.text //?
           // JSON.stringify(htmlDocument.children, null, 2) //?
-          console.log('error3')
           return {
             status: 'invalid',
-            index: -1,
+            index: findErrorIndex(i),
           }
         }
+        assert(stack.length > 0)
         break
       }
       case TokenType.StartTagClosingBracket: {
-        if (parent.tag === 'li' && child.tag === 'li') {
-          stack.pop()
-          stack.pop()
-          parent = stack[stack.length - 1]
-          parent.tag //?
-          child
-        }
-
         if (isSelfClosingTag(child.tag)) {
           stack.pop()
           parent.children.push(child)
@@ -157,15 +304,12 @@ export const parse: (text: string) => SuccessResult | ErrorResult = text => {
           parent.children.push(child)
           parent = child
         }
+        assert(stack.length > 0)
         break
       }
-      case TokenType.DocType: {
-        parent.children.pop()
-        child = createDoctypeNode()
-        break
-      }
+
       case TokenType.Comment: {
-        child = createCommentNode(token.text.slice(4, -3))
+        child = createCommentNode(token.text.slice(4, -3), id++)
         parent.children.push(child)
         break
       }
@@ -218,9 +362,16 @@ export const parse: (text: string) => SuccessResult | ErrorResult = text => {
       index: -1,
     }
   }
+  const nodeMap = Object.create(null)
+  for (const child of htmlDocument.children) {
+    walk(child, node => {
+      nodeMap[node.id] = node
+    })
+  }
   return {
     status: 'success',
     nodes: htmlDocument.children,
+    nodeMap,
   }
 }
 
@@ -241,26 +392,38 @@ const pretty = node => {
   }
 }
 
-const fs = require('fs')
-// const doc = parse(fs.readFileSync(`${__dirname}/fixture.txt`).toString())
+// const fs = require('fs')
+// const doc = parse(fs.readFileSync(`${__dirname}/fixture.txt`).toString(), 0) //?
 
-const doc = parse(`<div align="center"></div>
-<hr>
-
-<ul>
-  <li>A collection of name/value pairs. In various languages, this is realized
-    as an <i>object</i>, record, struct, dictionary, hash table, keyed list, or
-    associative array.</li>
-  <li>An ordered list of values. In most languages, this is realized as an <i>array</i>,
-    vector, list, or sequence.</li>
-</ul>
-
-
-`)
-
-if (doc.status !== 'invalid') {
-  // @ts-ignore
-  JSON.stringify(doc.nodes.map(pretty), null, 2) //?
-} else {
-  console.log('an error')
+// fs.readFileSync(`${__dirname}/fixture.txt`)
+//   .toString()
+//   .slice(20694 - 1000, 20694 + 100) //?
+const doc = parse(
+  ` <ul class="home-features">
+  <li>
+      <a href="/en-US/docs/Web" class="cta-link">
+          Web Technologies<svg class="icon icon-arrow" xmlns="http://www.w3.org/2000/svg" width="23" height="28" viewBox="0 0 23 28" aria-hidden="true">
+<path d="M23 15a2.01 2.01 0 0 1-.578 1.422L12.25 26.594c-.375.359-.891.578-1.422.578s-1.031-.219-1.406-.578L8.25 25.422c-.375-.375-.594-.891-.594-1.422s.219-1.047.594-1.422L12.828 18h-11C.703 18 0 17.062 0 16v-2c0-1.062.703-2 1.828-2h11L8.25 7.406a1.96 1.96 0 0 1 0-2.812l1.172-1.172c.375-.375.875-.594 1.406-.594s1.047.219 1.422.594l10.172 10.172c.375.359.578.875.578 1.406z"/>
+</svg>
+      </a>
+  </li>
+  <li>
+      <a href="/en-US/docs/Learn" class="cta-link">
+          Learn web development<svg class="icon icon-arrow" xmlns="http://www.w3.org/2000/svg" width="23" height="28" viewBox="0 0 23 28" aria-hidden="true">
+<path d="M23 15a2.01 2.01 0 0 1-.578 1.422L12.25 26.594c-.375.359-.891.578-1.422.578s-1.031-.219-1.406-.578L8.25 25.422c-.375-.375-.594-.891-.594-1.422s.219-1.047.594-1.422L12.828 18h-11C.703 18 0 17.062 0 16v-2c0-1.062.703-2 1.828-2h11L8.25 7.406a1.96 1.96 0 0 1 0-2.812l1.172-1.172c.375-.375.875-.594 1.406-.594s1.047.219 1.422.594l10.172 10.172c.375.359.578.875.578 1.406z"/>
+</svg>
+      </a>
+  </li>
+  <li>
+      <a href="/en-US/docs/Tools" class="cta-link">
+          Developer Tools<svg class="icon icon-arrow" xmlns="http://www.w3.org/2000/svg" width="23" height="28" viewBox="0 0 23 28" aria-hidden="true">
+<path d="M23 15a2.01 2.01 0 0 1-.578 1.422L12.25 26.594c-.375.359-.891.578-1.422.578s-1.031-.219-1.406-.578L8.25 25.422c-.375-.375-.594-.891-.594-1.422s.219-1.047.594-1.422L12.828 18h-11C.703 18 0 17.062 0 16v-2c0-1.062.703-2 1.828-2h11L8.25 7.406a1.96 1.96 0 0 1 0-2.812l1.172-1.172c.375-.375.875-.594 1.406-.594s1.047.219 1.422.594l10.172 10.172c.375.359.578.875.578 1.406z"/>
+</svg>
+      </a>
+  </li>
+</ul>`,
+  0
+) //?
+if (doc.status === 'success') {
+  JSON.stringify(doc.nodeMap, null, 2) //?
 }

@@ -42,7 +42,7 @@ scan2: {
 parse2: {
   measureStart('parse2')
   for (const fixture of fixtures) {
-    const result = parse(fixture)
+    const result = parse(fixture, 0)
     assert.equal(result.status, 'success')
   }
   measureEnd('parse2')

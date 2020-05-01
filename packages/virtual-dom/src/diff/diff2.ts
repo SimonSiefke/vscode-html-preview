@@ -359,6 +359,7 @@ export const diff: (oldState: State, newState: State) => readonly Operation[] = 
   childEdits(edits, oldState.nodes, newState.nodes, oldState.nodeMap, newState.nodeMap, -1)
   return edits
 }
+
 const oldNodes = [
   {
     tag: 'p',
