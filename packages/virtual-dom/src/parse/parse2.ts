@@ -1,6 +1,25 @@
 import { scan, TokenType, Token } from './scanner2'
 
-const SELF_CLOSING_TAGS = new Set(['input', '!DOCTYPE', '!doctype'])
+const SELF_CLOSING_TAGS = new Set([
+  '!DOCTYPE',
+  '!doctype',
+  'input',
+  'br',
+  'area',
+  'base',
+  'br',
+  'col',
+  'embed',
+  'hr',
+  'img',
+  'input',
+  'link',
+  'meta',
+  'param',
+  'source',
+  'track',
+  'wbr',
+])
 
 const isSelfClosingTag: (tagName: string) => boolean = tagName => SELF_CLOSING_TAGS.has(tagName)
 
@@ -59,6 +78,7 @@ const createDoctypeNode: () => DoctypeNode = () => ({ nodeType: 'Doctype', tag: 
 export const parse: (text: string) => SuccessResult | ErrorResult = text => {
   const result = scan(text)
   if (result.status === 'invalid') {
+    console.error('error0')
     return {
       status: 'invalid',
       index: result.index,
@@ -75,41 +95,67 @@ export const parse: (text: string) => SuccessResult | ErrorResult = text => {
       case TokenType.Content: {
         child = createTextNode(token.text)
         parent.children.push(child)
-        child = undefined
         break
       }
       case TokenType.StartTagOpeningBracket: {
-        if (parent.tag === 'h1') {
-          parent
-        }
         child = createElementNode()
-        parent.children.push(child)
         stack.push(child)
         break
       }
       case TokenType.StartTagName: {
+        const top = stack[stack.length - 1]
+        if (top.tag === 'li') {
+          top
+        }
         child.tag = token.text
         break
       }
       case TokenType.StartTagSelfClosingBracket: {
-        child = undefined
+        parent.children.push(child)
         stack.pop()
         break
       }
       case TokenType.EndTagName: {
+        const top = stack.pop() as ElementNode
+        if (top.tag === 'li' && new Set(['ul', 'ol']).has(token.text)) {
+          parent = stack.pop() as ElementNode
+        }
         if (parent.tag === token.text) {
-          stack.pop()
           parent = stack[stack.length - 1]
+        } else if (parent.tag === 'li' && new Set(['ul', 'ol']).has(token.text)) {
+          parent = stack.pop() as ElementNode
+        } else {
+          console.log('unmatched')
+          tokens
+            .slice(i, i + 20)
+            .map(x => x.text)
+            .join('') //?
+          parent.tag //?
+          token.text //?
+          // JSON.stringify(htmlDocument.children, null, 2) //?
+          console.log('error3')
+          return {
+            status: 'invalid',
+            index: -1,
+          }
         }
         break
       }
       case TokenType.StartTagClosingBracket: {
+        if (parent.tag === 'li' && child.tag === 'li') {
+          stack.pop()
+          stack.pop()
+          parent = stack[stack.length - 1]
+          parent.tag //?
+          child
+        }
+
         if (isSelfClosingTag(child.tag)) {
+          stack.pop()
           parent.children.push(child)
-          child = undefined
         } else {
+          parent.children.push(child)
           parent = child
-          child = undefined
         }
         break
       }
@@ -121,11 +167,14 @@ export const parse: (text: string) => SuccessResult | ErrorResult = text => {
       case TokenType.Comment: {
         child = createCommentNode(token.text.slice(4, -3))
         parent.children.push(child)
-        child = undefined
         break
       }
       case TokenType.AttributeName: {
         if (token.text in child.attributes) {
+          child.attributes //?
+          token.text //?
+          console.log('no')
+          console.error('error1')
           return {
             status: 'invalid',
             index: -1,
@@ -150,6 +199,7 @@ export const parse: (text: string) => SuccessResult | ErrorResult = text => {
           child.attributes[attributeName] = null
           i--
         } else {
+          i--
           child.attributes[attributeName] = null
         }
         break
@@ -158,6 +208,14 @@ export const parse: (text: string) => SuccessResult | ErrorResult = text => {
       default: {
         break
       }
+    }
+  }
+  if (stack.length > 1) {
+    // JSON.stringify(htmlDocument.children, null, 2) //?
+    console.error('error2')
+    return {
+      status: 'invalid',
+      index: -1,
     }
   }
   return {
@@ -183,7 +241,26 @@ const pretty = node => {
   }
 }
 
-const doc = parse(`<h1></h1><h2></h2>`)
+const fs = require('fs')
+// const doc = parse(fs.readFileSync(`${__dirname}/fixture.txt`).toString())
 
-// @ts-ignore
-JSON.stringify(doc.nodes.map(pretty), null, 2) //?
+const doc = parse(`<div align="center"></div>
+<hr>
+
+<ul>
+  <li>A collection of name/value pairs. In various languages, this is realized
+    as an <i>object</i>, record, struct, dictionary, hash table, keyed list, or
+    associative array.</li>
+  <li>An ordered list of values. In most languages, this is realized as an <i>array</i>,
+    vector, list, or sequence.</li>
+</ul>
+
+
+`)
+
+if (doc.status !== 'invalid') {
+  // @ts-ignore
+  JSON.stringify(doc.nodes.map(pretty), null, 2) //?
+} else {
+  console.log('an error')
+}

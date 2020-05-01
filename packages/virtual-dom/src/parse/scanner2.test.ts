@@ -22,7 +22,7 @@ test('basic', () => {
     { text: 'hello world', type: 'Content' },
     { text: '</', type: 'EndTagOpeningBracket' },
     { text: 'h1', type: 'EndTagName' },
-    { text: '>', type: 'EndTagOpeningBracket' },
+    { text: '>', type: 'EndTagClosingBracket' },
   ])
 })
 
@@ -50,7 +50,7 @@ test('dashed-tag', () => {
     { text: '>', type: 'StartTagClosingBracket' },
     { text: '</', type: 'EndTagOpeningBracket' },
     { text: 'base-button', type: 'EndTagName' },
-    { text: '>', type: 'EndTagOpeningBracket' },
+    { text: '>', type: 'EndTagClosingBracket' },
   ])
 })
 
@@ -73,7 +73,7 @@ test('whitespace inside end tag', () => {
     { text: '</', type: 'EndTagOpeningBracket' },
     { text: 'foo', type: 'EndTagName' },
     { text: '        ', type: 'Whitespace' },
-    { text: '>', type: 'EndTagOpeningBracket' },
+    { text: '>', type: 'EndTagClosingBracket' },
   ])
 })
 
@@ -196,7 +196,7 @@ test('multiline comment', () => {
 })
 
 test('whitespace around attribute equal sign', () => {
-  expectTokens(`<h1 class = "1"`).toEqual([
+  expectTokens(`<h1 class = "1"></h1>`).toEqual([
     { text: '<', type: 'StartTagOpeningBracket' },
     { text: 'h1', type: 'StartTagName' },
     { text: ' ', type: 'Whitespace' },
@@ -204,7 +204,11 @@ test('whitespace around attribute equal sign', () => {
     { text: ' ', type: 'Whitespace' },
     { text: '=', type: 'AttributeEqualSign' },
     { text: ' ', type: 'Whitespace' },
-    { text: `"1"`, type: 'QuotedAttributeValue' },
+    { text: '"1"', type: 'QuotedAttributeValue' },
+    { text: '>', type: 'StartTagClosingBracket' },
+    { text: '</', type: 'EndTagOpeningBracket' },
+    { text: 'h1', type: 'EndTagName' },
+    { text: '>', type: 'EndTagClosingBracket' },
   ])
 })
 
@@ -219,7 +223,7 @@ test('unquoted attribute', () => {
     { text: '>', type: 'StartTagClosingBracket' },
     { text: '</', type: 'EndTagOpeningBracket' },
     { text: 'a', type: 'EndTagName' },
-    { text: '>', type: 'EndTagOpeningBracket' },
+    { text: '>', type: 'EndTagClosingBracket' },
   ])
 })
 
@@ -235,7 +239,7 @@ body {
     { text: '\nbody {\n  font-size: 24px; /* apply to <body> */\n}\n', type: 'Content' },
     { text: '</', type: 'EndTagOpeningBracket' },
     { text: 'style', type: 'EndTagName' },
-    { text: '>', type: 'EndTagOpeningBracket' },
+    { text: '>', type: 'EndTagClosingBracket' },
   ])
 })
 
@@ -257,7 +261,7 @@ for(var b=0;b<a.length;++b){
     { text: '\nfor(var b=0;b<a.length;++b){\n', type: 'Content' },
     { text: '</', type: 'EndTagOpeningBracket' },
     { text: 'script', type: 'EndTagName' },
-    { text: '>', type: 'EndTagOpeningBracket' },
+    { text: '>', type: 'EndTagClosingBracket' },
   ])
 })
 
@@ -289,7 +293,7 @@ test('attribute without value', () => {
     { text: 'hello world', type: 'Content' },
     { text: '</', type: 'EndTagOpeningBracket' },
     { text: 'h1', type: 'EndTagName' },
-    { text: '>', type: 'EndTagOpeningBracket' },
+    { text: '>', type: 'EndTagClosingBracket' },
   ])
 })
 
@@ -307,7 +311,7 @@ test('mixed attributes', () => {
     { text: 'hello world', type: 'Content' },
     { text: '</', type: 'EndTagOpeningBracket' },
     { text: 'h1', type: 'EndTagName' },
-    { text: '>', type: 'EndTagOpeningBracket' },
+    { text: '>', type: 'EndTagClosingBracket' },
   ])
 })
 
@@ -327,7 +331,7 @@ test('multiple unquoted attribute values', () => {
     { text: 'hello world', type: 'Content' },
     { text: '</', type: 'EndTagOpeningBracket' },
     { text: 'h1', type: 'EndTagName' },
-    { text: '>', type: 'EndTagOpeningBracket' },
+    { text: '>', type: 'EndTagClosingBracket' },
   ])
 })
 
@@ -398,7 +402,7 @@ test('small document', () => {
     { text: '\n  ', type: 'Content' },
     { text: '</', type: 'EndTagOpeningBracket' },
     { text: 'head', type: 'EndTagName' },
-    { text: '>', type: 'EndTagOpeningBracket' },
+    { text: '>', type: 'EndTagClosingBracket' },
     { text: '\n  ', type: 'Content' },
     { text: '<', type: 'StartTagOpeningBracket' },
     { text: 'body', type: 'StartTagName' },
@@ -406,11 +410,11 @@ test('small document', () => {
     { text: '\n    asdasdasdasdasdasd\n  ', type: 'Content' },
     { text: '</', type: 'EndTagOpeningBracket' },
     { text: 'body', type: 'EndTagName' },
-    { text: '>', type: 'EndTagOpeningBracket' },
+    { text: '>', type: 'EndTagClosingBracket' },
     { text: '\n', type: 'Content' },
     { text: '</', type: 'EndTagOpeningBracket' },
     { text: 'html', type: 'EndTagName' },
-    { text: '>', type: 'EndTagOpeningBracket' },
+    { text: '>', type: 'EndTagClosingBracket' },
   ])
 })
 
@@ -477,4 +481,31 @@ test('conditional comments', () => {
 
 test('double dashes in comment', () => {
   expectTokens(`<!-- ------------------ HEADER BEGINS HERE -------------------- -->`).toFail()
+})
+
+test('stray greater than sign', () => {
+  expectTokens(`<div>GREATER-THAN SIGN character (>).</div>`).toEqual([
+    { text: '<', type: 'StartTagOpeningBracket' },
+    { text: 'div', type: 'StartTagName' },
+    { text: '>', type: 'StartTagClosingBracket' },
+    { text: 'GREATER-THAN SIGN character (>).', type: 'Content' },
+    { text: '</', type: 'EndTagOpeningBracket' },
+    { text: 'div', type: 'EndTagName' },
+    { text: '>', type: 'EndTagClosingBracket' },
+  ])
+})
+
+test('attribute with colon at start', () => {
+  expectTokens(`<todo-item :key="item.id"></todo-item>`).toEqual([
+    { text: '<', type: 'StartTagOpeningBracket' },
+    { text: 'todo-item', type: 'StartTagName' },
+    { text: ' ', type: 'Whitespace' },
+    { text: ':key', type: 'AttributeName' },
+    { text: '=', type: 'AttributeEqualSign' },
+    { text: '"item.id"', type: 'QuotedAttributeValue' },
+    { text: '>', type: 'StartTagClosingBracket' },
+    { text: '</', type: 'EndTagOpeningBracket' },
+    { text: 'todo-item', type: 'EndTagName' },
+    { text: '>', type: 'EndTagClosingBracket' },
+  ])
 })

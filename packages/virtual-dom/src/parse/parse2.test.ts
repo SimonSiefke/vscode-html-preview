@@ -127,7 +127,7 @@ body {
 
 test('older doctype', () => {
   expectNodes(`<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-  <html xmlns="http://www.w3.org/1999/xhtml" dir="ltr"  lang="en-US" >`).toEqual([
+  <html xmlns="http://www.w3.org/1999/xhtml" dir="ltr"  lang="en-US" ></html>`).toEqual([
     { nodeType: 'Doctype', tag: '!DOCTYPE' },
     { nodeType: 'TextNode', parent: undefined, text: '\n  ' },
     {
@@ -186,6 +186,143 @@ test('small document', () => {
       ],
       nodeType: 'ElementNode',
       tag: 'html',
+    },
+  ])
+})
+
+test('unmatched tags', () => {
+  expectNodes(`<h1></h2>`).toFail()
+})
+
+test('multiline start tag', () => {
+  expectNodes(`<h1
+>hello world</h1>`).toEqual([
+    {
+      nodeType: 'ElementNode',
+      tag: 'h1',
+      attributes: {},
+      children: [{ nodeType: 'TextNode', text: 'hello world' }],
+    },
+  ])
+})
+
+test('partial start tag', () => {
+  expectNodes(`<h1 class`).toFail()
+})
+
+test('unclosed tag', () => {
+  expectNodes(`<h1>hello world`).toFail()
+})
+
+test('partial end tag', () => {
+  expectNodes(`<h1 class></h1`).toFail()
+})
+
+test('unclosed li tag in unordered list', () => {
+  expectNodes(`<ul>
+  <li>1
+  <li>2
+</ul>`).toEqual([
+    {
+      nodeType: 'ElementNode',
+      tag: 'ul',
+      attributes: {},
+      children: [
+        { nodeType: 'TextNode', text: '\n  ' },
+        {
+          attributes: {},
+          children: [{ nodeType: 'TextNode', text: '1\n  ' }],
+          nodeType: 'ElementNode',
+          tag: 'li',
+        },
+        {
+          attributes: {},
+          children: [{ nodeType: 'TextNode', text: '2\n' }],
+          nodeType: 'ElementNode',
+          tag: 'li',
+        },
+      ],
+    },
+  ])
+})
+
+test('unclosed li tag in ordered list', () => {
+  expectNodes(`<ol>
+  <li>1
+  <li>2
+</ol>`).toEqual([
+    {
+      nodeType: 'ElementNode',
+      tag: 'ol',
+      attributes: {},
+      children: [
+        { nodeType: 'TextNode', text: '\n  ' },
+        {
+          attributes: {},
+          children: [{ nodeType: 'TextNode', text: '1\n  ' }],
+          nodeType: 'ElementNode',
+          tag: 'li',
+        },
+        {
+          attributes: {},
+          children: [{ nodeType: 'TextNode', text: '2\n' }],
+          nodeType: 'ElementNode',
+          tag: 'li',
+        },
+      ],
+    },
+  ])
+})
+
+test('two lists', () => {
+  expectNodes(`<ul>
+  <li>1
+  <li>2
+</ul>
+<ul>
+  <li>1
+  <li>2
+</ul>`).toEqual([
+    {
+      nodeType: 'ElementNode',
+      tag: 'ul',
+      attributes: {},
+      children: [
+        { nodeType: 'TextNode', text: '\n  ' },
+        {
+          nodeType: 'ElementNode',
+          tag: 'li',
+          attributes: {},
+          children: [{ nodeType: 'TextNode', text: '1\n  ' }],
+        },
+        {
+          nodeType: 'ElementNode',
+          tag: 'li',
+          attributes: {},
+          children: [{ nodeType: 'TextNode', text: '2\n' }],
+        },
+      ],
+    },
+    { nodeType: 'TextNode', text: '\n' },
+    {
+      nodeType: 'ElementNode',
+      tag: 'ul',
+      attributes: {},
+      children: [
+        { nodeType: 'TextNode', text: '\n  ' },
+        {
+          attributes: {},
+          children: [{ nodeType: 'TextNode', text: '1\n  ' }],
+          nodeType: 'ElementNode',
+          tag: 'li',
+        },
+        {
+          attributes: {},
+          children: [{ nodeType: 'TextNode', text: '2\n' }],
+          nodeType: 'ElementNode',
+          tag: 'li',
+        },
+      ],
     },
   ])
 })

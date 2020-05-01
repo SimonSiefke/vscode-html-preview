@@ -1,12 +1,12 @@
 import * as assert from 'assert'
 import * as fs from 'fs'
 import * as path from 'path'
+import { parse } from '../parse2'
 import { scan } from '../scanner2'
 import { measureEnd, measureStart } from './measure'
 
 const fixtures = [
   fs.readFileSync(path.join(__dirname, 'fixtures/html5-spec.txt')).toString(),
-  fs.readFileSync(path.join(__dirname, 'fixtures/github.txt')).toString(),
   fs.readFileSync(path.join(__dirname, 'fixtures/google.txt')).toString(),
   fs.readFileSync(path.join(__dirname, 'fixtures/codepen.txt')).toString(),
   fs.readFileSync(path.join(__dirname, 'fixtures/vscode.txt')).toString(),
@@ -19,6 +19,15 @@ const fixtures = [
   fs.readFileSync(path.join(__dirname, 'fixtures/stackoverflow.txt')).toString(),
   fs.readFileSync(path.join(__dirname, 'fixtures/travis.txt')).toString(),
   fs.readFileSync(path.join(__dirname, 'fixtures/wikipedia.txt')).toString(),
+  fs.readFileSync(path.join(__dirname, 'fixtures/ubuntu.txt')).toString(),
+  fs.readFileSync(path.join(__dirname, 'fixtures/vue-docs.txt')).toString(),
+  fs.readFileSync(path.join(__dirname, 'fixtures/gatsby.txt')).toString(),
+  fs.readFileSync(path.join(__dirname, 'fixtures/next.txt')).toString(),
+  fs.readFileSync(path.join(__dirname, 'fixtures/intellij.txt')).toString(),
+  fs.readFileSync(path.join(__dirname, 'fixtures/netlify.txt')).toString(),
+  // fs.readFileSync(path.join(__dirname, 'fixtures/dev.txt')).toString(), // TODO
+  // fs.readFileSync(path.join(__dirname, 'fixtures/json.txt')).toString(), // TODO
+  // fs.readFileSync(path.join(__dirname, 'fixtures/whatwg.txt')).toString(), // TODO
 ]
 
 scan2: {
@@ -28,4 +37,13 @@ scan2: {
     assert.equal(result.status, 'success')
   }
   measureEnd('scan2')
+}
+
+parse2: {
+  measureStart('parse2')
+  for (const fixture of fixtures) {
+    const result = parse(fixture)
+    assert.equal(result.status, 'success')
+  }
+  measureEnd('parse2')
 }

@@ -28,6 +28,7 @@ export enum TokenType {
   Comment = 'Comment',
   Script = 'Script',
   ScriptEndTag = 'ScriptEndTag',
+  EndTagClosingBracket = 'EndTagClosingBracket',
 }
 
 export interface Token {
@@ -41,7 +42,7 @@ const DOCTYPE_HTML4_TRANSITIONAL_RE = /!DOCTYPE\s+HTML\s+PUBLIC\s+"-\/\/W3C\/\/D
 const DOCTYPE_HTML4_FRAMESET_RE = /!DOCTYPE\s+HTML\s+PUBLIC\s+"-\/\/W3C\/\/DTD HTML 4.01 Frameset\/\/EN"\s+"http:\/\/www.w3.org\/TR\/html4\/frameset.dtd"/i
 const DOCTYPE_RE_5 = /!DOCTYPE\s+html/i
 const TAG_NAME_RE = /^[a-zÀ-ž][a-zÀ-ž\d\-]*/i
-const ATTRIBUTE_NAME_RE = /^[a-zÀ-ž][a-zÀ-ž\d\-:_]*/i
+const ATTRIBUTE_NAME_RE = /^[a-zÀ-ž:][a-zÀ-ž\d\-:_]*/i
 const ATTRIBUTE_VALUE_SINGLE_QUOTE_RE = /^'[^']*'/
 const ATTRIBUTE_VALUE_DOUBLE_QUOTE_RE = /^"[^"]*"/
 const ATTRIBUTE_VALUE_RE = /^[^<>\s]*/
@@ -56,6 +57,16 @@ type ErrorResult = {
   readonly status: 'invalid'
   readonly index: number
 }
+
+const VALID_LAST_TOKENS = new Set([
+  TokenType.Content,
+  TokenType.StartTagClosingBracket,
+  TokenType.StartTagSelfClosingBracket,
+  TokenType.EndTagClosingBracket,
+  TokenType.Comment,
+])
+
+const isValidLastToken = (lastToken: Token) => lastToken && VALID_LAST_TOKENS.has(lastToken.type)
 
 export const scan: (text: string) => SuccessResult | ErrorResult = text => {
   const tokens: Token[] = []
@@ -135,7 +146,7 @@ export const scan: (text: string) => SuccessResult | ErrorResult = text => {
                 text: tokenText,
               })
               state = State.AfterStartTagOpeningBracket
-            } else if ((next = text.slice(index).match(/^[^<>]+/))) {
+            } else if ((next = text.slice(index).match(/^[^<]+/))) {
               const tokenText = next[0]
               index += tokenText.length
               tokens.push({
@@ -246,7 +257,7 @@ export const scan: (text: string) => SuccessResult | ErrorResult = text => {
           const tokenText = next[0]
           index += tokenText.length
           tokens.push({
-            type: TokenType.EndTagOpeningBracket,
+            type: TokenType.EndTagClosingBracket,
             text: tokenText,
           })
           state = State.Content
@@ -265,7 +276,6 @@ export const scan: (text: string) => SuccessResult | ErrorResult = text => {
         }
         break
       }
-
       case State.InsideStartTagAndHasSeenWhitespace: {
         if ((next = text.slice(index).match(/^\/>/))) {
           const tokenText = next[0]
@@ -333,9 +343,6 @@ export const scan: (text: string) => SuccessResult | ErrorResult = text => {
           })
           state = State.Content
         } else {
-          console.log('ok')
-          tokens
-          text.slice(index).startsWith('x') //?
           return {
             status: 'invalid',
             index,
@@ -377,10 +384,6 @@ export const scan: (text: string) => SuccessResult | ErrorResult = text => {
           })
           state = State.Content
         } else {
-          tokens
-          console.log(index)
-          console.log(text.slice(index, index + 30))
-          text.slice(index) //?
           throw new Error('no')
         }
         break
@@ -432,8 +435,27 @@ export const scan: (text: string) => SuccessResult | ErrorResult = text => {
       }
     }
   }
+  const lastToken = tokens[tokens.length - 1]
+  if (!isValidLastToken(lastToken)) {
+    return {
+      status: 'invalid',
+      index: -1,
+    }
+  }
   return {
     status: 'success',
     tokens,
   }
 }
+
+// const fs = require('fs')
+// const doc = scan(fs.readFileSync(`${__dirname}/fixture.txt`).toString())
+
+// // const doc = scan(`<todo-item :key="item.id"></todo-item>`)
+// if (doc.status !== 'invalid') {
+//   // @ts-ignore
+//   JSON.stringify(doc, null, 2) //?
+// } else {
+//   doc.index //?
+//   console.log('an error')
+// }
