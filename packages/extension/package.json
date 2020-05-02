@@ -112,7 +112,7 @@
     "dev": "cd ../../ && npm run dev",
     "e2e": "rm -rf dist tsconfig.tsbuildinfo && tsc -b && cross-env NODE_ENV=test node ./dist/test/runTest.js"
   },
-  "main": "dist/extensionMain.js",
+  "main": "dist/extensionMainNew.js",
   "dependencies": {
     "html-preview-service": "^0.0.0-development",
     "html-preview-service-node": "^0.0.0-development",

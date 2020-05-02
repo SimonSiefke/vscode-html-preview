@@ -273,7 +273,7 @@ async function fetchNodeMap() {
   const webSocket = new WebSocket(`ws://${location.host}?originalUrl=${location.href}`)
   webSocket.onerror = console.error
   webSocket.onmessage = ({ data }) => {
-    const { messages, id } = JSON.parse(data)
+    const messages = JSON.parse(data)
     for (const message of messages) {
       console.log(JSON.stringify(message, null, 2))
       const { command, payload } = message

@@ -1,127 +1,7 @@
 import { scan, TokenType, Token } from './scanner2'
 import * as assert from 'assert'
 import { updateOffsetMap } from './updateOffsetMap'
-
-const SELF_CLOSING_TAGS = new Set([
-  '!DOCTYPE',
-  '!doctype',
-  'input',
-  'br',
-  'area',
-  'base',
-  'br',
-  'col',
-  'embed',
-  'hr',
-  'img',
-  'input',
-  'link',
-  'meta',
-  'param',
-  'source',
-  'track',
-  'wbr',
-])
-
-const isSelfClosingTag: (tagName: string) => boolean = tagName => SELF_CLOSING_TAGS.has(tagName)
-
-const ALLOWED_SELF_CLOSING_TAGS = new Set([
-  '!DOCTYPE',
-  '!doctype',
-  'input',
-  'br',
-  'area',
-  'base',
-  'br',
-  'col',
-  'embed',
-  'hr',
-  'img',
-  'input',
-  'link',
-  'meta',
-  'param',
-  'source',
-  'track',
-  'wbr',
-  // https://developer.mozilla.org/en-US/docs/Web/SVG/Element
-  'a',
-  'animate',
-  'animateMotion',
-  'animateTransform',
-  'circle',
-  'clipPath',
-  'color-profile',
-  'defs',
-  'desc',
-  'discard',
-  'ellipse',
-  'feBlend',
-  'feColorMatrix',
-  'feComponentTransfer',
-  'feComposite',
-  'feConvolveMatrix',
-  'feDiffuseLighting',
-  'feDisplacementMap',
-  'feDistantLight',
-  'feDropShadow',
-  'feFlood',
-  'feFuncA',
-  'feFuncB',
-  'feFuncG',
-  'feFuncR',
-  'feGaussianBlur',
-  'feImage',
-  'feMerge',
-  'feMergeNode',
-  'feMorphology',
-  'feOffset',
-  'fePointLight',
-  'feSpecularLighting',
-  'feSpotlight',
-  'feTile',
-  'feTurbulence',
-  'filter',
-  'foreignObject',
-  'g',
-  'hatch',
-  'hatchpath',
-  'image',
-  'line',
-  'linearGradient',
-  'marker',
-  'mask',
-  'mesh',
-  'meshgradient',
-  'meshpath',
-  'meshrow',
-  'metadata',
-  'mpath',
-  'path',
-  'pattern',
-  'polygon',
-  'polyline',
-  'radialGradient',
-  'rect',
-  'script',
-  'set',
-  'solidColor',
-  'stop',
-  'style',
-  'svg',
-  'switch',
-  'symbol',
-  'text',
-  'textPath',
-  'title',
-  'tspan',
-  'unknown',
-  'use',
-  'view',
-])
-
-const isAllowedSelfClosingTag: (tagName: string) => boolean = tagName =>
-  ALLOWED_SELF_CLOSING_TAGS.has(tagName)
+import { isHeadTag, isAllowedSelfClosingTag, isSelfClosingTag, isBodyTag } from './utils'
 
 interface ElementNode {
   attributes: {
@@ -129,7 +9,7 @@ interface ElementNode {
   }
   children: (ElementNode | CommentNode | TextNode)[]
   readonly tag: string
-  readonly id: number
+  readonly id: string | number
   readonly nodeType: 'ElementNode'
 }
 
@@ -145,7 +25,7 @@ interface TextNode {
   readonly id: number
 }
 
-const createElementNode: (tag: string, id: number) => ElementNode = (tag, id) => ({
+const createElementNode: (tag: string, id: string | number) => ElementNode = (tag, id) => ({
   attributes: Object.create(null),
   children: [],
   nodeType: 'ElementNode',
@@ -183,6 +63,7 @@ export type SuccessResult = {
 type ErrorResult = {
   readonly status: 'invalid'
   readonly index: number
+  readonly reason?: string
 }
 
 const walk: (
@@ -219,6 +100,22 @@ export const parse: (
       .map(token => token.text)
       .join('').length
   let offset = 0
+  let html: ElementNode | undefined
+  let head: ElementNode | undefined
+  let body: ElementNode | undefined
+
+  let implicitHtml: ElementNode | undefined
+  let implicitHead: ElementNode | undefined
+  let implicitBody: ElementNode | undefined
+
+  let state:
+    | 'root'
+    | 'insideHtml'
+    | 'afterHtml'
+    | 'insideHead'
+    | 'afterHead'
+    | 'insideBody'
+    | 'afterBody' = 'root'
   for (let i = 0; i < tokens.length; i++) {
     if (stack.length === 0) {
       i
@@ -232,30 +129,325 @@ export const parse: (
 
     switch (token.type) {
       case TokenType.Content: {
-        assert(parent !== undefined)
-        child = createTextNode(token.text, getId(offset, token.text.length))
-        if (!parent) {
-          i
-          tokens.length //?
-          tokens
-            .slice(i)
-            .map(x => x.text)
-            .join('') //?
-          stack
+        switch (state) {
+          case 'root': {
+            if (token.text.trim()) {
+              // implicit html, implicit head, implicit body, node
+              implicitHtml = createElementNode('html', 'html')
+              parent.children.push(implicitHtml)
+              html = implicitHtml
+              implicitHead = createElementNode('head', 'head')
+              html.children.push(implicitHead)
+              head = implicitHead
+              implicitBody = createElementNode('body', 'body')
+              html.children.push(implicitBody)
+              parent = implicitBody
+              body = implicitBody
+              parent.children.push(createTextNode(token.text, getId(offset, token.text.length)))
+              state = 'insideBody'
+            } else {
+              parent.children.push(createTextNode(token.text, getId(offset, token.text.length)))
+            }
+            break
+          }
+          case 'insideHtml': {
+            if (token.text.trim()) {
+              // implicit head, implicit body, node
+              implicitHead = createElementNode('head', 'head')
+              html!.children.push(implicitHead)
+              head = implicitHead
+              implicitBody = createElementNode('body', 'body')
+              html!.children.push(implicitBody)
+              parent = implicitBody
+              body = implicitBody
+              parent.children.push(createTextNode(token.text, getId(offset, token.text.length)))
+              state = 'insideBody'
+            } else {
+              parent.children.push(createTextNode(token.text, getId(offset, token.text.length)))
+            }
+            break
+          }
+          case 'insideHead': {
+            if (parent === head && token.text.trim()) {
+              return {
+                status: 'invalid',
+                index: findErrorIndex(i),
+                reason: `invalid text inside head ${text.slice(
+                  findErrorIndex(i),
+                  findErrorIndex(i) + 10
+                )}`,
+              }
+            }
+            parent.children.push(createTextNode(token.text, getId(offset, token.text.length)))
+            break
+          }
+          case 'afterHead': {
+            if (token.text.trim()) {
+              throw new Error('todo')
+            } else {
+              parent.children.push(createTextNode(token.text, getId(offset, token.text.length)))
+            }
+            break
+          }
+          case 'insideBody': {
+            parent.children.push(createTextNode(token.text, getId(offset, token.text.length)))
+            break
+          }
+          case 'afterBody': {
+            if (token.text.trim()) {
+              return {
+                status: 'invalid',
+                index: findErrorIndex(i),
+              }
+            } else {
+              parent.children.push(createTextNode(token.text, getId(offset, token.text.length)))
+            }
+            break
+          }
+          case 'afterHtml': {
+            if (token.text.trim()) {
+              return {
+                status: 'invalid',
+                index: findErrorIndex(i),
+              }
+            } else {
+              parent.children.push(createTextNode(token.text, getId(offset, token.text.length)))
+            }
+            break
+          }
+          default: {
+            state
+            throw new Error('invalid state')
+          }
         }
-        parent.children.push(child)
         break
+        // if (token.text.trim()) {
+        //   if (!html) {
+        //     implicitHtml = createElementNode('html', 'html')
+        //     htmlDocument.children.push(implicitHtml)
+        //     html = implicitHtml
+        //   }
+        //   if (!head) {
+        //     implicitHead = createElementNode('head', 'head')
+        //     html.children.push(implicitHead)
+        //     head = implicitHead
+        //   }
+        //   if (!body) {
+        //     implicitBody = createElementNode('body', 'body')
+        //     html.children.push(implicitBody)
+        //     body = implicitBody
+        //     parent = implicitBody
+        //   }
+        // }
+        // assert(parent !== undefined)
+        // child = createTextNode(token.text, getId(offset, token.text.length))
+
+        // parent.children.push(child)
+        // break
       }
       case TokenType.StartTagName: {
-        if (parent.tag === 'li' && token.text === 'li') {
-          stack.pop() as ElementNode
-          parent = stack[stack.length - 1]
+        state
+        switch (state) {
+          case 'root': {
+            if (token.text === 'html') {
+              // explicit html
+              child = createElementNode('html', 'html')
+              stack.push(child)
+              html = child
+              state = 'insideHtml'
+            } else if (token.text === 'head') {
+              // implicit html, explicit head
+              implicitHtml = createElementNode('html', 'html')
+              parent.children.push(implicitHtml)
+              html = implicitHtml
+              parent = implicitHtml
+              child = createElementNode('head', 'head')
+              stack.push(child)
+              head = child
+              state = 'insideHead'
+            } else if (token.text === 'body') {
+              // implicit html, implicit head,  explicit body
+              implicitHtml = createElementNode('html', 'html')
+              parent.children.push(implicitHtml)
+              html = implicitHtml
+              parent = implicitHtml
+              implicitHead = createElementNode('head', 'head')
+              parent.children.push(implicitHead)
+              head = implicitHead
+              child = createElementNode('body', 'body')
+              stack.push(child)
+              body = child
+              state = 'insideBody'
+            } else if (isHeadTag(token.text)) {
+              // implicit html, implicit head, node
+              implicitHtml = createElementNode('html', 'html')
+              parent.children.push(implicitHtml)
+              html = implicitHtml
+              parent = implicitHtml
+              implicitHead = createElementNode('head', 'head')
+              parent.children.push(implicitHead)
+              parent = implicitHead
+              head = implicitHead
+              child = createElementNode(token.text, getId(offset, token.text.length))
+              stack.push(child)
+              state = 'insideHead'
+            } else {
+              // implicit html, implicit head, implicit body, node
+              implicitHtml = createElementNode('html', 'html')
+              parent.children.push(implicitHtml)
+              html = implicitHtml
+              parent = implicitHtml
+              implicitHead = createElementNode('head', 'head')
+              parent.children.push(implicitHead)
+              head = implicitHead
+              implicitBody = createElementNode('body', 'body')
+              parent.children.push(implicitBody)
+              parent = implicitBody
+              body = implicitBody
+              child = createElementNode(token.text, getId(offset, token.text.length))
+              stack.push(child)
+              state = 'insideBody'
+            }
+            break
+          }
+          case 'insideHtml': {
+            if (token.text === 'html') {
+              // duplicate html tag
+              return {
+                status: 'invalid',
+                index: findErrorIndex(i),
+              }
+            }
+            if (token.text === 'head') {
+              // explicit head
+              child = createElementNode('head', 'head')
+              stack.push(child)
+              head = child
+              state = 'insideHead'
+            } else if (token.text === 'body') {
+              // implicit head, explicit body
+              implicitHead = createElementNode('head', 'head')
+              parent.children.push(implicitHead)
+              head = implicitHead
+              child = createElementNode('body', 'body')
+              stack.push(child)
+              body = child
+              state = 'insideBody'
+            } else if (isHeadTag(token.text)) {
+              // implicit head, node
+              implicitHead = createElementNode('head', 'head')
+              parent.children.push(implicitHead)
+              parent = implicitHead
+              head = implicitHead
+              child = createElementNode(token.text, getId(offset, token.text.length))
+              stack.push(child)
+              state = 'insideHead'
+            } else {
+              // implicit head, implicit body, node
+              implicitHead = createElementNode('head', 'head')
+              parent.children.push(implicitHead)
+              head = implicitHead
+              implicitBody = createElementNode('body', 'body')
+              parent.children.push(implicitBody)
+              parent = implicitBody
+              body = implicitBody
+              child = createElementNode(token.text, getId(offset, token.text.length))
+              stack.push(child)
+              state = 'insideBody'
+            }
+            break
+          }
+          case 'insideHead': {
+            if (isHeadTag(token.text)) {
+              child = createElementNode(token.text, getId(offset, token.text.length))
+              stack.push(child)
+            } else {
+              if (!implicitHead) {
+                return {
+                  status: 'invalid',
+                  index: findErrorIndex(i),
+                }
+              }
+              parent = html as ElementNode
+              if (token.text === 'html' || token.text === 'head') {
+                return {
+                  status: 'invalid',
+                  index: findErrorIndex(i),
+                }
+              }
+              if (token.text === 'body') {
+                // explicit body
+                child = createElementNode('body', 'body')
+                stack.push(child)
+                body = child
+                state = 'insideBody'
+              } else {
+                // implicit body, node
+                implicitBody = createElementNode('body', 'body')
+                parent.children.push(implicitBody)
+                parent = implicitBody
+                body = implicitBody
+                child = createElementNode(token.text, getId(offset, token.text.length))
+                stack.push(child)
+                state = 'insideBody'
+              }
+            }
+
+            break
+          }
+          case 'afterHead': {
+            if (token.text === 'body') {
+              // explicit body
+              child = createElementNode('body', 'body')
+              stack.push(child)
+              body = child
+              state = 'insideBody'
+            } else if (isHeadTag(token.text) || token.text === 'html' || token.text === 'head') {
+              return {
+                status: 'invalid',
+                index: findErrorIndex(i),
+              }
+            } else {
+              // implicit body, node
+              implicitBody = createElementNode('body', 'body')
+              parent.children.push(implicitBody)
+              parent = implicitBody
+              body = implicitBody
+              child = createElementNode(token.text, getId(offset, token.text.length))
+              stack.push(child)
+              state = 'insideBody'
+            }
+            break
+          }
+          case 'insideBody': {
+            if (
+              !isBodyTag(token.text) ||
+              token.text === 'html' ||
+              token.text === 'body' ||
+              token.text === 'head'
+            ) {
+              return {
+                status: 'invalid',
+                index: findErrorIndex(i),
+              }
+            }
+            child = createElementNode(token.text, getId(offset, token.text.length))
+            stack.push(child)
+            break
+          }
+          default: {
+            throw new Error('invalid state')
+          }
         }
-        child = createElementNode(token.text, getId(offset, token.text.length))
-        stack.push(child)
         break
       }
       case TokenType.DocType: {
+        if (state !== 'root' || html) {
+          return {
+            status: 'invalid',
+            index: findErrorIndex(i),
+          }
+        }
         parent.children.pop()
         child = createDoctypeNode()
         stack.push(child)
@@ -274,21 +466,91 @@ export const parse: (
         break
       }
       case TokenType.EndTagName: {
-        const top = stack.pop() as ElementNode
-        if (top.tag === 'li' && new Set(['ul', 'ol']).has(token.text)) {
-          parent = stack.pop() as ElementNode
-        }
-        if (parent.tag === token.text) {
-          parent = stack[stack.length - 1]
-        } else if (parent.tag === 'li' && new Set(['ul', 'ol']).has(token.text)) {
-          parent = stack.pop() as ElementNode
-        } else {
-          return {
-            status: 'invalid',
-            index: findErrorIndex(i),
+        switch (state) {
+          case 'insideHead': {
+            if (token.text === parent.tag) {
+              if (token.text === 'head') {
+                stack.pop()
+                parent = html as ElementNode
+                state = 'afterHead'
+              } else {
+                stack.pop()
+                parent = stack[stack.length - 1]
+              }
+            } else if (token.text === 'html' && parent === implicitHead) {
+              stack.pop()
+              parent = html as ElementNode
+            } else {
+              throw new Error('no')
+            }
+            break
+          }
+          case 'insideBody': {
+            if (token.text === parent.tag) {
+              if (token.text === 'body') {
+                stack.pop()
+                parent = html as ElementNode
+                state = 'afterBody'
+              } else {
+                stack.pop()
+                parent = stack[stack.length - 1]
+              }
+            } else {
+              return {
+                status: 'invalid',
+                index: findErrorIndex(i),
+              }
+            }
+            break
+          }
+          case 'afterBody': {
+            if (token.text === parent.tag) {
+              if (token.text === 'html') {
+                stack.pop()
+                parent = html as ElementNode
+                state = 'afterHtml'
+              } else {
+                stack.pop()
+                parent = stack[stack.length - 1]
+              }
+            } else {
+              return {
+                status: 'invalid',
+                index: findErrorIndex(i),
+              }
+            }
+            break
+          }
+          case 'afterHead': {
+            if (token.text === parent.tag && token.text === 'html') {
+              stack.pop()
+              parent = htmlDocument
+              state = 'afterHtml'
+            } else {
+              return {
+                status: 'invalid',
+                index: findErrorIndex(i),
+              }
+            }
+            break
+          }
+          case 'insideHtml': {
+            if (token.text === parent.tag && token.text === 'html') {
+              stack.pop()
+              parent = htmlDocument
+              state = 'afterHtml'
+            } else {
+              return {
+                status: 'invalid',
+                index: findErrorIndex(i),
+              }
+            }
+            break
+          }
+          default: {
+            throw new Error('invalid state')
           }
         }
-        assert(stack.length > 0)
         break
       }
       case TokenType.StartTagClosingBracket: {
@@ -310,6 +572,7 @@ export const parse: (
       }
       case TokenType.AttributeName: {
         if (token.text in child.attributes) {
+          console.log('attr')
           return {
             status: 'invalid',
             index: findErrorIndex(i),
@@ -346,7 +609,29 @@ export const parse: (
     }
     offset += token.text.length
   }
+  stack
+
+  if (stack[stack.length - 1] === implicitHead) {
+    stack.pop()
+  }
+  if (!html) {
+    html = createElementNode('html', 'html')
+    htmlDocument.children.push(html)
+  }
+  if (!head) {
+    html.children.push(createElementNode('head', 'head'))
+  }
+  if (!body) {
+    html.children.push(createElementNode('body', 'body'))
+  }
+  if (stack[stack.length - 1] === implicitBody) {
+    stack.pop()
+  }
+  if (stack[stack.length - 1] === implicitHtml) {
+    stack.pop()
+  }
   if (stack.length > 1) {
+    stack
     return {
       status: 'invalid',
       index: -1,
@@ -365,114 +650,47 @@ export const parse: (
   }
 }
 
-const pretty = node => {
-  if (node.nodeType === 'ElementNode') {
-    return {
-      tag: node.tag,
-      children: node.children.map(pretty),
-      id: node.id,
-      attributes: node.attributes,
-    }
-  }
-
-  return {
-    nodeType: node.nodeType,
-    text: node.text,
-    id: node.id,
+const stringifyNode = (node: ElementNode | TextNode | CommentNode | DoctypeNode) => {
+  switch (node.nodeType) {
+    case 'ElementNode':
+      return `<${node.tag}${Object.entries(node.attributes)
+        .map(([key, value]) => (value === null ? ` ${key}` : ` ${key}="${value}"`))
+        .join('')}>${stringify(node.children)}${isSelfClosingTag(node.tag) ? '' : `</${node.tag}>`}`
+    case 'TextNode':
+      return node.text
+    case 'Doctype':
+      return `<!DOCTYPE html>`
+    case 'CommentNode':
+      return `<!--${node.text}-->`
   }
 }
+const stringify = nodes => {
+  return nodes.map(stringifyNode).join('')
+}
 
-let offsetMap = Object.create(null)
+// const fs = require('fs')
+// let doc: SuccessResult | ErrorResult
 
-// let id = 0
-// parse(`<h1>hello world</h1>`, offset => {
-//   const nextId = id++
-//   offsetMap[offset] = nextId
-//   return nextId
-// })
-// offsetMap
+// doc = parse(
+//   fs.readFileSync(`${__dirname}/fixture.txt`).toString(),
+//   (() => {
+//     let i = 0
+//     return () => i++
+//   })()
+// )
 
-// offsetMap = updateOffsetMap(offsetMap, [
-//   {
-//     inserted: 7,
-//     deleted: 0,
-//     offset: 4,
-//   },
-// ]) //?
+// // doc = parse(
+// //   `<body><style></style></body>`,
+// //   (() => {
+// //     let i = 0
+// //     return () => i++
+// //   })()
+// // )
 
-// let newOffsetMap = Object.create(null)
-
-// const doc2 = parse(`<h1><p></p>hello world</h1>`, offset => {
-//   let nextId
-//   if (offset in offsetMap) {
-//     nextId = offsetMap[offset]
-//   } else {
-//     nextId = id++
-//   }
-//   newOffsetMap[offset] = nextId
-//   return nextId
-// })
-
-// if (doc2.status === 'success') {
-//   JSON.stringify(doc2.nodes, null, 2) //?
+// if (doc.status === 'success') {
+//   stringify(doc.nodes) //?
+// } else {
+//   doc.index //?
+//   doc.reason //?
+//   console.log('fail')
 // }
-
-// // const fs = require('fs')
-// // const doc = parse(fs.readFileSync(`${__dirname}/fixture.txt`).toString(), 0) //?
-
-// // fs.readFileSync(`${__dirname}/fixture.txt`)
-// //   .toString()
-// //   .slice(20694 - 1000, 20694 + 100) //?
-// // const doc1 = parse(
-// //   `<h1>hello world</h1>`,
-// //   (() => {
-// //     let id = 0
-// //     return () => id++
-// //   })()
-// // )
-// // if (doc1.status === 'success') {
-// //   JSON.stringify(doc1.nodeMap, null, 2) //?
-// // }
-
-// // const doc2 = parse(
-// //   `<h1><p></p>hello world</h1>`,
-// //   (() => {
-// //     let id = 0
-// //     return () => id++
-// //   })()
-// // )
-
-// // if (doc2.status === 'success') {
-// //   JSON.stringify(doc2.nodeMap, null, 2) //?
-// // }
-
-// // export const edit: (
-// //   result: SuccessResult,
-// //   edits: readonly { readonly length: number; readonly offset: number }[]
-// // ) => any = (result, edits) => {
-// //   const newResult = scan('<h1><p></p>hello world</h1>')
-// //   if (newResult.status === 'invalid') {
-// //     return result
-// //   }
-// //   const { tokens } = newResult
-// //   let offset = 0
-// //   // const edit =
-// //   for (let i = 0; i < tokens.length; i++) {
-// //     const token = tokens[i]
-// //     offset += token.text.length
-// //     result.nodes //?
-// //     // if(offset === )
-// //   }
-// //   offset
-// // }
-
-// // edit(parse(`<h1>hello world</h1>`, 0) as SuccessResult, [
-// //   {
-// //     offset: 4,
-// //     length: 7,
-// //   },
-// // ]) //?
-
-// // for (let i = 0; i < 1000; i++) {
-// //   parse(`<h1>hello world</h1>`.repeat(20000), 0) //?.
-// // }

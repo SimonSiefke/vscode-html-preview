@@ -4,12 +4,12 @@ import { updateOffsetMap } from '../parse/updateOffsetMap'
 export interface TextNode {
   readonly nodeType: 'TextNode'
   readonly text: string
-  readonly id: number
+  readonly id: string | number
 }
 
 export interface ElementNode {
   readonly nodeType: 'ElementNode'
-  readonly id: number
+  readonly id: string | number
   readonly tag: string
   readonly children: readonly (ElementNode | TextNode | CommentNode)[]
   readonly attributes: {
@@ -19,29 +19,29 @@ export interface ElementNode {
 
 export interface CommentNode {
   readonly nodeType: 'CommentNode'
-  readonly id: number
+  readonly id: string | number
   readonly text: string
 }
 
 export interface DoctypeNode {
   readonly nodeType: 'Doctype'
-  readonly id: number
+  readonly id: number | string
 }
 
 type Operation =
   | {
       readonly command: 'elementDelete'
       readonly payload: {
-        readonly id: number
+        readonly id: number | string
       }
     }
   | {
       readonly command: 'elementInsert'
       readonly payload: {
-        readonly id: number
+        readonly id: number | string
         readonly nodeType: 'ElementNode'
         readonly tag: string
-        readonly parentId: number
+        readonly parentId: number | string
         readonly index: number
         readonly attributes: {
           readonly [attributeName: string]: string | null
@@ -51,34 +51,34 @@ type Operation =
   | {
       readonly command: 'elementInsert'
       readonly payload: {
-        readonly id: number
+        readonly id: number | string
         readonly nodeType: 'TextNode'
         readonly text: string
-        readonly parentId: number
+        readonly parentId: number | string
         readonly index: number
       }
     }
   | {
       readonly command: 'elementInsert'
       readonly payload: {
-        readonly id: number
+        readonly id: number | string
         readonly nodeType: 'CommentNode'
         readonly text: string
-        readonly parentId: number
-        readonly index: number
+        readonly parentId: number | string
+        readonly index: number | string
       }
     }
   | {
       readonly command: 'textReplace'
       readonly payload: {
-        readonly id: number
+        readonly id: number | string
         readonly text: string
       }
     }
   | {
       readonly command: 'attributeAdd'
       readonly payload: {
-        readonly id: number
+        readonly id: number | string
         readonly attributeName: string
         readonly attributeValue: string | null
       }
@@ -86,7 +86,7 @@ type Operation =
   | {
       readonly command: 'attributeChange'
       readonly payload: {
-        readonly id: number
+        readonly id: number | string
         readonly attributeName: string
         readonly attributeValue: string | null
       }
@@ -94,16 +94,16 @@ type Operation =
   | {
       readonly command: 'attributeDelete'
       readonly payload: {
-        readonly id: number
+        readonly id: number | string
         readonly attributeName: string
       }
     }
   | {
       readonly command: 'elementMove'
       readonly payload: {
-        readonly id: number
+        readonly id: number | string
         readonly index: number
-        readonly parentId: number
+        readonly parentId: number | string
       }
     }
 
@@ -122,7 +122,7 @@ const elementDelete: (
 const elementMove: (
   edits: Operation[],
   node: CommentNode | ElementNode | TextNode | DoctypeNode,
-  parentId: number,
+  parentId: number | string,
   index: number
 ) => void = (edits, node, parentId, index) => {
   edits.push({
@@ -138,7 +138,7 @@ const elementMove: (
 const elementInsert: (
   edits: Operation[],
   node: CommentNode | DoctypeNode | ElementNode | TextNode,
-  parentId: number,
+  parentId: number | string,
   index: number
 ) => void = (edits, node, parentId, index) => {
   switch (node.nodeType) {
@@ -283,7 +283,7 @@ const childEdits: (
   newNodes: readonly (CommentNode | DoctypeNode | ElementNode | TextNode)[],
   oldNodeMap: any,
   newNodeMap: any,
-  parentId: number
+  parentId: number | string
 ) => void = (edits, oldNodes, newNodes, oldNodeMap, newNodeMap, parentId) => {
   let oldIndex = 0
   let newIndex = 0
@@ -336,6 +336,10 @@ const childEdits: (
       oldIndex++
       newIndex++
       continue
+    } else if (oldNode.nodeType === 'Doctype' && newNode.nodeType === 'Doctype') {
+      oldIndex++
+      newIndex++
+      continue
     }
     if (!newNodeMap[oldNode.id]) {
       elementDelete(edits, oldNode)
@@ -381,7 +385,7 @@ export const diff: (oldState: State, newState: State) => readonly Operation[] = 
 let offsetMap = Object.create(null)
 
 let id = 0
-const p1 = parse(`<h1>a</h1>`, offset => {
+const p1 = parse(`<h1>hello world</h1>`, offset => {
   const nextId = id++
   offsetMap[offset] = nextId
   return nextId
@@ -389,9 +393,9 @@ const p1 = parse(`<h1>a</h1>`, offset => {
 
 offsetMap = updateOffsetMap(offsetMap, [
   {
-    rangeOffset: 4,
-    rangeLength: 1,
-    text: 'b',
+    rangeOffset: 15,
+    rangeLength: 0,
+    text: '!',
   },
 ])
 
@@ -399,7 +403,7 @@ offsetMap
 
 let newOffsetMap = Object.create(null)
 
-const p2 = parse(`<h1>b</h1>`, (offset, tokenLength) => {
+const p2 = parse(`<h1>hello world!</h1>`, (offset, tokenLength) => {
   let nextId: number
   nextId: if (offset in offsetMap) {
     nextId = offsetMap[offset]

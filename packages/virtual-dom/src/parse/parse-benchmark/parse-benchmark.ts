@@ -11,7 +11,7 @@ const fixtures = [
   fs.readFileSync(path.join(__dirname, 'fixtures/codepen.txt')).toString(),
   fs.readFileSync(path.join(__dirname, 'fixtures/vscode.txt')).toString(),
   fs.readFileSync(path.join(__dirname, 'fixtures/soundcloud.txt')).toString(),
-  fs.readFileSync(path.join(__dirname, 'fixtures/riot.txt')).toString(),
+  // fs.readFileSync(path.join(__dirname, 'fixtures/riot.txt')).toString(), // invalid because of img inside head
   fs.readFileSync(path.join(__dirname, 'fixtures/discord.txt')).toString(),
   fs.readFileSync(path.join(__dirname, 'fixtures/mozilla-addons.txt')).toString(),
   fs.readFileSync(path.join(__dirname, 'fixtures/mdn.txt')).toString(),
@@ -25,6 +25,9 @@ const fixtures = [
   fs.readFileSync(path.join(__dirname, 'fixtures/next.txt')).toString(),
   fs.readFileSync(path.join(__dirname, 'fixtures/intellij.txt')).toString(),
   fs.readFileSync(path.join(__dirname, 'fixtures/netlify.txt')).toString(),
+  fs.readFileSync(path.join(__dirname, 'fixtures/syntax.txt')).toString(),
+  fs.readFileSync(path.join(__dirname, 'fixtures/deno.txt')).toString(),
+  fs.readFileSync(path.join(__dirname, 'fixtures/postcss.txt')).toString(),
   // fs.readFileSync(path.join(__dirname, 'fixtures/dev.txt')).toString(), // TODO
   // fs.readFileSync(path.join(__dirname, 'fixtures/json.txt')).toString(), // TODO
   // fs.readFileSync(path.join(__dirname, 'fixtures/whatwg.txt')).toString(), // TODO

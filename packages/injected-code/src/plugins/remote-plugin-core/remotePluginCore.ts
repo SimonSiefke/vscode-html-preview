@@ -17,7 +17,7 @@ function fixAttributeValue(value: string | null) {
   }
 
   if (
-    (value && (value.startsWith("'") && value.endsWith("'"))) ||
+    (value && value.startsWith("'") && value.endsWith("'")) ||
     (value.startsWith('"') && value.endsWith('"'))
   ) {
     return value.slice(1, -1)
@@ -88,32 +88,12 @@ const attributeDelete: RemotePlugin = api => {
 
 const elementDelete: RemotePlugin = api => {
   api.webSocket.onMessage('elementDelete', payload => {
-    const deleteFromNodeMap = () => {
-      const $node = api.nodeMap[payload.id]
-      delete api.nodeMap[payload.id]
-      api.messageChannel.broadcastMessage('elementDeleted', { id: payload.id, element: $node })
-    }
-    const $node = api.nodeMap[payload.id]
-    // @ts-ignore
-    if ($node.tagName && ['HTML', 'HEAD', 'BODY'].includes($node.tagName)) {
-      // cannot delete those, but need to remove their children
-      removeChildren($node)
-      deleteFromNodeMap()
-      return
-    }
-
+    const $node = api.nodeMap[payload.id] as HTMLElement
     if (!$node) {
-      debugger
+      throw new Error(`node doesn't exist`)
     }
-
-    // @ts-ignore
-    if ($node.remove) {
-      // @ts-ignore
-      $node.remove()
-    } else if ($node.parentNode && $node.parentNode.removeChild) {
-      $node.parentNode.removeChild($node)
-    }
-    deleteFromNodeMap()
+    $node.remove()
+    delete api.nodeMap[payload.id]
   })
 }
 
@@ -122,10 +102,6 @@ const elementInsert: RemotePlugin = api => {
     let $node: Node
     const addToNodeMap = ($node: Node) => {
       api.nodeMap[payload.id] = $node
-      api.messageChannel.broadcastMessage('elementInserted', {
-        element: $node,
-        id: payload.id,
-      })
     }
     if (payload.nodeType === 'ElementNode') {
       const tag = payload.tag.toLowerCase()
@@ -164,44 +140,13 @@ const elementInsert: RemotePlugin = api => {
     }
 
     addToNodeMap($node)
-    let $parent = api.nodeMap[payload.parentId] as HTMLElement
-    if (!$parent) {
-      debugger
-    }
-
-    if (
-      payload.parentId === 0 &&
-      !(payload.nodeType === 'CommentNode' || ['html', 'head', 'body'].includes(payload.tag))
-    ) {
+    let $parent: HTMLElement
+    if (payload.parentId === -1) {
       $parent = document.body
-      for (const rootNode of api.virtualDom) {
-        const rootNodeParent = api.nodeMap[rootNode.id] && api.nodeMap[rootNode.id].parentNode
-        if (rootNodeParent === document) {
-          payload.beforeId--
-        } else {
-          break
-        }
-      }
-    }
-
-    console.log($parent)
-    if (payload.beforeId === 0) {
-      console.log('prepend')
-      $parent.prepend($node)
     } else {
-      const $referenceNode = api.nodeMap[payload.beforeId]
-      // @debug
-      if (!$referenceNode) {
-        console.log(payload.beforeId)
-        console.log(api.nodeMap)
-        console.error(
-          `failed to insert new element because reference node with id ${payload.beforeId} does not exist`
-        )
-        return
-      }
-
-      $parent.insertBefore($node, $referenceNode.nextSibling)
+      $parent = api.nodeMap[payload.parentId] as HTMLElement
     }
+    $parent.insertBefore($node, $parent.children[payload.index])
   })
 }
 

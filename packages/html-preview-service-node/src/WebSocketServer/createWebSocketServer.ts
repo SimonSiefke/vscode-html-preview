@@ -7,13 +7,7 @@ export interface WebSocketServer {
   /**
    * Send a list of commands to all connected clients.
    */
-  readonly broadcast: ({
-    commands,
-    skip,
-  }: {
-    commands: object[]
-    skip?: WebSocket | ((webSocket: WebSocket) => boolean)
-  }) => void
+  readonly broadcast: (commands: readonly object[]) => void
   /**
    * Send a list of commands to all connected clients for a relative path.
    */
@@ -39,12 +33,16 @@ export interface WebSocketServer {
   readonly stop: () => Promise<void>
 }
 
-const nextId = (() => {
-  let id = 0
-  return () => id++
-})()
-
 const pendingResults: any = {}
+
+const broadcast = (commands: readonly any[], clients: Set<WebSocket>) => {
+  const stringifiedMessage = JSON.stringify(commands)
+  for (const client of clients) {
+    if (client.readyState === WebSocket.OPEN) {
+      client.send(stringifiedMessage)
+    }
+  }
+}
 
 export function createWebSocketServer(httpServer: HttpServer): WebSocketServer {
   const webSocketServer = new WebSocket.Server({ server: httpServer.server })
@@ -92,39 +90,16 @@ export function createWebSocketServer(httpServer: HttpServer): WebSocketServer {
     webSocket: WebSocket,
     request: http.IncomingMessage
   ) => void> = []
-  const broadcast = ({
-    commands,
-    skip,
-    clients,
-  }: {
-    commands: any[]
-    skip?: WebSocket | ((webSocket: WebSocket) => boolean)
-    clients: Set<WebSocket>
-  }) => {
-    const id = nextId()
-    const stringifiedMessage = JSON.stringify({ messages: commands, id, type: 'request' })
-    let skipFn
-    if (typeof skip === 'function') {
-      skipFn = skip
-    } else if (skip === undefined) {
-      skipFn = webSocket => false
-    } else {
-      skipFn = webSocket => skip === webSocket
-    }
-    for (const client of clients) {
-      if (client.readyState === WebSocket.OPEN && !skipFn(client)) {
-        client.send(stringifiedMessage)
-      }
-    }
-  }
+
   return {
     broadcastToRelativePath({ commands, skip, relativePath }) {
       const clients = webSocketMap[relativePath]
-      broadcast({ clients, commands, skip })
+      broadcast(commands, clients)
     },
-    broadcast({ commands, skip }) {
+    broadcast(commands) {
+      console.log('broadcast')
       const clients = webSocketServer.clients
-      broadcast({ commands, skip, clients })
+      broadcast(commands, clients)
     },
     onMessage: (command: string, listener: (payload: any) => void) => {
       listeners[command] = listeners[command] || []
