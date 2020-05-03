@@ -162,8 +162,6 @@ export const parse: (
               body = implicitBody
               parent.children.push(createTextNode(token.text, getId(offset, token.text.length)))
               state = 'insideBody'
-            } else {
-              parent.children.push(createTextNode(token.text, getId(offset, token.text.length)))
             }
             break
           }
@@ -199,8 +197,6 @@ export const parse: (
                 status: 'invalid',
                 index: findErrorIndex(i),
               }
-            } else {
-              parent.children.push(createTextNode(token.text, getId(offset, token.text.length)))
             }
             break
           }
@@ -679,18 +675,20 @@ const stringify = nodes => {
 //   })()
 // )
 
-// // doc = parse(
-// //   `<body><style></style></body>`,
-// //   (() => {
-// //     let i = 0
-// //     return () => i++
-// //   })()
-// // )
+const doc = parse(
+  `<html>
+<head></head><body></body>
+</html>`,
+  (() => {
+    let i = 0
+    return () => i++
+  })()
+)
 
-// if (doc.status === 'success') {
-//   stringify(doc.nodes) //?
-// } else {
-//   doc.index //?
-//   doc.reason //?
-//   console.log('fail')
-// }
+if (doc.status === 'success') {
+  stringify(doc.nodes) //?
+} else {
+  doc.index //?
+  doc.reason //?
+  console.log('fail')
+}

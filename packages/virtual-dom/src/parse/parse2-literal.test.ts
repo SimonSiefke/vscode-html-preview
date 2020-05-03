@@ -192,14 +192,12 @@ test('simple document', () => {
     <h1>hello world</h1>
   </body>
 </html>`).toEqual(`<!DOCTYPE html>
-<html>
-  <head>
+<html><head>
     <meta charset="utf-8">
   </head>
   <body>
     <h1>hello world</h1>
-  </body>
-</html>`)
+  </body></html>`)
 })
 
 test('incomplete doctype', () => {
@@ -220,14 +218,12 @@ test('document with base tag', () => {
     hello world
   </body>
 </html>`).toEqual(`<!DOCTYPE html>
-<html>
-  <head>
+<html><head>
     <base href="http://www.example.com/" target="_self">
   </head>
   <body>
     hello world
-  </body>
-</html>`)
+  </body></html>`)
 })
 
 test('self-closing tag', () => {
@@ -337,5 +333,11 @@ test.skip('title inside body', () => {
 test('title inside svg', () => {
   expectParse(`<body><svg><title>hello world</title></svg></body>`).toEqual(
     `<html><head></head><body><svg><title>hello world</title></svg></body></html>`
+  )
+})
+
+test('whitespace nodes inside html', () => {
+  expectParse(`<html><head></head><body></body></html>`).toEqual(
+    `<html><head></head><body></body></html>`
   )
 })
