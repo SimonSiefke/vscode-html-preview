@@ -114,8 +114,6 @@
   },
   "main": "dist/extensionMain.js",
   "dependencies": {
-    "html-preview-service": "^0.0.0-development",
-    "html-preview-service-node": "^0.0.0-development",
     "send": "^0.17.1",
     "virtual-dom": "^0.0.0-development",
     "vsls": "^1.0.1830",

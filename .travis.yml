@@ -2,7 +2,7 @@ language: node_js
 
 if: tag IS blank
 
-node_js: 12
+node_js: latest
 
 addons:
   apt:
@@ -38,12 +38,9 @@ jobs:
         - cd packages/injected-code && npm run build && cd ../../
         - npm run e2e
         - npm test
-        - npm run test:samples
         - npm run package
-        - npm run generate:website
     - stage: release
       script:
-        - npm run build:samples
         - npm run package
         - cd dist
         - npm i -g vsce
