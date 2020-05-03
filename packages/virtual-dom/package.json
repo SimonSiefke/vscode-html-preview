@@ -7,7 +7,8 @@
     "generate:diffTests": "babel-node --presets latest-node src/diff/diff-test/diff-test-util/generateDiffTestCases.js",
     "generate:watch:diffTests": "nodemon --ext txt,js --watch src/diff/diff-test --exec npm run generate:diffTests",
     "generate:parseTests": "babel-node --presets latest-node src/parse/parse-test/parse-test-util/generateParseTestCases.js",
-    "generate:watch:parseTests": "nodemon --ext txt,js --watch 'src/parse/parse-test' --exec npm run generate:parseTests"
+    "generate:watch:parseTests": "nodemon --ext txt,js --watch 'src/parse/parse-test' --exec npm run generate:parseTests",
+    "test": "jest"
   },
   "devDependencies": {
     "@babel/node": "^7.8.7",

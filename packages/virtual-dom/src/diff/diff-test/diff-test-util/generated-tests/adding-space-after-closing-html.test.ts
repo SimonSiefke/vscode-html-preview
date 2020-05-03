@@ -59,15 +59,7 @@ test(`adding-space-after-closing-html.test.txt`, () => {
   })
   if(p1.status === 'success' && p2.status === 'success'){
     const edits = diff(p1, p2)
-    const expectedEdits = [
-      {
-        "command": "elementInsert",
-        "payload": {
-          "nodeType": "TextNode",
-          "text": " "
-        }
-      }
-    ]
+    const expectedEdits = []
     expect(adjustEdits(edits)).toEqual(adjustExpectedEdits(expectedEdits))
   }
 })

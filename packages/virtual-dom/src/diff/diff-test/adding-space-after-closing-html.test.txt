@@ -14,12 +14,4 @@ nextText:
 <html></html> 
 
 expectedEdits:
-[
-  {
-    command: elementInsert
-    payload: {
-      nodeType: TextNode
-      text: " "
-    }
-  }
-]
+[]

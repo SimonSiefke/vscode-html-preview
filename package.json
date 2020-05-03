@@ -14,7 +14,7 @@
     "generate:genDomTests": "cd packages/html-preview-service && npm run generate:genDomTests",
     "generate:watch:genDomTests": "cd packages/html-preview-service && npm run generate:watch:genDomTests",
     "generate:watch:parseTests": "cd packages/virtual-dom && npm run generate:watch:parseTests",
-    "test": "jest",
+    "test": "cd packages/virtual-dom && npm test",
     "bundlesize": "bundlesize",
     "update-highlight-css": "postcss packages/injected-code/src/plugins/remote-plugin-highlight/highlight-service/highlight.css --no-map --output packages/injected-code/src/plugins/remote-plugin-highlight/highlight-service/highlight.min.css && node scripts/update-highlight-css",
     "e2e": "cd packages/extension-test && npm run e2e",
@@ -97,19 +97,6 @@
     "dist",
     "e2e"
   ],
-  "jest": {
-    "preset": "ts-jest",
-    "testEnvironment": "node",
-    "testMatch": [
-      "**/packages/**/*.test.ts"
-    ],
-    "testPathIgnorePatterns": [
-      "/node_modules/",
-      "/.vscode-test/",
-      "/dist/",
-      "extension/src/test"
-    ]
-  },
   "prettier": {
     "semi": false,
     "singleQuote": true,
