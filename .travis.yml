@@ -2,7 +2,7 @@ language: node_js
 
 if: tag IS blank
 
-node_js: latest
+node_js: 14
 
 addons:
   apt:
