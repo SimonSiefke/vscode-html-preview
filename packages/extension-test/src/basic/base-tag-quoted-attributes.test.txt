@@ -35,5 +35,4 @@ expectedDom:
   </head>
   <body>
     asdasdasdasdasdasdtext
-  
-</body></html>
+  </body></html>

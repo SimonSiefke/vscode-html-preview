@@ -1,0 +1,17 @@
+previousText:
+&copy;
+
+edits:
+[
+  {
+    rangeOffset: 0
+    rangeLength: 6
+    text: ""
+  }
+]
+
+nextText:
+
+
+expectedDom:
+<html><head></head><body></body></html>

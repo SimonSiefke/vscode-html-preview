@@ -49,8 +49,9 @@ test('delete-002-delete-text-between-text-and-comment', async () => {
   await vscode.commands.executeCommand('htmlPreview.openPreview')
   const browser = await getBrowser()
   const page = await browser.newPage()
-  // await new Promise(resolve => setTimeout(resolve, 10))
-  await page.goto('http://localhost:3000', {waitUntil: 'networkidle2', timeout: 15000})
+  // await new Promise(resolve => setTimeout(resolve, 1000))
+  await page.goto('http://localhost:3000/delete-002-delete-text-between-text-and-comment.html', {waitUntil: 'networkidle2', timeout: 15000})
+  // await new Promise(resolve => setTimeout(resolve, 444000))
 	
 	{
     

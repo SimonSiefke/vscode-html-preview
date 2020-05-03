@@ -212,8 +212,6 @@ export const parse: (
                 status: 'invalid',
                 index: findErrorIndex(i),
               }
-            } else {
-              parent.children.push(createTextNode(token.text, getId(offset, token.text.length)))
             }
             break
           }
@@ -664,7 +662,12 @@ const stringify = nodes => {
 // )
 
 const doc = parse(
-  ``,
+  `<html>
+  <body>
+    <p>this is a paragraph</p>
+  </body>
+</html>
+`,
   (() => {
     let i = 0
     return () => i++

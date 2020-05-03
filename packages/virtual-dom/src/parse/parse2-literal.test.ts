@@ -369,3 +369,14 @@ test('element after element', () => {
 test('empty', () => {
   expectParse(``).toEqual(`<html><head></head><body></body></html>`)
 })
+
+test('whitespace after explicit html', () => {
+  expectParse(`<html>
+  <body>
+    <p>this is a paragraph</p>
+  </body>
+</html>
+`).toEqual(`<html><head></head><body>
+    <p>this is a paragraph</p>
+  </body></html>`)
+})

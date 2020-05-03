@@ -4,6 +4,16 @@ export const HTML_PREVIEW_JS = `const nodeTypeMap = {
   8: 'CommentNode',
 }
 
+const entityParsingNode = document.createElement('div')
+
+/**
+ *  Given a string containing encoded entity references, returns the string with the entities decoded.
+ */
+const parseEntities = text => {
+  entityParsingNode.innerHTML = text
+  return entityParsingNode.textContent
+}
+
 const $nodeMap = Object.create(null)
 
 const hydrate = (node, $node) => {
@@ -97,7 +107,7 @@ const hydrate = (node, $node) => {
             console.warn('failed to update text node')
             return
           }
-          $node.textContent = payload.text
+          $node.textContent = parseEntities(payload.text)
           break
         }
         case 'elementInsert': {
@@ -116,7 +126,7 @@ const hydrate = (node, $node) => {
               }
               break
             case 'TextNode': {
-              $node = document.createTextNode(payload.text)
+              $node = document.createTextNode(parseEntities(payload.text))
               break
             }
             case 'CommentNode': {

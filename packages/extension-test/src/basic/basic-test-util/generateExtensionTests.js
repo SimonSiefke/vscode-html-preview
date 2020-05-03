@@ -36,6 +36,9 @@ const failingTests = [
   'insert-020-insert-text-between-comment-and-text.test.txt',
   'insert-021-insert-text-between-comment-and-element.test.txt',
   'insert-022-insert-text-between-comment-and-comment.test.txt',
+  'issue22.test.txt',
+  'remove-entity.test.txt',
+  'invalid-to-valid-1.test.txt',
   'special-1-delete-html-with-content.test.txt',
   'bug-1.test.txt',
   'bug-13.test.txt',
@@ -182,8 +185,9 @@ test('${testCaseName}', async () => {
   await vscode.commands.executeCommand('htmlPreview.openPreview')
   const browser = await getBrowser()
   const page = await browser.newPage()
-  // await new Promise(resolve => setTimeout(resolve, 10))
-  await page.goto('http://localhost:3000', {waitUntil: 'networkidle2', timeout: 15000})
+  // await new Promise(resolve => setTimeout(resolve, 1000))
+  await page.goto('http://localhost:3000/${testCaseName}.html', {waitUntil: 'networkidle2', timeout: 15000})
+  // await new Promise(resolve => setTimeout(resolve, 444000))
 	${singles.join('\n')}
 	await browser.close()
 	await vscode.commands.executeCommand('workbench.action.closeActiveEditor')

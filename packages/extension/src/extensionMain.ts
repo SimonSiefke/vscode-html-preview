@@ -125,9 +125,10 @@ const createPreview: () => Preview = () => {
       server.removeAllListeners()
       server.close()
     },
-    start: () => {
-      server.listen(3000)
-    },
+    start: () =>
+      new Promise(resolve => {
+        server.listen(3000, () => resolve())
+      }),
     update: message => {
       for (const webSocket of webSocketServer.clients) {
         webSocket.send(message)
@@ -146,18 +147,9 @@ export const activate = (context: vscode.ExtensionContext) => {
   )
   context.subscriptions.push(
     vscode.commands.registerTextEditorCommand('htmlPreview.openPreview', async () => {
-      switch (state) {
-        case 'uninitialized': {
-          preview = createPreview()
-          preview.start()
-          break
-        }
-        case 'starting-server': {
-          break
-        }
-        case 'started-server': {
-          break
-        }
+      if (!preview) {
+        preview = createPreview()
+        await preview.start()
       }
     })
   )
