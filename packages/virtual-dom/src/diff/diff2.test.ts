@@ -1,4 +1,7 @@
 import { diff, ElementNode, State, TextNode } from './diff2'
+import { parse, SuccessResult } from '../parse/parse2'
+import { updateOffsetMap } from '../parse/updateOffsetMap'
+import { generateDom } from '../parse/generateDom'
 
 const expectDiff = (oldState: State, newState: State) => ({
   toEqual: expectedDiff => {
@@ -273,7 +276,14 @@ test('add two tags at once', () => {
   ).toEqual([
     {
       command: 'elementInsert',
-      payload: { id: 2, parentId: 1, index: 0, nodeType: 'ElementNode', tag: 'div' },
+      payload: {
+        id: 2,
+        parentId: 1,
+        index: 0,
+        nodeType: 'ElementNode',
+        tag: 'div',
+        attributes: {},
+      },
     },
     {
       command: 'elementInsert',
@@ -281,7 +291,14 @@ test('add two tags at once', () => {
     },
     {
       command: 'elementInsert',
-      payload: { id: 4, parentId: 1, index: 1, nodeType: 'ElementNode', tag: 'div' },
+      payload: {
+        id: 4,
+        parentId: 1,
+        index: 1,
+        nodeType: 'ElementNode',
+        tag: 'div',
+        attributes: {},
+      },
     },
     {
       command: 'elementInsert',
@@ -402,5 +419,65 @@ test('delete across tags', () => {
     { command: 'elementMove', payload: { id: 7, index: 2, parentId: 0 } },
     { command: 'elementDelete', payload: { id: 2 } },
     { command: 'elementDelete', payload: { id: 3 } },
+  ])
+})
+
+test('expand without body', () => {
+  let offsetMap = Object.create(null)
+
+  let id = 0
+  const p1 = parse(
+    `<h1 class>hello world</h1>
+p`,
+    offset => {
+      const nextId = id++
+      offsetMap[offset] = nextId
+      return nextId
+    }
+  )
+
+  offsetMap = updateOffsetMap(offsetMap, [
+    {
+      rangeOffset: 27,
+      rangeLength: 1,
+      text: '<p></p>',
+    },
+  ])
+  let newOffsetMap = Object.create(null)
+  const p2 = parse(
+    `<h1 class>hello world</h1>
+<p></p>`,
+    (offset, tokenLength) => {
+      let nextId: number
+      nextId: if (offset in offsetMap) {
+        nextId = offsetMap[offset]
+      } else {
+        for (let i = offset + 1; i < offset + tokenLength; i++) {
+          if (i in offsetMap) {
+            nextId = offsetMap[i]
+            break nextId
+          }
+        }
+        nextId = id++
+      }
+      newOffsetMap[offset] = nextId
+      return nextId
+    }
+  )
+  expect(p1.status).toBe('success')
+  expect(p2.status).toBe('success')
+  expect(diff(p1 as SuccessResult, p2 as SuccessResult)).toEqual([
+    { command: 'textReplace', payload: { id: 2, text: '\n' } },
+    {
+      command: 'elementInsert',
+      payload: {
+        nodeType: 'ElementNode',
+        tag: 'p',
+        id: 3,
+        attributes: {},
+        index: 2,
+        parentId: 'body',
+      },
+    },
   ])
 })

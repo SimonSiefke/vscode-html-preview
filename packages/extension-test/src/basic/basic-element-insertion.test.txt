@@ -1,0 +1,17 @@
+previousText:
+<h1><p>ok</p></h1>
+
+edits:
+[
+  {
+    rangeOffset: 4
+    rangeLength: 0
+    text: <p>ok</p>
+  }
+]
+
+nextText:
+<h1><p>ok</p><p>ok</p></h1>
+
+expectedDom:
+<html><head></head><body><h1><p>ok</p><p>ok</p></h1></body></html>

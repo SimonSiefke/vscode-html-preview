@@ -1,0 +1,22 @@
+previousText:
+hello world
+
+edits:
+[
+  {
+    rangeOffset: 0
+    rangeLength: 11
+    text: ""
+  }
+]
+
+nextText:
+
+
+expectedEdits:
+[
+  {
+    command: elementDelete
+    payload: {}
+  }
+]

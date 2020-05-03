@@ -1,0 +1,34 @@
+previousText:
+<h1 class>hello world</h1>
+p
+
+edits:
+[
+  {
+    rangeOffset: 27
+    rangeLength: 1
+    text: <p></p>
+  }
+]
+
+nextText:
+<h1 class>hello world</h1>
+<p></p>
+
+expectedEdits:
+[
+  {
+     command: textReplace
+     payload: {
+       text: "\n"
+     }
+  }
+  {
+    command: elementInsert
+    payload: {
+      nodeType: ElementNode
+      tag: p
+      attributes: {}
+    }
+  }
+]

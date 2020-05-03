@@ -60,7 +60,7 @@ export type SuccessResult = {
   }
 }
 
-type ErrorResult = {
+export type ErrorResult = {
   readonly status: 'invalid'
   readonly index: number
   readonly reason?: string
@@ -188,7 +188,11 @@ export const parse: (
             break
           }
           case 'insideBody': {
-            parent.children.push(createTextNode(token.text, getId(offset, token.text.length)))
+            if (parent === htmlDocument) {
+              body!.children.push(createTextNode(token.text, getId(offset, token.text.length)))
+            } else {
+              parent.children.push(createTextNode(token.text, getId(offset, token.text.length)))
+            }
             break
           }
           case 'afterBody': {
@@ -242,7 +246,6 @@ export const parse: (
         // break
       }
       case TokenType.StartTagName: {
-        state
         switch (state) {
           case 'root': {
             if (token.text === 'html') {
@@ -273,6 +276,7 @@ export const parse: (
               child = createElementNode('body', 'body')
               stack.push(child)
               body = child
+              // parent = body as ElementNode
               state = 'insideBody'
             } else if (isHeadTag(token.text)) {
               // implicit html, implicit head, node
@@ -300,6 +304,7 @@ export const parse: (
               parent.children.push(implicitBody)
               parent = implicitBody
               body = implicitBody
+              parent = body
               child = createElementNode(token.text, getId(offset, token.text.length))
               stack.push(child)
               state = 'insideBody'
@@ -490,6 +495,9 @@ export const parse: (
               } else {
                 stack.pop()
                 parent = stack[stack.length - 1]
+                if (parent === htmlDocument) {
+                  parent = body as ElementNode
+                }
               }
             } else {
               return {
@@ -550,6 +558,7 @@ export const parse: (
         break
       }
       case TokenType.StartTagClosingBracket: {
+        parent === htmlDocument //?
         if (isSelfClosingTag(child.tag)) {
           stack.pop()
           parent.children.push(child)
@@ -676,9 +685,8 @@ const stringify = nodes => {
 // )
 
 const doc = parse(
-  `<html>
-<head></head><body></body>
-</html>`,
+  `<h1 class>hello world</h1>
+<p></p>`,
   (() => {
     let i = 0
     return () => i++

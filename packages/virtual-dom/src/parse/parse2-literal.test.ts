@@ -341,3 +341,27 @@ test('whitespace nodes inside html', () => {
     `<html><head></head><body></body></html>`
   )
 })
+
+test('only tag and whitespace', () => {
+  expectParse(`<h1 class></h1>
+`).toEqual(`<html><head></head><body><h1 class></h1>
+</body></html>`)
+})
+
+test('whitespace inside explicit body', () => {
+  expectParse(`<body><h1 class></h1>
+</body>`).toEqual(`<html><head></head><body><h1 class></h1>
+</body></html>`)
+})
+
+test('text after element', () => {
+  expectParse(`<h1 class>hello world</h1>
+p`).toEqual(`<html><head></head><body><h1 class>hello world</h1>
+p</body></html>`)
+})
+
+test('element after element', () => {
+  expectParse(`<h1 class>hello world</h1>
+<p></p>`).toEqual(`<html><head></head><body><h1 class>hello world</h1>
+<p></p></body></html>`)
+})

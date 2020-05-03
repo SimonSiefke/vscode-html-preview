@@ -1,0 +1,17 @@
+previousText:
+<h1 >hello world</h1>
+
+edits:
+[
+  {
+    rangeOffset: 4
+    rangeLength: 0
+    text: 'class="big"'
+  }
+]
+
+nextText:
+<h1 class="big">hello world</h1>
+
+expectedDom:
+<html><head></head><body><h1 class="big">hello world</h1></body></html>

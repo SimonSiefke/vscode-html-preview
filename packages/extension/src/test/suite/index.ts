@@ -130,9 +130,9 @@ export function run(): Promise<void> {
   const mocha = new Mocha({
     ui: 'tdd',
     timeout: 1000000,
+    color: true,
+    bail: true,
   })
-  mocha.useColors(true)
-  mocha.bail(true)
 
   const testsRoot = path.resolve(__dirname, '..')
 

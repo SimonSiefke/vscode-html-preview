@@ -1,0 +1,30 @@
+previousText:
+<form>
+  First name:<br>
+  <input type="text" name="firstName"><br>
+</form>
+
+edits:
+[
+  {
+    rangeOffset: 68
+    rangeLength: 0
+    text: '  Last name:<br>\n  <input type="text" name="lastName"><br>\n'
+  }
+]
+
+nextText:
+<form>
+  First name:<br>
+  <input type="text" name="firstName"><br>
+  Last name:<br>
+  <input type="text" name="lastName"><br>
+</form>
+
+expectedDom:
+<html><head></head><body><form>
+  First name:<br>
+  <input type="text" name="firstName"><br>
+  Last name:<br>
+  <input type="text" name="lastName"><br>
+</form></body></html>

@@ -385,17 +385,24 @@ export const diff: (oldState: State, newState: State) => readonly Operation[] = 
 let offsetMap = Object.create(null)
 
 let id = 0
-const p1 = parse(`<h1>hello world</h1>`, offset => {
-  const nextId = id++
-  offsetMap[offset] = nextId
-  return nextId
-})
+const p1 = parse(
+  `<p>
+</p>
+<p>
+  <em>hello world</em>
+</p>`,
+  offset => {
+    const nextId = id++
+    offsetMap[offset] = nextId
+    return nextId
+  }
+)
 
 offsetMap = updateOffsetMap(offsetMap, [
   {
-    rangeOffset: 15,
-    rangeLength: 0,
-    text: '!',
+    rangeOffset: 4,
+    rangeLength: 8,
+    text: '',
   },
 ])
 
@@ -403,22 +410,27 @@ offsetMap
 
 let newOffsetMap = Object.create(null)
 
-const p2 = parse(`<h1>hello world!</h1>`, (offset, tokenLength) => {
-  let nextId: number
-  nextId: if (offset in offsetMap) {
-    nextId = offsetMap[offset]
-  } else {
-    for (let i = offset + 1; i < offset + tokenLength; i++) {
-      if (i in offsetMap) {
-        nextId = offsetMap[i]
-        break nextId
+const p2 = parse(
+  `<p>
+  <em>hello world</em>
+</p>`,
+  (offset, tokenLength) => {
+    let nextId: number
+    nextId: if (offset in offsetMap) {
+      nextId = offsetMap[offset]
+    } else {
+      for (let i = offset + 1; i < offset + tokenLength; i++) {
+        if (i in offsetMap) {
+          nextId = offsetMap[i]
+          break nextId
+        }
       }
+      nextId = id++
     }
-    nextId = id++
+    newOffsetMap[offset] = nextId
+    return nextId
   }
-  newOffsetMap[offset] = nextId
-  return nextId
-})
+)
 if (p1.status === 'success' && p2.status === 'success') {
   JSON.stringify(p1.nodes) //?
   JSON.stringify(p2.nodes) //?

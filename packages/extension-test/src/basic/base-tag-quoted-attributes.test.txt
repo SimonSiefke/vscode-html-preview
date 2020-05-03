@@ -1,0 +1,39 @@
+previousText:
+<!DOCTYPE html>
+<html>
+  <head>
+    <base href="http://www.example.com/" target="_self" />
+  </head>
+  <body>
+    asdasdasdasdasdasd
+  </body>
+</html>
+
+edits:
+[
+  {
+    rangeOffset: 132
+    rangeLength: 0
+    text: text
+  }
+]
+
+nextText:
+<!DOCTYPE html>
+<html>
+  <head>
+    <base href="http://www.example.com/" target="_self" />
+  </head>
+  <body>
+    asdasdasdasdasdasdtext
+  </body>
+</html>
+
+expectedDom:
+<!DOCTYPE html><html><head>
+    <base href="http://www.example.com/" target="_self">
+  </head>
+  <body>
+    asdasdasdasdasdasdtext
+  
+</body></html>

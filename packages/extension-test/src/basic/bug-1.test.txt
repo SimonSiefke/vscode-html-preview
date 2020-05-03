@@ -1,0 +1,28 @@
+previousText:
+<!DOCTYPE html>
+<head>
+</head>
+hello world
+h1
+
+edits:
+[
+  {
+    rangeOffset: 43
+    rangeLength: 2
+    text: <h1></h1>
+  }
+]
+
+nextText:
+<!DOCTYPE html>
+<head>
+</head>
+hello world
+<h1></h1>
+
+expectedDom:
+<!DOCTYPE html><html><head>
+</head>
+<body>
+hello world<h1></h1></body></html>

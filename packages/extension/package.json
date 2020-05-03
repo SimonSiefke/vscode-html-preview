@@ -112,10 +112,11 @@
     "dev": "cd ../../ && npm run dev",
     "e2e": "rm -rf dist tsconfig.tsbuildinfo && tsc -b && cross-env NODE_ENV=test node ./dist/test/runTest.js"
   },
-  "main": "dist/extensionMainNew.js",
+  "main": "dist/extensionMain.js",
   "dependencies": {
     "html-preview-service": "^0.0.0-development",
     "html-preview-service-node": "^0.0.0-development",
+    "send": "^0.17.1",
     "virtual-dom": "^0.0.0-development",
     "vsls": "^1.0.1830",
     "ws": "^7.2.5"
@@ -124,6 +125,7 @@
     "@types/fs-extra": "^8.1.0",
     "@types/jest": "^25.2.0",
     "@types/mocha": "^7.0.2",
+    "@types/send": "^0.14.5",
     "@types/vscode": "^1.43.0",
     "@types/ws": "^7.2.4",
     "cross-env": "^7.0.2",

@@ -1,0 +1,17 @@
+previousText:
+abc
+
+edits:
+[
+  {
+    rangeOffset: 1
+    rangeLength: 1
+    text: ""
+  }
+]
+
+nextText:
+ac
+
+expectedDom:
+<html><head></head><body>ac</body></html>
