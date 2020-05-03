@@ -1,6 +1,6 @@
 previousText:
 <body>
-  <b>
+  <b></b>
 </body>
 
 edits:
@@ -11,8 +11,10 @@ false
 
 nextText:
 <body>
-  <b>
+  <b></b>
 </body>
 
 expectedDom:
-<html><head></head><body><b></body></html>
+<html><head></head><body>
+  <b></b>
+</body></html>

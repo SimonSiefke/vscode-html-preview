@@ -1,9 +1,0 @@
-path:
-.vscode/settings.json
-
-content:
-{
-  "":""
-}
-
-path: 

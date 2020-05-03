@@ -7,13 +7,7 @@ const headless = true
 
 // TODO
 const failingTests = [
-  'base-tag.test.txt',
   'replace-element-with-text.test.txt',
-  'delete-first-element-node.test.txt',
-  'delete-element-before-element.test.txt',
-  'delete-text-before-text.test.txt',
-  'delete-text-after-element.test.txt',
-  'delete-element-before-text.test.txt',
   'delete-020-delete-text-between-comment-and-text.test.txt',
   'delete-021-delete-text-between-comment-and-element.test.txt',
   'delete-100-delete-element-between-text-and-text.test.txt',
@@ -57,11 +51,8 @@ const failingTests = [
   'whitespace-before-implicit-head.test.txt',
   'insert-doctype.test.txt',
   'top-100-implicit-html-no-head-no-body.test.txt',
-  'top-101-implicit-html-no-head-implicit-body.test.txt',
-  'top-102-implicit-html-no-head-explicit-body.test.txt',
-  'top-110-implicit-html-implicit-head-no-body.test.txt',
-  'top-111-implicit-html-implicit-head-implicit-body.test.txt',
-  'top-112-implicit-html-implicit-head-explicit-body.test.txt',
+  'top-111-implicit-html-implicit-head-implicit-body.test.txt', // TODO why browser inserts text node
+  'top-112-implicit-html-implicit-head-explicit-body.test.txt', // TODO why browser inserts text node
   'top-120-implicit-html-explicit-head-no-body.test.txt',
   'top-121-implicit-html-explicit-head-implicit-body.test.txt',
   'top-122-implicit-html-explicit-head-explicit-body.test.txt',
@@ -73,7 +64,7 @@ const failingTests = [
   'top-212-explicit-html-implicit-head-explicit-body.test.txt',
   'top-220-explicit-html-explicit-head-no-body.test.txt',
   'top-221-explicit-html-explicit-head-implicit-body.test.txt',
-  'top-222-explicit-html-explicit-head-explicit-body.test.txt',
+  // 'top-222-explicit-html-explicit-head-explicit-body.test.txt',
 ]
 
 const only = []

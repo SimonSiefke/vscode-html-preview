@@ -30,4 +30,9 @@ nextText:
 </html>
 
 expectedDom:
-<html><head></head><body><h1 class="small">hello world</h1></body></html>
+<!DOCTYPE html><html><head>
+    <base href="http://www.example.com/" target="_self">
+  </head>
+  <body>
+    asdasdasdasdasdasdtext
+  </body></html>

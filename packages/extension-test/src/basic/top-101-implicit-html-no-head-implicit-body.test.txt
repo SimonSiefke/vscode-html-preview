@@ -1,5 +1,5 @@
 previousText:
-<b>
+<b></b>
 
 edits:
 []
@@ -8,7 +8,7 @@ waitForEdits:
 false
 
 nextText:
-<b>
+<b></b>
 
 expectedDom:
-<html><head></head><body><b></body></html>
+<html><head></head><body><b></b></body></html>
