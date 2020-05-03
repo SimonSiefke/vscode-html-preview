@@ -4,15 +4,12 @@
     "outDir": "dist",
     "rootDir": "src",
     "strictNullChecks": false,
-    "types": ["node", "jest"]
+    "types": ["node"]
   },
   "include": ["src"],
   "references": [
     {
-      "path": "../html-preview-service"
-    },
-    {
-      "path": "../html-preview-service-node"
+      "path": "../virtual-dom"
     }
   ]
 }
