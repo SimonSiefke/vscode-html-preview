@@ -5,24 +5,13 @@ import { isSelfClosingTag } from './utils'
 const generateNode = (node: ElementNode | TextNode | CommentNode | DoctypeNode) => {
   switch (node.nodeType) {
     case 'ElementNode': {
-      if (node.tag === 'body') {
-        // @ts-ignore
-        node.children.push({
-          id: 'html-preview',
-          nodeType: 'ElementNode',
-          tag: 'script',
-          attributes: {
-            type: 'module',
-            src: 'http://localhost:3000/html-preview.js',
-          },
-          children: [],
-        })
-      }
       return `<${node.tag}${Object.entries(node.attributes)
         .map(([key, value]) => (value === null ? ` ${key}` : ` ${key}="${value}"`))
         .join('')} data-id="${node.id}">${generateNodes(node.children)}${
-        isSelfClosingTag(node.tag) ? '' : `</${node.tag}>`
-      }`
+        node.tag === 'body'
+          ? '<script type="module" src="http://localhost:3000/html-preview.js" data-id="html-preview"></script>'
+          : ''
+      }${isSelfClosingTag(node.tag) ? '' : `</${node.tag}>`}`
     }
     case 'TextNode':
       return node.text
