@@ -28,6 +28,7 @@ const fixtures = [
   fs.readFileSync(path.join(__dirname, 'fixtures/syntax.txt')).toString(),
   fs.readFileSync(path.join(__dirname, 'fixtures/deno.txt')).toString(),
   fs.readFileSync(path.join(__dirname, 'fixtures/postcss.txt')).toString(),
+  // fs.readFileSync(path.join(__dirname, 'fixtures/whatwg-example.txt')).toString(),
   // fs.readFileSync(path.join(__dirname, 'fixtures/dev.txt')).toString(), // TODO
   // fs.readFileSync(path.join(__dirname, 'fixtures/json.txt')).toString(), // TODO
   // fs.readFileSync(path.join(__dirname, 'fixtures/whatwg.txt')).toString(), // TODO

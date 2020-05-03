@@ -97,7 +97,10 @@ const createPreview: () => Preview = () => {
         offsetMap[offset] = nextId
         return nextId
       })
-      // @ts-ignore TODO check if valid
+      if (result.status === 'invalid') {
+        response.writeHead(400)
+        return response.end()
+      }
       const generatedDom = generateDom(result)
       cachedValues[parsedUrl.pathname] = {
         id,

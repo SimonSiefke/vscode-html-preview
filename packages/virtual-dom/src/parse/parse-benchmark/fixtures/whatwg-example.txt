@@ -1,0 +1,1727 @@
+<!-- This is a collection of HTML used in the HTML (5) Standard: https://html.spec.whatwg.org/ -->
+<!DOCTYPE html>
+<html lang=en>
+
+<head>
+  <title>Test document</title>
+  <base href=http://www.example.com/news/index.html target=_self />
+  <!-- target="_blank|_self|_parent|_top|framename -->
+  <meta charset=utf-8>
+  <meta name=viewport content="width=device-width, initial-scale=1.0">
+  <meta name=application-name>
+  <meta name=author>
+  <meta name=description>
+  <meta name=generator>
+  <meta name=keywords>
+  <meta name=referrer>
+  <meta name=theme-color>
+  <meta name=author>
+  <meta name=author>
+  <meta name=author>
+  <link rel=tag>
+  <!-- <meta http-equiv=content-security-policy content="default-src 'self'; img-src https://*; child-src 'none';"> -->
+  <meta http-equiv="Content-Security-Policy" content="script-src 'self'; object-src 'none'">
+
+  <script>
+    function update(online) {
+      document.getElementById('status').textContent =
+        online ? 'Online' : 'Offline';
+    }
+  </script>
+
+</head>
+
+<body ononline="update(true)" onoffline="update(false)" onload="update(navigator.onLine)">
+  <p>You are: <span id="status">(Unknown)</span></p>
+
+  <header>
+    <h1 itemprop="headline">The Very First Rule of Life</h1>
+    <p><time itemprop="datePublished" datetime="2009-10-09">3 days ago</time></p>
+    <link itemprop="url" href="?comments=0">
+  </header>
+
+  <section>
+    <h1>Comments</h1>
+    <article itemprop="comment" itemscope itemtype="http://schema.org/UserComments" id="c1">
+      <link itemprop="url" href="#c1">
+      <footer>
+        <p>Posted by: <span itemprop="creator" itemscope itemtype="http://schema.org/Person">
+            <span itemprop="name">George Washington</span>
+          </span></p>
+        <p><time itemprop="commentTime" datetime="2009-10-10">15 minutes ago</time></p>
+      </footer>
+      <p>Yeah! Especially when talking about your lobbyist friends!</p>
+    </article>
+    <article itemprop="comment" itemscope itemtype="http://schema.org/UserComments" id="c2">
+      <link itemprop="url" href="#c2">
+      <footer>
+        <p>Posted by: <span itemprop="creator" itemscope itemtype="http://schema.org/Person">
+            <span itemprop="name">George Hammond</span>
+          </span></p>
+        <p><time itemprop="commentTime" datetime="2009-10-10">5 minutes ago</time></p>
+      </footer>
+      <p>Hey, you have the same first name as me.</p>
+    </article>
+  </section>
+
+  <p>Visit the <a href=archives.html>archives</a></p>
+  <p>Visit the <a href=../archives.html target=_blank>archives</a></p>
+  <p>Visit the <a href=../archives.html target=_self>archives</a></p>
+  <p>Visit the <a href=../archives.html target=_parent>archives</a></p>
+  <p>Visit the <a href=../archives.html target=_top>archives</a></p>
+
+  <p>Using CSS to change the font color is easy.</p>
+  <pre>
+body {
+color: red;
+}
+</pre>
+
+  <pre><samp>You are in an open field west of a big white house with a boarded
+front door.
+There is a small mailbox here.
+
+> </samp><kbd>open mailbox</kbd>
+
+<samp>Opening the mailbox reveals:
+A leaflet.
+
+></samp>
+</pre>
+
+  <figure>
+    <blockquote>
+      <p>The truth may be puzzling. It may take some work to grapple with.
+        It may be counterintuitive. It may contradict deeply held
+        prejudices. It may not be consonant with what we desperately want to
+        be true. But our preferences do not determine what's true. We have a
+        method, and that method helps us to reach not absolute truth, only
+        asymptotic approaches to the truth — never there, just closer
+        and closer, always finding vast new oceans of undiscovered
+        possibilities. Cleverly designed experiments are the key.</p>
+    </blockquote>
+    <figcaption>Carl Sagan, in "<cite>Wonder and Skepticism</cite>", from
+      the <cite>Skeptical Inquirer</cite> Volume 19, Issue 1 (January-February
+      1995)</figcaption>
+  </figure>
+
+  <article>
+    <h1><a href="https://bacon.example.com/?blog=109431">Bacon on a crowbar</a></h1>
+    <article>
+      <header><strong>t3yw</strong> 12 points 1 hour ago</header>
+      <p>I bet a narwhal would love that.</p>
+      <footer><a href="?pid=29578">permalink</a></footer>
+      <article>
+        <header><strong>greg</strong> 8 points 1 hour ago</header>
+        <blockquote>
+          <p>I bet a narwhal would love that.</p>
+        </blockquote>
+        <p>Dude narwhals don't eat bacon.</p>
+        <footer><a href="?pid=29579">permalink</a></footer>
+        <article>
+          <header><strong>t3yw</strong> 15 points 1 hour ago</header>
+          <blockquote>
+            <blockquote>
+              <p>I bet a narwhal would love that.</p>
+            </blockquote>
+            <p>Dude narwhals don't eat bacon.</p>
+          </blockquote>
+          <p>Next thing you'll be saying they don't get capes and wizard
+            hats either!</p>
+          <footer><a href="?pid=29580">permalink</a></footer>
+          <article>
+            <article>
+              <header><strong>boing</strong> -5 points 1 hour ago</header>
+              <p>narwhals are worse than ceiling cat</p>
+              <footer><a href="?pid=29581">permalink</a></footer>
+            </article>
+          </article>
+        </article>
+      </article>
+      <article>
+        <header><strong>fred</strong> 1 points 23 minutes ago</header>
+        <blockquote>
+          <p>I bet a narwhal would love that.</p>
+        </blockquote>
+        <p>I bet they'd love to peel a banana too.</p>
+        <footer><a href="?pid=29582">permalink</a></footer>
+      </article>
+    </article>
+  </article>
+
+
+  <p>He began his list of "lessons" with the following:</p>
+  <blockquote>One should never assume that his side of
+    the issue will be recognized, let alone that it will
+    be conceded to have merits.</blockquote>
+  <p>He continued with a number of similar points, ending with:</p>
+  <blockquote>Finally, one should be prepared for the threat
+    of breakdown in negotiations at any given moment and not
+    be cowed by the possibility.</blockquote>
+  <p>We shall now discuss these points...</p>
+
+  <menu>
+    <li>option1</li>
+    <li>option2</li>
+    <li>option3</li>
+  </menu>
+
+  <figure>
+    <figcaption>The top 10 movies of all time</figcaption>
+    <ol>
+      <li value="10"><cite>Josie and the Pussycats</cite>, 2001</li>
+      <li value="9"><cite lang="sh">Црна мачка, бели мачор</cite>, 1998</li>
+      <li value="8"><cite>A Bug's Life</cite>, 1998</li>
+      <li value="7"><cite>Toy Story</cite>, 1995</li>
+      <li value="6"><cite>Monsters, Inc</cite>, 2001</li>
+      <li value="5"><cite>Cars</cite>, 2006</li>
+      <li value="4"><cite>Toy Story 2</cite>, 1999</li>
+      <li value="3"><cite>Finding Nemo</cite>, 2003</li>
+      <li value="2"><cite>The Incredibles</cite>, 2004</li>
+      <li value="1"><cite>Ratatouille</cite>, 2007</li>
+    </ol>
+  </figure>
+
+  <dl>
+    <dt> Authors
+    <dd> John
+    <dd> Luke
+    <dt> Editor
+    <dd> Frank
+  </dl>
+
+  <dl>
+    <dt><dfn>Apartment</dfn>, n.</dt>
+    <dd>An execution context grouping one or more threads with one or
+      more COM objects.</dd>
+    <dt><dfn>Flat</dfn>, n.</dt>
+    <dd>A deflated tire.</dd>
+    <dt><dfn>Home</dfn>, n.</dt>
+    <dd>The user's login directory.</dd>
+  </dl>
+
+  <p>In <a href="#l4">listing 4</a> we see the primary core interface
+    API declaration.</p>
+  <figure id="l4">
+    <figcaption>Listing 4. The primary core interface API declaration.</figcaption>
+    <pre><code>interface PrimaryCore {
+    boolean verifyDataLine();
+    void sendData(in sequence&lt;byte> data);
+    void initSelfDestruct();
+}</code></pre>
+  </figure>
+  <p>The API is designed to use UTF-8.</p>
+
+  <p><em>Cats are <em>cute</em> animals!</em></p>
+
+  <dl>
+    <dt>Single room
+    <dd>199 € <small>breakfast included, VAT not included</small>
+    <dt>Double room
+    <dd>239 € <small>breakfast included, VAT not included</small>
+  </dl>
+
+  <p><strong><small>Continued use of this service will result in a kiss.</small></strong></p>
+
+  <p>In <cite>Example One</cite>, he writes <q>The man
+      said <q>Things that are impossible just take longer</q>. I
+      disagreed with him</q>. Well, I disagree even more!</p>
+
+  <p>The <dfn id=gdo><abbr title="Garage Door Opener">GDO</abbr></dfn>
+    is a device that allows off-world teams to open the iris.</p>
+  <!-- ... later in the document: -->
+  <p>Teal'c activated his <a href=#gdo><abbr title="Garage Door Opener">GDO</abbr></a>
+    and so Hammond ordered the iris to be opened.</p>
+
+  <p>The <dfn id=whatwg><abbr title="Web Hypertext Application Technology Working Group">WHATWG</abbr></dfn>
+    is a loose unofficial collaboration of Web browser manufacturers and
+    interested parties who wish to develop new technologies designed to
+    allow authors to write and deploy Applications over the World Wide
+    Web.</p>
+  <p>The <dfn id=whatwg>Web Hypertext Application Technology
+      Working Group</dfn> (<abbr title="Web Hypertext Application Technology Working Group">WHATWG</abbr>)
+    is a loose unofficial collaboration of Web browser manufacturers and
+    interested parties who wish to develop new technologies designed to
+    allow authors to write and deploy Applications over the World Wide
+    Web.</p>
+
+  <ruby>Text goes here<rt>annotation goes here</ruby>
+  <hr>
+
+  <ruby>君<rt>くん</ruby><ruby>子<rt>し</ruby>は<ruby>和<rt>わ</ruby>して<ruby>同<rt>どう</ruby>ぜず。
+  <hr>
+
+  <ruby>B
+    <rt>a
+    <rt>a
+  </ruby>
+  <ruby>A
+    <rt>a
+    <rt>a
+  </ruby>
+  <ruby>S
+    <rt>a
+    <rt>a
+  </ruby>
+  <ruby>E
+    <rt>
+    <rt>a
+  </ruby>
+  <hr>
+
+  <ruby>
+    ♥ <rt> Heart
+    <rt lang=fr> Cœur </rt>
+    ☘ <rt> Shamrock
+    <rt lang=fr> Trèfle </rt>
+    ✶ <rt> Star
+    <rt lang=fr> Étoile </rt>
+  </ruby>
+  <hr>
+  <ruby>
+    <ruby>HT<rt>Hypertext</rt>M<rt>Markup</rt>L<rt>Language</rt></ruby>
+    <rt>An abstract language for describing documents and applications
+  </ruby>
+  <hr>
+  <ruby>
+    <ruby>Hypertext<rt>HT</rt>Markup<rt>M</rt>Language<rt>L</rt></ruby>
+    <rt>An abstract language for describing documents and applications</rt>
+  </ruby>
+  <hr>
+  <ruby>漢<rp>（</rp>
+    <rt>かん</rt>
+    <rp>）</rp>字<rp>（</rp>
+    <rt>じ</rt>
+    <rp>）</rp>
+  </ruby>
+  <hr>
+  <ruby>
+    ♥<rp>: </rp>
+    <rt>Heart</rt>
+    <rp>, </rp>
+    <rt lang=fr>Cœur</rt>
+    <rp>.</rp>
+    ☘<rp>: </rp>
+    <rt>Shamrock</rt>
+    <rp>, </rp>
+    <rt lang=fr>Trèfle</rt>
+    <rp>.</rp>
+    ✶<rp>: </rp>
+    <rt>Star</rt>
+    <rp>, </rp>
+    <rt lang=fr>Étoile</rt>
+    <rp>.</rp>
+  </ruby>
+  <hr>
+  <script src="sortable.js"></script>
+  <table class="sortable">
+    <thead>
+      <tr>
+        <th> Game
+        <th> Corporations
+        <th> Map Size
+    <tbody>
+      <tr>
+        <td> 1830
+        <td> <data value="8">Eight</data>
+        <td> <data value="93">19+74 hexes (93 total)</data>
+      <tr>
+        <td> 1856
+        <td> <data value="11">Eleven</data>
+        <td> <data value="99">12+87 hexes (99 total)</data>
+      <tr>
+        <td> 1870
+        <td> <data value="10">Ten</data>
+        <td> <data value="149">4+145 hexes (149 total)</data>
+  </table>
+
+  <pre><code class="language-pascal">var i: Integer;
+begin
+    i := 1;
+end.</code></pre>
+
+  <p>If there are <var>n</var> pipes leading to the ice
+    cream factory then I expect at <em>least</em> <var>n</var>
+    flavors of ice cream to be available for purchase!
+  </p>
+
+  <figure>
+    <math>
+      <mi>a</mi>
+      <mo>=</mo>
+      <msqrt>
+        <msup>
+          <mi>b</mi>
+          <mn>2</mn>
+        </msup>
+        <mi>+</mi>
+        <msup>
+          <mi>c</mi>
+          <mn>2</mn>
+        </msup>
+      </msqrt>
+    </math>
+    <figcaption>
+      Using Pythagoras' theorem to solve for the hypotenuse <var>a</var> of
+      a triangle with sides <var>b</var> and <var>c</var>
+    </figcaption>
+  </figure>
+
+  <p>Then she turned to the blackboard and picked up the chalk. After a few moment's
+    thought, she wrote <var>E</var> = <var>m</var> <var>c</var><sup>2</sup>. The teacher
+    looked pleased.</p>
+
+  <pre><samp><span class="prompt">jdoe@mowmow:~$</span> <kbd>ssh demo.example.com</kbd>
+            Last login: Tue Apr 12 09:10:17 2005 from mowmow.example.com on pts/1
+            Linux demo 2.6.10-grsec+gg3+e+fhs6b+nfs+gr0501+++p3+c4a+gr2b-reslog-v6.189 #1 SMP Tue Feb 1 11:22:36 PST 2005 i686 unknown
+            
+            <span class="prompt">jdoe@demo:~$</span> <span class="cursor">_</span></samp></pre>
+
+  <pre><code class="language-javascript">console.log(2.3 + 2.4)</code>
+<samp>4.699999999999999</samp></pre>
+
+  <p>To make George eat an apple, press <kbd><kbd>Shift</kbd>+<kbd>F3</kbd></kbd></p>
+
+  <p>To make George eat an apple, select
+    <kbd><kbd><samp>File</samp></kbd>|<kbd><samp>Eat Apple...</samp></kbd></kbd>
+  </p>
+
+  <p>To make George eat an apple, select <kbd>File | Eat Apple...</kbd></p>
+
+  <p>Their names are
+    <span lang="fr"><abbr>M<sup>lle</sup></abbr> Gwendoline</span> and
+    <span lang="fr"><abbr>M<sup>me</sup></abbr> Denise</span>.</p>
+
+  <p>The coordinate of the <var>i</var>th point is
+    (<var>x<sub><var>i</var></sub></var>, <var>y<sub><var>i</var></sub></var>).
+    For example, the 10th point has coordinate
+    (<var>x<sub>10</sub></var>, <var>y<sub>10</sub></var>).</p>
+
+  f(<var>x</var>, <var>n</var>) = log<sub>4</sub><var>x</var><sup><var>n</var></sup>
+
+  <p>The <u>see</u> is full of fish.</p>
+
+  <p lang="en-US">Consider the following quote:</p>
+  <blockquote lang="en-GB">
+    <p>Look around and you will find, no-one's really
+      <mark>colour</mark> blind.</p>
+  </blockquote>
+  <p lang="en-US">As we can tell from the <em>spelling</em> of the word,
+    the person writing this quote is clearly not American.</p>
+
+  <p>The highlighted part below is where the error lies:</p>
+  <pre><code>var i: Integer;
+begin
+   i := <mark>1.1</mark>;
+end.</code></pre>
+
+  <p>The highlighted part below is where the error lies:</p>
+  <pre><code><span class=keyword>var</span> <span class=ident>i</span>: <span class=type>Integer</span>;
+<span class=keyword>begin</span>
+   <span class=ident>i</span> := <span class=literal><mark>1.1</mark></span>;
+<span class=keyword>end</span>.</code></pre>
+
+  <style>
+    blockquote mark,
+    q mark {
+      font: inherit;
+      font-style: italic;
+      text-decoration: none;
+      background: transparent;
+      color: inherit;
+    }
+
+    .bubble em {
+      font: inherit;
+      font-size: larger;
+      text-decoration: underline;
+    }
+
+  </style>
+  <article>
+    <h1>She knew</h1>
+    <p>Did you notice the subtle joke in the joke on panel 4?</p>
+    <blockquote>
+      <p class="bubble">I didn't <em>want</em> to believe. <mark>Of course
+          on some level I realized it was a known-plaintext attack.</mark> But I
+        couldn't admit it until I saw for myself.</p>
+    </blockquote>
+    <p>(Emphasis mine.) I thought that was great. It's so pedantic, yet it
+      explains everything neatly.</p>
+  </article>
+
+  <pre><code class="lang-c"><span class="keyword">for</span> (<span class="ident">j</span> = 0; <span class="ident">j</span> &lt; 256; <span class="ident">j</span>++) {
+    <span class="ident">i_t3</span> = (<span class="ident">i_t3</span> & 0x1ffff) | (<span class="ident">j</span> &lt;&lt; 17);
+    <span class="ident">i_t6</span> = (((((((<span class="ident">i_t3</span> >> 3) ^ <span class="ident">i_t3</span>) >> 1) ^ <span class="ident">i_t3</span>) >> 8) ^ <span class="ident">i_t3</span>) >> 5) & 0xff;
+    <span class="keyword">if</span> (<span class="ident">i_t6</span> == <span class="ident">i_t1</span>)
+        <span class="keyword">break</span>;
+}</code></pre>
+
+  <p>So then she pointed at the tiger and screamed
+    "there<wbr>is<wbr>no<wbr>way<wbr>you<wbr>are<wbr>ever<wbr>going<wbr>to<wbr>catch<wbr>me"!</p>
+
+    <h1>Example of permalinks</h1>
+    <div id="a">
+      <h2>First example</h2>
+      <p><a href="a.html" rel="bookmark">This permalink applies to
+          only the content from the first H2 to the second H2</a>. The DIV isn't
+        exactly that section, but it roughly corresponds to it.</p>
+    </div>
+    <h2>Second example</h2>
+    <article id="b">
+      <p><a href="b.html" rel="bookmark">This permalink applies to
+          the outer ARTICLE element</a> (which could be, e.g., a blog post).</p>
+      <article id="c">
+        <p><a href="c.html" rel="bookmark">This permalink applies to
+            the inner ARTICLE element</a> (which could be, e.g., a blog comment).</p>
+      </article>
+    </article>
+
+    <aside>
+      <ins>
+        <p> I like fruit. </p>
+      </ins>
+    </aside>
+
+    <aside>
+      <ins>
+        Apples are <em>tasty</em>.
+      </ins>
+      <ins>
+        So are pears.
+      </ins>
+    </aside>
+
+    <h1>To Do</h1>
+    <ul>
+      <li>Empty the dishwasher</li>
+      <li><del datetime="2009-10-11T01:25-07:00">Watch Walter Lewin's lectures</del></li>
+      <li><del datetime="2009-10-10T23:38-07:00">Download more tracks</del></li>
+      <li>Buy a printer</li>
+    </ul>
+
+    <h1>List of <del>fruits</del><ins>colors</ins></h1>
+    <ul>
+      <li><del>Lime</del><ins>Green</ins></li>
+      <li><del>Apple</del></li>
+      <li>Orange</li>
+      <li><del>Pear</del></li>
+      <li><ins>Teal</ins></li>
+      <li><del>Lemon</del><ins>Yellow</ins></li>
+      <li>Olive</li>
+      <li><ins>Purple</ins></li>
+    </ul>
+    <hr>
+    <table>
+      <thead>
+        <tr>
+          <th> Game name
+          <th> Game publisher
+          <th> Verdict
+      <tbody>
+        <tr>
+          <td> Diablo 2
+          <td> Blizzard
+          <td> 8/10
+        <tr>
+          <td> Portal
+          <td> Valve
+          <td> 10/10
+        <tr>
+          <td> <ins>Portal 2</ins>
+          <td> <ins>Valve</ins>
+          <td> <ins>10/10</ins>
+    </table>
+    <hr>
+    <table>
+      <thead>
+        <tr>
+          <th> Game name
+          <th> Game publisher
+          <th> <del cite="/edits/r192" datetime="2011-05-02 14:23Z">Verdict</del>
+      <tbody>
+        <tr>
+          <td> Diablo 2
+          <td> Blizzard
+          <td> <del cite="/edits/r192" datetime="2011-05-02 14:23Z">8/10</del>
+        <tr>
+          <td> Portal
+          <td> Valve
+          <td> <del cite="/edits/r192" datetime="2011-05-02 14:23Z">10/10</del>
+        <tr>
+          <td> Portal 2
+          <td> Valve
+          <td> <del cite="/edits/r192" datetime="2011-05-02 14:23Z">10/10</del>
+    </table>
+
+    <source src='video.mp4' type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"'>
+    <source src='video.mp4' type='video/mp4; codecs="avc1.58A01E, mp4a.40.2"'>
+    <source src='video.mp4' type='video/mp4; codecs="avc1.4D401E, mp4a.40.2"'>
+    <source src='video.mp4' type='video/mp4; codecs="avc1.64001E, mp4a.40.2"'>
+    <source src='video.mp4' type='video/mp4; codecs="mp4v.20.8, mp4a.40.2"'>
+    <source src='video.mp4' type='video/mp4; codecs="mp4v.20.240, mp4a.40.2"'>
+    <source src='video.3gp' type='video/3gpp; codecs="mp4v.20.8, samr"'>
+    <source src='video.ogv' type='video/ogg; codecs="theora, vorbis"'>
+    <source src='video.ogv' type='video/ogg; codecs="theora, speex"'>
+    <source src='audio.ogg' type='audio/ogg; codecs=vorbis'>
+    <source src='audio.spx' type='audio/ogg; codecs=speex'>
+    <source src='audio.oga' type='audio/ogg; codecs=flac'>
+    <source src='video.ogv' type='video/ogg; codecs="dirac, vorbis"'>
+
+    <video controls autoplay>
+      <source src='video.mp4' type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"'>
+      <source src='video.ogv' type='video/ogg; codecs="theora, vorbis"' onerror="fallback(parentNode)">
+      ...
+    </video>
+
+    <h2>From today's featured article</h2>
+    <img src="/uploads/100-marie-lloyd.jpg" srcset="/uploads/150-marie-lloyd.jpg 1.5x, /uploads/200-marie-lloyd.jpg 2x"
+      alt="" width="100" height="150">
+    <p><b><a href="/wiki/Marie_Lloyd">Marie Lloyd</a></b> (1870–1922)
+      was an English <a href="/wiki/Music_hall">music hall</a> singer, ...</p>
+
+    <h1><img sizes="100vw" srcset="wolf-400.jpg 400w, wolf-800.jpg 800w, wolf-1600.jpg 1600w" src="wolf-400.jpg"
+        alt="The rad wolf"></h1>
+
+    <img sizes="(max-width: 30em) 100vw, (max-width: 50em) 50vw, calc(33vw - 100px)"
+      srcset="swing-200.jpg 200w, swing-400.jpg 400w, swing-800.jpg 800w, swing-1600.jpg 1600w" src="swing-400.jpg"
+      alt="Kettlebell Swing">
+
+    <picture>
+      <source media="(min-width: 45em)" srcset="large.jpg">
+      <source media="(min-width: 32em)" srcset="med.jpg">
+      <img src="small.jpg" alt="The wolf runs through the snow.">
+    </picture>
+
+    <h1>
+      <picture>
+        <source media="(max-width: 500px)" srcset="banner-phone.jpeg, banner-phone-HD.jpeg 2x">
+        <img src="banner.jpeg" srcset="banner-HD.jpeg 2x" alt="The Breakfast Combo">
+      </picture>
+    </h1>
+
+    <h2>From today's featured article</h2>
+    <picture>
+      <source srcset="/uploads/100-marie-lloyd.webp" type="image/webp">
+      <source srcset="/uploads/100-marie-lloyd.jxr" type="image/vnd.ms-photo">
+      <img src="/uploads/100-marie-lloyd.jpg" alt="" width="100" height="150">
+    </picture>
+    <p><b><a href="/wiki/Marie_Lloyd">Marie Lloyd</a></b> (1870–1922)
+      was an English <a href="/wiki/Music_hall">music hall</a> singer, ...
+
+      <style>
+        #a {
+          width: 300px;
+          height: 150px;
+        }
+
+        @media (max-width: 600px) {
+          #a {
+            width: 100px;
+            height: 100px;
+          }
+        }
+
+      </style>
+      <figure>
+        <picture>
+          <source srcset="a-square.png" media="(max-width: 600px)">
+          <img src="a-rectangle.png" alt="Barney Frank wears a suit and glasses." id="a">
+        </picture>
+        <figcaption>Barney Frank, 2011</figcaption>
+      </figure>
+
+      <style media="(max-width: 600px)">
+        #a {
+          width: 100px;
+          height: 100px;
+        }
+
+      </style>
+      <figure>
+        <picture>
+          <source srcset="a-square.png" media="(max-width: 600px)">
+          <img src="a-rectangle.png" width="300" height="150" alt="Barney Frank wears a suit and glasses." id="a">
+        </picture>
+        <figcaption>Barney Frank, 2011</figcaption>
+      </figure>
+
+      <h1>Pick your color</h1>
+      <ul>
+        <li><a href="green.html"><img src="green.jpeg" alt="Green"></a></li>
+        <li><a href="blue.html"><img src="blue.jpeg" alt="Blue"></a></li>
+        <li><a href="red.html"><img src="red.jpeg" alt="Red"></a></li>
+      </ul>
+
+      <!-- This is the correct way to do things. -->
+      <p>
+        You are standing in an open field west of a house.
+        <img src="house.jpeg" alt="The house is white, with a boarded front door.">
+        There is a small mailbox here.
+      </p>
+
+      <!-- This is the wrong way to do things. -->
+      <p>
+        You are standing in an open field west of a house.
+        <img src="house.jpeg" alt="A white house, with a boarded front door.">
+        There is a small mailbox here.
+      </p>
+
+      <p>The Network passes data to the Input Stream Preprocessor, which
+        passes it to the Tokenizer, which passes it to the Tree Construction
+        stage. From there, data goes to both the DOM and to Script Execution.
+        Script Execution is linked to the DOM, and, using document.write(),
+        passes data to the Tokenizer.</p>
+      <p><img src="images/parsing-model-overview.svg" alt=""></p>
+
+      <!-- Using the title="" attribute -->
+      <p>The Network passes data to the Input Stream Preprocessor, which
+        passes it to the Tokenizer, which passes it to the Tree Construction
+        stage. From there, data goes to both the DOM and to Script Execution.
+        Script Execution is linked to the DOM, and, using document.write(),
+        passes data to the Tokenizer.</p>
+      <p><img src="images/parsing-model-overview.svg" alt="" title="Flowchart representation of the parsing model."></p>
+
+      <!-- Using <figure> and <figcaption> -->
+      <p>The Network passes data to the Input Stream Preprocessor, which
+        passes it to the Tokenizer, which passes it to the Tree Construction
+        stage. From there, data goes to both the DOM and to Script Execution.
+        Script Execution is linked to the DOM, and, using document.write(),
+        passes data to the Tokenizer.</p>
+      <figure>
+        <img src="images/parsing-model-overview.svg" alt="The Network leads to
+                            the Input Stream Preprocessor, which leads to the Tokenizer, which
+                            leads to the Tree Construction stage. The Tree Construction stage
+                            leads to two items. The first is Script Execution, which leads via
+                            document.write() back to the Tokenizer. The second item from which
+                            Tree Construction leads is the DOM. The DOM is related to the Script
+                            Execution.">
+        <figcaption>Flowchart representation of the parsing model.</figcaption>
+      </figure>
+
+      <!-- This is WRONG. Do not do this. Instead, do what the above examples do. -->
+      <p>The Network passes data to the Input Stream Preprocessor, which
+        passes it to the Tokenizer, which passes it to the Tree Construction
+        stage. From there, data goes to both the DOM and to Script Execution.
+        Script Execution is linked to the DOM, and, using document.write(),
+        passes data to the Tokenizer.</p>
+      <p><img src="images/parsing-model-overview.svg" alt="Flowchart representation of the parsing model."></p>
+      <!-- Never put the image's caption in the alt="" attribute! -->
+
+      <p>According to a study covering several billion pages,
+        about 62% of documents on the Web in 2007 triggered the Quirks
+        rendering mode of Web browsers, about 30% triggered the Almost
+        Standards mode, and about 9% triggered the Standards mode.</p>
+      <p><img src="rendering-mode-pie-chart.png" alt=""></p>
+
+      <h1>The Church</h1>
+      <p>You come across a flying spaghetti monster. Which side of His
+        Noodliness do you wish to reach out for?</p>
+      <p>
+        <a href="?go=left"><img src="fsm-left.png" alt="Left side. "></a><img src="fsm-middle.png" alt=""><a
+          href="?go=right"><img src="fsm-right.png" alt="Right side."></a>
+      </p>
+      <hr>
+
+      <article>
+        <h1>I got my own magazine!</h1>
+        <p>After much effort, I've finally found a publisher, and so now I
+          have my own magazine! Isn't that awesome?! The first issue will come
+          out in September, and we have articles about getting food, and about
+          getting in boxes, it's going to be great!</p>
+        <footer>
+          <p>Written by <a href="/users/cap">cap</a>, 1 hour ago.
+        </footer>
+        <article>
+          <footer> Thirteen minutes ago, <a href="/users/ch">ch</a> wrote: </footer>
+          <iframe sandbox srcdoc="<p>did you get a cover picture yet?"></iframe>
+        </article>
+        <article>
+          <footer> Nine minutes ago, <a href="/users/cap">cap</a> wrote: </footer>
+          <iframe sandbox
+            srcdoc="<p>Yeah, you can see it <a href=&quot;/gallery?mode=cover&amp;amp;page=1&quot;>in my gallery</a>."></iframe>
+        </article>
+        <article>
+          <footer> Five minutes ago, <a href="/users/ch">ch</a> wrote: </footer>
+          <iframe sandbox srcdoc="<p>hey that's earl's table.
+               <p>you should get earl&amp;amp;me on the next cover."></iframe>
+        </article>
+      </article>
+      <hr>
+
+      <script>
+        function failed(e) {
+          // video playback failed - show a message saying why
+          switch (e.target.error.code) {
+            case e.target.error.MEDIA_ERR_ABORTED:
+              alert('You aborted the video playback.');
+              break;
+            case e.target.error.MEDIA_ERR_NETWORK:
+              alert('A network error caused the video download to fail part-way.');
+              break;
+            case e.target.error.MEDIA_ERR_DECODE:
+              alert('The video playback was aborted due to a corruption problem or because the video used features your browser did not support.');
+              break;
+            case e.target.error.MEDIA_ERR_SRC_NOT_SUPPORTED:
+              alert('The video could not be loaded, either because the server or network failed or because the format is not supported.');
+              break;
+            default:
+              alert('An unknown error occurred.');
+              break;
+          }
+        }
+      </script>
+      <p><video src="tgif.vid" autoplay controls onerror="failed(event)"></video></p>
+      <p><a href="tgif.vid">Download the video file</a>.</p>
+      <hr>
+
+      <video src="brave.webm">
+        <track kind=subtitles src=brave.en.vtt srclang=en label="English">
+        <track kind=captions src=brave.en.hoh.vtt srclang=en label="English for the Hard of Hearing">
+        <track kind=subtitles src=brave.fr.vtt srclang=fr lang=fr label="Français">
+        <track kind=subtitles src=brave.de.vtt srclang=de lang=de label="Deutsch">
+      </video>
+
+      <section id="video">
+        <p><a href="playing-cats.nfv">Download video</a></p>
+      </section>
+      <script>
+        var videoSection = document.getElementById('video');
+        var videoElement = document.createElement('video');
+        var support = videoElement.canPlayType('video/x-new-fictional-format;codecs="kittens,bunnies"');
+        if (support != "probably" && "New Fictional Video Plugin" in navigator.plugins) {
+          // not confident of browser support
+          // but we have a plugin
+          // so use plugin instead
+          videoElement = document.createElement("embed");
+        } else if (support == "") {
+          // no support from browser and no plugin
+          // do nothing
+          videoElement = null;
+        }
+        if (videoElement) {
+          while (videoSection.hasChildNodes())
+            videoSection.removeChild(videoSection.firstChild);
+          videoElement.setAttribute("src", "playing-cats.nfv");
+          videoSection.appendChild(videoElement);
+        }
+      </script>
+      <hr>
+
+      <p>
+        Please select a shape:<br>
+        <img src="https://html.spec.whatwg.org/images/sample-usemap.png" usemap="#shapes"
+          alt="Four shapes are available: a red hollow box, a green circle, a blue triangle, and a yellow four-pointed star.">
+        <map name="shapes">
+          <area shape=rect coords="50,50,100,100"> <!-- the hole in the red box -->
+          <area shape=rect coords="25,25,125,125" href="red.html" alt="Red box.">
+          <area shape=circle coords="200,75,50" href="green.html" alt="Green circle.">
+          <area shape=poly coords="325,25,262,125,388,125" href="blue.html" alt="Blue triangle.">
+          <area shape=poly coords="450,25,435,60,400,75,435,90,450,125,465,90,500,75,465,60" href="yellow.html"
+            alt="Yellow star.">
+        </map>
+      </p>
+
+      <h1>The quadratic formula</h1>
+      <p>
+        <math>
+          <mi>x</mi>
+          <mo>=</mo>
+          <mfrac>
+            <mrow>
+              <mo form="prefix">−</mo>
+              <mi>b</mi>
+              <mo>±</mo>
+              <msqrt>
+                <msup>
+                  <mi>b</mi>
+                  <mn>2</mn>
+                </msup>
+                <mo>−</mo>
+                <mn>4</mn>
+                <mo>⁢</mo>
+                <mi>a</mi>
+                <mo>⁢</mo>
+                <mi>c</mi>
+              </msqrt>
+            </mrow>
+            <mrow>
+              <mn>2</mn>
+              <mo>⁢</mo>
+              <mi>a</mi>
+            </mrow>
+          </mfrac>
+        </math>
+      </p>
+      <hr>
+
+      <form method="post" enctype="application/x-www-form-urlencoded" action="https://pizza.example.com/order.cgi">
+        <p><label>Customer name: <input name="custname" required autocomplete="shipping name"></label></p>
+        <p><label>Telephone: <input type=tel name="custtel" autocomplete="shipping tel"></label></p>
+        <p><label>Buzzer code: <input name="custbuzz" inputmode="numeric"></label></p>
+        <p><label>E-mail address: <input type=email name="custemail" autocomplete="shipping email"></label></p>
+        <p><label>Credit card number:
+            <input name="cc" type="text" inputmode="numeric" pattern="[0-9]{8,19}" autocomplete="cc-number">
+          </label></p>
+        <fieldset>
+          <legend> Pizza Size </legend>
+          <p><label> <input type=radio name=size required value="small"> Small </label></p>
+          <p><label> <input type=radio name=size required value="medium"> Medium </label></p>
+          <p><label> <input type=radio name=size required value="large"> Large </label></p>
+        </fieldset>
+        <fieldset>
+          <legend> Pizza Toppings </legend>
+          <p><label> <input type=checkbox name="topping" value="bacon"> Bacon </label></p>
+          <p><label> <input type=checkbox name="topping" value="cheese"> Extra Cheese </label></p>
+          <p><label> <input type=checkbox name="topping" value="onion"> Onion </label></p>
+          <p><label> <input type=checkbox name="topping" value="mushroom"> Mushroom </label></p>
+        </fieldset>
+        <p><label>Preferred delivery time: <input type=time min="11:00" max="21:00" step="900" name="delivery"
+              required></label></p>
+        <p><label>Delivery instructions: <textarea name="comments" maxlength=1000></textarea></label></p>
+        <p><button>Submit order</button></p>
+      </form>
+      <hr>
+
+      <form action="https://www.google.com/search" method="get">
+        <label>Google: <input type="search" name="q"></label> <input type="submit" value="Search...">
+      </form>
+      <form action="https://www.bing.com/search" method="get">
+        <label>Bing: <input type="search" name="q"></label> <input type="submit" value="Search...">
+      </form>
+      <hr>
+
+      <input type="url" name="location" list="urls">
+      <datalist id="urls">
+        <option label="MIME: Format of Internet Message Bodies" value="https://tools.ietf.org/html/rfc2045">
+        <option label="HTML" value="https://html.spec.whatwg.org/">
+        <option label="DOM" value="https://dom.spec.whatwg.org/">
+        <option label="Fullscreen" value="https://fullscreen.spec.whatwg.org/">
+        <option label="Media Session" value="https://mediasession.spec.whatwg.org/">
+        <option label="The Single UNIX Specification, Version 3" value="http://www.unix.org/version3/">
+      </datalist>
+      <hr>
+      <fieldset>
+        <legend>Destination</legend>
+        <p><label>Airport: <input type=text name=to list=airports></label></p>
+        <p><label>Departure time: <input type=datetime-local name=totime step=3600></label></p>
+      </fieldset>
+      <datalist id=airports>
+        <option value=ATL label="Atlanta">
+        <option value=MEM label="Memphis">
+        <option value=LHR label="London Heathrow">
+        <option value=LAX label="Los Angeles">
+        <option value=FRA label="Frankfurt">
+      </datalist>
+      <hr>
+      <label>How much do you want to charge? $<input type=number min=0 step=0.01 name=price></label>
+      <hr>
+
+      <style>
+        input#powers {
+          height: 75px;
+          width: 49px;
+          background: #D5CCBB;
+          color: black;
+        }
+
+      </style>
+      <input type="range" min="-100" max="100" value="0" step="10" name="power" id="powers" list="powers">
+      <datalist id="powers">
+        <option value="0">
+        <option value="-30">
+        <option value="30">
+        <option value="++50">
+      </datalist>
+      <hr>
+      <input name=x type=range min=100 max=700 step=9.09090909 value=509.090909>
+      <hr>
+      <input type="range" name="a" list="a-values">
+      <datalist id="a-values">
+        <option value="10" label="Low">
+        <option value="90" label="High">
+      </datalist>
+      <hr>
+      <input type="file"
+        accept=".doc,.docx,.xml,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document">
+      <hr>
+      <script>
+        function extractFilename(path) {
+          if (path.substr(0, 12) == "C:\\fakepath\\")
+            return path.substr(12); // modern browser
+          var x;
+          x = path.lastIndexOf('/');
+          if (x >= 0) // Unix-based path
+            return path.substr(x + 1);
+          x = path.lastIndexOf('\\');
+          if (x >= 0) // Windows-based path
+            return path.substr(x + 1);
+          return path; // just the file name
+        }
+      </script>
+
+      <p><input type=file name=image onchange="updateFilename(this.value)"></p>
+      <p>The name of the file you picked is: <span id="filename">(none)</span></p>
+      <script>
+        function updateFilename(path) {
+          var name = extractFilename(path);
+          document.getElementById('filename').textContent = name;
+        }
+      </script>
+      <hr>
+      <form action="process.cgi">
+        <input type=image src=map.png name=where alt="Show location list">
+      </form>
+      <hr>
+      <form action="products.cgi" method="post" enctype="multipart/form-data">
+        <table>
+          <tr>
+            <th> Product ID
+            <th> Product name
+            <th> Price
+            <th> Action
+          <tr>
+            <td> <input readonly="readonly" name="1.pid" value="H412">
+            <td> <input required="required" name="1.pname" value="Floor lamp Ulke">
+            <td> $<input required="required" type="number" min="0" step="0.01" name="1.pprice" value="49.99">
+            <td> <button formnovalidate="formnovalidate" name="action" value="delete:1">Delete</button>
+          <tr>
+            <td> <input readonly="readonly" name="2.pid" value="FG28">
+            <td> <input required="required" name="2.pname" value="Table lamp Ulke">
+            <td> $<input required="required" type="number" min="0" step="0.01" name="2.pprice" value="24.99">
+            <td> <button formnovalidate="formnovalidate" name="action" value="delete:2">Delete</button>
+          <tr>
+            <td> <input required="required" name="3.pid" value="" pattern="[A-Z0-9]+">
+            <td> <input required="required" name="3.pname" value="">
+            <td> $<input required="required" type="number" min="0" step="0.01" name="3.pprice" value="">
+            <td> <button formnovalidate="formnovalidate" name="action" value="delete:3">Delete</button>
+        </table>
+        <p> <button formnovalidate="formnovalidate" name="action" value="add">Add</button> </p>
+        <p> <button name="action" value="update">Save</button> </p>
+      </form>
+      <hr>
+      <h1>Create new account</h1>
+      <form action="/newaccount" method=post
+        oninput="up2.setCustomValidity(up2.value != up.value ? 'Passwords do not match.' : '')">
+        <p>
+          <label for="username">E-mail address:</label>
+          <input id="username" type=email required name=un>
+          <p>
+            <label for="password1">Password:</label>
+            <input id="password1" type=password required name=up>
+            <p>
+              <label for="password2">Confirm password:</label>
+              <input id="password2" type=password name=up2>
+              <p>
+                <input type=submit value="Create account">
+      </form>
+      <hr>
+      <fieldset>
+        <legend>Did the movie pass the Bechdel test?</legend>
+        <p><label><input type="radio" name="bechdel" value="no-characters"> No, there are not even two female characters
+            in the movie. </label>
+          <p><label><input type="radio" name="bechdel" value="no-names"> No, the female characters never talk to each
+              other. </label>
+            <p><label><input type="radio" name="bechdel" value="no-topic"> No, when female characters talk to each other
+                it's always about a male character. </label>
+              <p><label><input type="radio" name="bechdel" value="yes" required> Yes. </label>
+                <p><label><input type="radio" name="bechdel" value="unknown"> I don't know. </label>
+      </fieldset>
+      <hr>
+      <label>To: <input type=email multiple name=to></label>
+      <hr>
+      <label>Attachments: <input type=file multiple name=att></label>
+      <hr>
+      <label> Part number:
+        <input pattern="[0-9][A-Z]{3}" name="part"
+          title="A part number is a digit followed by three uppercase letters." />
+      </label>
+      <hr>
+      <input name=bday type=date max="1979-12-31">
+      <input name=quantity required="" type="number" min="1" value="1">
+      <input name="sleepStart" type=time min="21:00" max="06:00" step="60" value="00:00">
+      <hr>
+      <input name=opacity type=range min=0 max=1 step=0.00392156863>
+      <input name=favtime type=time step=any>
+      <hr>
+      <label>Homepage: <input name=hp type=url list=hpurls></label>
+      <datalist id=hpurls>
+        <option value="https://www.google.com/" label="Google">
+        <option value="https://www.reddit.com/" label="Reddit">
+      </datalist>
+      <p>
+        <label>
+          Enter a breed:
+          <input type="text" name="breed" list="breeds">
+          <datalist id="breeds">
+            <option value="Abyssinian">
+            <option value="Alpaca">
+              <!-- ... -->
+          </datalist>
+        </label>
+      </p>
+      <p>
+        <label>
+          Enter a breed:
+          <input type="text" name="breed" list="breeds">
+        </label>
+        <datalist id="breeds">
+          <label>
+            or select one from the list:
+            <select name="breed">
+              <option value=""> (none selected)
+              <option>Abyssinian
+              <option>Alpaca
+                <!-- ... -->
+            </select>
+          </label>
+        </datalist>
+      </p>
+      <hr>
+      <fieldset>
+        <legend>Mail Account</legend>
+        <p><label>Name: <input type="text" name="fullname" placeholder="John Ratzenberger"></label></p>
+        <p><label>Address: <input type="email" name="address" placeholder="john@example.net"></label></p>
+        <p><label>Password: <input type="password" name="password"></label></p>
+        <p><label>Description: <input type="text" name="desc" placeholder="My Email Account"></label></p>
+      </fieldset>
+      <hr>
+      <button type=button onclick="alert('This 15-20 minute piece was composed by George Gershwin.')">
+        Show hint
+      </button>
+      <hr>
+      <p>
+        <label for="unittype">Select unit type:</label>
+        <select id="unittype" name="unittype">
+          <option value="1"> Miner </option>
+          <option value="2"> Puffer </option>
+          <option value="3" selected> Snipey </option>
+          <option value="4"> Max </option>
+          <option value="5"> Firebot </option>
+        </select>
+      </p>
+      <select name="unittype" required>
+        <option value=""> Select unit type </option>
+        <option value="1"> Miner </option>
+        <option value="2"> Puffer </option>
+        <option value="3"> Snipey </option>
+        <option value="4"> Max </option>
+        <option value="5"> Firebot </option>
+      </select>
+      <p>
+        <label for="allowedunits">Select unit types to enable on this map:</label>
+        <select id="allowedunits" name="allowedunits" multiple>
+          <option value="1" selected> Miner </option>
+          <option value="2" selected> Puffer </option>
+          <option value="3" selected> Snipey </option>
+          <option value="4" selected> Max </option>
+          <option value="5" selected> Firebot </option>
+        </select>
+      </p>
+      <label>
+        Select the songs from that you would like on your Act II Mix Tape:
+        <select multiple required name="act2">
+          <option value="s1">It Sucks to Be Me (Reprise)
+          <option value="s2">There is Life Outside Your Apartment
+          <option value="s3">The More You Ruv Someone
+          <option value="s4">Schadenfreude
+          <option value="s5">I Wish I Could Go Back to College
+          <option value="s6">The Money Song
+          <option value="s7">School for Monsters
+          <option value="s8">The Money Song (Reprise)
+          <option value="s9">There's a Fine, Fine Line (Reprise)
+          <option value="s10">What Do You Do With a B.A. in English? (Reprise)
+          <option value="s11">For Now
+        </select>
+      </label>
+      <hr>
+      <label>
+        Animal:
+        <input name=animal list=animals>
+        <datalist id=animals>
+          <option value="Cat">
+          <option value="Dog">
+        </datalist>
+      </label>
+      <label>
+        Animal:
+        <input name=animal list=animals>
+      </label>
+      <datalist id=animals>
+        <label>
+          or select from the list:
+          <select name=animal>
+            <option value="">
+            <option>Cat
+            <option>Dog
+          </select>
+        </label>
+      </datalist>
+      <hr>
+      <form action="courseselector.dll" method="get">
+        <p>Which course would you like to watch today?
+          <p><label>Course:
+              <select name="c">
+                <optgroup label="8.01 Physics I: Classical Mechanics">
+                  <option value="8.01.1">Lecture 01: Powers of Ten
+                  <option value="8.01.2">Lecture 02: 1D Kinematics
+                  <option value="8.01.3">Lecture 03: Vectors
+                <optgroup label="8.02 Electricity and Magnestism">
+                  <option value="8.02.1">Lecture 01: What holds our world together?
+                  <option value="8.02.2">Lecture 02: Electric Field
+                  <option value="8.02.3">Lecture 03: Electric Flux
+                <optgroup label="8.03 Physics III: Vibrations and Waves">
+                  <option value="8.03.1">Lecture 01: Periodic Phenomenon
+                  <option value="8.03.2">Lecture 02: Beats
+                  <option value="8.03.3">Lecture 03: Forced Oscillations with Damping
+              </select>
+            </label>
+            <p><input type=submit value="▶ Play">
+      </form>
+      <hr>
+      Filename: <code>/etc/bash.bashrc</code>
+      <textarea name="buffer" rows=25 cols=80 readonly>
+# System-wide .bashrc file for interactive bash(1) shells.
+
+# To enable the settings / commands in this file for login shells as well,
+# this file has to be sourced in /etc/profile.
+
+# If not running interactively, don't do anything
+[ -z "$PS1" ] &amp;&amp; return
+
+...</textarea>
+      <p>If you have any comments, please let us know: <textarea cols=80 name=comments></textarea></p>
+      <p>If you have any short comments, please let us know: <textarea cols=80 name=comments maxlength=200></textarea>
+      </p>
+      <p>If you have any comments, please let us know: <textarea cols=80 name=comments>You rock!</textarea></p>
+      <textarea required minlength="500">Dear Madam Speaker,
+
+        Regarding your letter dated ...
+        
+        ...
+        
+        Yours Sincerely,
+        
+        ...</textarea>
+      <textarea placeholder="Dear Francine,
+
+        They closed the parks this week, so we won't be able to
+        meet your there. Should we just have dinner?
+        
+        Love,
+        Daddy"></textarea>
+      <p>If you have any comments, please let us know (you may use either English or Hebrew for your comments):
+        <textarea cols=80 name=comments dirname=comments.dir></textarea></p>
+      <hr>
+      <form onsubmit="return false" oninput="o.value = a.valueAsNumber + b.valueAsNumber">
+        <input id=a type=number step=any> +
+        <input id=b type=number step=any> =
+        <output id=o for="a b"></output>
+      </form>
+
+      <output id="result">test</output>
+      <script>
+        var primeSource = new WebSocket('ws://primes.example.net/');
+        primeSource.onmessage = function (event) {
+          document.getElementById('result').value = event.data;
+        }
+      </script>
+      <hr>
+      <section>
+        <h2>Task Progress</h2>
+        <p>Progress: <progress id="p" max=100><span>0</span>%</progress></p>
+        <script>
+          var progressBar = document.getElementById('p');
+          function updateProgress(newValue) {
+            progressBar.value = newValue;
+            progressBar.getElementsByTagName('span')[0].textContent = newValue;
+          }
+        </script>
+      </section>
+      <hr>
+      Storage space usage: <meter value=6 max=8>6 blocks used (out of 8 total)</meter>
+      Voter turnout: <meter value=0.75><img alt="75%" src="graph75.png"></meter>
+      Tickets sold: <meter min="0" max="100" value="75"></meter>
+      <p>The grapefruit pie had a radius of 12cm and a height of
+        2cm.</p>
+      <dl>
+        <dt>Radius:
+        <dd> <meter min=0 max=20 value=12>12cm</meter>
+        <dt>Height:
+        <dd> <meter min=0 max=10 value=2>2cm</meter>
+      </dl>
+      <dl>
+        <dt>Radius:
+        <dd> <meter min=0 max=20 value=12 title="centimeters">12cm</meter>
+        <dt>Height:
+        <dd> <meter min=0 max=10 value=2 title="centimeters">2cm</meter>
+      </dl>
+      <h3>Suggested groups</h3>
+      <menu>
+        <li><a href="?cmd=hsg" onclick="hideSuggestedGroups()">Hide suggested groups</a></li>
+      </menu>
+      <ul>
+        <li>
+          <p><a
+              href="/group/comp.infosystems.www.authoring.stylesheets/view">comp.infosystems.www.authoring.stylesheets</a>
+            -
+            <a href="/group/comp.infosystems.www.authoring.stylesheets/subscribe">join</a></p>
+          <p>Group description: <strong>Layout/presentation on the WWW.</strong></p>
+          <p><meter value="0.5">Moderate activity,</meter> Usenet, 618 subscribers</p>
+        </li>
+        <li>
+          <p><a href="/group/netscape.public.mozilla.xpinstall/view">netscape.public.mozilla.xpinstall</a> -
+            <a href="/group/netscape.public.mozilla.xpinstall/subscribe">join</a></p>
+          <p>Group description: <strong>Mozilla XPInstall discussion.</strong></p>
+          <p><meter value="0.25">Low activity,</meter> Usenet, 22 subscribers</p>
+        </li>
+        <li>
+          <p><a href="/group/mozilla.dev.general/view">mozilla.dev.general</a> -
+            <a href="/group/mozilla.dev.general/subscribe">join</a></p>
+          <p><meter value="0.25">Low activity,</meter> Usenet, 66 subscribers</p>
+        </li>
+      </ul>
+      <meter min=0 max=60 value=23.2 title=seconds></meter>
+      <p>Disk usage: <meter min=0 value=170261928 max=233257824>170 261 928 bytes used
+          out of 233 257 824 bytes available</meter></p>
+      <hr>
+
+      <fieldset>
+        <legend>Display</legend>
+        <p><label><input type=radio name=c value=0 checked> Black on White</label>
+          <p><label><input type=radio name=c value=1> White on Black</label>
+            <p><label><input type=checkbox name=g> Use grayscale</label>
+              <p><label>Enhance contrast <input type=range name=e list=contrast min=0 max=100 value=0 step=1></label>
+                <datalist id=contrast>
+                  <option label=Normal value=0>
+                  <option label=Maximum value=100>
+                </datalist>
+      </fieldset>
+      <fieldset name="clubfields" disabled>
+        <legend> <label>
+            <input type=checkbox name=club onchange="form.clubfields.disabled = !checked">
+            Use Club Card
+          </label> </legend>
+        <p><label>Name on card: <input name=clubname required></label></p>
+        <p><label>Card number: <input name=clubnum required pattern="[-0-9]+"></label></p>
+        <p><label>Expiry date: <input name=clubexp type=month></label></p>
+      </fieldset>
+      <fieldset name="clubfields" disabled>
+        <legend> <label>
+            <input type=checkbox name=club onchange="form.clubfields.disabled = !checked">
+            Use Club Card
+          </label> </legend>
+        <p><label>Name on card: <input name=clubname required></label></p>
+        <fieldset name="numfields">
+          <legend> <label>
+              <input type=radio checked name=clubtype onchange="form.numfields.disabled = !checked">
+              My card has numbers on it
+            </label> </legend>
+          <p><label>Card number: <input name=clubnum required pattern="[-0-9]+"></label></p>
+        </fieldset>
+        <fieldset name="letfields" disabled>
+          <legend> <label>
+              <input type=radio name=clubtype onchange="form.letfields.disabled = !checked">
+              My card has letters on it
+            </label> </legend>
+          <p><label>Card code: <input name=clublet required pattern="[A-Za-z]+"></label></p>
+        </fieldset>
+      </fieldset>
+      <fieldset>
+        <legend>
+          <h2>
+            How can we best reach you?
+          </h2>
+        </legend>
+        <p> <label>
+            <input type=radio checked name=contact_pref>
+            Phone
+          </label> </p>
+        <p> <label>
+            <input type=radio name=contact_pref>
+            Text
+          </label> </p>
+        <p> <label>
+            <input type=radio name=contact_pref>
+            Email
+          </label> </p>
+      </fieldset>
+      <hr>
+      <script>
+        function check(input) {
+          if (input.value == "good" ||
+            input.value == "fine" ||
+            input.value == "tired") {
+            input.setCustomValidity('"' + input.value + '" is not a feeling.');
+          } else {
+            // input is fine -- reset the error message
+            input.setCustomValidity('');
+          }
+        }
+      </script>
+      <label>Feeling: <input name=f type="text" oninput="check(this)"></label>
+      <hr>
+      <section class="progress window">
+        <h1>Copying "Really Achieving Your Childhood Dreams"</h1>
+        <details>
+          <summary>Copying... <progress max="375505392" value="97543282"></progress> 25%</summary>
+          <dl>
+            <dt>Transfer rate:</dt>
+            <dd>452KB/s</dd>
+            <dt>Local filename:</dt>
+            <dd>/home/rpausch/raycd.m4v</dd>
+            <dt>Remote filename:</dt>
+            <dd>/var/www/lectures/raycd.m4v</dd>
+            <dt>Duration:</dt>
+            <dd>01:16:27</dd>
+            <dt>Color profile:</dt>
+            <dd>SD (6-1-6)</dd>
+            <dt>Dimensions:</dt>
+            <dd>320×240</dd>
+          </dl>
+        </details>
+      </section>
+      <details>
+        <summary><label for=fn>Name & Extension:</label></summary>
+        <p><input type=text id=fn name=fn value="Pillar Magazine.pdf">
+          <p><label><input type=checkbox name=ext checked> Hide extension</label>
+      </details>
+      <style>
+        details>summary {
+          transition: color 1s;
+          color: black;
+        }
+
+        details[open]>summary {
+          color: red;
+        }
+
+      </style>
+      <details>
+        <summary>Automated Status: Operational</summary>
+        <p>Velocity: 12m/s</p>
+        <p>Direction: North</p>
+      </details>
+
+      <hr>
+      <!-- Switch the next to lines to show the modal -->
+      <!-- <dialog open> -->
+      <dialog>
+        <h1>Add to Wallet</h1>
+        <p><strong><label for=amt>How many gold coins do you want to add to your wallet?</label></strong></p>
+        <p><input id=amt name=amt type=number min=0 step=0.01 value=100></p>
+        <p><small>You add coins at your own risk.</small></p>
+        <p><label><input name=round type=checkbox> Only add perfectly round coins </label></p>
+        <p><input type=button onclick="submit()" value="Add Coins"></p>
+      </dialog>
+
+      <hr>
+      <script>
+        var updateButton = document.getElementById('updateDetails');
+        var favDialog = document.getElementById('favDialog');
+        var outputBox = document.querySelector('output');
+        var selectEl = document.querySelector('select');
+        var confirmBtn = document.getElementById('confirmBtn');
+
+        // "Update details" button opens the <dialog> modally
+        updateButton.addEventListener('click', function onOpen() {
+          if (typeof favDialog.showModal === "function") {
+            favDialog.showModal();
+          } else {
+            alert("The <dialog> API is not supported by this browser");
+          }
+        });
+        // "Favorite animal" input sets the value of the submit button
+        selectEl.addEventListener('change', function onSelect(e) {
+          confirmBtn.value = selectEl.value;
+        });
+        // "Confirm" button of form triggers "close" on dialog because of [method="dialog"]
+        favDialog.addEventListener('close', function onClose() {
+          outputBox.value = favDialog.returnValue + " button clicked - " + (new Date()).toString();
+        });
+      </script>
+      <dialog id="favDialog">
+        <form method="dialog">
+          <p><label>Favorite animal:
+              <select>
+                <option></option>
+                <option>Brine shrimp</option>
+                <option>Red panda</option>
+                <option>Spider monkey</option>
+              </select>
+            </label></p>
+          <menu>
+            <button value="cancel">Cancel</button>
+            <button id="confirmBtn" value="default">Confirm</button>
+          </menu>
+        </form>
+      </dialog>
+
+      <menu>
+        <button id="updateDetails">Update details</button>
+      </menu>
+
+      <output aria-live="polite"></output>
+
+      <hr>
+      <form action="calcSquare.php">
+        <p>
+          <label for=x>Number</label>:
+          <input id="x" name="x" type="number">
+        </p>
+        <script>
+          var x = document.getElementById('x');
+          var output = document.createElement('p');
+          output.textContent = 'Type a number; it will be squared right then!';
+          x.form.appendChild(output);
+          x.form.onsubmit = function () { return false; }
+          x.oninput = function () {
+            var v = x.valueAsNumber;
+            output.textContent = v + ' squared is ' + v * v;
+          };
+        </script>
+        <noscript>
+          <input type=submit value="Calculate Square">
+        </noscript>
+      </form>
+      <hr>
+      <template id="template">
+        <p>Smile!</p>
+      </template>
+      <script>
+        let num = 3;
+        const fragment = document.getElementById('template').content.cloneNode(true);
+        while (num-- > 1) {
+          fragment.firstChild.before(fragment.firstChild.cloneNode(true));
+          fragment.firstChild.textContent += fragment.lastChild.textContent;
+        }
+        document.body.appendChild(fragment);
+      </script>
+      <hr>
+      <template id="my-paragraph">
+        <style>
+          p {
+            color: white;
+            background-color: #666;
+            padding: 5px;
+          }
+
+        </style>
+        <p>my paragraph</p>
+      </template>
+
+      <my-paragraph></my-paragraph>
+      <my-paragraph></my-paragraph>
+      <my-paragraph></my-paragraph>
+      <hr>
+      <nav>
+        <p>
+          <a href="/">Main</a> ▸
+          <a href="/products/">Products</a> ▸
+          <a href="/products/dishwashers/">Dishwashers</a> ▸
+          <a>Second hand</a>
+        </p>
+        <p>
+          <a href="/">Main</a> ▸
+          <a href="/second-hand/">Second hand</a> ▸
+          <a>Dishwashers</a>
+        </p>
+      </nav>
+      <hr>
+      <style>
+        .tag-cloud>li>span {
+          display: none;
+        }
+
+        .tag-cloud>li {
+          display: inline;
+        }
+
+        .tag-cloud-1 {
+          font-size: 0.7em;
+        }
+
+        .tag-cloud-2 {
+          font-size: 0.9em;
+        }
+
+        .tag-cloud-3 {
+          font-size: 1.1em;
+        }
+
+        .tag-cloud-4 {
+          font-size: 1.3em;
+        }
+
+        .tag-cloud-5 {
+          font-size: 1.5em;
+        }
+
+        @media speech {
+          .tag-cloud>li>span {
+            display: inline
+          }
+        }
+
+      </style>
+      ...
+      <ul class="tag-cloud">
+        <li class="tag-cloud-4"><a title="28 instances" href="/t/apple">apple</a> <span>(popular)</span>
+        <li class="tag-cloud-2"><a title="6 instances" href="/t/kiwi">kiwi</a> <span>(rare)</span>
+        <li class="tag-cloud-5"><a title="41 instances" href="/t/pear">pear</a> <span>(very popular)</span>
+      </ul>
+      <hr>
+      <p> Costello: Look, you gotta first baseman?
+        <p> Abbott: Certainly.</p>
+        <p> Costello: Who's playing first?</p>
+        <p> Abbott: That's right.</p>
+        <p> Costello becomes exasperated.</p>
+        <p> Costello: When you pay off the first baseman every month, who gets the money?</p>
+        <p> Abbott: Every dollar of it.</p>
+        <p> <data value="1319898155">14:22</data> <b>egof</b> I'm not that nerdy, I've only seen 30% of the</p>
+        star trek episodes
+      </p>
+      <p> <data value="1319898192">14:23</data> <b>kaj</b> if you know what percentage of the star trek</p>
+      episodes you have seen, you are inarguably nerdy
+    </p>
+    <p> <data value="1319898200">14:23</data> <b>egof</b> it's unarguably</p>
+    <p> <data value="1319898228">14:23</data> <i>* kaj blinks</i></p>
+    <p> <data value="1319898260">14:24</data> <b>kaj</b> you are not helping your case</p>
+    <p> Next, you meet a fisher. You can say one of several greetings:</p>
+    <dl>
+      <dt> "Hello there!"
+      <dd>
+        <p> She responds with "Hello, how may I help you?"; you can respond with:
+          <dl>
+            <dt> "I would like to buy a fish."
+            <dd>
+              <p> She sells you a fish and the conversation finishes.
+            <dt> "Can I borrow your boat?"
+            <dd>
+              <p> She is surprised and asks "What are you offering in return?".
+                <dl>
+                  <dt> "Five gold." (if you have enough)
+                  <dt> "Ten gold." (if you have enough)
+                  <dt> "Fifteen gold." (if you have enough)
+                  <dd>
+                    <p> She lends you her boat. The conversation ends.
+                  <dt> "A fish." (if you have one)
+                  <dt> "A newspaper." (if you have one)
+                  <dt> "A pebble." (if you have one)
+                  <dd>
+                    <p> "No thanks", she replies. Your conversation options
+                      at this point are the same as they were after asking to borrow
+                      her boat, minus any options you've suggested before.
+                </dl>
+            </dd>
+          </dl>
+      </dd>
+      <dt> "Vote for me in the next election!"
+      <dd>
+        <p> She turns away. The conversation finishes.
+      <dt> "Madam, are you aware that your fish are running away?"
+      <dd>
+        <p> She looks at you skeptically and says "Fish cannot run, miss".
+          <dl>
+            <dt> "You got me!"
+            <dd>
+              <p> The fisher sighs and the conversation ends.
+            <dt> "Only kidding."
+            <dd>
+              <p> "Good one!" she retorts. Your conversation options at this
+                point are the same as those following "Hello there!" above.
+            <dt> "Oh, then what are they doing?"
+            <dd>
+              <p> She looks at her fish, giving you an opportunity to steal
+                her boat, which you do. The conversation ends.
+          </dl>
+      </dd>
+    </dl>
+    <section>
+      <h1>Dialogue</h1>
+      <p><small>Some characters repeat their lines in order each time you interact
+          with them, others randomly pick from amongst their lines. Those who respond in
+          order have numbered entries in the lists below.</small>
+        <h2>The Shopkeeper</h2>
+        <ul>
+          <li>How may I help you?
+          <li>Fresh apples!
+          <li>A loaf of bread for madam?
+        </ul>
+        <h2>The pilot</h2>
+        <p>Before the accident:
+          <ul>
+            <li>I'm about to fly out, sorry!
+            <li>Sorry, I'm just waiting for flight clearance and then I'll be off!
+          </ul>
+          <p>After the accident:
+            <ol>
+              <li>I'm about to fly out, sorry!
+              <li>Ok, I'm not leaving right now, my plane is being cleaned.
+              <li>Ok, it's not being cleaned, it needs a minor repair first.
+              <li>Ok, ok, stop bothering me! Truth is, I had a crash.
+            </ol>
+            <h2>Clan Leader</h2>
+            <p>During the first clan meeting:
+              <ul>
+                <li>Hey, have you seen my daughter? I bet she's up to something nefarious
+                  again...
+                <li>Nice weather we're having today, eh?
+                <li>The name is Bailey, Jeff Bailey. How can I help you today?
+                <li>A glass of water? Fresh from the well!
+              </ul>
+              <p>After the earthquake:
+                <ol>
+                  <li>Everyone is safe in the shelter, we just have to put out the fire!
+                  <li>I'll go and tell the fire brigade, you keep hosing it down!
+                </ol>
+    </section>
+    <hr>
+    <h1>Footnotes</h1>
+    <p> <b>Customer</b>: Hello! I wish to register a complaint. Hello. Miss?</p>
+    <p> <b>Shopkeeper</b>: <span title="Colloquial pronunciation of 'What do you'">Watcha</span> mean, miss?</p>
+    <p> <b>Customer</b>: Uh, I'm sorry, I have a cold. I wish to make a complaint.</p>
+    <p> <b>Shopkeeper</b>: Sorry, <span title="This is, of course, a lie.">we're</p>
+    closing for lunch</span>.
+    <hr>
+    <p> Announcer: Number 16: The <i>hand</i>.</p>
+    <p> Interviewer: Good evening. I have with me in the studio tonight
+      Mr Norman St John Polevaulter, who for the past few years has been
+      contradicting people. Mr Polevaulter, why <em>do</em> you
+      contradict people?</p>
+    <p> Norman: I don't. <sup><a href="#fn1" id="r1">[1]</a></sup></p>
+    <p> Interviewer: You told me you did!</p>
+    <section>
+      <p id="fn1"><a href="#r1">[1]</a> This is, naturally, a lie,
+        but paradoxically if it were true he could not say so without
+        contradicting the interviewer and thus making it false.</p>
+    </section>
+    <figure>
+      <figcaption>Table 1. Alternative activities for knights.</figcaption>
+      <table>
+        <tr>
+          <th> Activity
+          <th> Location
+          <th> Cost
+        <tr>
+          <td> Dance
+          <td> Wherever possible
+          <td> £0<sup><a href="#fn1">1</a></sup>
+        <tr>
+          <td> Routines, chorus scenes<sup><a href="#fn2">2</a></sup>
+          <td> Undisclosed
+          <td> Undisclosed
+        <tr>
+          <td> Dining<sup><a href="#fn3">3</a></sup>
+          <td> Camelot
+          <td> Cost of ham, jam, and spam<sup><a href="#fn4">4</a></sup>
+      </table>
+      <p id="fn1">1. Assumed.</p>
+      <p id="fn2">2. Footwork impeccable.</p>
+      <p id="fn3">3. Quality described as "well".</p>
+      <p id="fn4">4. A lot.</p>
+    </figure>
+
+</body>
+
+</html>
