@@ -2,6 +2,8 @@ dist
 .vscode-test
 .rpt2_cache
 cypress
+playground/*
+!playground/.vscode/settings.json
 
 # Logs
 logs

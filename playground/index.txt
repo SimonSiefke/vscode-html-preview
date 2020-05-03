@@ -1,7 +1,0 @@
-dddd
-fff
-ggg
-hhh
-
-HELLO WORLD
-JavaSc
