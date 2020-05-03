@@ -174,51 +174,6 @@
       "path": "./dist/packages/injected-code/dist/html-preview.js",
       "maxSize": "22.5 kB",
       "compression": "none"
-    },
-    {
-      "path": "./packages/samples/code-mirror-sample/dist/localMain.js",
-      "maxSize": "470 kB",
-      "compression": "none"
-    },
-    {
-      "path": "./packages/samples/code-mirror-sample/dist/remoteMain.js",
-      "maxSize": "20 kB",
-      "compression": "none"
-    },
-    {
-      "path": "./packages/samples/minimal-sample/dist/localMain.js",
-      "maxSize": "50 kB",
-      "compression": "none"
-    },
-    {
-      "path": "./packages/samples/minimal-sample/dist/remoteMain.js",
-      "maxSize": "20 kB",
-      "compression": "none"
-    },
-    {
-      "path": "./packages/samples/monaco-sample/dist/localMain.js",
-      "maxSize": "2000 kB",
-      "compression": "none"
-    },
-    {
-      "path": "./packages/samples/monaco-sample/dist/remoteMain.js",
-      "maxSize": "20 kB",
-      "compression": "none"
-    },
-    {
-      "path": "./packages/samples/web-worker-sample/dist/localMain.js",
-      "maxSize": "10 kB",
-      "compression": "none"
-    },
-    {
-      "path": "./packages/samples/web-worker-sample/dist/remoteMain.js",
-      "maxSize": "20 kB",
-      "compression": "none"
-    },
-    {
-      "path": "./packages/samples/web-worker-sample/dist/workerMain.js",
-      "maxSize": "50 kB",
-      "compression": "none"
     }
   ]
 }
