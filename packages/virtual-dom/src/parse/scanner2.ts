@@ -435,8 +435,7 @@ export const scan: (text: string) => SuccessResult | ErrorResult = text => {
       }
     }
   }
-  const lastToken = tokens[tokens.length - 1]
-  if (!isValidLastToken(lastToken)) {
+  if (tokens.length > 0 && !isValidLastToken(tokens[tokens.length - 1])) {
     return {
       status: 'invalid',
       index: -1,

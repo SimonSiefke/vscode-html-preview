@@ -509,3 +509,7 @@ test('attribute with colon at start', () => {
     { text: '>', type: 'EndTagClosingBracket' },
   ])
 })
+
+test('empty', () => {
+  expectTokens(``).toEqual([])
+})

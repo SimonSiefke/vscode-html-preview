@@ -199,6 +199,7 @@ export const activate = (context: vscode.ExtensionContext) => {
         return nextId
       })
       if (newResult.status === 'invalid') {
+        console.log('new invalid')
         cachedValues[pathname] = {
           id,
           offsetMap: updatedOffsetMap,
@@ -216,6 +217,7 @@ export const activate = (context: vscode.ExtensionContext) => {
         generatedDom: undefined,
       }
       if (result.status === 'invalid') {
+        console.log('prev invalid')
         // TODO initial preview was invalid
         return
       }

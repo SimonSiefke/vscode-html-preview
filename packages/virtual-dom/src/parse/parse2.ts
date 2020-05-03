@@ -116,6 +116,8 @@ export const parse: (
     | 'afterHead'
     | 'insideBody'
     | 'afterBody' = 'root'
+
+  tokens //?
   for (let i = 0; i < tokens.length; i++) {
     if (stack.length === 0) {
       i
@@ -221,29 +223,6 @@ export const parse: (
           }
         }
         break
-        // if (token.text.trim()) {
-        //   if (!html) {
-        //     implicitHtml = createElementNode('html', 'html')
-        //     htmlDocument.children.push(implicitHtml)
-        //     html = implicitHtml
-        //   }
-        //   if (!head) {
-        //     implicitHead = createElementNode('head', 'head')
-        //     html.children.push(implicitHead)
-        //     head = implicitHead
-        //   }
-        //   if (!body) {
-        //     implicitBody = createElementNode('body', 'body')
-        //     html.children.push(implicitBody)
-        //     body = implicitBody
-        //     parent = implicitBody
-        //   }
-        // }
-        // assert(parent !== undefined)
-        // child = createTextNode(token.text, getId(offset, token.text.length))
-
-        // parent.children.push(child)
-        // break
       }
       case TokenType.StartTagName: {
         switch (state) {
@@ -685,8 +664,7 @@ const stringify = nodes => {
 // )
 
 const doc = parse(
-  `<h1 class>hello world</h1>
-<p></p>`,
+  ``,
   (() => {
     let i = 0
     return () => i++

@@ -320,11 +320,19 @@ const childEdits: (
       newNode.nodeType === 'ElementNode' &&
       oldNode.id === newNode.id
     ) {
-      attributeEdits(edits, oldNode, newNode)
-      childEdits(edits, oldNode.children, newNode.children, oldNodeMap, newNodeMap, newNode.id)
-      oldIndex++
-      newIndex++
-      continue
+      if (oldNode.tag === newNode.tag) {
+        attributeEdits(edits, oldNode, newNode)
+        childEdits(edits, oldNode.children, newNode.children, oldNodeMap, newNodeMap, newNode.id)
+        oldIndex++
+        newIndex++
+        continue
+      } else {
+        elementDelete(edits, oldNode)
+        elementInsert(edits, newNode, parentId, newIndex)
+        oldIndex++
+        newIndex++
+        continue
+      }
     } else if (
       oldNode.nodeType === 'CommentNode' &&
       newNode.nodeType === 'CommentNode' &&

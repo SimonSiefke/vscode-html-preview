@@ -365,3 +365,7 @@ test('element after element', () => {
 <p></p>`).toEqual(`<html><head></head><body><h1 class>hello world</h1>
 <p></p></body></html>`)
 })
+
+test('empty', () => {
+  expectParse(``).toEqual(`<html><head></head><body></body></html>`)
+})
