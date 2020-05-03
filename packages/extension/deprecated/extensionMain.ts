@@ -9,11 +9,11 @@ import {
 } from 'virtual-dom'
 import * as vscode from 'vscode'
 import * as WebSocket from 'ws'
+import { minimizeEdits } from './services/Commands-util/minimizeEdits/minimizeEdits'
 import { HTML_PREVIEW_JS } from './htmlPreview'
 import * as url from 'url'
 import * as querystring from 'querystring'
 import * as send from 'send'
-import { minimizeEdits } from './minimizeEdits'
 
 let state: 'uninitialized' | 'starting-server' | 'started-server' = 'uninitialized'
 
