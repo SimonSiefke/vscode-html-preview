@@ -4,9 +4,6 @@
   "references": [
     { "path": "./packages/extension" },
     { "path": "./packages/injected-code" },
-    { "path": "./packages/virtual-dom" },
-    { "path": "./packages/html-preview-service" },
-    { "path": "./packages/html-preview-web" },
-    { "path": "./packages/html-preview-service-node" }
+    { "path": "./packages/virtual-dom" }
   ]
 }
