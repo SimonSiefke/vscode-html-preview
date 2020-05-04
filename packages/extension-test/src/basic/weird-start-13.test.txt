@@ -1,0 +1,20 @@
+// puppeteer doesn't include comments before html that's why <!--a--> is missing in expected dom (even though it should be there)
+previousText:
+<!-- hello -->
+<!DOCTYPE html>
+world
+
+edits:
+[]
+
+waitForEdits:
+false
+
+nextText:
+<!-- hello -->
+<!DOCTYPE html>
+world
+
+expectedDom:
+<!DOCTYPE html><html><head></head><body>
+world</body></html>

@@ -1,0 +1,22 @@
+previousText:
+<!DOCTYPE html>
+<body>
+  hello
+</body>
+
+edits:
+[]
+
+waitForEdits:
+false
+
+nextText:
+<!DOCTYPE html>
+<body>
+  hello
+</body>
+
+expectedDom:
+<!DOCTYPE html><html><head></head><body>
+  hello
+</body></html>

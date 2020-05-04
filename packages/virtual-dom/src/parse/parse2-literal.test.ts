@@ -440,3 +440,127 @@ test('whitespace after comments', () => {
   expectParse(`<!--a--><!--c-->
 `).toEqual(`<!--a--><!--c--><html><head></head><body></body></html>`)
 })
+
+test('weird start 1', () => {
+  expectParse(`<!DOCTYPE html>
+<!-- hello -->
+world
+<!-- ! -->`).toEqual(`<!DOCTYPE html><!-- hello --><html><head></head><body>
+world
+<!-- ! --></body></html>`)
+})
+
+test('weird start 2', () => {
+  expectParse(`<!DOCTYPE html>
+<html>
+hello
+</html>`).toEqual(`<!DOCTYPE html><html><head></head><body>
+hello
+</body></html>`)
+})
+
+test('weird start 3', () => {
+  expectParse(`<!Doctype html>
+hello`).toEqual(`<!DOCTYPE html><html><head></head><body>
+hello</body></html>`)
+})
+
+test('weird start 4', () => {
+  expectParse(`<!DOCTYPE html>
+<body>
+  hello
+</body>`).toEqual(`<!DOCTYPE html><html><head></head><body>
+  hello
+</body></html>`)
+})
+
+test('weird start 5', () => {
+  expectParse(`<!DOCTYPE html>
+<body>
+</body>`).toEqual(`<!DOCTYPE html><html><head></head><body>
+</body></html>`)
+})
+
+test('weird start 6', () => {
+  expectParse(`<!DOCTYPE html>
+<html>
+  <body>
+    hello
+  </body>
+</html>`).toEqual(`<!DOCTYPE html><html><head></head><body>
+    hello
+  </body></html>`)
+})
+
+test('weird start 7', () => {
+  expectParse(`<!DOCTYPE html>
+<head>
+</head>
+hello`).toEqual(`<!DOCTYPE html><html><head>
+</head><body>
+hello</body></html>`)
+})
+
+test('weird start 8', () => {
+  expectParse(`<!DOCTYPE html>
+<head>
+  hello
+</head>`).toFail()
+})
+
+test('weird start 9', () => {
+  expectParse(`<!DOCTYPE html>
+<html>
+  hello
+  <body>
+    world
+  </body>
+</html>`).toFail()
+})
+
+test('weird start 10', () => {
+  expectParse(`<!DOCTYPE html>
+hello
+<html>
+  world
+</html>`).toFail()
+})
+
+test('weird start 11', () => {
+  expectParse(`<!DOCTYPE html>
+hello
+<html>
+  <head>
+  </head>
+  world
+</html>`).toFail()
+})
+
+test('weird start 12', () => {
+  expectParse(`<!DOCTYPE html>
+<html>
+  <head>
+  </head>
+  hello
+</html>`).toEqual(`<!DOCTYPE html><html><head>
+  </head><body>
+  hello
+</body></html>`)
+})
+
+test('weird start 13', () => {
+  expectParse(`<!-- hello -->
+<!DOCTYPE html>
+world`).toEqual(`<!DOCTYPE html><html><head></head><body>
+world</body></html>`)
+})
+
+test('weird start 14', () => {
+  expectParse(`<!DOCTYPE html>
+<body>
+  hello
+</body>
+<!--world-->`).toEqual(`<!DOCTYPE html><html><head></head><body>
+  hello
+</body><!--world--></html>`)
+})

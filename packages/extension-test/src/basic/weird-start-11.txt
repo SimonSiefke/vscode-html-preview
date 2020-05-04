@@ -1,7 +1,0 @@
-<!DOCTYPE html>
-hello
-<html>
-  <head>
-  </head>
-  world
-</html>

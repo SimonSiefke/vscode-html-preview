@@ -293,7 +293,7 @@ const childEdits: (
    * Take care of common nodes
    */
   while (oldIndex < oldNodes.length && newIndex < newNodes.length) {
-    if (k++ > 100) {
+    if (k++ > 1000) {
       console.log('force')
       throw new Error('force')
       break

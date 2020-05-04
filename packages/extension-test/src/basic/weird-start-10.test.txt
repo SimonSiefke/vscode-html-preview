@@ -1,0 +1,22 @@
+previousText:
+<!DOCTYPE html>
+hello
+<html>
+  world
+</html>
+
+edits:
+[]
+
+waitForEdits:
+false
+
+nextText:
+<!DOCTYPE html>
+hello
+<html>
+  world
+</html>
+
+expectedDom:
+TODO invalid

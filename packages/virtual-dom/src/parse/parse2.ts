@@ -478,6 +478,9 @@ export const parse: (
                   parent = body as ElementNode
                 }
               }
+            } else if (token.text === 'html' && implicitBody && !implicitHtml) {
+              stack.pop()
+              parent = stack[stack.length - 1]
             } else {
               return {
                 status: 'invalid',
@@ -671,15 +674,10 @@ const stringify = nodes => {
 // )
 
 const doc = parse(
-  `<h1>hello world</h1>
-
-  <input type="checkbox" />
-  <br />
-  <input type="checkbox" />
-  <br />
-  <input type="checkbox" />
-  <br />
-  this is text`,
+  `<!DOCTYPE html>
+<html>
+hello
+</html>`,
   (() => {
     let i = 0
     return () => i++

@@ -7,10 +7,7 @@ const headless = true
 
 // TODO
 const failingTests = [
-  // 'replace-element-with-text.test.txt',
   'delete-122-delete-element-between-comment-and-comment.test.txt',
-  'issue22.test.txt',
-  'remove-entity.test.txt',
   'invalid-to-valid-1.test.txt',
   'special-1-delete-html-with-content.test.txt',
   'bug-8.test.txt',
@@ -39,6 +36,10 @@ const failingTests = [
   'top-212-explicit-html-implicit-head-explicit-body.test.txt',
   'top-220-explicit-html-explicit-head-no-body.test.txt',
   'top-221-explicit-html-explicit-head-implicit-body.test.txt',
+  'weird-start-8.test.txt', // invalid
+  'weird-start-9.test.txt', // invalid
+  'weird-start-10.test.txt', // invalid
+  'weird-start-11.test.txt', // invalid
   // 'top-222-explicit-html-explicit-head-explicit-body.test.txt',
 ]
 
@@ -49,7 +50,6 @@ const testFileNames = fs
   .filter(x => !failingTests.includes(x))
   .filter(x => (only.length > 0 ? only.includes(x) : true))
 
-testFileNames.length // ?
 // fs.removeSync(path.join(__dirname, 'generated-tests'));
 fs.ensureDirSync(path.join(__dirname, 'generated-tests'))
 
@@ -271,7 +271,7 @@ function gen(fileName) {
   const lines = basicTest.split('\n')
 
   if (lines[lines.length - 1] !== '') {
-    throw new Error('file must end with a new line')
+    throw new Error(`file must end with a new line ${fileName}`)
   }
 
   let currentTest = {}

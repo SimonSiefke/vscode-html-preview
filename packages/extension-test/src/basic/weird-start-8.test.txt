@@ -1,0 +1,20 @@
+previousText:
+<!DOCTYPE html>
+<head>
+  hello
+</head>
+
+edits:
+[]
+
+waitForEdits:
+false
+
+nextText:
+<!DOCTYPE html>
+<head>
+  hello
+</head>
+
+expectedDom:
+TODO invalid
