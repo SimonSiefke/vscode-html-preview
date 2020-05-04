@@ -29,4 +29,8 @@ expectedEdits:
       text: b
     }
   }
+  {
+    command: elementMove
+    payload: {}
+  }
 ]

@@ -38,6 +38,25 @@ expectedEdits:
     payload: {}
   }
   {
+    command: elementDelete
+    payload: {}
+  }
+  {
+    command: elementInsert
+    payload: {
+      attributes: {}
+      nodeType: ElementNode
+      tag: h1
+    }
+  }
+  {
+    command: elementInsert
+    payload: {
+      nodeType: TextNode
+      text: "hello world"
+    }
+  }
+  {
     command: elementInsert
     payload: {
       nodeType: TextNode

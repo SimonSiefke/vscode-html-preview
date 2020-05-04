@@ -3,16 +3,11 @@ const path = require('path')
 const { toJson } = require('really-relaxed-json')
 const { validate } = require('jsonschema')
 const failingTests = [
-  'diff.test.txt',
   'move-down.test.txt',
   'delete-022-delete-text-between-comment-and-comment.test.txt',
-  'insert-122-insert-element-between-comment-and-comment.test.txt',
-  // 'insert-022-insert-text-between-comment-and-comment.test.txt',
-  'duplicate-element.test.txt',
-  'bug-6.1.test.txt',
+  // 'bug-6.1.test.txt',
   'bug-6.2.test.txt',
   'bug-5.test.txt',
-  'text-insertion-in-nested-html.test.txt',
   'delete-122-delete-element-between-comment-and-comment.test.txt',
   'deleting-an-attribute-character-by-character.test.txt',
   'move-up.test.txt',

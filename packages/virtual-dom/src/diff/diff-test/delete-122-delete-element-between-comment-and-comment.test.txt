@@ -16,6 +16,10 @@ nextText:
 expectedEdits:
 [
   {
+    command: elementMove
+    payload: {}
+  }
+  {
     command: elementDelete
     payload: {}
   }
