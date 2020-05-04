@@ -18,29 +18,15 @@ const failingTests = [
   'textnode-before-head.test.txt',
   'textnode-before-style.test.txt',
   'textnode-inserted-after-head.test.txt',
-  'top-122-implicit-html-explicit-head-explicit-body.test.txt',
   'whitespace-before-head.test.txt',
   'whitespace-before-implicit-head.test.txt',
-  'insert-doctype.test.txt',
-  'top-100-implicit-html-no-head-no-body.test.txt',
-  'top-111-implicit-html-implicit-head-implicit-body.test.txt', // TODO why browser inserts text node
-  'top-112-implicit-html-implicit-head-explicit-body.test.txt', // TODO why browser inserts text node
-  'top-120-implicit-html-explicit-head-no-body.test.txt',
-  'top-121-implicit-html-explicit-head-implicit-body.test.txt',
-  'top-122-implicit-html-explicit-head-explicit-body.test.txt',
-  'top-200-explicit-html-no-head-no-body.test.txt',
-  'top-201-explicit-html-no-head-implicit-body.test.txt',
-  'top-202-explicit-html-no-head-explicit-body.test.txt',
-  'top-210-explicit-html-implicit-head-no-body.test.txt',
-  'top-211-explicit-html-implicit-head-implicit-body.test.txt',
-  'top-212-explicit-html-implicit-head-explicit-body.test.txt',
-  'top-220-explicit-html-explicit-head-no-body.test.txt',
-  'top-221-explicit-html-explicit-head-implicit-body.test.txt',
-  'weird-start-8.test.txt', // invalid
-  'weird-start-9.test.txt', // invalid
-  'weird-start-10.test.txt', // invalid
-  'weird-start-11.test.txt', // invalid
-  // 'top-222-explicit-html-explicit-head-explicit-body.test.txt',
+  'insert-doctype.test.txt', // TODO invalid
+  'top-111-implicit-html-implicit-head-implicit-body.test.txt', // TODO browser inserts text node
+  'top-112-implicit-html-implicit-head-explicit-body.test.txt', // TODO browser inserts text node
+  'weird-start-8.test.txt', // TODO  invalid
+  'weird-start-9.test.txt', // TODO invalid
+  'weird-start-10.test.txt', // TODO invalid
+  'weird-start-11.test.txt', // TODO invalid
 ]
 
 const only = []

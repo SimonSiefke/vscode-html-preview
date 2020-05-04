@@ -192,7 +192,7 @@ export const parse: (
             break
           }
           case 'insideBody': {
-            if (parent === htmlDocument) {
+            if (parent === htmlDocument || parent === html) {
               body!.children.push(createTextNode(token.text, getId(offset, token.text.length)))
             } else {
               parent.children.push(createTextNode(token.text, getId(offset, token.text.length)))
@@ -674,9 +674,8 @@ const stringify = nodes => {
 // )
 
 const doc = parse(
-  `<!DOCTYPE html>
-<html>
-hello
+  `<html>
+  <b></b>
 </html>`,
   (() => {
     let i = 0

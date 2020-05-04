@@ -564,3 +564,11 @@ test('weird start 14', () => {
   hello
 </body><!--world--></html>`)
 })
+
+// TODO other top tests
+test('top 201, explicit html, no head, implicit body', () => {
+  expectParse(`<html>
+  <b></b>
+</html>`).toEqual(`<html><head></head><body><b></b>
+</body></html>`)
+})

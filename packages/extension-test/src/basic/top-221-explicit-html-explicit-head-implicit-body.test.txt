@@ -3,7 +3,7 @@ previousText:
   <head>
     <title></title>
   </head>
-  <b>
+  <b></b>
 </html>
 
 edits:
@@ -17,8 +17,12 @@ nextText:
   <head>
     <title></title>
   </head>
-  <b>
+  <b></b>
 </html>
 
 expectedDom:
-<html><head><title></title></head><body><b></body></html>
+<html><head>
+    <title></title>
+  </head>
+  <body><b></b>
+</body></html>
