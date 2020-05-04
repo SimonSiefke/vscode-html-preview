@@ -6,7 +6,7 @@ const failingTests = [
   'move-down.test.txt',
   'delete-022-delete-text-between-comment-and-comment.test.txt',
   // 'bug-6.1.test.txt',
-  'bug-6.2.test.txt',
+  // 'bug-6.2.test.txt',
   'bug-5.test.txt',
   'delete-122-delete-element-between-comment-and-comment.test.txt',
   'deleting-an-attribute-character-by-character.test.txt',

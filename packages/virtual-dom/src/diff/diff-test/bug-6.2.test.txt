@@ -24,13 +24,6 @@ expectedEdits:
   {
     command: elementInsert
     payload: {
-      nodeType: TextNode
-      text: "\n"
-    }
-  }
-  {
-    command: elementInsert
-    payload: {
       nodeType: ElementNode
       tag: h1
     }
