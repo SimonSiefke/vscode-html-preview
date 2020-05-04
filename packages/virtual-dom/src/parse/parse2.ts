@@ -127,7 +127,6 @@ export const parse: (
     }
     assert(stack.length > 0)
     const token = tokens[i]
-
     switch (token.type) {
       case TokenType.Content: {
         switch (state) {
@@ -565,16 +564,21 @@ export const parse: (
         const attributeName = token.text
         let nextToken = tokens[++i]
         if (nextToken.type === TokenType.Whitespace) {
+          offset += nextToken.text.length
           nextToken = tokens[++i]
         }
         if (nextToken.type === TokenType.AttributeEqualSign) {
+          offset += nextToken.text.length
           nextToken = tokens[++i]
           if (nextToken.type === TokenType.Whitespace) {
+            offset += nextToken.text.length
             nextToken = tokens[++i]
           }
           if (nextToken.type === TokenType.AttributeValue) {
+            offset += nextToken.text.length
             child.attributes[attributeName] = nextToken.text
           } else if (nextToken.type === TokenType.QuotedAttributeValue) {
+            offset += nextToken.text.length
             child.attributes[attributeName] = nextToken.text.slice(1, -1) // TODO check if opening quote is more performant
           }
         } else if (nextToken.type === TokenType.AttributeName) {
@@ -593,7 +597,10 @@ export const parse: (
     }
     offset += token.text.length
   }
-  stack
+
+  if (offset !== text.length) {
+    throw new Error('parsing error')
+  }
 
   if (stack[stack.length - 1] === implicitHead) {
     stack.pop()
@@ -664,8 +671,15 @@ const stringify = nodes => {
 // )
 
 const doc = parse(
-  `<!--a--><!--c-->
-`,
+  `<h1>hello world</h1>
+
+  <input type="checkbox" />
+  <br />
+  <input type="checkbox" />
+  <br />
+  <input type="checkbox" />
+  <br />
+  this is text`,
   (() => {
     let i = 0
     return () => i++

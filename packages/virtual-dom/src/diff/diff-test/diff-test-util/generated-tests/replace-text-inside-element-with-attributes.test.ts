@@ -61,8 +61,13 @@ test(`replace-text-inside-element-with-attributes.test.txt`, () => {
     const edits = diff(p1, p2)
     const expectedEdits = [
       {
-        "command": "textReplace",
+        "command": "elementDelete",
+        "payload": {}
+      },
+      {
+        "command": "elementInsert",
         "payload": {
+          "nodeType": "TextNode",
           "text": "b"
         }
       }

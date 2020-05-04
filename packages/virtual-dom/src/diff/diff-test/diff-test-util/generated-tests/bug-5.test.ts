@@ -21,17 +21,19 @@ function adjustExpectedEdits(expectedEdits){
   return expectedEdits
 }
 
-test(`duplicate-element.test.txt`, () => {
+test(`bug-5.test.txt`, () => {
   let offsetMap = Object.create(null)
 
   let id = 0
-  const p1 = parse(`<head>
-  <meta charset="utf-8" />
-</head>
+  const p1 = parse(`<h1>hello world</h1>
 
-<body>
-  <p>dddddddddddd</p>
-</body>`, offset => {
+<input type="checkbox" />
+<br />
+<input type="checkbox" />
+<br />
+<input type="checkbox" />
+<br />
+this is text`, offset => {
     const nextId = id++
     offsetMap[offset] = nextId
     return nextId
@@ -39,22 +41,22 @@ test(`duplicate-element.test.txt`, () => {
 
   offsetMap = updateOffsetMap(offsetMap, [
     {
-      "rangeOffset": 71,
-      "rangeLength": 0,
-      "text": "\n  <p>dddddddddddd</p>"
+      "rangeOffset": 21,
+      "rangeLength": 26,
+      "text": ""
     }
   ])
 
   let newOffsetMap = Object.create(null)
 
-  const p2 = parse(`<head>
-  <meta charset="utf-8" />
-</head>
+  const p2 = parse(`<h1>hello world</h1>
 
-<body>
-  <p>dddddddddddd</p>
-  <p>dddddddddddd</p>
-</body>`, (offset, tokenLength) => {
+<br />
+<input type="checkbox" />
+<br />
+<input type="checkbox" />
+<br />
+this is text`, (offset, tokenLength) => {
     let nextId: number
     nextId: if (offset in offsetMap) {
       nextId = offsetMap[offset]
@@ -74,25 +76,12 @@ test(`duplicate-element.test.txt`, () => {
     const edits = diff(p1, p2)
     const expectedEdits = [
       {
-        "command": "elementInsert",
-        "payload": {
-          "nodeType": "TextNode",
-          "text": "\n  "
-        }
+        "command": "elementDelete",
+        "payload": {}
       },
       {
-        "command": "elementInsert",
-        "payload": {
-          "nodeType": "ElementNode",
-          "tag": "p"
-        }
-      },
-      {
-        "command": "elementInsert",
-        "payload": {
-          "nodeType": "TextNode",
-          "text": "dddddddddddd"
-        }
+        "command": "elementDelete",
+        "payload": {}
       }
     ]
     expect(adjustEdits(edits)).toEqual(adjustExpectedEdits(expectedEdits))

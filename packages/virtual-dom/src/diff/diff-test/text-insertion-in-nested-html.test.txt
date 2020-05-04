@@ -28,16 +28,4 @@ expectedEdits:
       text: !!!
     }
   }
-  {
-    command: elementDelete
-    payload: {}
-    
-  }
-  {
-    command: elementInsert
-    payload: {
-      nodeType: TextNode
-      text: "\n"
-    }
-  }
 ]

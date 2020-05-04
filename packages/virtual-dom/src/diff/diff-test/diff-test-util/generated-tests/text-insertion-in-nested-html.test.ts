@@ -72,17 +72,6 @@ test(`text-insertion-in-nested-html.test.txt`, () => {
           "nodeType": "TextNode",
           "text": "!!!"
         }
-      },
-      {
-        "command": "elementDelete",
-        "payload": {}
-      },
-      {
-        "command": "elementInsert",
-        "payload": {
-          "nodeType": "TextNode",
-          "text": "\n"
-        }
       }
     ]
     expect(adjustEdits(edits)).toEqual(adjustExpectedEdits(expectedEdits))

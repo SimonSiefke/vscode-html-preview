@@ -29,8 +29,9 @@ nextText:
 expectedEdits:
 [
   {
-    command: textReplace
+    command: elementInsert
     payload: {
+      nodeType: TextNode
       text: "\n  "
     }
   }
@@ -46,13 +47,6 @@ expectedEdits:
     payload:{
       nodeType: TextNode
       text: dddddddddddd
-    }
-  }
-  {
-    command: elementInsert
-    payload: {
-      nodeType: TextNode
-      text: "\n"
     }
   }
 ]
