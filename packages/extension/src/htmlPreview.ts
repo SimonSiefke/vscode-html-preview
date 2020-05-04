@@ -2,6 +2,7 @@ export const HTML_PREVIEW_JS = `const nodeTypeMap = {
   1: 'ElementNode',
   3: 'TextNode',
   8: 'CommentNode',
+  9: 'ElementNode',
   10: 'Doctype'
 }
 
@@ -16,6 +17,8 @@ const parseEntities = text => {
 }
 
 const $nodeMap = Object.create(null)
+
+$nodeMap[-1] = document
 
 const hydrate = (node, $node) => {
   if (node.nodeType !== nodeTypeMap[$node.nodeType]) {
@@ -99,6 +102,7 @@ const hydrate = (node, $node) => {
   webSocket.onerror = console.error
   webSocket.onmessage = ({ data }) => {
     const messages = JSON.parse(data)
+    const movedIds = new Set()
     for (const { command, payload } of messages) {
       switch (command) {
         case 'textReplace': {
@@ -159,9 +163,13 @@ const hydrate = (node, $node) => {
           } else {
             $parent.insertBefore($node, $parent.childNodes[payload.index])
           }
+          movedIds.add(payload.id)
           break
         }
         case 'elementDelete': {
+          if(movedIds.has(payload.id)){
+            break
+          }
           const $node = $nodeMap[payload.id]
           if(!$node){
             console.log({ command, payload })

@@ -23,4 +23,8 @@ expectedEdits:
     command: elementDelete
     payload: {}
   }
+  {
+    command: elementDelete
+    payload: {}
+  }
 ]

@@ -293,7 +293,11 @@ const childEdits: (
    * Take care of common nodes
    */
   while (oldIndex < oldNodes.length && newIndex < newNodes.length) {
-    if (k++ > 1000) {
+    if (k++ > 10000) {
+      oldIndex
+      newIndex
+      oldNodes[oldIndex] //?
+      newNodes[newIndex] //?
       console.log('force')
       throw new Error('force')
       break
@@ -340,6 +344,8 @@ const childEdits: (
     } else if (oldNode.id in newNodeMap) {
       if (newNode.id in oldNodeMap) {
         if (oldNodeMap[newNode.id].nodeType === newNode.nodeType) {
+          oldNode
+          newNode
           switch (newNode.nodeType) {
             case 'TextNode': {
               if (oldNodeMap[newNode.id].text === newNode.text) {
@@ -353,7 +359,16 @@ const childEdits: (
               break
             }
             case 'CommentNode': {
-              // TODO same test
+              if (oldNodeMap[newNode.id].text === newNode.text) {
+                newNode
+                oldNode
+                oldIndex++
+              } else {
+                elementDelete(edits, oldNode)
+                elementInsert(edits, newNode, parentId, newIndex)
+                oldIndex++
+                newIndex++
+              }
               break
             }
             case 'ElementNode': {
@@ -367,10 +382,6 @@ const childEdits: (
           oldIndex++
           newIndex++
         }
-        oldNode
-        newNode
-        newNode.nodeType //?
-        oldNode.nodeType //?
       } else {
         elementInsert(edits, newNode, parentId, newIndex)
         newIndex++
@@ -394,8 +405,19 @@ const childEdits: (
   while (newIndex < newNodes.length) {
     const newNode = newNodes[newIndex]
     if (newNode.id in oldNodeMap) {
-      newNode
-      elementMove(edits, newNode, parentId, newIndex)
+      if (newNode.id !== 'html') {
+        elementMove(edits, newNode, parentId, newIndex)
+      }
+      if (newNode.nodeType === 'ElementNode') {
+        childEdits(
+          edits,
+          oldNodeMap[newNode.id].children,
+          newNode.children,
+          oldNodeMap,
+          newNode,
+          newNode.id
+        )
+      }
     } else {
       elementInsert(edits, newNode, parentId, newIndex)
     }
@@ -415,23 +437,19 @@ export const diff: (oldState: State, newState: State) => readonly Operation[] = 
 let offsetMap = Object.create(null)
 
 let id = 0
-const p1 = parse(
-  `<head></head>
-<h1>hello world</h1>`,
-  offset => {
-    const nextId = id++
-    offsetMap[offset] = nextId
-    return nextId
-  }
-)
+const p1 = parse(`<!--a--><h1>b</h1><!--c-->`, offset => {
+  const nextId = id++
+  offsetMap[offset] = nextId
+  return nextId
+})
 
 offsetMap
 
 offsetMap = updateOffsetMap(offsetMap, [
   {
-    rangeOffset: 14,
-    rangeLength: 0,
-    text: 'a',
+    rangeOffset: 8,
+    rangeLength: 10,
+    text: '',
   },
 ])
 
@@ -439,26 +457,22 @@ offsetMap
 
 let newOffsetMap = Object.create(null)
 
-const p2 = parse(
-  `<head></head>
-a<h1>hello world</h1>`,
-  (offset, tokenLength) => {
-    let nextId: number
-    nextId: if (offset in offsetMap) {
-      nextId = offsetMap[offset]
-    } else {
-      for (let i = offset + 1; i < offset + tokenLength; i++) {
-        if (i in offsetMap) {
-          nextId = offsetMap[i]
-          break nextId
-        }
+const p2 = parse(`<!--a--><!--c-->`, (offset, tokenLength) => {
+  let nextId: number
+  nextId: if (offset in offsetMap) {
+    nextId = offsetMap[offset]
+  } else {
+    for (let i = offset + 1; i < offset + tokenLength; i++) {
+      if (i in offsetMap) {
+        nextId = offsetMap[i]
+        break nextId
       }
-      nextId = id++
     }
-    newOffsetMap[offset] = nextId
-    return nextId
+    nextId = id++
   }
-)
+  newOffsetMap[offset] = nextId
+  return nextId
+})
 if (p1.status === 'success' && p2.status === 'success') {
   JSON.stringify(p1.nodes, null, 2) //?
   JSON.stringify(p2.nodes, null, 2) //?
