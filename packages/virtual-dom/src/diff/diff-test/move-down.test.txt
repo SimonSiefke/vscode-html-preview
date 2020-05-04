@@ -7,19 +7,14 @@ previousText:
 edits:
 [
   {
+    rangeOffset: 10
+    rangeLength: 2
+    text: "</section>\n"
+  }
+  {
     rangeOffset: 32
     rangeLength: 11
     text: ""
-  }
-  {
-    rangeOffset: 10
-    rangeLength: 2
-    text: ""
-  }
-  {
-    rangeOffset: 10
-    rangeLength: 0
-    text: "</section>\n"
   }
 ]
 
@@ -32,14 +27,18 @@ nextText:
 expectedEdits:
 [
   {
-    command: elementDelete
-    payload: {}
-  }
-  {
     command: textReplace,
     payload: {
       text: "\n"
     }
+  }
+  {
+    command: elementDelete
+    payload: {}
+  }
+  {
+    command: elementDelete
+    payload: {}
   }
   {
     command: elementInsert
@@ -47,6 +46,10 @@ expectedEdits:
       nodeType: TextNode
       text: "\n"
     }
+  }
+  {
+    command: elementMove
+    payload: {}
   }
   {
     command: elementMove

@@ -342,3 +342,11 @@ first type main, then text inside main, then style="margin:40px"
 
 preview doesn't update anymore
  -->
+
+<!-- TODO bug
+<section>
+  <h1>hello world</h1>
+</section>
+
+move h1 down and up, text disappears
+ -->

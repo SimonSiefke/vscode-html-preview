@@ -1,19 +1,19 @@
 import * as http from 'http'
+import * as querystring from 'querystring'
+import * as send from 'send'
+import * as url from 'url'
 import {
   diff2,
+  ErrorResult,
   generateDom,
+  minimizeEdits,
   parse2,
   SuccessResult,
   updateOffsetMap,
-  ErrorResult,
 } from 'virtual-dom'
 import * as vscode from 'vscode'
 import * as WebSocket from 'ws'
 import { HTML_PREVIEW_JS } from './htmlPreview'
-import * as url from 'url'
-import * as querystring from 'querystring'
-import * as send from 'send'
-import { minimizeEdits } from './minimizeEdits'
 
 let state: 'uninitialized' | 'starting-server' | 'started-server' = 'uninitialized'
 
@@ -170,6 +170,8 @@ export const activate = (context: vscode.ExtensionContext) => {
       }
       console.log('need to update')
       const { result, offsetMap, previousText, id } = cachedValues[pathname]
+      console.log(JSON.stringify(event.contentChanges))
+      console.log(JSON.stringify(minimizeEdits(previousText, event.contentChanges)))
       const updatedOffsetMap = updateOffsetMap(
         offsetMap,
         minimizeEdits(previousText, event.contentChanges)

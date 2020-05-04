@@ -339,7 +339,17 @@ const childEdits: (
       newIndex++
     } else if (oldNode.id in newNodeMap) {
       if (newNode.id in oldNodeMap) {
-        oldIndex++
+        if (oldNodeMap[newNode.id].nodeType === newNode.nodeType) {
+          oldIndex++
+        } else {
+          elementDelete(edits, oldNode)
+          elementInsert(edits, newNode, parentId, newIndex)
+          oldIndex++
+          newIndex++
+        }
+        newNode
+        newNode.nodeType //?
+        oldNode.nodeType //?
       } else {
         elementInsert(edits, newNode, parentId, newIndex)
         newIndex++
@@ -363,6 +373,8 @@ const childEdits: (
   while (newIndex < newNodes.length) {
     const newNode = newNodes[newIndex]
     if (newNode.id in oldNodeMap) {
+      newNode
+
       elementMove(edits, newNode, parentId, newIndex)
     } else {
       elementInsert(edits, newNode, parentId, newIndex)
@@ -383,28 +395,22 @@ export const diff: (oldState: State, newState: State) => readonly Operation[] = 
 let offsetMap = Object.create(null)
 
 let id = 0
-const p1 = parse(
-  `<h1>hello world</h1>
-
-<input type="checkbox" />
-<br />
-<input type="checkbox" />
-<br />
-<input type="checkbox" />
-<br />
-this is text`,
-  offset => {
-    const nextId = id++
-    offsetMap[offset] = nextId
-    return nextId
-  }
-)
+const p1 = parse(`h1`, offset => {
+  const nextId = id++
+  offsetMap[offset] = nextId
+  return nextId
+})
 
 offsetMap = updateOffsetMap(offsetMap, [
   {
-    rangeOffset: 21,
-    rangeLength: 26,
-    text: '',
+    rangeOffset: 2,
+    rangeLength: 0,
+    text: '></h1>',
+  },
+  {
+    rangeOffset: 0,
+    rangeLength: 0,
+    text: '<',
   },
 ])
 
@@ -412,32 +418,22 @@ offsetMap
 
 let newOffsetMap = Object.create(null)
 
-const p2 = parse(
-  `<h1>hello world</h1>
-
-<br />
-<input type="checkbox" />
-<br />
-<input type="checkbox" />
-<br />
-this is text`,
-  (offset, tokenLength) => {
-    let nextId: number
-    nextId: if (offset in offsetMap) {
-      nextId = offsetMap[offset]
-    } else {
-      for (let i = offset + 1; i < offset + tokenLength; i++) {
-        if (i in offsetMap) {
-          nextId = offsetMap[i]
-          break nextId
-        }
+const p2 = parse(`<h1></h1>`, (offset, tokenLength) => {
+  let nextId: number
+  nextId: if (offset in offsetMap) {
+    nextId = offsetMap[offset]
+  } else {
+    for (let i = offset + 1; i < offset + tokenLength; i++) {
+      if (i in offsetMap) {
+        nextId = offsetMap[i]
+        break nextId
       }
-      nextId = id++
     }
-    newOffsetMap[offset] = nextId
-    return nextId
+    nextId = id++
   }
-)
+  newOffsetMap[offset] = nextId
+  return nextId
+})
 if (p1.status === 'success' && p2.status === 'success') {
   JSON.stringify(p1.nodes, null, 2) //?
   JSON.stringify(p2.nodes, null, 2) //?

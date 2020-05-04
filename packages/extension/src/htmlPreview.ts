@@ -141,7 +141,7 @@ const hydrate = (node, $node) => {
           if(payload.index===0){
             $parent.prepend($node)
           } else {
-            $parent.insertBefore($node, $parent.children[payload.index])
+            $parent.insertBefore($node, $parent.childNodes[payload.index])
           }
           $nodeMap[payload.id] = $node
           break
@@ -157,7 +157,7 @@ const hydrate = (node, $node) => {
           if(payload.index === 0){
             $parent.prepend($node)
           } else {
-            $parent.insertBefore($node, $parent.children[payload.index])
+            $parent.insertBefore($node, $parent.childNodes[payload.index])
           }
           break
         }

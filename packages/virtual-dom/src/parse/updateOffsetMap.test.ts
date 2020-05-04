@@ -27,8 +27,8 @@ test('update after second offset', () => {
   expect(
     updateOffsetMap(
       {
-        1: 0,
-        4: 1,
+        0: 0 /* h1 */,
+        4: 1 /* hello world */,
       },
       [
         {
@@ -39,8 +39,8 @@ test('update after second offset', () => {
       ]
     )
   ).toEqual({
-    1: 0,
-    11: 1,
+    0: 0 /* h1 */,
+    11: 1 /* hello world */,
   })
 })
 
@@ -55,9 +55,9 @@ test('delete after second offset', () => {
   expect(
     updateOffsetMap(
       {
-        1: 0,
-        5: 1,
-        11: 2,
+        0: 0 /* h1 */,
+        5: 1 /* p */,
+        11: 2 /* hello world */,
       },
       [
         {
@@ -68,8 +68,8 @@ test('delete after second offset', () => {
       ]
     )
   ).toEqual({
-    1: 0,
-    4: 2,
+    0: 0 /* h1 */,
+    4: 2 /* hello world */,
   })
 })
 
@@ -84,8 +84,8 @@ test('insert at start', () => {
   expect(
     updateOffsetMap(
       {
-        1: 0,
-        4: 1,
+        0: 0 /* h1 */,
+        4: 1 /* hello world */,
       },
       [
         {
@@ -95,7 +95,10 @@ test('insert at start', () => {
         },
       ]
     )
-  ).toEqual({ 5: 0, 8: 1 })
+  ).toEqual({
+    4: 0 /* h1 */,
+    8: 1 /* hello world */,
+  })
 })
 
 test('delete at start', () => {
@@ -110,9 +113,9 @@ test('delete at start', () => {
   expect(
     updateOffsetMap(
       {
-        1: 0,
-        5: 1,
-        9: 2,
+        0: 0 /* br */,
+        4: 1 /* h1 */,
+        8: 2 /* hello world */,
       },
       [
         {
@@ -122,7 +125,10 @@ test('delete at start', () => {
         },
       ]
     )
-  ).toEqual({ 1: 1, 5: 2 })
+  ).toEqual({
+    0: 1 /* h1 */,
+    4: 2 /* hello world */,
+  })
 })
 
 test('multiple insertions', () => {
@@ -136,8 +142,8 @@ test('multiple insertions', () => {
   expect(
     updateOffsetMap(
       {
-        1: 0,
-        4: 1,
+        0: 0 /* h1 */,
+        4: 1 /* hello world */,
       },
       [
         {
@@ -158,8 +164,8 @@ test('multiple insertions', () => {
       ]
     )
   ).toEqual({
-    5: 0,
-    12: 1,
+    4: 0 /* h1 */,
+    12: 1 /* hello world */,
   })
 })
 
@@ -174,12 +180,12 @@ test('multiple deletions', () => {
   expect(
     updateOffsetMap(
       {
-        1: 0,
-        5: 1,
-        9: 2,
-        12: 3,
-        19: 4,
-        22: 5,
+        0: 1 /* br */,
+        4: 2 /* h1 */,
+        8: 3 /* br */,
+        12: 4 /* hello  */,
+        18: 5 /* br */,
+        22: 6 /* world */,
       },
       [
         {
@@ -200,8 +206,140 @@ test('multiple deletions', () => {
       ]
     )
   ).toEqual({
-    1: 1,
-    4: 3,
-    10: 5,
+    0: 2 /* h1 */,
+    4: 4 /* hello */,
+    10: 6 /* world */,
   })
+})
+
+test('move down', () => {
+  /**
+   * Before:
+   * <section>
+   *   <h1>hello world</h1>
+   * </section>
+   *
+   *
+   * After:
+   * <section>
+   * </section>
+   * <h1>hello world</h1>
+   *
+   */
+  expect(
+    updateOffsetMap(
+      {
+        0: 1 /* section */,
+        9: 2 /* \n   */,
+        12: 3 /* h1 */,
+        16: 4 /* hello world */,
+        32: 5 /* \n */,
+        43: 6 /* \n */,
+      },
+      [
+        {
+          rangeOffset: 10,
+          rangeLength: 2,
+          text: '</section>\n',
+        },
+        {
+          rangeOffset: 32,
+          rangeLength: 11,
+          text: '',
+        },
+      ]
+    )
+  ).toEqual({
+    0: 1 /* section */,
+    9: 2 /* \n */,
+    21: 3 /* h1 */,
+    25: 4 /* hello world */,
+    41: 6 /* \n */,
+  })
+})
+
+test('move up', () => {
+  /**
+   * Before:
+   * <section>
+   * </section>
+   * <h1>hello world</h1>
+   *
+   *
+   * After:
+   * <section>
+   *   <h1>hello world</h1>
+   * </section>
+   *
+   */
+  expect(
+    updateOffsetMap(
+      {
+        0: 1 /* section */,
+        9: 2 /* \n */,
+        20: 3 /* \n */,
+        21: 4 /* h1 */,
+        25: 5 /* hello world */,
+        41: 6 /* \n */,
+      },
+      [
+        {
+          rangeOffset: 10,
+          rangeLength: 11,
+          text: '',
+        },
+        {
+          rangeOffset: 21,
+          rangeLength: 0,
+          text: '  ',
+        },
+        {
+          rangeOffset: 41,
+          rangeLength: 0,
+          text: '\n</section>',
+        },
+      ]
+    )
+  ).toEqual({
+    0: 1 /* section */,
+    9: 2 /* \n   */,
+    12: 4 /* h1 */,
+    16: 5 /* hello world */,
+    43: 6 /* \n */,
+  })
+})
+
+test('weird edits', () => {
+  /**
+   * Before:
+   * <h1>hello world</h1>
+   *
+   * After:
+   * hello world
+   */
+  expect(
+    updateOffsetMap(
+      {
+        0: 1 /* h1 */,
+        4: 2 /* hello world */,
+      },
+      [
+        {
+          rangeOffset: 15,
+          rangeLength: 5,
+          text: '',
+        },
+        {
+          rangeOffset: 2,
+          rangeLength: 3,
+          text: '',
+        },
+        {
+          rangeOffset: 0,
+          rangeLength: 1,
+          text: '',
+        },
+      ]
+    )
+  ).toEqual({})
 })

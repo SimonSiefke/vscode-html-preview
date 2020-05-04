@@ -11,8 +11,6 @@
     "postinstall": "lerna bootstrap && tsc -b && cd packages/injected-code && npm run build",
     "generate:diffTests": "cd packages/virtual-dom && npm run generate:diffTests",
     "generate:watch:diffTests": "cd packages/virtual-dom && npm run generate:watch:diffTests",
-    "generate:genDomTests": "cd packages/html-preview-service && npm run generate:genDomTests",
-    "generate:watch:genDomTests": "cd packages/html-preview-service && npm run generate:watch:genDomTests",
     "generate:watch:parseTests": "cd packages/virtual-dom && npm run generate:watch:parseTests",
     "test": "cd packages/virtual-dom && npm test",
     "bundlesize": "bundlesize",

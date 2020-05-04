@@ -3,11 +3,9 @@ const path = require('path')
 const { toJson } = require('really-relaxed-json')
 const { validate } = require('jsonschema')
 const failingTests = [
-  'move-down.test.txt',
   'delete-022-delete-text-between-comment-and-comment.test.txt',
   'delete-122-delete-element-between-comment-and-comment.test.txt',
   'deleting-an-attribute-character-by-character.test.txt',
-  'move-up.test.txt',
 ]
 
 const only = []

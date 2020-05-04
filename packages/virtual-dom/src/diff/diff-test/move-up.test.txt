@@ -7,9 +7,9 @@ previousText:
 edits:
 [
   {
-    rangeOffset: 41
-    rangeLength: 0
-    text: "\n</section>"
+    rangeOffset: 10
+    rangeLength: 11
+    text: ""
   }
   {
     rangeOffset: 21
@@ -17,9 +17,9 @@ edits:
     text: "  "
   }
   {
-    rangeOffset: 10
-    rangeLength: 11
-    text: ""
+    rangeOffset: 41
+    rangeLength: 0
+    text: "\n</section>"
   }
 ]
 
@@ -31,10 +31,6 @@ nextText:
 
 expectedEdits:
 [
-  {
-    command: elementDelete
-    payload: {}
-  }
   {
     command: textReplace,
     payload: {
@@ -51,5 +47,9 @@ expectedEdits:
       nodeType: TextNode
       text: "\n"
     }
+  }
+  {
+    command: elementDelete
+    payload: {}
   }
 ]

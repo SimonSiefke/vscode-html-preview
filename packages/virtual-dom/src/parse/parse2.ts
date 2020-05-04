@@ -267,7 +267,7 @@ export const parse: (
               parent.children.push(implicitHead)
               parent = implicitHead
               head = implicitHead
-              child = createElementNode(token.text, getId(offset, token.text.length))
+              child = createElementNode(token.text, getId(offset - 1, token.text.length))
               stack.push(child)
               state = 'insideHead'
             } else {
@@ -284,7 +284,7 @@ export const parse: (
               parent = implicitBody
               body = implicitBody
               parent = body
-              child = createElementNode(token.text, getId(offset, token.text.length))
+              child = createElementNode(token.text, getId(offset - 1, token.text.length))
               stack.push(child)
               state = 'insideBody'
             }
@@ -319,7 +319,7 @@ export const parse: (
               parent.children.push(implicitHead)
               parent = implicitHead
               head = implicitHead
-              child = createElementNode(token.text, getId(offset, token.text.length))
+              child = createElementNode(token.text, getId(offset - 1, token.text.length))
               stack.push(child)
               state = 'insideHead'
             } else {
@@ -331,7 +331,7 @@ export const parse: (
               parent.children.push(implicitBody)
               parent = implicitBody
               body = implicitBody
-              child = createElementNode(token.text, getId(offset, token.text.length))
+              child = createElementNode(token.text, getId(offset - 1, token.text.length))
               stack.push(child)
               state = 'insideBody'
             }
@@ -339,7 +339,7 @@ export const parse: (
           }
           case 'insideHead': {
             if (isHeadTag(token.text)) {
-              child = createElementNode(token.text, getId(offset, token.text.length))
+              child = createElementNode(token.text, getId(offset - 1, token.text.length))
               stack.push(child)
             } else {
               if (!implicitHead) {
@@ -367,7 +367,7 @@ export const parse: (
                 parent.children.push(implicitBody)
                 parent = implicitBody
                 body = implicitBody
-                child = createElementNode(token.text, getId(offset, token.text.length))
+                child = createElementNode(token.text, getId(offset - 1, token.text.length))
                 stack.push(child)
                 state = 'insideBody'
               }
@@ -393,7 +393,7 @@ export const parse: (
               parent.children.push(implicitBody)
               parent = implicitBody
               body = implicitBody
-              child = createElementNode(token.text, getId(offset, token.text.length))
+              child = createElementNode(token.text, getId(offset - 1, token.text.length))
               stack.push(child)
               state = 'insideBody'
             }
@@ -411,7 +411,7 @@ export const parse: (
                 index: findErrorIndex(i),
               }
             }
-            child = createElementNode(token.text, getId(offset, token.text.length))
+            child = createElementNode(token.text, getId(offset - 1, token.text.length))
             stack.push(child)
             break
           }

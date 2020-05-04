@@ -1,6 +1,4 @@
-name:
-insert 021 - insert text between comment and element
-
+// puppeteer doesn't include comments before html that's why <!--a--> is missing in expected dom (even though it should be there)
 previousText:
 <!--a--><h1>c</h1>
 
@@ -17,4 +15,4 @@ nextText:
 <!--a-->b<h1>c</h1>
 
 expectedDom:
-<!--a--><html><head></head><body>b<h1>c</h1></body></html>
+<html><head></head><body>b<h1>c</h1></body></html>
