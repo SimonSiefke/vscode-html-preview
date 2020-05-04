@@ -7,7 +7,7 @@ const failingTests = [
   'move-down.test.txt',
   'delete-022-delete-text-between-comment-and-comment.test.txt',
   'insert-122-insert-element-between-comment-and-comment.test.txt',
-  'insert-022-insert-text-between-comment-and-comment.test.txt',
+  // 'insert-022-insert-text-between-comment-and-comment.test.txt',
   'duplicate-element.test.txt',
   'bug-6.1.test.txt',
   'bug-6.2.test.txt',

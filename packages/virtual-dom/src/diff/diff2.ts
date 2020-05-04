@@ -305,16 +305,11 @@ const childEdits: (
       newNode.nodeType === 'TextNode' &&
       oldNode.id === newNode.id
     ) {
-      if (oldNode.text === newNode.text) {
-        oldIndex++
-        newIndex++
-        continue
-      } else {
+      if (oldNode.text !== newNode.text) {
         textReplace(edits, newNode)
-        oldIndex++
-        newIndex++
-        continue
       }
+      oldIndex++
+      newIndex++
     } else if (
       oldNode.nodeType === 'ElementNode' &&
       newNode.nodeType === 'ElementNode' &&
@@ -323,16 +318,12 @@ const childEdits: (
       if (oldNode.tag === newNode.tag) {
         attributeEdits(edits, oldNode, newNode)
         childEdits(edits, oldNode.children, newNode.children, oldNodeMap, newNodeMap, newNode.id)
-        oldIndex++
-        newIndex++
-        continue
       } else {
         elementDelete(edits, oldNode)
         elementInsert(edits, newNode, parentId, newIndex)
-        oldIndex++
-        newIndex++
-        continue
       }
+      oldIndex++
+      newIndex++
     } else if (
       oldNode.nodeType === 'CommentNode' &&
       newNode.nodeType === 'CommentNode' &&
@@ -343,21 +334,20 @@ const childEdits: (
       }
       oldIndex++
       newIndex++
-      continue
     } else if (oldNode.nodeType === 'Doctype' && newNode.nodeType === 'Doctype') {
       oldIndex++
       newIndex++
-      continue
-    }
-    if (!newNodeMap[oldNode.id]) {
+    } else if (oldNode.id in newNodeMap) {
+      if (newNode.id in oldNodeMap) {
+        oldIndex++
+      } else {
+        elementInsert(edits, newNode, parentId, newIndex)
+        newIndex++
+      }
+    } else {
       elementDelete(edits, oldNode)
       oldIndex++
     }
-    if (!oldNodeMap[newNode.id]) {
-      elementInsert(edits, newNode, parentId, newIndex)
-      newIndex++
-    }
-    // console.log('here')
   }
   /**
    * Take care of any remaining nodes in the old tree.
@@ -393,24 +383,17 @@ export const diff: (oldState: State, newState: State) => readonly Operation[] = 
 let offsetMap = Object.create(null)
 
 let id = 0
-const p1 = parse(
-  `<p>
-</p>
-<p>
-  <em>hello world</em>
-</p>`,
-  offset => {
-    const nextId = id++
-    offsetMap[offset] = nextId
-    return nextId
-  }
-)
+const p1 = parse(`<!--a--><!--c-->`, offset => {
+  const nextId = id++
+  offsetMap[offset] = nextId
+  return nextId
+})
 
 offsetMap = updateOffsetMap(offsetMap, [
   {
-    rangeOffset: 4,
-    rangeLength: 8,
-    text: '',
+    rangeOffset: 8,
+    rangeLength: 0,
+    text: 'b',
   },
 ])
 
@@ -418,30 +401,25 @@ offsetMap
 
 let newOffsetMap = Object.create(null)
 
-const p2 = parse(
-  `<p>
-  <em>hello world</em>
-</p>`,
-  (offset, tokenLength) => {
-    let nextId: number
-    nextId: if (offset in offsetMap) {
-      nextId = offsetMap[offset]
-    } else {
-      for (let i = offset + 1; i < offset + tokenLength; i++) {
-        if (i in offsetMap) {
-          nextId = offsetMap[i]
-          break nextId
-        }
+const p2 = parse(`<!--a-->b<!--c-->`, (offset, tokenLength) => {
+  let nextId: number
+  nextId: if (offset in offsetMap) {
+    nextId = offsetMap[offset]
+  } else {
+    for (let i = offset + 1; i < offset + tokenLength; i++) {
+      if (i in offsetMap) {
+        nextId = offsetMap[i]
+        break nextId
       }
-      nextId = id++
     }
-    newOffsetMap[offset] = nextId
-    return nextId
+    nextId = id++
   }
-)
+  newOffsetMap[offset] = nextId
+  return nextId
+})
 if (p1.status === 'success' && p2.status === 'success') {
-  JSON.stringify(p1.nodes) //?
-  JSON.stringify(p2.nodes) //?
+  JSON.stringify(p1.nodes, null, 2) //?
+  JSON.stringify(p2.nodes, null, 2) //?
   const edits = diff(p1, p2)
   const expectedEdits = [
     {

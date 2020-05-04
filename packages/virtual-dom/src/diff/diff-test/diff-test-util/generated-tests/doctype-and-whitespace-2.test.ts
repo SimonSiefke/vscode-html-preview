@@ -60,15 +60,7 @@ test(`doctype-and-whitespace-2.test.txt`, () => {
   })
   if(p1.status === 'success' && p2.status === 'success'){
     const edits = diff(p1, p2)
-    const expectedEdits = [
-      {
-        "command": "elementInsert",
-        "payload": {
-          "nodeType": "TextNode",
-          "text": "\n"
-        }
-      }
-    ]
+    const expectedEdits = []
     expect(adjustEdits(edits)).toEqual(adjustExpectedEdits(expectedEdits))
   }
 })

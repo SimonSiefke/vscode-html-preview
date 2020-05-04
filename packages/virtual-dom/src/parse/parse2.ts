@@ -117,7 +117,6 @@ export const parse: (
     | 'insideBody'
     | 'afterBody' = 'root'
 
-  tokens //?
   for (let i = 0; i < tokens.length; i++) {
     if (stack.length === 0) {
       i
@@ -147,8 +146,6 @@ export const parse: (
               body = implicitBody
               parent.children.push(createTextNode(token.text, getId(offset, token.text.length)))
               state = 'insideBody'
-            } else {
-              parent.children.push(createTextNode(token.text, getId(offset, token.text.length)))
             }
             break
           }
@@ -183,7 +180,13 @@ export const parse: (
           }
           case 'afterHead': {
             if (token.text.trim()) {
-              throw new Error('todo')
+              // implicit body, node
+              implicitBody = createElementNode('body', 'body')
+              html!.children.push(implicitBody)
+              parent = implicitBody
+              body = implicitBody
+              parent.children.push(createTextNode(token.text, getId(offset, token.text.length)))
+              state = 'insideBody'
             } else {
               parent.children.push(createTextNode(token.text, getId(offset, token.text.length)))
             }
@@ -535,7 +538,6 @@ export const parse: (
         break
       }
       case TokenType.StartTagClosingBracket: {
-        parent === htmlDocument //?
         if (isSelfClosingTag(child.tag)) {
           stack.pop()
           parent.children.push(child)
@@ -662,11 +664,7 @@ const stringify = nodes => {
 // )
 
 const doc = parse(
-  `<html>
-  <body>
-    <p>this is a paragraph</p>
-  </body>
-</html>
+  `<!--a--><!--c-->
 `,
   (() => {
     let i = 0

@@ -65,6 +65,14 @@ test(`pasting-tag-over-multiple-tags-and-text.test.txt`, () => {
         "payload": {}
       },
       {
+        "command": "elementDelete",
+        "payload": {}
+      },
+      {
+        "command": "elementDelete",
+        "payload": {}
+      },
+      {
         "command": "elementInsert",
         "payload": {
           "nodeType": "ElementNode",
@@ -77,14 +85,6 @@ test(`pasting-tag-over-multiple-tags-and-text.test.txt`, () => {
           "nodeType": "TextNode",
           "text": "Italic"
         }
-      },
-      {
-        "command": "elementDelete",
-        "payload": {}
-      },
-      {
-        "command": "elementDelete",
-        "payload": {}
       }
     ]
     expect(adjustEdits(edits)).toEqual(adjustExpectedEdits(expectedEdits))

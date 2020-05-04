@@ -23,6 +23,6 @@ hello world
 
 expectedDom:
 <!DOCTYPE html><html><head>
-</head>
-<body>
-hello world<h1></h1></body></html>
+</head><body>
+hello world
+<h1></h1></body></html>

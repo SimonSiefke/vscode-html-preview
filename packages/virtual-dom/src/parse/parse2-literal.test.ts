@@ -191,8 +191,7 @@ test('simple document', () => {
   <body>
     <h1>hello world</h1>
   </body>
-</html>`).toEqual(`<!DOCTYPE html>
-<html><head>
+</html>`).toEqual(`<!DOCTYPE html><html><head>
     <meta charset="utf-8">
   </head>
   <body>
@@ -217,8 +216,7 @@ test('document with base tag', () => {
   <body>
     hello world
   </body>
-</html>`).toEqual(`<!DOCTYPE html>
-<html><head>
+</html>`).toEqual(`<!DOCTYPE html><html><head>
     <base href="http://www.example.com/" target="_self">
   </head>
   <body>
@@ -379,4 +377,66 @@ test('whitespace after explicit html', () => {
 `).toEqual(`<html><head></head><body>
     <p>this is a paragraph</p>
   </body></html>`)
+})
+
+test('document with lots of whitespace', () => {
+  expectParse(`<html>
+
+<head>
+  <title>Document</title>
+  <style>
+  </style>
+</head>
+
+<body>
+
+</body>
+
+</html>`).toEqual(`<html><head>
+  <title>Document</title>
+  <style>
+  </style>
+</head>
+
+<body>
+
+</body></html>`)
+})
+
+test('text after head', () => {
+  expectParse(`<!DOCTYPE html>
+<head>
+</head>
+hello world
+h1`).toEqual(`<!DOCTYPE html><html><head>
+</head><body>
+hello world
+h1</body></html>`)
+})
+
+test.skip('implicit whitespace before body end', () => {
+  expectParse(`<style>
+  h1 {
+    color: cornflowerblue;
+  }
+</style>
+
+<h1>hello world</h1>
+
+<h2>this is live preview</h2>`).toEqual(``)
+})
+
+test('only comments', () => {
+  expectParse(`<!--a--><!--c-->`).toEqual(`<!--a--><!--c--><html><head></head><body></body></html>`)
+})
+
+test('text between comments', () => {
+  expectParse(`<!--a-->b<!--c-->`).toEqual(
+    `<!--a--><html><head></head><body>b<!--c--></body></html>`
+  )
+})
+
+test('whitespace after comments', () => {
+  expectParse(`<!--a--><!--c-->
+`).toEqual(`<!--a--><!--c--><html><head></head><body></body></html>`)
 })

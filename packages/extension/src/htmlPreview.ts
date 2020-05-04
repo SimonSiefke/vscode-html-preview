@@ -2,6 +2,7 @@ export const HTML_PREVIEW_JS = `const nodeTypeMap = {
   1: 'ElementNode',
   3: 'TextNode',
   8: 'CommentNode',
+  10: 'Doctype'
 }
 
 const entityParsingNode = document.createElement('div')
@@ -86,10 +87,10 @@ const hydrate = (node, $node) => {
     response.json()
   )
   document.querySelector('[data-id="html-preview"]').remove()
-  const html = result.nodes.find(
-    node => node.nodeType === 'ElementNode' && node.tag === 'html'
-  )
-  const success = hydrate(html, document.documentElement)
+  // const html = result.nodes.find(
+  //   node => node.nodeType === 'ElementNode' && node.tag === 'html'
+  // )
+  const success = result.nodes.every((node, i) => hydrate(node, document.childNodes[i]))
   if (!success) {
     return
   }
@@ -143,6 +144,21 @@ const hydrate = (node, $node) => {
             $parent.insertBefore($node, $parent.children[payload.index])
           }
           $nodeMap[payload.id] = $node
+          break
+        }
+        case 'elementMove': {
+          const $parent = $nodeMap[payload.parentId]
+          const $node = $nodeMap[payload.id]
+          if (!$node || !$parent || nodeTypeMap[$parent.nodeType] !== 'ElementNode') {
+            console.log({ command, payload })
+            console.warn('failed to move node')
+            return
+          }
+          if(payload.index === 0){
+            $parent.prepend($node)
+          } else {
+            $parent.insertBefore($node, $parent.children[payload.index])
+          }
           break
         }
         case 'elementDelete': {

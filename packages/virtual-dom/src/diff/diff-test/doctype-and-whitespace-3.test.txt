@@ -15,9 +15,4 @@ nextText:
 <!doctype html>
 
 expectedEdits:
-[
-  {
-    command: elementDelete,
-    payload: {}
-  }
-]
+[]

@@ -14,8 +14,8 @@ previousText:
 edits:
 [
   {
+    rangeOffset: 130
     rangeLength: 0
-    rangeOffset: 0
     text: "!!!"
   }
 ]
@@ -29,10 +29,11 @@ nextText:
   <h1>hello world!!!</h1>
 </body>
 
+
 expectedDom:
 <html><head>
-  <link rel="stylesheet" href="index.css" />
-  <link rel="stylesheet" href="index2.css" />
+  <link rel="stylesheet" href="index.css">
+  <link rel="stylesheet" href="index2.css">
 </head>
 <body>
   <h1>hello world!!!</h1>

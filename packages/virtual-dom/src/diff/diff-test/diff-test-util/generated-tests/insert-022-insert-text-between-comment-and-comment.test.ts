@@ -21,11 +21,11 @@ function adjustExpectedEdits(expectedEdits){
   return expectedEdits
 }
 
-test(`doctype-and-whitespace-1.test.txt`, () => {
+test(`insert-022-insert-text-between-comment-and-comment.test.txt`, () => {
   let offsetMap = Object.create(null)
 
   let id = 0
-  const p1 = parse(`<!DOCTYPE html>`, offset => {
+  const p1 = parse(`<!--a--><!--c-->`, offset => {
     const nextId = id++
     offsetMap[offset] = nextId
     return nextId
@@ -33,16 +33,15 @@ test(`doctype-and-whitespace-1.test.txt`, () => {
 
   offsetMap = updateOffsetMap(offsetMap, [
     {
-      "rangeOffset": 15,
+      "rangeOffset": 8,
       "rangeLength": 0,
-      "text": "\n"
+      "text": "b"
     }
   ])
 
   let newOffsetMap = Object.create(null)
 
-  const p2 = parse(`<!DOCTYPE html>
-`, (offset, tokenLength) => {
+  const p2 = parse(`<!--a-->b<!--c-->`, (offset, tokenLength) => {
     let nextId: number
     nextId: if (offset in offsetMap) {
       nextId = offsetMap[offset]
@@ -60,7 +59,19 @@ test(`doctype-and-whitespace-1.test.txt`, () => {
   })
   if(p1.status === 'success' && p2.status === 'success'){
     const edits = diff(p1, p2)
-    const expectedEdits = []
+    const expectedEdits = [
+      {
+        "command": "elementInsert",
+        "payload": {
+          "nodeType": "TextNode",
+          "text": "b"
+        }
+      },
+      {
+        "command": "elementMove",
+        "payload": {}
+      }
+    ]
     expect(adjustEdits(edits)).toEqual(adjustExpectedEdits(expectedEdits))
   }
 })

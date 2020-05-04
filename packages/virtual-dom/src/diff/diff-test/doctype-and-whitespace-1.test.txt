@@ -15,12 +15,4 @@ nextText:
 
 
 expectedEdits:
-[
-  {
-    command: elementInsert
-    payload: {
-      nodeType: TextNode
-      text: "\n"
-    }
-  }
-]
+[]

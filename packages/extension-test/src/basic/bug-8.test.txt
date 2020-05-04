@@ -1,4 +1,5 @@
 // whitespace after implicit head
+previousText:
 <style>
     h1 {
       color: cornflowerblue;
@@ -8,3 +9,36 @@
 <h1>hello world</h1>
 
 <h2>this is live preview</h2>
+
+edits:
+[
+  {
+    rangeOffset: 77
+    rangeLength: 0
+    text: !
+  }
+]
+
+nextText:
+<style>
+    h1 {
+      color: cornflowerblue;
+    }
+</style>
+
+<h1>hello world!</h1>
+
+<h2>this is live preview</h2>
+
+expectedDom:
+<html><head>
+  <style>
+    h1 {
+      color: cornflowerblue;
+    }
+  </style>
+</head>
+
+<body><h1>hello world!</h1>
+
+<h2>this is live preview</h2></body></html>
