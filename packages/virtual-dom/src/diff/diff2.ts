@@ -340,13 +340,34 @@ const childEdits: (
     } else if (oldNode.id in newNodeMap) {
       if (newNode.id in oldNodeMap) {
         if (oldNodeMap[newNode.id].nodeType === newNode.nodeType) {
-          oldIndex++
+          switch (newNode.nodeType) {
+            case 'TextNode': {
+              if (oldNodeMap[newNode.id].text === newNode.text) {
+                oldIndex++
+              } else {
+                elementDelete(edits, oldNode)
+                elementInsert(edits, newNode, parentId, newIndex)
+                oldIndex++
+                newIndex++
+              }
+              break
+            }
+            case 'CommentNode': {
+              // TODO same test
+              break
+            }
+            case 'ElementNode': {
+              oldIndex++
+              break
+            }
+          }
         } else {
           elementDelete(edits, oldNode)
           elementInsert(edits, newNode, parentId, newIndex)
           oldIndex++
           newIndex++
         }
+        oldNode
         newNode
         newNode.nodeType //?
         oldNode.nodeType //?
@@ -374,7 +395,6 @@ const childEdits: (
     const newNode = newNodes[newIndex]
     if (newNode.id in oldNodeMap) {
       newNode
-
       elementMove(edits, newNode, parentId, newIndex)
     } else {
       elementInsert(edits, newNode, parentId, newIndex)
@@ -395,22 +415,23 @@ export const diff: (oldState: State, newState: State) => readonly Operation[] = 
 let offsetMap = Object.create(null)
 
 let id = 0
-const p1 = parse(`h1`, offset => {
-  const nextId = id++
-  offsetMap[offset] = nextId
-  return nextId
-})
+const p1 = parse(
+  `<head></head>
+<h1>hello world</h1>`,
+  offset => {
+    const nextId = id++
+    offsetMap[offset] = nextId
+    return nextId
+  }
+)
+
+offsetMap
 
 offsetMap = updateOffsetMap(offsetMap, [
   {
-    rangeOffset: 2,
+    rangeOffset: 14,
     rangeLength: 0,
-    text: '></h1>',
-  },
-  {
-    rangeOffset: 0,
-    rangeLength: 0,
-    text: '<',
+    text: 'a',
   },
 ])
 
@@ -418,22 +439,26 @@ offsetMap
 
 let newOffsetMap = Object.create(null)
 
-const p2 = parse(`<h1></h1>`, (offset, tokenLength) => {
-  let nextId: number
-  nextId: if (offset in offsetMap) {
-    nextId = offsetMap[offset]
-  } else {
-    for (let i = offset + 1; i < offset + tokenLength; i++) {
-      if (i in offsetMap) {
-        nextId = offsetMap[i]
-        break nextId
+const p2 = parse(
+  `<head></head>
+a<h1>hello world</h1>`,
+  (offset, tokenLength) => {
+    let nextId: number
+    nextId: if (offset in offsetMap) {
+      nextId = offsetMap[offset]
+    } else {
+      for (let i = offset + 1; i < offset + tokenLength; i++) {
+        if (i in offsetMap) {
+          nextId = offsetMap[i]
+          break nextId
+        }
       }
+      nextId = id++
     }
-    nextId = id++
+    newOffsetMap[offset] = nextId
+    return nextId
   }
-  newOffsetMap[offset] = nextId
-  return nextId
-})
+)
 if (p1.status === 'success' && p2.status === 'success') {
   JSON.stringify(p1.nodes, null, 2) //?
   JSON.stringify(p2.nodes, null, 2) //?

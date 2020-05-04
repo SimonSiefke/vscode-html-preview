@@ -22,6 +22,6 @@ nextText:
 
 expectedDom:
 <!DOCTYPE html><html><head>
-  </head><body>
-  hello
+  </head>
+  <body>hello
 </body></html>

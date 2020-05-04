@@ -409,8 +409,8 @@ test('text after head', () => {
 </head>
 hello world
 h1`).toEqual(`<!DOCTYPE html><html><head>
-</head><body>
-hello world
+</head>
+<body>hello world
 h1</body></html>`)
 })
 
@@ -497,8 +497,8 @@ test('weird start 7', () => {
 <head>
 </head>
 hello`).toEqual(`<!DOCTYPE html><html><head>
-</head><body>
-hello</body></html>`)
+</head>
+<body>hello</body></html>`)
 })
 
 test('weird start 8', () => {
@@ -543,8 +543,8 @@ test('weird start 12', () => {
   </head>
   hello
 </html>`).toEqual(`<!DOCTYPE html><html><head>
-  </head><body>
-  hello
+  </head>
+  <body>hello
 </body></html>`)
 })
 
@@ -571,4 +571,10 @@ test('top 201, explicit html, no head, implicit body', () => {
   <b></b>
 </html>`).toEqual(`<html><head></head><body><b></b>
 </body></html>`)
+})
+
+test('whitespace and text after head', () => {
+  expectParse(`<head></head>
+a<h1>hello world</h1>`).toEqual(`<html><head></head>
+<body>a<h1>hello world</h1></body></html>`)
 })

@@ -179,12 +179,31 @@ export const parse: (
           }
           case 'afterHead': {
             if (token.text.trim()) {
-              // implicit body, node
-              implicitBody = createElementNode('body', 'body')
-              html!.children.push(implicitBody)
-              parent = implicitBody
-              body = implicitBody
-              parent.children.push(createTextNode(token.text, getId(offset, token.text.length)))
+              const whitespaceMatch = token.text.match(/^\s+/)
+              if (whitespaceMatch) {
+                const whitespaceText = whitespaceMatch[0]
+                // whitespace, implicit body, node
+                parent.children.push(
+                  createTextNode(whitespaceText, getId(offset, whitespaceText.length))
+                )
+                implicitBody = createElementNode('body', 'body')
+                html!.children.push(implicitBody)
+                parent = implicitBody
+                body = implicitBody
+                parent.children.push(
+                  createTextNode(
+                    token.text.slice(whitespaceText.length),
+                    getId(offset + whitespaceText.length, token.text.length - whitespaceText.length)
+                  )
+                )
+              } else {
+                // implicit body, node
+                implicitBody = createElementNode('body', 'body')
+                html!.children.push(implicitBody)
+                parent = implicitBody
+                body = implicitBody
+                parent.children.push(createTextNode(token.text, getId(offset, token.text.length)))
+              }
               state = 'insideBody'
             } else {
               parent.children.push(createTextNode(token.text, getId(offset, token.text.length)))
@@ -674,8 +693,11 @@ const stringify = nodes => {
 // )
 
 const doc = parse(
-  `<html>
-  <b></b>
+  `<!DOCTYPE html>
+<html>
+  <head>
+  </head>
+  hello
 </html>`,
   (() => {
     let i = 0
@@ -684,6 +706,7 @@ const doc = parse(
 )
 
 if (doc.status === 'success') {
+  doc.nodes[1] //?
   stringify(doc.nodes) //?
 } else {
   doc.index //?

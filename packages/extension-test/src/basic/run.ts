@@ -113,7 +113,7 @@ import * as glob from 'glob'
 //   'entity.test.txt',
 // ].filter(t => !failing.includes(t))
 
-const only = 'top-100-implicit-html-no-head-no-body'
+const only = ''
 const testFiles = `**/generated-tests/${only || '*'}.test.js`
 
 export const run = () => {

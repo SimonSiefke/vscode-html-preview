@@ -42,27 +42,34 @@ function adjust(html) {
 	return html.replace(/ data-id="\d*"/g, '');
 }
 
-test('bug-1', async () => {
-	const uri = await createTestFile('bug-1.html')
-  await setText(`<!DOCTYPE html>
-<head>
-</head>
-hello world
-h1`)
+test('textnode-inserted-after-head', async () => {
+	const uri = await createTestFile('textnode-inserted-after-head.html')
+  await setText(`<head></head>
+<h1>hello world</h1>`)
   await activateExtension()
   await vscode.commands.executeCommand('htmlPreview.openPreview')
   const browser = await getBrowser()
   const page = await browser.newPage()
   // await new Promise(resolve => setTimeout(resolve, 1000))
-  await page.goto('http://localhost:3000/bug-1.html', {waitUntil: 'networkidle2', timeout: 15000})
+  await page.goto('http://localhost:3000/textnode-inserted-after-head.html', {waitUntil: 'networkidle2', timeout: 15000})
   // await new Promise(resolve => setTimeout(resolve, 444000))
 	
 	{
     
+    
+    await new Promise(resolve=>setTimeout(resolve, 100))
+	const html = await page.content()
+	assert.equal(adjust(html), `<html><head></head>
+<body><h1>hello world</h1></body></html>`);
+
+		}
+
+	{
+    
     	const edit = {
-  "rangeOffset": 43,
-  "rangeLength": 2,
-  "text": "<h1></h1>"
+  "rangeOffset": 14,
+  "rangeLength": 0,
+  "text": "a"
 }
   const vscodeEdit = new vscode.WorkspaceEdit()
   const {document} = vscode.window.activeTextEditor
@@ -79,10 +86,8 @@ await vscode.workspace.applyEdit(vscodeEdit)
 await waitForUpdateEnd(page)
     
 	const html = await page.content()
-	assert.equal(adjust(html), `<!DOCTYPE html><html><head>
-</head>
-<body>hello world
-<h1></h1></body></html>`);
+	assert.equal(adjust(html), `<html><head></head>
+<body>a<h1>hello world</h1></body></html>`);
 
 		}
 	await browser.close()

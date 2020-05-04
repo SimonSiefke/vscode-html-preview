@@ -42,27 +42,27 @@ function adjust(html) {
 	return html.replace(/ data-id="\d*"/g, '');
 }
 
-test('bug-1', async () => {
-	const uri = await createTestFile('bug-1.html')
-  await setText(`<!DOCTYPE html>
-<head>
-</head>
-hello world
-h1`)
+test('special-1-delete-html-with-content', async () => {
+	const uri = await createTestFile('special-1-delete-html-with-content.html')
+  await setText(`<html>
+  <body>
+    <h1>hello world</h1>
+  </body>
+</html>`)
   await activateExtension()
   await vscode.commands.executeCommand('htmlPreview.openPreview')
   const browser = await getBrowser()
   const page = await browser.newPage()
   // await new Promise(resolve => setTimeout(resolve, 1000))
-  await page.goto('http://localhost:3000/bug-1.html', {waitUntil: 'networkidle2', timeout: 15000})
+  await page.goto('http://localhost:3000/special-1-delete-html-with-content.html', {waitUntil: 'networkidle2', timeout: 15000})
   // await new Promise(resolve => setTimeout(resolve, 444000))
 	
 	{
     
     	const edit = {
-  "rangeOffset": 43,
-  "rangeLength": 2,
-  "text": "<h1></h1>"
+  "rangeOffset": 0,
+  "rangeLength": 58,
+  "text": ""
 }
   const vscodeEdit = new vscode.WorkspaceEdit()
   const {document} = vscode.window.activeTextEditor
@@ -79,10 +79,7 @@ await vscode.workspace.applyEdit(vscodeEdit)
 await waitForUpdateEnd(page)
     
 	const html = await page.content()
-	assert.equal(adjust(html), `<!DOCTYPE html><html><head>
-</head>
-<body>hello world
-<h1></h1></body></html>`);
+	assert.equal(adjust(html), `<html><head></head><body></body></html>`);
 
 		}
 	await browser.close()

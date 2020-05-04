@@ -18,5 +18,5 @@ hello
 
 expectedDom:
 <!DOCTYPE html><html><head>
-</head><body>
-hello</body></html>
+</head>
+<body>hello</body></html>

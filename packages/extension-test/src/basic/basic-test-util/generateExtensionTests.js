@@ -8,16 +8,15 @@ const headless = true
 // TODO
 const failingTests = [
   'delete-122-delete-element-between-comment-and-comment.test.txt',
-  'invalid-to-valid-1.test.txt',
-  'special-1-delete-html-with-content.test.txt',
+  'invalid-to-valid-1.test.txt', // TODO invalid
   'bug-8.test.txt',
   'comment-before-style.test.txt',
-  'dynamic-html-1.test.txt',
+  'dynamic-html-1.test.txt', // TODO how to handle
   'element-before-head.test.txt',
-  'invalid-1.test.txt',
-  'textnode-before-head.test.txt',
-  'textnode-before-style.test.txt',
-  'textnode-inserted-after-head.test.txt',
+  'invalid-1.test.txt', // TODO invalid
+  'textnode-before-head.test.txt', // TODO invalid
+  'textnode-before-style.test.txt', // TODO invalid
+  // 'textnode-inserted-after-head.test.txt',
   'whitespace-before-head.test.txt',
   'whitespace-before-implicit-head.test.txt',
   'insert-doctype.test.txt', // TODO invalid

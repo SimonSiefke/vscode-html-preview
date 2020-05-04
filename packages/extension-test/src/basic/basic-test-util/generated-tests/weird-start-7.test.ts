@@ -62,8 +62,8 @@ hello`)
     await new Promise(resolve=>setTimeout(resolve, 100))
 	const html = await page.content()
 	assert.equal(adjust(html), `<!DOCTYPE html><html><head>
-</head><body>
-hello</body></html>`);
+</head>
+<body>hello</body></html>`);
 
 		}
 	await browser.close()
