@@ -1,0 +1,28 @@
+previousText:
+ <pre>
+body {
+color: red;
+}
+</pre>
+
+edits:
+[
+  {
+    rangeOffset: 21
+    rangeLength: 0
+    text: orange
+  }
+]
+
+nextText:
+ <pre>
+body {
+color: orangered;
+}
+</pre>
+
+expectedDom:
+<html><head></head><body><pre>body {
+color: orangered;
+}
+</pre></body></html>

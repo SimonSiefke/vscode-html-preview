@@ -806,3 +806,15 @@ test('p inside dl', () => {
     </dl>
   </body></html>`)
 })
+
+test('pre', () => {
+  expectParse(` <pre>
+body {
+color: red;
+}
+</pre>`).toEqual(`<html><head></head><body><pre>
+body {
+color: red;
+}
+</pre></body></html>`)
+})

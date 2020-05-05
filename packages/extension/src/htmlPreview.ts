@@ -66,13 +66,19 @@ const hydrate = (node, $node) => {
     }
 
     case 'TextNode': {
-      if (parseEntities(node.text) !== $node.textContent) {
+      if($node.parentElement.tagName === "PRE") {
+        if(parseEntities(node.text).trimStart() !== $node.textContent.trimStart()){
+          console.log(node)
+          console.log($node)
+          console.warn('hydration failed 5')
+          return false
+        }
+      } else if (parseEntities(node.text) !== $node.textContent) {
         console.log(node)
         console.log($node)
-        console.warn('hydration failed 5')
+        console.warn('hydration failed 6')
         return false
       }
-
       break
     }
 
@@ -112,7 +118,11 @@ const hydrate = (node, $node) => {
             console.warn('failed to update text node')
             return
           }
-          $node.textContent = parseEntities(payload.text)
+          if($node.parentElement.tagName === "PRE") {
+            $node.textContent = parseEntities(payload.text).trimStart()
+          } else {
+            $node.textContent = parseEntities(payload.text)
+          }
           break
         }
         case 'elementInsert': {
