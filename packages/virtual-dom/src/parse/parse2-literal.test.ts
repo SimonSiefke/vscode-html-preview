@@ -680,3 +680,45 @@ test('open implies close 5', () => {
 test('open implies closed 6', () => {
   expectParse(`<p>hello world`).toEqual(`<html><head></head><body><p>hello world</p></body></html>`)
 })
+
+test('open implies closed 7', () => {
+  expectParse(`<p>You are: <span id="status">(Unknown)</span></p>
+
+<header>
+</header>`).toEqual(`<html><head></head><body><p>You are: <span id=\"status\">(Unknown)</span></p>
+
+<header>
+</header></body></html>`)
+})
+
+test('basic element', () => {
+  expectParse(`<h1><p>ok</p></h1>`).toEqual(
+    `<html><head></head><body><h1><p>ok</p></h1></body></html>`
+  )
+})
+
+test('table', () => {
+  expectParse(`<table>
+  <tbody>
+    <tr><td>1</td></tr>
+    <tr><td>2</td></tr>
+    <tr><td>3</td></tr>
+  </tbody>
+</table>`).toEqual(`<html><head></head><body><table>
+  <tbody>
+    <tr><td>1</td></tr>
+    <tr><td>2</td></tr>
+    <tr><td>3</td></tr>
+  </tbody>
+</table></body></html>`)
+})
+
+test('nested html', () => {
+  expectParse(`<div>
+  <img src="https://source.unsplash.com/random" alt="random image">
+  <p>nested <strong>text</strong></p>
+</div>`).toEqual(`<html><head></head><body><div>
+  <img src=\"https://source.unsplash.com/random\" alt=\"random image\">
+  <p>nested <strong>text</strong></p>
+</div></body></html>`)
+})

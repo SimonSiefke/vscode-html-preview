@@ -7,6 +7,7 @@ import {
   isSelfClosingTag,
   isBodyTag,
   isAutoClosed,
+  isAutoClosedAtEnd,
 } from './utils'
 
 interface ElementNode {
@@ -439,10 +440,9 @@ export const parse: (
                 index: findErrorIndex(i),
               }
             }
-            if (isAutoClosed(parent.tag)) {
+            if (isAutoClosed(parent.tag, token.text)) {
               stack.pop()
               parent = stack[stack.length - 1]
-              parent.tag //?
             }
             child = createElementNode(token.text, getId(offset - 1, token.text.length))
             stack.push(child)
@@ -515,10 +515,9 @@ export const parse: (
               stack.pop()
               parent = stack[stack.length - 1]
             } else {
-              while (isAutoClosed(parent.tag)) {
+              if (isAutoClosedAtEnd(parent.tag) && parent !== implicitBody) {
                 stack.pop()
                 parent = stack[stack.length - 1]
-                parent.tag //?
               }
               if (token.text === parent.tag) {
                 stack.pop()
@@ -664,7 +663,7 @@ export const parse: (
   if (!body) {
     html.children.push(createElementNode('body', 'body'))
   }
-  while (isAutoClosed(parent.tag)) {
+  if (isAutoClosedAtEnd(parent.tag)) {
     stack.pop()
     parent = stack[stack.length - 1]
   }
@@ -724,7 +723,10 @@ const stringify = nodes => {
 // )
 
 const doc = parse(
-  `<p>hello world`,
+  `<div>
+  <img src="https://source.unsplash.com/random" alt="random image">
+  <p>nested <strong>text</strong></p>
+</div>`,
   (() => {
     let i = 0
     return () => i++

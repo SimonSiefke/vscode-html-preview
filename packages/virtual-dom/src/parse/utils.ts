@@ -127,6 +127,62 @@ const ONLY_HEAD_TAGS = new Set(['base']) // TODO title is allowed inside body bu
 
 export const isBodyTag = (tagName: string) => !ONLY_HEAD_TAGS.has(tagName)
 
-const AUTO_CLOSED_TAGS = new Set(['rt', 'dd', 'dt', 'li', 'p'])
+const FORM_TAGS = new Set([
+  'input',
+  'option',
+  'optgroup',
+  'select',
+  'button',
+  'datalist',
+  'textarea',
+])
 
-export const isAutoClosed = (tagName: string) => AUTO_CLOSED_TAGS.has(tagName)
+const OPEN_IMPLIES_CLOSE = {
+  tr: new Set(['tr']),
+  th: new Set(['th', 'tr']),
+  td: new Set(['tr', 'td']),
+  thead: new Set(['td', 'tbody']),
+  tbody: new Set(['tfoot']),
+  li: new Set(['li']),
+  p: new Set([
+    'p',
+    'h1',
+    'h2',
+    'h3',
+    'h4',
+    'h5',
+    'h6',
+    'address',
+    'article',
+    'aside',
+    'blockquote',
+    'details',
+    'div',
+    'dl',
+    'fieldset',
+    'figcaption',
+    'figure',
+    'footer',
+    'form',
+    'header',
+    'hr',
+    'main',
+    'nav',
+    'ol',
+    'pre',
+    'section',
+    'table',
+    'ul',
+  ]),
+  rt: new Set(['rt', 'rp']),
+  rp: new Set(['rt', 'rp']),
+  option: new Set(['option', 'optgroup']),
+  optgroup: new Set(['optgroup']),
+  dd: new Set(['dd', 'dt']),
+  dt: new Set(['dd', 'dt']),
+}
+
+export const isAutoClosed = (tagName: string, nextTagName: string) =>
+  tagName in OPEN_IMPLIES_CLOSE && OPEN_IMPLIES_CLOSE[tagName].has(nextTagName)
+
+export const isAutoClosedAtEnd = (tagName: string) => tagName in OPEN_IMPLIES_CLOSE
