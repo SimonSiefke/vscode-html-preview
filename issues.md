@@ -306,47 +306,7 @@ highlight error, node 2 doesn't exist
 
  -->
 
-<!-- TODO bug
-1. start only with <h1>hello world</h1>
-2. select all
-3. replace with     console.log(JSON.stringify(edits))
-4. select all
-5. replace with
-<h1>hello world</h1>
-
-<button>button</button>
-<button>button</button>
-<button>button</button>
-<button>button</button>
-
-highlight errors and $node is undefined and getComputedStyle is not an object
- -->
-
 <!-- TODO test for
 https://github.com/adobe/brackets/issues/4711
 
- -->
-
-<!-- TODO bug
-
-<h1>hello world</h1>
-
-
-<main style="margin:40px">
-
-  almost always workssssss
-</main>
-
-
-first type main, then text inside main, then style="margin:40px"
-
-preview doesn't update anymore
- -->
-
-<!-- TODO bug
-<section>
-  <h1>hello world</h1>
-</section>
-
-move h1 down and up, text disappears
  -->

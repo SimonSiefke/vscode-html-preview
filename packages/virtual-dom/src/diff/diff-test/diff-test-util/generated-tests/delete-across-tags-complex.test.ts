@@ -70,6 +70,14 @@ test(`delete-across-tags-complex.test.txt`, () => {
     const edits = diff(p1, p2)
     const expectedEdits = [
       {
+        "command": "elementDelete",
+        "payload": {}
+      },
+      {
+        "command": "elementDelete",
+        "payload": {}
+      },
+      {
         "command": "elementMove",
         "payload": {}
       },
@@ -82,14 +90,6 @@ test(`delete-across-tags-complex.test.txt`, () => {
         "payload": {
           "text": "\n  Hello\n\n    "
         }
-      },
-      {
-        "command": "elementDelete",
-        "payload": {}
-      },
-      {
-        "command": "elementDelete",
-        "payload": {}
       }
     ]
     expect(adjustEdits(edits)).toEqual(adjustExpectedEdits(expectedEdits))

@@ -1,0 +1,49 @@
+previousText:
+<h1>hello world</h1>
+
+edits:
+[
+  {
+    rangeOffset: 0
+    rangeLength: 20
+    text: "<style>\n\n  p{\n    color:red;\n    padding: 0.5rem;\n\n  border: 1px solid;\n    transform: rotate(-10deg)\n\n  }\n\n  p:nth-child(even){\n      transform: rotate(10deg)\n\n\n  }\n</style>"
+  }
+]
+
+nextText:
+<style>
+
+  p{
+    color:red;
+    padding: 0.5rem;
+
+  border: 1px solid;
+    transform: rotate(-10deg)
+
+  }
+
+  p:nth-child(even){
+      transform: rotate(10deg)
+
+
+  }
+</style>
+
+expectedDom:
+<html><head><style>
+
+  p{
+    color:red;
+    padding: 0.5rem;
+
+  border: 1px solid;
+    transform: rotate(-10deg)
+
+  }
+
+  p:nth-child(even){
+      transform: rotate(10deg)
+
+
+  }
+</style></head><body></body></html>

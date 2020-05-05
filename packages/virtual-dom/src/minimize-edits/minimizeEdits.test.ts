@@ -98,3 +98,53 @@ test('replace element with text', () => {
     },
   ])
 })
+
+test('replace element with style', () => {
+  expect(
+    minimizeEdits(`<h1>hello world</h1>`, [
+      {
+        rangeOffset: 0,
+        rangeLength: 20,
+        text: `<style>
+
+  p{
+    color:red;
+    padding: 0.5rem;
+
+  border: 1px solid;
+    transform: rotate(-10deg)
+
+  }
+
+  p:nth-child(even){
+      transform: rotate(10deg)
+
+
+  }
+</style>`,
+      },
+    ])
+  ).toEqual([
+    {
+      rangeOffset: 1,
+      rangeLength: 19,
+      text: `style>
+
+  p{
+    color:red;
+    padding: 0.5rem;
+
+  border: 1px solid;
+    transform: rotate(-10deg)
+
+  }
+
+  p:nth-child(even){
+      transform: rotate(10deg)
+
+
+  }
+</style>`,
+    },
+  ])
+})

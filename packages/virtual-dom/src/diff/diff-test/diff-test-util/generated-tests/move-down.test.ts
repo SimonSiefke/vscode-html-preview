@@ -80,18 +80,18 @@ test(`move-down.test.txt`, () => {
         "payload": {}
       },
       {
+        "command": "elementDelete",
+        "payload": {}
+      },
+      {
+        "command": "elementDelete",
+        "payload": {}
+      },
+      {
         "command": "textReplace",
         "payload": {
           "text": "\n"
         }
-      },
-      {
-        "command": "elementDelete",
-        "payload": {}
-      },
-      {
-        "command": "elementDelete",
-        "payload": {}
       },
       {
         "command": "elementInsert",

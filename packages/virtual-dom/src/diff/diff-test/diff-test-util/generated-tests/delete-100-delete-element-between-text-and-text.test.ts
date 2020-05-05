@@ -61,18 +61,18 @@ test(`delete-100-delete-element-between-text-and-text.test.txt`, () => {
     const edits = diff(p1, p2)
     const expectedEdits = [
       {
+        "command": "elementDelete",
+        "payload": {}
+      },
+      {
+        "command": "elementDelete",
+        "payload": {}
+      },
+      {
         "command": "textReplace",
         "payload": {
           "text": "ac"
         }
-      },
-      {
-        "command": "elementDelete",
-        "payload": {}
-      },
-      {
-        "command": "elementDelete",
-        "payload": {}
       }
     ]
     expect(adjustEdits(edits)).toEqual(adjustExpectedEdits(expectedEdits))

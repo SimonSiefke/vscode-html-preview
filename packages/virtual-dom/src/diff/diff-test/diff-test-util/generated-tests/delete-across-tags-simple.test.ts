@@ -61,14 +61,14 @@ test(`delete-across-tags-simple.test.txt`, () => {
     const edits = diff(p1, p2)
     const expectedEdits = [
       {
+        "command": "elementDelete",
+        "payload": {}
+      },
+      {
         "command": "textReplace",
         "payload": {
           "text": "ab"
         }
-      },
-      {
-        "command": "elementDelete",
-        "payload": {}
       }
     ]
     expect(adjustEdits(edits)).toEqual(adjustExpectedEdits(expectedEdits))

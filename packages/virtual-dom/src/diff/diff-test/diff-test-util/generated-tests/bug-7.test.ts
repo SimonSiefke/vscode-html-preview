@@ -21,11 +21,11 @@ function adjustExpectedEdits(expectedEdits){
   return expectedEdits
 }
 
-test(`delete-across-tags-medium.test.txt`, () => {
+test(`bug-7.test.txt`, () => {
   let offsetMap = Object.create(null)
 
   let id = 0
-  const p1 = parse(`<p>a</p><p>b<br></p>`, offset => {
+  const p1 = parse(`<h1>hello world</h1>`, offset => {
     const nextId = id++
     offsetMap[offset] = nextId
     return nextId
@@ -33,15 +33,16 @@ test(`delete-across-tags-medium.test.txt`, () => {
 
   offsetMap = updateOffsetMap(offsetMap, [
     {
-      "rangeOffset": 4,
-      "rangeLength": 7,
-      "text": ""
+      "rangeOffset": 0,
+      "rangeLength": 21,
+      "text": "\n<h1>hello world</h1>"
     }
   ])
 
   let newOffsetMap = Object.create(null)
 
-  const p2 = parse(`<p>ab<br></p>`, (offset, tokenLength) => {
+  const p2 = parse(`
+<h1>hello world</h1>`, (offset, tokenLength) => {
     let nextId: number
     nextId: if (offset in offsetMap) {
       nextId = offsetMap[offset]
@@ -65,13 +66,17 @@ test(`delete-across-tags-medium.test.txt`, () => {
         "payload": {}
       },
       {
-        "command": "elementMove",
-        "payload": {}
+        "command": "elementInsert",
+        "payload": {
+          "nodeType": "ElementNode",
+          "tag": "h1"
+        }
       },
       {
-        "command": "textReplace",
+        "command": "elementInsert",
         "payload": {
-          "text": "ab"
+          "nodeType": "TextNode",
+          "text": "hello world"
         }
       }
     ]

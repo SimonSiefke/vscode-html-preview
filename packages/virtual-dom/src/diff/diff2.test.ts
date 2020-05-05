@@ -414,11 +414,11 @@ test('delete across tags', () => {
     { nodes: oldNodes, nodeMap: oldNodeMap },
     { nodes: newNodes, nodeMap: newNodeMap }
   ).toEqual([
+    { command: 'elementDelete', payload: { id: 3 } },
+    { command: 'elementDelete', payload: { id: 2 } },
     { command: 'elementMove', payload: { id: 7, index: 2, parentId: 0 } },
     { command: 'elementMove', payload: { id: 5, index: 1, parentId: 0 } },
     { command: 'textReplace', payload: { id: 1, text: '\n  Hello\n\n    ' } },
-    { command: 'elementDelete', payload: { id: 2 } },
-    { command: 'elementDelete', payload: { id: 3 } },
   ])
 })
 

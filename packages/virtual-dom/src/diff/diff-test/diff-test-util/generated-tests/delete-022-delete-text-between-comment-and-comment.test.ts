@@ -61,15 +61,15 @@ test(`delete-022-delete-text-between-comment-and-comment.test.txt`, () => {
     const edits = diff(p1, p2)
     const expectedEdits = [
       {
+        "command": "elementDelete",
+        "payload": {}
+      },
+      {
+        "command": "elementDelete",
+        "payload": {}
+      },
+      {
         "command": "elementMove",
-        "payload": {}
-      },
-      {
-        "command": "elementDelete",
-        "payload": {}
-      },
-      {
-        "command": "elementDelete",
         "payload": {}
       }
     ]

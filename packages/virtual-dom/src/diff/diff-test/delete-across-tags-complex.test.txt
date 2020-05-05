@@ -25,6 +25,14 @@ nextText:
 expectedEdits:
 [
   {
+    command: elementDelete
+    payload: {}
+  }
+  {
+    command: elementDelete
+    payload: {}
+  }
+  {
     command: elementMove
     payload: {}
   }
@@ -37,13 +45,5 @@ expectedEdits:
     payload: {
       text: "\n  Hello\n\n    "
     }
-  }
-  {
-    command: elementDelete
-    payload: {}
-  }
-  {
-    command: elementDelete
-    payload: {}
   }
 ]

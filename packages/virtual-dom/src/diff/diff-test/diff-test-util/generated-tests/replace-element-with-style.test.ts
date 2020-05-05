@@ -21,11 +21,11 @@ function adjustExpectedEdits(expectedEdits){
   return expectedEdits
 }
 
-test(`delete-across-tags-medium.test.txt`, () => {
+test(`replace-element-with-style.test.txt`, () => {
   let offsetMap = Object.create(null)
 
   let id = 0
-  const p1 = parse(`<p>a</p><p>b<br></p>`, offset => {
+  const p1 = parse(`<h1>hello world</h1>`, offset => {
     const nextId = id++
     offsetMap[offset] = nextId
     return nextId
@@ -33,15 +33,31 @@ test(`delete-across-tags-medium.test.txt`, () => {
 
   offsetMap = updateOffsetMap(offsetMap, [
     {
-      "rangeOffset": 4,
-      "rangeLength": 7,
-      "text": ""
+      "rangeOffset": 1,
+      "rangeLength": 19,
+      "text": "style>\n\n  p{\n    color:red;\n    padding: 0.5rem;\n\n  border: 1px solid;\n    transform: rotate(-10deg)\n\n  }\n\n  p:nth-child(even){\n      transform: rotate(10deg)\n\n\n  }\n</style>"
     }
   ])
 
   let newOffsetMap = Object.create(null)
 
-  const p2 = parse(`<p>ab<br></p>`, (offset, tokenLength) => {
+  const p2 = parse(`<style>
+
+  p{
+    color:red;
+    padding: 0.5rem;
+
+  border: 1px solid;
+    transform: rotate(-10deg)
+
+  }
+
+  p:nth-child(even){
+      transform: rotate(10deg)
+
+
+  }
+</style>`, (offset, tokenLength) => {
     let nextId: number
     nextId: if (offset in offsetMap) {
       nextId = offsetMap[offset]
@@ -65,13 +81,21 @@ test(`delete-across-tags-medium.test.txt`, () => {
         "payload": {}
       },
       {
-        "command": "elementMove",
+        "command": "elementInsert",
+        "payload": {
+          "nodeType": "ElementNode",
+          "tag": "style"
+        }
+      },
+      {
+        "command": "elementDelete",
         "payload": {}
       },
       {
-        "command": "textReplace",
+        "command": "elementInsert",
         "payload": {
-          "text": "ab"
+          "nodeType": "TextNode",
+          "text": "\n\n  p{\n    color:red;\n    padding: 0.5rem;\n\n  border: 1px solid;\n    transform: rotate(-10deg)\n\n  }\n\n  p:nth-child(even){\n      transform: rotate(10deg)\n\n\n  }\n"
         }
       }
     ]
