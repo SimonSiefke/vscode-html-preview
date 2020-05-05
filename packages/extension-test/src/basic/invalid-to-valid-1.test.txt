@@ -11,7 +11,13 @@ nextText:
 <h1>
 
 expectedDom:
-<html><head></head><body><h1></h1></body></html>
+<!DOCTYPE html><html><head></head><body>
+<h1>The HTML is invalid</h1>
+<pre><code>
+<span style="color:red"></span></code><h1><code>
+</code>
+</h1></pre>
+</body></html>
 
 previousText:
 <h1>

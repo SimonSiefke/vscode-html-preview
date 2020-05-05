@@ -32,6 +32,7 @@ export interface CachedValue<T extends SuccessResult | ErrorResult> {
   readonly offsetMap: { readonly [offset: number]: number }
   readonly generatedDom: string | undefined
   readonly previousText: string
+  readonly hasInvalidRequest: boolean
 }
 
 const cachedValues: {
@@ -114,6 +115,7 @@ const createPreview: () => Preview = () => {
           result,
           generatedDom: undefined,
           lastSuccessResult: undefined,
+          hasInvalidRequest: true,
         }
         response.writeHead(200, { 'Content-Type': 'text/html' })
         return response.end(ERROR_HTML(previousText, result))
@@ -125,7 +127,8 @@ const createPreview: () => Preview = () => {
         result,
         generatedDom,
         previousText,
-        lastSuccessResult: undefined,
+        lastSuccessResult: result,
+        hasInvalidRequest: false,
       }
       response.writeHead(200, { 'Content-Type': 'text/html' })
       return response.end(generatedDom)
@@ -186,7 +189,14 @@ export const activate = (context: vscode.ExtensionContext) => {
         console.log('return')
         return
       }
-      const { result, offsetMap, previousText, id, lastSuccessResult } = cachedValues[pathname]
+      const {
+        result,
+        offsetMap,
+        previousText,
+        id,
+        lastSuccessResult,
+        hasInvalidRequest,
+      } = cachedValues[pathname]
       const updatedOffsetMap = updateOffsetMap(
         offsetMap,
         minimizeEdits(previousText, event.contentChanges)
@@ -218,6 +228,7 @@ export const activate = (context: vscode.ExtensionContext) => {
           result: newResult,
           generatedDom: undefined,
           lastSuccessResult,
+          hasInvalidRequest,
         }
         return
       }
@@ -228,8 +239,9 @@ export const activate = (context: vscode.ExtensionContext) => {
         result: newResult,
         generatedDom: undefined,
         lastSuccessResult: newResult,
+        hasInvalidRequest,
       }
-      if (!lastSuccessResult) {
+      if (hasInvalidRequest) {
         preview.update(JSON.stringify([{ command: 'reload', payload: {} }]))
         return
       }

@@ -19,4 +19,14 @@ hello
 </html>
 
 expectedDom:
-TODO invalid
+<!DOCTYPE html><html><head></head><body>
+<h1>The HTML is invalid</h1>
+<pre><code>
+&lt;!DOCTYPE html&gt;
+hello
+<span style="color:red">&lt;html&gt;
+  wo</span>rld
+&lt;/html&gt;
+</code>
+</pre>
+</body></html>

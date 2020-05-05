@@ -23,4 +23,16 @@ nextText:
 </html>
 
 expectedDom:
-TODO invalid
+<!DOCTYPE html><html><head></head><body>
+<h1>The HTML is invalid</h1>
+<pre><code>
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+  hello
+  <span style="color:red">&lt;body&gt;
+    </span>world
+  &lt;/body&gt;
+&lt;/html&gt;
+</code>
+</pre>
+</body></html>

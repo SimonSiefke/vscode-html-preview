@@ -7,20 +7,13 @@ const headless = true
 
 // TODO
 const failingTests = [
-  'invalid-to-valid-1.test.txt', // TODO invalid
   'bug-8.test.txt', // TODO browser inserts text node
   'dynamic-html-1.test.txt', // TODO how to handle
-  'element-before-head.test.txt',
-  'invalid-1.test.txt', // TODO invalid
-  'textnode-before-head.test.txt', // TODO invalid
+  // 'element-before-head.test.txt',
   'textnode-before-style.test.txt', // TODO invalid
-  'insert-doctype.test.txt', // TODO invalid
+  'insert-doctype.test.txt', // TODO puppeteer error execution context was destroyed
   'top-111-implicit-html-implicit-head-implicit-body.test.txt', // TODO browser inserts text node
   'top-112-implicit-html-implicit-head-explicit-body.test.txt', // TODO browser inserts text node
-  'weird-start-8.test.txt', // TODO  invalid
-  'weird-start-9.test.txt', // TODO invalid
-  'weird-start-10.test.txt', // TODO invalid
-  'weird-start-11.test.txt', // TODO invalid
 ]
 
 const only = []

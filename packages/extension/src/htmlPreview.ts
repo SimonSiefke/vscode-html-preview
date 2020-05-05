@@ -244,7 +244,8 @@ export const ERROR_HTML = (previousText: string, result: ErrorResult) => {
 ${errorSnippet}
 </code>
 </pre>
-<script>
+<script id="html-preview">
+document.getElementById("html-preview").remove()
 const webSocket = new WebSocket('ws://localhost:3000')
 webSocket.onmessage = ({data}) => {
   const messages = JSON.parse(data)

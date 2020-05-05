@@ -1,0 +1,23 @@
+previousText:
+<h1>a</h1>
+<head></head>
+
+edits:
+[]
+
+waitForEdits:
+false
+
+nextText:
+<h1>a</h1>
+<head></head>
+
+expectedDom:
+<!DOCTYPE html><html><head></head><body>
+<h1>The HTML is invalid</h1>
+<pre><code>
+&lt;h1&gt;a&lt;/h1&gt;
+<span style="color:red">&lt;head&gt;&lt;/hea</span>d&gt;
+</code>
+</pre>
+</body></html>
