@@ -1,3 +1,7 @@
+import { ErrorResult } from 'virtual-dom'
+import * as escapeHtml from 'escape-html'
+import { CachedValue } from './extensionMain'
+
 export const HTML_PREVIEW_JS = `const nodeTypeMap = {
   1: 'ElementNode',
   3: 'TextNode',
@@ -86,13 +90,9 @@ const hydrate = (node, $node) => {
 }
 
 ;(async () => {
-  const result = await fetch(\`http://localhost:3000/result.json?pathname=\${location.pathname}\`).then(response =>
-    response.json()
-  )
-  document.querySelector('[data-id="html-preview"]').remove()
-  // const html = result.nodes.find(
-  //   node => node.nodeType === 'ElementNode' && node.tag === 'html'
-  // )
+  const result = JSON.parse(document.getElementById('virtual-dom').innerHTML)
+  document.getElementById('virtual-dom').remove()
+  document.getElementById('html-preview').remove()
   const success = result.nodes.every((node, i) => hydrate(node, document.childNodes[i]))
   if (!success) {
     return
@@ -210,6 +210,10 @@ const hydrate = (node, $node) => {
           $node.setAttribute(payload.attributeName, payload.attributeValue || '')
           break
         }
+        case 'reload':{
+          window.location.reload(true)
+          break
+        }
         default: {
           console.log({ command, payload })
           console.warn('unhandled message')
@@ -221,3 +225,39 @@ const hydrate = (node, $node) => {
 })()
 
 `
+
+export const ERROR_HTML = (previousText: string, result: ErrorResult) => {
+  let errorSnippet: string
+  if (result.index === -1) {
+    errorSnippet = `<span style="color:red">${previousText}</span>`
+  } else {
+    errorSnippet = `${escapeHtml(
+      previousText.slice(0, result.index - 1)
+    )}<span style="color:red">${escapeHtml(
+      previousText.slice(result.index - 1, result.index + 10)
+    )}</span>${escapeHtml(previousText.slice(result.index + 10))}`
+  }
+  return `<!DOCTYPE html><html><head></head><body>
+<h1>The HTML is invalid</h1>
+<pre>
+<code>
+${errorSnippet}
+</code>
+</pre>
+<script>
+const webSocket = new WebSocket('ws://localhost:3000')
+webSocket.onmessage = ({data}) => {
+  const messages = JSON.parse(data)
+  for(const {command, payload} of messages){
+    switch (command) {
+      case 'reload':
+        window.location.reload(true)
+        break;
+      default:
+        console.warn('unknown command'+command)
+        break;
+    }
+  }
+}
+</script></body></html>`
+}

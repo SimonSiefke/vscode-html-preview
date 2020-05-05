@@ -13,7 +13,7 @@ import {
 } from 'virtual-dom'
 import * as vscode from 'vscode'
 import * as WebSocket from 'ws'
-import { HTML_PREVIEW_JS } from './htmlPreview'
+import { HTML_PREVIEW_JS, ERROR_HTML } from './htmlPreview'
 
 let state: 'uninitialized' | 'starting-server' | 'started-server' = 'uninitialized'
 
@@ -24,14 +24,18 @@ interface Preview {
 }
 
 let preview: Preview | undefined
+
+export interface CachedValue<T extends SuccessResult | ErrorResult> {
+  readonly lastSuccessResult: SuccessResult | undefined
+  readonly result: T
+  readonly id: number
+  readonly offsetMap: { readonly [offset: number]: number }
+  readonly generatedDom: string | undefined
+  readonly previousText: string
+}
+
 const cachedValues: {
-  [pathname: string]: {
-    readonly result: SuccessResult | ErrorResult
-    readonly id: number
-    readonly offsetMap: { readonly [offset: number]: number }
-    readonly generatedDom: string | undefined
-    readonly previousText: string
-  }
+  [pathname: string]: CachedValue<SuccessResult | ErrorResult>
 } = Object.create(null)
 
 const workspaceFolder = vscode.workspace.workspaceFolders[0].uri.fsPath
@@ -64,15 +68,20 @@ const createPreview: () => Preview = () => {
         response.writeHead(200, { 'Content-Type': 'text/json' })
         return response.end(JSON.stringify(result, null, 2))
       } else {
+        console.log('400')
         response.writeHead(400)
         return response.end()
       }
     }
     if (parsedUrl.pathname in cachedValues) {
-      const { result } = cachedValues[parsedUrl.pathname]
+      const { result, previousText } = cachedValues[parsedUrl.pathname]
       if (result.status === 'invalid') {
-        response.writeHead(400)
-        return response.end()
+        cachedValues[parsedUrl.pathname] = {
+          ...cachedValues[parsedUrl.pathname],
+          lastSuccessResult: undefined,
+        }
+        response.writeHead(200, { 'Content-Type': 'text/html' })
+        return response.end(ERROR_HTML(previousText, result))
       } else {
         response.writeHead(200, { 'Content-Type': 'text/html' })
         return response.end(generateDom(result))
@@ -98,8 +107,16 @@ const createPreview: () => Preview = () => {
         return nextId
       })
       if (result.status === 'invalid') {
-        response.writeHead(400)
-        return response.end()
+        cachedValues[parsedUrl.pathname] = {
+          id,
+          offsetMap,
+          previousText,
+          result,
+          generatedDom: undefined,
+          lastSuccessResult: undefined,
+        }
+        response.writeHead(200, { 'Content-Type': 'text/html' })
+        return response.end(ERROR_HTML(previousText, result))
       }
       const generatedDom = generateDom(result)
       cachedValues[parsedUrl.pathname] = {
@@ -108,6 +125,7 @@ const createPreview: () => Preview = () => {
         result,
         generatedDom,
         previousText,
+        lastSuccessResult: undefined,
       }
       response.writeHead(200, { 'Content-Type': 'text/html' })
       return response.end(generatedDom)
@@ -152,7 +170,7 @@ export const activate = (context: vscode.ExtensionContext) => {
     vscode.commands.registerTextEditorCommand('htmlPreview.openPreview', async () => {
       if (!preview) {
         preview = createPreview()
-        await preview.start()
+        preview.start()
       }
     })
   )
@@ -168,8 +186,7 @@ export const activate = (context: vscode.ExtensionContext) => {
         console.log('return')
         return
       }
-      console.log('need to update')
-      const { result, offsetMap, previousText, id } = cachedValues[pathname]
+      const { result, offsetMap, previousText, id, lastSuccessResult } = cachedValues[pathname]
       const updatedOffsetMap = updateOffsetMap(
         offsetMap,
         minimizeEdits(previousText, event.contentChanges)
@@ -194,13 +211,13 @@ export const activate = (context: vscode.ExtensionContext) => {
         return nextId
       })
       if (newResult.status === 'invalid') {
-        console.log('new invalid')
         cachedValues[pathname] = {
           id,
           offsetMap: updatedOffsetMap,
           previousText: newText,
-          result,
+          result: newResult,
           generatedDom: undefined,
+          lastSuccessResult,
         }
         return
       }
@@ -210,13 +227,13 @@ export const activate = (context: vscode.ExtensionContext) => {
         previousText: newText,
         result: newResult,
         generatedDom: undefined,
+        lastSuccessResult: newResult,
       }
-      if (result.status === 'invalid') {
-        console.log('prev invalid')
-        // TODO initial preview was invalid
+      if (!lastSuccessResult) {
+        preview.update(JSON.stringify([{ command: 'reload', payload: {} }]))
         return
       }
-      const edits = diff2(result, newResult)
+      const edits = diff2(lastSuccessResult, newResult)
       console.log(JSON.stringify(edits, null, 2))
       preview.update(JSON.stringify(edits))
     })

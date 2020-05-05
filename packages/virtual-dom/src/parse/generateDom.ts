@@ -2,14 +2,19 @@ import { SuccessResult, parse } from './parse2'
 import { ElementNode, TextNode, CommentNode, DoctypeNode } from '../diff/diff2'
 import { isSelfClosingTag } from './utils'
 
-const generateNode = (node: ElementNode | TextNode | CommentNode | DoctypeNode) => {
+const generateNode = (
+  node: ElementNode | TextNode | CommentNode | DoctypeNode,
+  result: SuccessResult
+) => {
   switch (node.nodeType) {
     case 'ElementNode': {
       return `<${node.tag}${Object.entries(node.attributes)
         .map(([key, value]) => (value === null ? ` ${key}` : ` ${key}="${value}"`))
-        .join('')} data-id="${node.id}">${generateNodes(node.children)}${
+        .join('')} data-id="${node.id}">${generateNodes(node.children, result)}${
         node.tag === 'body'
-          ? '<script type="module" src="http://localhost:3000/html-preview.js" data-id="html-preview"></script>'
+          ? `<script id="virtual-dom" type="application/json">${JSON.stringify(
+              result
+            )}</script><script  id="html-preview" type="module" src="http://localhost:3000/html-preview.js"></script>`
           : ''
       }${isSelfClosingTag(node.tag) ? '' : `</${node.tag}>`}`
     }
@@ -22,12 +27,15 @@ const generateNode = (node: ElementNode | TextNode | CommentNode | DoctypeNode) 
   }
 }
 
-const generateNodes = (nodes: readonly (ElementNode | TextNode | CommentNode | DoctypeNode)[]) => {
-  return nodes.map(generateNode).join('')
+const generateNodes = (
+  nodes: readonly (ElementNode | TextNode | CommentNode | DoctypeNode)[],
+  result: SuccessResult
+) => {
+  return nodes.map(node => generateNode(node, result)).join('')
 }
 
 export const generateDom = (result: SuccessResult) => {
-  return generateNodes(result.nodes)
+  return generateNodes(result.nodes, result)
 }
 
 const result = parse(
