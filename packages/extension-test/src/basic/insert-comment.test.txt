@@ -1,0 +1,33 @@
+previousText:
+<html>
+  <head>
+  </head>
+  <body>
+
+  </body>
+</html>
+
+edits:
+[
+  {
+    rangeOffset: 35
+    rangeLength: 0
+    text: "    <!--hello world-->"
+  }
+]
+
+nextText:
+<html>
+  <head>
+  </head>
+  <body>
+    <!--hello world-->
+  </body>
+</html>
+
+expectedDom:
+<html><head>
+  </head>
+  <body>
+    <!--hello world-->
+  </body></html>

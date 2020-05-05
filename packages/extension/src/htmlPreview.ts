@@ -135,17 +135,25 @@ const hydrate = (node, $node) => {
               break
             }
             case 'CommentNode': {
-              // TODO
+              $node = document.createComment(parseEntities(payload.text))
               break
             }
             default: {
               break
             }
           }
-          if(payload.index===0){
+          if(payload.index === 0){
             $parent.prepend($node)
+          } else if(payload.index === $parent.childNodes.length){
+            $parent.append($node)
           } else {
-            $parent.insertBefore($node, $parent.childNodes[payload.index])
+            const $referenceNode = $parent.childNodes[payload.index]
+            if(!$referenceNode){
+              console.log({ command, payload })
+              console.warn('failed to insert node')
+              return 
+            }
+            $parent.insertBefore($node, $referenceNode)
           }
           $nodeMap[payload.id] = $node
           break
