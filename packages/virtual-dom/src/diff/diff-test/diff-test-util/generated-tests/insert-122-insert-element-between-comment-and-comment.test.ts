@@ -61,6 +61,10 @@ test(`insert-122-insert-element-between-comment-and-comment.test.txt`, () => {
     const edits = diff(p1, p2)
     const expectedEdits = [
       {
+        "command": "elementMove",
+        "payload": {}
+      },
+      {
         "command": "elementInsert",
         "payload": {
           "nodeType": "ElementNode",
@@ -73,10 +77,6 @@ test(`insert-122-insert-element-between-comment-and-comment.test.txt`, () => {
           "nodeType": "TextNode",
           "text": "b"
         }
-      },
-      {
-        "command": "elementMove",
-        "payload": {}
       }
     ]
     expect(adjustEdits(edits)).toEqual(adjustExpectedEdits(expectedEdits))

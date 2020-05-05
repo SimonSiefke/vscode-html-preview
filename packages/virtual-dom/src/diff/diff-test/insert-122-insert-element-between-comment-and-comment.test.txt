@@ -16,6 +16,10 @@ nextText:
 expectedEdits:
 [
   {
+    command: elementMove
+    payload: {}
+  }
+  {
     command: elementInsert
     payload: {
       nodeType: ElementNode
@@ -28,9 +32,5 @@ expectedEdits:
       nodeType: TextNode
       text: b
     }
-  }
-  {
-    command: elementMove
-    payload: {}
   }
 ]

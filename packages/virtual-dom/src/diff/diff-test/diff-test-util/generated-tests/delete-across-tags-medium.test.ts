@@ -61,14 +61,14 @@ test(`delete-across-tags-medium.test.txt`, () => {
     const edits = diff(p1, p2)
     const expectedEdits = [
       {
+        "command": "elementMove",
+        "payload": {}
+      },
+      {
         "command": "textReplace",
         "payload": {
           "text": "ab"
         }
-      },
-      {
-        "command": "elementMove",
-        "payload": {}
       },
       {
         "command": "elementDelete",

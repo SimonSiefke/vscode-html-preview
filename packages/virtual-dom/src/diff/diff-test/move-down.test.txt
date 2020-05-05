@@ -26,6 +26,14 @@ nextText:
 
 expectedEdits:
 [
+   {
+    command: elementMove
+    payload: {}
+  }
+  {
+    command: elementMove
+    payload: {}
+  }
   {
     command: textReplace,
     payload: {
@@ -46,13 +54,5 @@ expectedEdits:
       nodeType: TextNode
       text: "\n"
     }
-  }
-  {
-    command: elementMove
-    payload: {}
-  }
-  {
-    command: elementMove
-    payload: {}
   }
 ]

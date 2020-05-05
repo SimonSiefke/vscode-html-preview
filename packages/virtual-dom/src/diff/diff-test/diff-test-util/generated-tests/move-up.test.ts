@@ -77,14 +77,14 @@ test(`move-up.test.txt`, () => {
     const edits = diff(p1, p2)
     const expectedEdits = [
       {
+        "command": "elementMove",
+        "payload": {}
+      },
+      {
         "command": "textReplace",
         "payload": {
           "text": "\n  "
         }
-      },
-      {
-        "command": "elementMove",
-        "payload": {}
       },
       {
         "command": "elementInsert",

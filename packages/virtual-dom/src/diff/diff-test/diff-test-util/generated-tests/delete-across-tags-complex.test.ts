@@ -70,18 +70,18 @@ test(`delete-across-tags-complex.test.txt`, () => {
     const edits = diff(p1, p2)
     const expectedEdits = [
       {
+        "command": "elementMove",
+        "payload": {}
+      },
+      {
+        "command": "elementMove",
+        "payload": {}
+      },
+      {
         "command": "textReplace",
         "payload": {
           "text": "\n  Hello\n\n    "
         }
-      },
-      {
-        "command": "elementMove",
-        "payload": {}
-      },
-      {
-        "command": "elementMove",
-        "payload": {}
       },
       {
         "command": "elementDelete",

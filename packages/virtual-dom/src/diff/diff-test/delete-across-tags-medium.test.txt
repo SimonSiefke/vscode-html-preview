@@ -16,14 +16,14 @@ nextText:
 expectedEdits:
 [
   {
+    command: elementMove
+    payload: {}
+  }
+  {
     command: textReplace
     payload: {
       text: ab
     }
-  }
-  {
-    command: elementMove
-    payload: {}
   }
   {
     command: elementDelete
