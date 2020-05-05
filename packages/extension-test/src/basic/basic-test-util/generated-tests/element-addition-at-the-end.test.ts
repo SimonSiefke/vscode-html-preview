@@ -73,7 +73,6 @@ test('element-addition-at-the-end', async () => {
 waitForUpdateStart(page)
 await vscode.workspace.applyEdit(vscodeEdit)
 await waitForUpdateEnd(page)
-    
 	const html = await page.content()
 	assert.equal(adjust(html), `<html><head></head><body><h1>a</h1><h1>b</h1></body></html>`);
 

@@ -73,7 +73,6 @@ test('basic-replace-text-1', async () => {
 waitForUpdateStart(page)
 await vscode.workspace.applyEdit(vscodeEdit)
 await waitForUpdateEnd(page)
-    
 	const html = await page.content()
 	assert.equal(adjust(html), `<html><head></head><body><h1>b</h1></body></html>`);
 

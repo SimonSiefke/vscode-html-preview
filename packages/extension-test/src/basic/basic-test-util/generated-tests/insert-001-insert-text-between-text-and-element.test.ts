@@ -73,7 +73,6 @@ test('insert-001-insert-text-between-text-and-element', async () => {
 waitForUpdateStart(page)
 await vscode.workspace.applyEdit(vscodeEdit)
 await waitForUpdateEnd(page)
-    
 	const html = await page.content()
 	assert.equal(adjust(html), `<html><head></head><body>ab<h1>c</h1></body></html>`);
 

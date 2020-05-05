@@ -60,7 +60,6 @@ test('top-220-explicit-html-explicit-head-no-body', async () => {
 	{
     
     
-    await new Promise(resolve=>setTimeout(resolve, 100))
 	const html = await page.content()
 	assert.equal(adjust(html), `<html><head>
     <title></title>

@@ -76,7 +76,6 @@ test('text-insertion-in-nested-html', async () => {
 waitForUpdateStart(page)
 await vscode.workspace.applyEdit(vscodeEdit)
 await waitForUpdateEnd(page)
-    
 	const html = await page.content()
 	assert.equal(adjust(html), `<html><head></head><body><div>
   <img src="https://source.unsplash.com/random" alt="random image">

@@ -187,7 +187,6 @@ test('issue22', async () => {
 waitForUpdateStart(page)
 await vscode.workspace.applyEdit(vscodeEdit)
 await waitForUpdateEnd(page)
-    
 	const html = await page.content()
 	assert.equal(adjust(html), `<!DOCTYPE html><html><head>
     <meta charset="utf-8">

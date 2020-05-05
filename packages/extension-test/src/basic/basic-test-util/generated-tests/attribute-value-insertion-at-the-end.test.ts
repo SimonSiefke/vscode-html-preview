@@ -73,7 +73,6 @@ test('attribute-value-insertion-at-the-end', async () => {
 waitForUpdateStart(page)
 await vscode.workspace.applyEdit(vscodeEdit)
 await waitForUpdateEnd(page)
-    
 	const html = await page.content()
 	assert.equal(adjust(html), `<html><head></head><body><h1 class="bigger">hello world</h1></body></html>`);
 

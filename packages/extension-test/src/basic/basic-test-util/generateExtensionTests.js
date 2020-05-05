@@ -63,7 +63,6 @@ function genSingle(testCase) {
         ? `${createEdit}\nwaitForUpdateStart(page)\n${applyEdit}\nawait waitForUpdateEnd(page)`
         : ''
     }
-    ${!waitForEdits && !waitForReload ? `await new Promise(resolve=>setTimeout(resolve, 100))` : ''}
 	const html = await page.content()
 	assert.equal(adjust(html), \`${testCase.expectedDom}\`);
 

@@ -73,7 +73,6 @@ test('basic-text-insertion', async () => {
 waitForUpdateStart(page)
 await vscode.workspace.applyEdit(vscodeEdit)
 await waitForUpdateEnd(page)
-    
 	const html = await page.content()
 	assert.equal(adjust(html), `<html><head></head><body><h1>hello<p>ok</p></h1></body></html>`);
 

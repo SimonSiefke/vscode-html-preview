@@ -73,7 +73,6 @@ test('insert-022-insert-text-between-comment-and-comment', async () => {
 waitForUpdateStart(page)
 await vscode.workspace.applyEdit(vscodeEdit)
 await waitForUpdateEnd(page)
-    
 	const html = await page.content()
 	assert.equal(adjust(html), `<html><head></head><body>b<!--c--></body></html>`);
 

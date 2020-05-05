@@ -56,7 +56,6 @@ test('invalid-to-valid-1', async () => {
 	{
     
     
-    await new Promise(resolve=>setTimeout(resolve, 100))
 	const html = await page.content()
 	assert.equal(adjust(html), `<!DOCTYPE html><html><head></head><body>
 <h1>The HTML is invalid</h1>
@@ -87,7 +86,6 @@ test('invalid-to-valid-1', async () => {
 await vscode.workspace.applyEdit(vscodeEdit)
 await page.waitForNavigation({ waitUntil: 'networkidle2' })
 
-    
     
 	const html = await page.content()
 	assert.equal(adjust(html), `<html><head></head><body><h1>hello world</h1></body></html>`);

@@ -77,7 +77,6 @@ h1`)
 waitForUpdateStart(page)
 await vscode.workspace.applyEdit(vscodeEdit)
 await waitForUpdateEnd(page)
-    
 	const html = await page.content()
 	assert.equal(adjust(html), `<!DOCTYPE html><html><head>
 </head>

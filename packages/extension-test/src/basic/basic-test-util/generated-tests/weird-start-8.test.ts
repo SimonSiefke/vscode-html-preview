@@ -59,7 +59,6 @@ test('weird-start-8', async () => {
 	{
     
     
-    await new Promise(resolve=>setTimeout(resolve, 100))
 	const html = await page.content()
 	assert.equal(adjust(html), `<!DOCTYPE html><html><head></head><body>
 <h1>The HTML is invalid</h1>

@@ -73,7 +73,6 @@ test('delete-100-delete-element-between-text-and-text', async () => {
 waitForUpdateStart(page)
 await vscode.workspace.applyEdit(vscodeEdit)
 await waitForUpdateEnd(page)
-    
 	const html = await page.content()
 	assert.equal(adjust(html), `<html><head></head><body>ac</body></html>`);
 

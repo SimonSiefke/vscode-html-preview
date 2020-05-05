@@ -57,7 +57,6 @@ test('element-node-before-style', async () => {
 	{
     
     
-    await new Promise(resolve=>setTimeout(resolve, 100))
 	const html = await page.content()
 	assert.equal(adjust(html), `<html><head></head><body><h1></h1>
 <style></style></body></html>`);

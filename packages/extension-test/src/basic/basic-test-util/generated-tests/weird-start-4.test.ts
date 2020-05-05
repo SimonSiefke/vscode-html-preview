@@ -59,7 +59,6 @@ test('weird-start-4', async () => {
 	{
     
     
-    await new Promise(resolve=>setTimeout(resolve, 100))
 	const html = await page.content()
 	assert.equal(adjust(html), `<!DOCTYPE html><html><head></head><body>
   hello

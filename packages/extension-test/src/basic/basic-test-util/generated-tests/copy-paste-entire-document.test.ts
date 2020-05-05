@@ -66,7 +66,6 @@ test('copy-paste-entire-document', async () => {
 	{
     
     
-    await new Promise(resolve=>setTimeout(resolve, 100))
 	const html = await page.content()
 	assert.equal(adjust(html), `<!DOCTYPE html><html><head>
     <meta charset="utf-8">

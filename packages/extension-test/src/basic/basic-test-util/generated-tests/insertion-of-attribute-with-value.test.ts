@@ -73,7 +73,6 @@ test('insertion-of-attribute-with-value', async () => {
 waitForUpdateStart(page)
 await vscode.workspace.applyEdit(vscodeEdit)
 await waitForUpdateEnd(page)
-    
 	const html = await page.content()
 	assert.equal(adjust(html), `<html><head></head><body><h1 class="big">hello world</h1></body></html>`);
 

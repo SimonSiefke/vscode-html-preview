@@ -73,7 +73,6 @@ test('delete-222-delete-comment-between-comment-and-comment', async () => {
 waitForUpdateStart(page)
 await vscode.workspace.applyEdit(vscodeEdit)
 await waitForUpdateEnd(page)
-    
 	const html = await page.content()
 	assert.equal(adjust(html), `<html><head></head><body></body></html>`);
 

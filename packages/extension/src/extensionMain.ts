@@ -197,8 +197,6 @@ export const activate = (context: vscode.ExtensionContext) => {
         lastSuccessResult,
         hasInvalidRequest,
       } = cachedValues[pathname]
-      console.log(JSON.stringify(event.contentChanges))
-      console.log(JSON.stringify(minimizeEdits(previousText, event.contentChanges)))
       const updatedOffsetMap = updateOffsetMap(
         offsetMap,
         minimizeEdits(previousText, event.contentChanges)

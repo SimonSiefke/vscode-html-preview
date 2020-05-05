@@ -73,7 +73,6 @@ test('add-whitespace-after-implicit-head', async () => {
 waitForUpdateStart(page)
 await vscode.workspace.applyEdit(vscodeEdit)
 await waitForUpdateEnd(page)
-    
 	const html = await page.content()
 	assert.equal(adjust(html), `<html><head><title>updating title</title>
 </head><body><h1>hello world</h1></body></html>`);

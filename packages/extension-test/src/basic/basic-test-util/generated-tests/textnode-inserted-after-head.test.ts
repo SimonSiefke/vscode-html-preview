@@ -57,7 +57,6 @@ test('textnode-inserted-after-head', async () => {
 	{
     
     
-    await new Promise(resolve=>setTimeout(resolve, 100))
 	const html = await page.content()
 	assert.equal(adjust(html), `<html><head></head>
 <body><h1>hello world</h1></body></html>`);
@@ -84,7 +83,6 @@ test('textnode-inserted-after-head', async () => {
 waitForUpdateStart(page)
 await vscode.workspace.applyEdit(vscodeEdit)
 await waitForUpdateEnd(page)
-    
 	const html = await page.content()
 	assert.equal(adjust(html), `<html><head></head>
 <body>a<h1>hello world</h1></body></html>`);
