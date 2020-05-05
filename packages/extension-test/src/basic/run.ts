@@ -2,7 +2,7 @@ import * as path from 'path'
 import * as Mocha from 'mocha'
 import * as glob from 'glob'
 
-const only = ''
+const only = 'open-implies*'
 const testFiles = `**/generated-tests/${only || '*'}.test.js`
 
 export const run = () => {

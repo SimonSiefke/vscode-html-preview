@@ -600,3 +600,83 @@ a<h1>hello world</h1>`).toEqual(`<html><head></head>
 // </head><body><h1>hello world</h1></body></html>`
 //   )
 // })
+
+test('open implies close 1', () => {
+  expectParse(`<ruby>Text goes here<rt>annotation goes here</ruby>`).toEqual(
+    `<html><head></head><body><ruby>Text goes here<rt>annotation goes here</rt></ruby></body></html>`
+  )
+})
+
+test('open implies close 2', () => {
+  expectParse(`<dl>
+  <dt> Authors
+  <dd> John
+  <dd> Luke
+  <dt> Editor
+  <dd> Frank
+</dl>`).toEqual(`<html><head></head><body><dl>
+  <dt> Authors
+  </dt><dd> John
+  </dd><dd> Luke
+  </dd><dt> Editor
+  </dt><dd> Frank
+</dd></dl></body></html>`)
+})
+
+test('open implies close 3', () => {
+  expectParse(`<ul>
+  <li>1
+  <li>2
+</ul>`).toEqual(`<html><head></head><body><ul>
+  <li>1
+  </li><li>2
+</li></ul></body></html>`)
+})
+
+test('open implies close 4', () => {
+  expectParse(`<ol>
+  <li>1
+  <li>2
+</ol>`).toEqual(`<html><head></head><body><ol>
+  <li>1
+  </li><li>2
+</li></ol></body></html>`)
+})
+
+test('open implies close 5', () => {
+  expectParse(`<ruby>B
+  <rt>a
+  <rt>a
+</ruby>
+<ruby>A
+  <rt>a
+  <rt>a
+</ruby>
+<ruby>S
+  <rt>a
+  <rt>a
+</ruby>
+<ruby>E
+  <rt>
+  <rt>a
+</ruby>`).toEqual(`<html><head></head><body><ruby>B
+  <rt>a
+  </rt><rt>a
+</rt></ruby>
+<ruby>A
+  <rt>a
+  </rt><rt>a
+</rt></ruby>
+<ruby>S
+  <rt>a
+  </rt><rt>a
+</rt></ruby>
+<ruby>E
+  <rt>
+  </rt><rt>a
+</rt></ruby></body></html>`)
+})
+
+test('open implies closed 6', () => {
+  expectParse(`<p>hello world`).toEqual(`<html><head></head><body><p>hello world</p></body></html>`)
+})

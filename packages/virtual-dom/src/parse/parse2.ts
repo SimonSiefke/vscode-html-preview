@@ -1,7 +1,13 @@
 import { scan, TokenType, Token } from './scanner2'
 import * as assert from 'assert'
 import { updateOffsetMap } from './updateOffsetMap'
-import { isHeadTag, isAllowedSelfClosingTag, isSelfClosingTag, isBodyTag } from './utils'
+import {
+  isHeadTag,
+  isAllowedSelfClosingTag,
+  isSelfClosingTag,
+  isBodyTag,
+  isAutoClosed,
+} from './utils'
 
 interface ElementNode {
   attributes: {
@@ -433,6 +439,11 @@ export const parse: (
                 index: findErrorIndex(i),
               }
             }
+            if (isAutoClosed(parent.tag)) {
+              stack.pop()
+              parent = stack[stack.length - 1]
+              parent.tag //?
+            }
             child = createElementNode(token.text, getId(offset - 1, token.text.length))
             stack.push(child)
             break
@@ -504,9 +515,22 @@ export const parse: (
               stack.pop()
               parent = stack[stack.length - 1]
             } else {
-              return {
-                status: 'invalid',
-                index: findErrorIndex(i),
+              while (isAutoClosed(parent.tag)) {
+                stack.pop()
+                parent = stack[stack.length - 1]
+                parent.tag //?
+              }
+              if (token.text === parent.tag) {
+                stack.pop()
+                parent = stack[stack.length - 1]
+                if (parent === htmlDocument) {
+                  parent = body as ElementNode
+                }
+              } else {
+                return {
+                  status: 'invalid',
+                  index: findErrorIndex(i),
+                }
               }
             }
             break
@@ -640,6 +664,10 @@ export const parse: (
   if (!body) {
     html.children.push(createElementNode('body', 'body'))
   }
+  while (isAutoClosed(parent.tag)) {
+    stack.pop()
+    parent = stack[stack.length - 1]
+  }
   if (stack[stack.length - 1] === implicitBody) {
     stack.pop()
   }
@@ -696,8 +724,7 @@ const stringify = nodes => {
 // )
 
 const doc = parse(
-  `<title></title>
-<b></b>`,
+  `<p>hello world`,
   (() => {
     let i = 0
     return () => i++

@@ -1,0 +1,17 @@
+previousText:
+<ruby>Text goes here<rt>annotation goes here</ruby>
+
+edits:
+[
+  {
+    rangeOffset: 44
+    rangeLength: 0
+    text: !
+  }
+]
+
+nextText:
+<ruby>Text goes here<rt>annotation goes here!</ruby>
+
+expectedDom:
+<html><head></head><body><ruby>Text goes here<rt>annotation goes here!</rt></ruby></body></html>
