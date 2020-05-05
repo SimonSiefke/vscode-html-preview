@@ -414,7 +414,7 @@ h1`).toEqual(`<!DOCTYPE html><html><head>
 h1</body></html>`)
 })
 
-test.skip('implicit whitespace before body end', () => {
+test('implicit whitespace before body end', () => {
   expectParse(`<style>
   h1 {
     color: cornflowerblue;
@@ -423,7 +423,15 @@ test.skip('implicit whitespace before body end', () => {
 
 <h1>hello world</h1>
 
-<h2>this is live preview</h2>`).toEqual(``)
+<h2>this is live preview</h2>`).toEqual(`<html><head><style>
+  h1 {
+    color: cornflowerblue;
+  }
+</style>
+
+</head><body><h1>hello world</h1>
+
+<h2>this is live preview</h2></body></html>`)
 })
 
 test('only comments', () => {
@@ -566,6 +574,12 @@ test('weird start 14', () => {
 })
 
 // TODO other top tests
+test('top 111, implicit html, implicit head, implicit body', () => {
+  expectParse(`<title></title>
+<b></b>`).toEqual(`<html><head><title></title>
+</head><body><b></b></body></html>`)
+})
+
 test('top 201, explicit html, no head, implicit body', () => {
   expectParse(`<html>
   <b></b>
@@ -578,3 +592,11 @@ test('whitespace and text after head', () => {
 a<h1>hello world</h1>`).toEqual(`<html><head></head>
 <body>a<h1>hello world</h1></body></html>`)
 })
+
+// test('whitespace after implicit head', () => {
+//   expectParse(`<title>updating title</title>
+// <body><h1>hello world</h1></body>`).toEqual(
+//     `<html><head><title>updating title</title>
+// </head><body><h1>hello world</h1></body></html>`
+//   )
+// })

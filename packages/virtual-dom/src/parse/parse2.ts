@@ -174,6 +174,9 @@ export const parse: (
                 )}`,
               }
             }
+            if (parent === htmlDocument) {
+              parent = head as ElementNode
+            }
             parent.children.push(createTextNode(token.text, getId(offset, token.text.length)))
             break
           }
@@ -693,12 +696,8 @@ const stringify = nodes => {
 // )
 
 const doc = parse(
-  `<!DOCTYPE html>
-<html>
-  <head>
-  </head>
-  hello
-</html>`,
+  `<title></title>
+<b></b>`,
   (() => {
     let i = 0
     return () => i++
@@ -706,7 +705,7 @@ const doc = parse(
 )
 
 if (doc.status === 'success') {
-  doc.nodes[1] //?
+  doc.nodes //?
   stringify(doc.nodes) //?
 } else {
   doc.index //?

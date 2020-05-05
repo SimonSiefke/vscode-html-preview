@@ -350,3 +350,14 @@ preview doesn't update anymore
 
 move h1 down and up, text disappears
  -->
+
+<!-- TODO bug
+<title>updating title</title><body><h1>hello world</h1></body>
+
+enter after closing title
+
+<title>updating title</title>
+<body><h1>hello world</h1></body>
+
+doesn't work
+ -->

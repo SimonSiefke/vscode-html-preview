@@ -12,7 +12,7 @@ const failingTests = [
   // 'element-before-head.test.txt',
   'textnode-before-style.test.txt', // TODO invalid
   'insert-doctype.test.txt', // TODO puppeteer error execution context was destroyed
-  'top-111-implicit-html-implicit-head-implicit-body.test.txt', // TODO browser inserts text node
+  // 'top-111-implicit-html-implicit-head-implicit-body.test.txt', // TODO browser inserts text node
   'top-112-implicit-html-implicit-head-explicit-body.test.txt', // TODO browser inserts text node
 ]
 

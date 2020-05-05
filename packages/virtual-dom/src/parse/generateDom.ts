@@ -14,7 +14,7 @@ const generateNode = (
         node.tag === 'body'
           ? `<script id="virtual-dom" type="application/json">${JSON.stringify(
               result
-            )}</script><script  id="html-preview" type="module" src="http://localhost:3000/html-preview.js"></script>`
+            )}</script><script id="html-preview" type="module" src="http://localhost:3000/html-preview.js"></script>`
           : ''
       }${isSelfClosingTag(node.tag) ? '' : `</${node.tag}>`}`
     }
