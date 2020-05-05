@@ -734,3 +734,75 @@ test('nested html', () => {
   <p>nested <strong>text</strong></p>
 </div></body></html>`)
 })
+
+test.skip('th without thead', () => {
+  expectParse(`<table>
+  <tr><th>1</th></tr>
+</table>`).toFail()
+})
+
+test.skip('li without ul', () => {
+  expectParse(`<li></li>`).toFail()
+})
+
+test.skip('invalid tag inside ul', () => {
+  expectParse(`<ul>
+  <l></l>
+</ul>`).toFail()
+})
+
+test('unclosed tr', () => {
+  expectParse(`<table class="sortable">
+  <thead>
+    <tr>
+      <th> Game
+      <th> Corporations
+      <th> Map Size
+  <tbody>
+    <tr>
+      <td> 1830
+      <td> <data value="8">Eight</data>
+      <td> <data value="93">19+74 hexes (93 total)</data>
+    <tr>
+      <td> 1856
+      <td> <data value="11">Eleven</data>
+      <td> <data value="99">12+87 hexes (99 total)</data>
+    <tr>
+      <td> 1870
+      <td> <data value="10">Ten</data>
+      <td> <data value="149">4+145 hexes (149 total)</data>
+</table>`)
+})
+
+test('p inside dl', () => {
+  expectParse(`<!DOCTYPE html>
+<html>
+  <body>
+    <dl>
+      <dt> 1
+      <dd>
+        <p> 2
+          <dl>
+            <dt> 3
+            <dd>
+              <p> 4
+            <dt> 5
+          </dl>
+      </dd>
+    </dl>
+  </body>
+</html>`).toEqual(`<!DOCTYPE html><html><head></head><body>
+    <dl>
+      <dt> 1
+      </dt><dd>
+        <p> 2
+          </p><dl>
+            <dt> 3
+            </dt><dd>
+              <p> 4
+            </p></dd><dt> 5
+          </dt></dl>
+      </dd>
+    </dl>
+  </body></html>`)
+})

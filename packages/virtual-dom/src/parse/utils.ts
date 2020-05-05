@@ -138,8 +138,8 @@ const FORM_TAGS = new Set([
 ])
 
 const OPEN_IMPLIES_CLOSE = {
-  tr: new Set(['tr']),
-  th: new Set(['th', 'tr']),
+  tr: new Set(['tr', 'tbody']),
+  th: new Set(['th', 'tr', 'tbody']),
   td: new Set(['tr', 'td']),
   thead: new Set(['td', 'tbody']),
   tbody: new Set(['tfoot']),
@@ -159,6 +159,8 @@ const OPEN_IMPLIES_CLOSE = {
     'details',
     'div',
     'dl',
+    'dt',
+    'dd',
     'fieldset',
     'figcaption',
     'figure',

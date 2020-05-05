@@ -440,7 +440,7 @@ export const parse: (
                 index: findErrorIndex(i),
               }
             }
-            if (isAutoClosed(parent.tag, token.text)) {
+            while (isAutoClosed(parent.tag, token.text)) {
               stack.pop()
               parent = stack[stack.length - 1]
             }
@@ -522,7 +522,7 @@ export const parse: (
               stack.pop()
               parent = stack[stack.length - 1]
             } else {
-              if (isAutoClosedAtEnd(parent.tag) && parent !== implicitBody) {
+              while (isAutoClosedAtEnd(parent.tag) && parent !== implicitBody) {
                 stack.pop()
                 parent = stack[stack.length - 1]
               }
@@ -730,14 +730,26 @@ const stringify = nodes => {
 // )
 
 const doc = parse(
-  `<table>
+  `<table class="sortable">
+  <thead>
     <tr>
-      <td>hello</td>
-    </tr>
+      <th> Game
+      <th> Corporations
+      <th> Map Size
+  <tbody>
     <tr>
-      <td>world</td>
-    </tr>
-  </table>`,
+      <td> 1830
+      <td> <data value="8">Eight</data>
+      <td> <data value="93">19+74 hexes (93 total)</data>
+    <tr>
+      <td> 1856
+      <td> <data value="11">Eleven</data>
+      <td> <data value="99">12+87 hexes (99 total)</data>
+    <tr>
+      <td> 1870
+      <td> <data value="10">Ten</data>
+      <td> <data value="149">4+145 hexes (149 total)</data>
+</table>`,
   (() => {
     let i = 0
     return () => i++
