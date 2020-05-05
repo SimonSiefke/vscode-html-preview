@@ -444,7 +444,14 @@ export const parse: (
               stack.pop()
               parent = stack[stack.length - 1]
             }
-            child = createElementNode(token.text, getId(offset - 1, token.text.length))
+            const id = getId(offset - 1, token.text.length)
+            if (parent.tag === 'table' && token.text === 'tr') {
+              const implicitTbody = createElementNode('tbody', `tbody-${id}`)
+              parent.children.push(implicitTbody)
+              parent = implicitTbody
+              stack.push(implicitTbody)
+            }
+            child = createElementNode(token.text, id)
             stack.push(child)
             break
           }
@@ -723,10 +730,14 @@ const stringify = nodes => {
 // )
 
 const doc = parse(
-  `<div>
-  <img src="https://source.unsplash.com/random" alt="random image">
-  <p>nested <strong>text</strong></p>
-</div>`,
+  `<table>
+    <tr>
+      <td>hello</td>
+    </tr>
+    <tr>
+      <td>world</td>
+    </tr>
+  </table>`,
   (() => {
     let i = 0
     return () => i++

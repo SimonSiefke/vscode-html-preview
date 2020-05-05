@@ -713,6 +713,18 @@ test('table', () => {
 </table></body></html>`)
 })
 
+test('table with implicit tbody', () => {
+  expectParse(`<table>
+  <tr><td>1</td></tr>
+  <tr><td>2</td></tr>
+  <tr><td>3</td></tr>
+</table>`).toEqual(`<html><head></head><body><table>
+  <tbody><tr><td>1</td></tr>
+  <tr><td>2</td></tr>
+  <tr><td>3</td></tr>
+</tbody></table></body></html>`)
+})
+
 test('nested html', () => {
   expectParse(`<div>
   <img src="https://source.unsplash.com/random" alt="random image">
