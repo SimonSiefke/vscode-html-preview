@@ -125,7 +125,7 @@ const elementMove: (
   parentId: number | string,
   index: number
 ) => void = (edits, node, parentId, index) => {
-  edits.push({
+  edits.unshift({
     command: 'elementMove',
     payload: {
       id: node.id,
