@@ -730,7 +730,9 @@ const stringify = nodes => {
 // )
 
 const doc = parse(
-  `<h4>hello world<`,
+  `<body><noscript>
+  <input type=submit value="Calculate Square">
+</noscript></body>`,
   (() => {
     let i = 0
     return () => i++
@@ -738,7 +740,7 @@ const doc = parse(
 )
 
 if (doc.status === 'success') {
-  doc.nodes //?
+  JSON.stringify(doc.nodes) //?
   stringify(doc.nodes) //?
 } else {
   doc.index //?

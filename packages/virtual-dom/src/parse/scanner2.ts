@@ -72,7 +72,7 @@ export const scan: (text: string) => SuccessResult | ErrorResult = text => {
   const tokens: Token[] = []
   let state: State = State.Content
   let index = 0
-  let special: 'script' | 'style' | undefined
+  let special: 'script' | 'style' | 'noscript' | undefined
   let next: RegExpMatchArray | null
   while (index < text.length) {
     switch (state) {
@@ -98,6 +98,26 @@ export const scan: (text: string) => SuccessResult | ErrorResult = text => {
           }
           case 'script': {
             if ((next = text.slice(index).match(/^((?:.|\s)*?)(?:<\/script>)/))) {
+              const tokenText = next[1]
+              if (tokenText) {
+                index += tokenText.length
+                tokens.push({
+                  type: TokenType.Content,
+                  text: tokenText,
+                })
+              }
+              state = State.Content
+              special = undefined
+            } else {
+              return {
+                status: 'invalid',
+                index,
+              }
+            }
+            break
+          }
+          case 'noscript': {
+            if ((next = text.slice(index).match(/^((?:.|\s)*?)(?:<\/noscript>)/))) {
               const tokenText = next[1]
               if (tokenText) {
                 index += tokenText.length
@@ -179,7 +199,7 @@ export const scan: (text: string) => SuccessResult | ErrorResult = text => {
             text: tokenText,
           })
           state = State.InsideStartTag
-          if (tokenText === 'script' || tokenText === 'style') {
+          if (tokenText === 'script' || tokenText === 'style' || tokenText === 'noscript') {
             special = tokenText
           }
         } else if (
@@ -460,3 +480,7 @@ export const scan: (text: string) => SuccessResult | ErrorResult = text => {
 //   doc.index //?
 //   console.log('an error')
 // }
+
+scan(`<body><noscript>
+<input type=submit value="Calculate Square">
+</noscript></body>`) //?

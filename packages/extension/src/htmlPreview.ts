@@ -85,7 +85,8 @@ const hydrate = (node, $node) => {
           }
           break
         }
-        case "SCRIPT":{
+        case "SCRIPT":
+        case "NOSCRIPT": {
           if(node.text !== $node.textContent){
             console.log(node)
             console.log($node)
@@ -151,7 +152,8 @@ const hydrate = (node, $node) => {
               $node.textContent = parseEntities(payload.text).replace(/^\\n+/, '')
               break
             }
-            case "SCRIPT":{
+            case "SCRIPT":
+            case "NOSCRIPT": {
               $node.textContent = payload.text
               break
             }

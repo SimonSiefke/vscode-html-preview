@@ -1,0 +1,32 @@
+previousText:
+<body>
+  
+  <noscript>
+    <input type=submit value="Calculate Square">
+  </noscript>
+</body>
+
+edits:
+[
+  {
+    rangeOffset: 69
+    rangeLength: 0
+    text: !
+  }
+]
+
+nextText:
+<body>
+  
+  <noscript>
+    <input type=submit value="Calculate Square!">
+  </noscript>
+</body>
+
+expectedDom:
+<html><head></head><body>
+  
+  <noscript>
+    <input type=submit value="Calculate Square!">
+  </noscript>
+</body></html>

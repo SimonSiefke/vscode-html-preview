@@ -822,3 +822,16 @@ color: red;
 test('partial end tag', () => {
   expectParse(`<h4>hello world<`).toFail()
 })
+
+test('noscript', () => {
+  expectParse(`
+<body>
+  <noscript>
+    <input type=submit value="Calculate Square">
+  </noscript>
+</body>`).toEqual(`<html><head></head><body>
+  <noscript>
+    <input type=submit value=\"Calculate Square\">
+  </noscript>
+</body></html>`)
+})

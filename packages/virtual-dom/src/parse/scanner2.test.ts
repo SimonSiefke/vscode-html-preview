@@ -528,3 +528,27 @@ test('empty script', () => {
     { text: '>', type: 'EndTagClosingBracket' },
   ])
 })
+
+test('noscript', () => {
+  expectTokens(`<body>
+  <noscript>
+    <input type=submit value="Calculate Square">
+  </noscript>
+</body>`).toEqual([
+    { text: '<', type: 'StartTagOpeningBracket' },
+    { text: 'body', type: 'StartTagName' },
+    { text: '>', type: 'StartTagClosingBracket' },
+    { text: '\n  ', type: 'Content' },
+    { text: '<', type: 'StartTagOpeningBracket' },
+    { text: 'noscript', type: 'StartTagName' },
+    { text: '>', type: 'StartTagClosingBracket' },
+    { text: '\n    <input type=submit value="Calculate Square">\n  ', type: 'Content' },
+    { text: '</', type: 'EndTagOpeningBracket' },
+    { text: 'noscript', type: 'EndTagName' },
+    { text: '>', type: 'EndTagClosingBracket' },
+    { text: '\n', type: 'Content' },
+    { text: '</', type: 'EndTagOpeningBracket' },
+    { text: 'body', type: 'EndTagName' },
+    { text: '>', type: 'EndTagClosingBracket' },
+  ])
+})
