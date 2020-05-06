@@ -1,0 +1,17 @@
+previousText:
+<script></script>
+
+edits:
+[
+  {
+    rangeOffset: 8
+    rangeLength: 0
+    text: "1"
+  }
+]
+
+nextText:
+<script>1</script>
+
+expectedDom:
+<html><head><script>1</script></head><body></body></html>

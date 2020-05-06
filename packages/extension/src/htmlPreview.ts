@@ -67,16 +67,23 @@ const hydrate = (node, $node) => {
 
     case 'TextNode': {
       if($node.parentElement.tagName === "PRE") {
-        if(parseEntities(node.text).trimStart() !== $node.textContent.trimStart()){
+        if(parseEntities(node.text).trimStart() !== $node.textContent){
           console.log(node)
           console.log($node)
           console.warn('hydration failed 5')
           return false
         }
+      } else if($node.parentElement.tagName === "TEXTAREA"){
+        if(parseEntities(node.text).replace(/^\\n+/, '') !== $node.textContent){
+          console.log(node)
+          console.log($node)
+          console.warn('hydration failed 6')
+          return false
+        }
       } else if (parseEntities(node.text) !== $node.textContent) {
         console.log(node)
         console.log($node)
-        console.warn('hydration failed 6')
+        console.warn('hydration failed 7')
         return false
       }
       break
@@ -120,6 +127,8 @@ const hydrate = (node, $node) => {
           }
           if($node.parentElement.tagName === "PRE") {
             $node.textContent = parseEntities(payload.text).trimStart()
+          } else if($node.parentElement.tagName === "TEXTAREA"){
+            $node.textContent = parseEntities(payload.text).replace(/^\\n+/, '')
           } else {
             $node.textContent = parseEntities(payload.text)
           }
@@ -279,4 +288,57 @@ webSocket.onmessage = ({data}) => {
   }
 }
 </script></body></html>`
+}
+
+export const ERROR_HTML2 = (previousText: string, result: ErrorResult) => {
+  let errorSnippet: string
+  if (result.index === -1) {
+    errorSnippet = `<span style="color:red">${escapeHtml(previousText)}</span>`
+  } else {
+    errorSnippet = `${escapeHtml(
+      previousText.slice(Math.max(result.index - 40, 0), result.index - 1)
+    )}<span style="color:red">${escapeHtml(
+      previousText.slice(result.index - 1, result.index + 30)
+    )}</span>`
+  }
+  return `<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" type="text/css" href="https://gitcdn.xyz/repo/pi0/clippyjs/master/assets/clippy.css">
+  </head>
+  <body>
+  <script src="https://unpkg.com/jquery@3.2.1"></script>
+  <script src="https://unpkg.com/clippyjs@latest"></script>
+  <script type="text/javascript">
+  clippy.load('Clippy', (agent) => {
+    agent.show()
+    setTimeout(() => {
+      agent.play('Searching')
+      agent.speak(\`Your HTML seems to be invalid                       \`)
+    }, 2500);
+  })
+  </script> 
+<pre>
+<code>
+${errorSnippet}
+</code>
+</pre>
+<script id="html-preview">
+const webSocket = new WebSocket('ws://localhost:3000')
+webSocket.onmessage = ({data}) => {
+  const messages = JSON.parse(data)
+  for(const {command, payload} of messages){
+    switch (command) {
+      case 'reload':
+        window.location.reload(true)
+        break;
+      default:
+        console.warn('unknown command'+command)
+        break;
+    }
+  }
+}
+</script>
+</body>
+</html>`
 }

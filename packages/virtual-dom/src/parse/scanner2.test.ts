@@ -513,3 +513,18 @@ test('attribute with colon at start', () => {
 test('empty', () => {
   expectTokens(``).toEqual([])
 })
+
+test('empty script', () => {
+  expectTokens(`<script src="index.js"></script>`).toEqual([
+    { text: '<', type: 'StartTagOpeningBracket' },
+    { text: 'script', type: 'StartTagName' },
+    { text: ' ', type: 'Whitespace' },
+    { text: 'src', type: 'AttributeName' },
+    { text: '=', type: 'AttributeEqualSign' },
+    { text: '"index.js"', type: 'QuotedAttributeValue' },
+    { text: '>', type: 'StartTagClosingBracket' },
+    { text: '</', type: 'EndTagOpeningBracket' },
+    { text: 'script', type: 'EndTagName' },
+    { text: '>', type: 'EndTagClosingBracket' },
+  ])
+})

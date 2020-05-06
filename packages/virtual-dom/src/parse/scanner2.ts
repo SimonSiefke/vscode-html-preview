@@ -99,11 +99,13 @@ export const scan: (text: string) => SuccessResult | ErrorResult = text => {
           case 'script': {
             if ((next = text.slice(index).match(/^((?:.|\s)*?)(?:<\/script>)/))) {
               const tokenText = next[1]
-              index += tokenText.length
-              tokens.push({
-                type: TokenType.Content,
-                text: tokenText,
-              })
+              if (tokenText) {
+                index += tokenText.length
+                tokens.push({
+                  type: TokenType.Content,
+                  text: tokenText,
+                })
+              }
               state = State.Content
               special = undefined
             } else {
@@ -438,7 +440,7 @@ export const scan: (text: string) => SuccessResult | ErrorResult = text => {
   if (tokens.length > 0 && !isValidLastToken(tokens[tokens.length - 1])) {
     return {
       status: 'invalid',
-      index: -1,
+      index,
     }
   }
   return {

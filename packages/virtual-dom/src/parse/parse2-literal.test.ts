@@ -818,3 +818,7 @@ color: red;
 }
 </pre></body></html>`)
 })
+
+test('partial end tag', () => {
+  expectParse(`<h4>hello world<`).toFail()
+})

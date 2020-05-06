@@ -1,44 +1,70 @@
 test.skip('', () => {})
-// import { parse as _parse } from './parse2'
+import { parse as _parse } from './parse2'
 
-// const parse = (text: string) =>
-//   _parse(
-//     text,
-//     (() => {
-//       let id = 0
-//       return () => id++
-//     })()
-//   )
+const parse = (text: string) =>
+  _parse(
+    text,
+    (() => {
+      let id = 0
+      return () => id++
+    })()
+  )
 
-// const pretty = node => {
-//   if (node.nodeType === 'ElementNode') {
-//     return {
-//       tag: node.tag,
-//       children: node.children.map(pretty),
-//       id: node.id,
-//       attributes: node.attributes,
-//     }
-//   }
+const pretty = node => {
+  if (node.nodeType === 'ElementNode') {
+    return {
+      tag: node.tag,
+      children: node.children.map(pretty),
+      id: node.id,
+      attributes: node.attributes,
+    }
+  }
 
-//   return {
-//     nodeType: node.nodeType,
-//     text: node.text,
-//     id: node.id,
-//   }
-// }
+  return {
+    nodeType: node.nodeType,
+    text: node.text,
+    id: node.id,
+  }
+}
 
-// const expectNodes = (text: string) => ({
-//   toEqual: (expectedNodes: any) => {
-//     const result = parse(text)
-//     expect(result.status).toBe('success')
-//     expect((result as any).nodes).toEqual(expectedNodes)
-//   },
-//   toFail: () => {
-//     const result = parse(text)
-//     expect(result.status).toBe('invalid')
-//   },
-// })
+const expectNodes = (text: string) => ({
+  toEqual: (expectedNodes: any) => {
+    const result = parse(text)
+    expect(result.status).toBe('success')
+    expect((result as any).nodes).toEqual(expectedNodes)
+  },
+  toFail: () => {
+    const result = parse(text)
+    expect(result.status).toBe('invalid')
+  },
+})
 
+expectNodes(`<script src="index.js"></script>`).toEqual([
+  {
+    attributes: {},
+    children: [
+      {
+        attributes: {},
+        children: [
+          {
+            attributes: { src: 'index.js' },
+            children: [],
+            id: 0,
+            nodeType: 'ElementNode',
+            tag: 'script',
+          },
+        ],
+        id: 'head',
+        nodeType: 'ElementNode',
+        tag: 'head',
+      },
+      { attributes: {}, children: [], id: 'body', nodeType: 'ElementNode', tag: 'body' },
+    ],
+    id: 'html',
+    nodeType: 'ElementNode',
+    tag: 'html',
+  },
+])
 // test('basic', () => {
 //   expectNodes(`<h1>hello world</h1>`).toEqual([
 //     {

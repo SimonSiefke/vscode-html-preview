@@ -1,0 +1,28 @@
+previousText:
+<textarea name="buffer" rows=25 cols=80 readonly>
+# If not running interactively, don't do anything
+[ -z "$PS1" ] &amp;&amp; return
+
+</textarea>
+
+edits:
+[
+  {
+    rangeOffset: 131
+    rangeLength: 0
+    text: ";"
+  }
+]
+
+nextText:
+<textarea name="buffer" rows=25 cols=80 readonly>
+# If not running interactively, don't do anything
+[ -z "$PS1" ] &amp;&amp; return;
+
+</textarea>
+
+expectedDom:
+<html><head></head><body><textarea name="buffer" rows="25" cols="80" readonly=""># If not running interactively, don't do anything
+[ -z "$PS1" ] &amp;&amp; return;
+
+</textarea></body></html>

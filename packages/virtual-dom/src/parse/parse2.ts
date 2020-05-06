@@ -730,11 +730,7 @@ const stringify = nodes => {
 // )
 
 const doc = parse(
-  ` <pre>
-body {
-color: red;
-}
-</pre>`,
+  `<h4>hello world<`,
   (() => {
     let i = 0
     return () => i++
@@ -747,5 +743,5 @@ if (doc.status === 'success') {
 } else {
   doc.index //?
   doc.reason //?
-  console.log('fail')
+  // console.log('fail')
 }

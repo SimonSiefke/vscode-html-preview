@@ -162,13 +162,6 @@ const createPreview: () => Preview = () => {
 }
 
 export const activate = (context: vscode.ExtensionContext) => {
-  console.log(vscode.workspace.textDocuments)
-  const diagnosticCollection = vscode.languages.createDiagnosticCollection('html-preview')
-  context.subscriptions.push(
-    vscode.workspace.onDidChangeTextDocument(event => {
-      diagnosticCollection.clear()
-    })
-  )
   context.subscriptions.push(
     vscode.commands.registerTextEditorCommand('htmlPreview.openPreview', async () => {
       if (!preview) {
