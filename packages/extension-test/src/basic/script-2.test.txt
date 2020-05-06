@@ -1,0 +1,59 @@
+previousText:
+<!DOCTYPE html>
+<html>
+<body>
+      <button id="updateDetails">update</button>
+      <script>
+        var updateButton = document.getElementById('updateDetails');
+        updateButton.addEventListener('click', function onOpen() {
+          if (typeof favDialog.showModal === "function") {
+            favDialog.showModal();
+          } else {
+            alert("The <dialog> API is not supported by this browser");
+          }
+        });
+      </script>
+</body>
+</html>
+
+edits:
+[
+  {
+    rangeOffset: 411
+    rangeLength: 0
+    text: !
+  }
+]
+
+nextText:
+<!DOCTYPE html>
+<html>
+<body>
+      <button id="updateDetails">update</button>
+      <script>
+        var updateButton = document.getElementById('updateDetails');
+        updateButton.addEventListener('click', function onOpen() {
+          if (typeof favDialog.showModal === "function") {
+            favDialog.showModal();
+          } else {
+            alert("The <dialog> API is not supported by this browser!");
+          }
+        });
+      </script>
+</body>
+</html>
+
+expectedDom:
+<!DOCTYPE html><html><head></head><body>
+      <button id="updateDetails">update</button>
+      <script>
+        var updateButton = document.getElementById('updateDetails');
+        updateButton.addEventListener('click', function onOpen() {
+          if (typeof favDialog.showModal === "function") {
+            favDialog.showModal();
+          } else {
+            alert("The <dialog> API is not supported by this browser!");
+          }
+        });
+      </script>
+</body></html>

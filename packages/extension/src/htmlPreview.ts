@@ -66,25 +66,42 @@ const hydrate = (node, $node) => {
     }
 
     case 'TextNode': {
-      if($node.parentElement.tagName === "PRE") {
-        if(parseEntities(node.text).trimStart() !== $node.textContent){
-          console.log(node)
-          console.log($node)
-          console.warn('hydration failed 5')
-          return false
+      switch ($node.parentElement.tagName) {
+        case "PRE": {
+          if(parseEntities(node.text).trimStart() !== $node.textContent.trimStart()){
+            console.log(node)
+            console.log($node)
+            console.warn('hydration failed 5')
+            return false
+          }
+          break
         }
-      } else if($node.parentElement.tagName === "TEXTAREA"){
-        if(parseEntities(node.text).replace(/^\\n+/, '') !== $node.textContent){
-          console.log(node)
-          console.log($node)
-          console.warn('hydration failed 6')
-          return false
+        case "TEXTAREA": {
+          if(parseEntities(node.text).replace(/^\\n+/, '') !== $node.textContent){
+            console.log(node)
+            console.log($node)
+            console.warn('hydration failed 6')
+            return false
+          }
+          break
         }
-      } else if (parseEntities(node.text) !== $node.textContent) {
-        console.log(node)
-        console.log($node)
-        console.warn('hydration failed 7')
-        return false
+        case "SCRIPT":{
+          if(node.text !== $node.textContent){
+            console.log(node)
+            console.log($node)
+            console.warn('hydration failed 7')
+            return false
+          }
+          break
+        }
+        default: {
+          if (parseEntities(node.text) !== $node.textContent){
+            console.log(node)
+            console.log($node)
+            console.warn('hydration failed 8')
+            return false
+          }
+        }
       }
       break
     }
@@ -125,12 +142,22 @@ const hydrate = (node, $node) => {
             console.warn('failed to update text node')
             return
           }
-          if($node.parentElement.tagName === "PRE") {
-            $node.textContent = parseEntities(payload.text).trimStart()
-          } else if($node.parentElement.tagName === "TEXTAREA"){
-            $node.textContent = parseEntities(payload.text).replace(/^\\n+/, '')
-          } else {
-            $node.textContent = parseEntities(payload.text)
+          switch($node.parentElement.tagName){
+            case "PRE":{
+              $node.textContent = parseEntities(payload.text).trimStart()
+              break
+            }
+            case "TEXTAREA":{
+              $node.textContent = parseEntities(payload.text).replace(/^\\n+/, '')
+              break
+            }
+            case "SCRIPT":{
+              $node.textContent = payload.text
+              break
+            }
+            default: {
+              $node.textContent = parseEntities(payload.text)
+            }
           }
           break
         }
