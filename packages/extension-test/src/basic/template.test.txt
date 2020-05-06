@@ -1,0 +1,29 @@
+previousText:
+<body>
+  <template id="template">
+    <p>Smile</p>
+  </template>
+</body>
+
+edits:
+[
+  {
+    rangeOffset: 46
+    rangeLength: 0
+    text: !
+  }
+]
+
+nextText:
+<body>
+  <template id="template">
+    <p>Smile!</p>
+  </template>
+</body>
+
+expectedDom:
+<html><head></head><body>
+  <template id="template">
+    <p>Smile!</p>
+  </template>
+</body></html>

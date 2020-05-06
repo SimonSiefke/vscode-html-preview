@@ -552,3 +552,31 @@ test('noscript', () => {
     { text: '>', type: 'EndTagClosingBracket' },
   ])
 })
+
+test('template', () => {
+  expectTokens(`<body>
+  <template id="template">
+    <p>Smile</p>
+  </template>
+</body>`).toEqual([
+    { text: '<', type: 'StartTagOpeningBracket' },
+    { text: 'body', type: 'StartTagName' },
+    { text: '>', type: 'StartTagClosingBracket' },
+    { text: '\n  ', type: 'Content' },
+    { text: '<', type: 'StartTagOpeningBracket' },
+    { text: 'template', type: 'StartTagName' },
+    { text: ' ', type: 'Whitespace' },
+    { text: 'id', type: 'AttributeName' },
+    { text: '=', type: 'AttributeEqualSign' },
+    { text: '"template"', type: 'QuotedAttributeValue' },
+    { text: '>', type: 'StartTagClosingBracket' },
+    { text: '\n    <p>Smile</p>\n  ', type: 'Content' },
+    { text: '</', type: 'EndTagOpeningBracket' },
+    { text: 'template', type: 'EndTagName' },
+    { text: '>', type: 'EndTagClosingBracket' },
+    { text: '\n', type: 'Content' },
+    { text: '</', type: 'EndTagOpeningBracket' },
+    { text: 'body', type: 'EndTagName' },
+    { text: '>', type: 'EndTagClosingBracket' },
+  ])
+})

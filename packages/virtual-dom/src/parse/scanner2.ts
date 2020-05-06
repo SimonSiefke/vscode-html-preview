@@ -72,7 +72,7 @@ export const scan: (text: string) => SuccessResult | ErrorResult = text => {
   const tokens: Token[] = []
   let state: State = State.Content
   let index = 0
-  let special: 'script' | 'style' | 'noscript' | undefined
+  let special: 'script' | 'style' | 'noscript' | 'template' | undefined
   let next: RegExpMatchArray | null
   while (index < text.length) {
     switch (state) {
@@ -118,6 +118,26 @@ export const scan: (text: string) => SuccessResult | ErrorResult = text => {
           }
           case 'noscript': {
             if ((next = text.slice(index).match(/^((?:.|\s)*?)(?:<\/noscript>)/))) {
+              const tokenText = next[1]
+              if (tokenText) {
+                index += tokenText.length
+                tokens.push({
+                  type: TokenType.Content,
+                  text: tokenText,
+                })
+              }
+              state = State.Content
+              special = undefined
+            } else {
+              return {
+                status: 'invalid',
+                index,
+              }
+            }
+            break
+          }
+          case 'template': {
+            if ((next = text.slice(index).match(/^((?:.|\s)*?)(?:<\/template>)/))) {
               const tokenText = next[1]
               if (tokenText) {
                 index += tokenText.length
@@ -199,7 +219,12 @@ export const scan: (text: string) => SuccessResult | ErrorResult = text => {
             text: tokenText,
           })
           state = State.InsideStartTag
-          if (tokenText === 'script' || tokenText === 'style' || tokenText === 'noscript') {
+          if (
+            tokenText === 'script' ||
+            tokenText === 'style' ||
+            tokenText === 'noscript' ||
+            tokenText === 'template'
+          ) {
             special = tokenText
           }
         } else if (
@@ -481,6 +506,8 @@ export const scan: (text: string) => SuccessResult | ErrorResult = text => {
 //   console.log('an error')
 // }
 
-scan(`<body><noscript>
-<input type=submit value="Calculate Square">
-</noscript></body>`) //?
+scan(`<body>
+<template id="template">
+  <p>Smile</p>
+</template>
+</body>`) //?

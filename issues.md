@@ -310,3 +310,5 @@ highlight error, node 2 doesn't exist
 https://github.com/adobe/brackets/issues/4711
 
  -->
+
+<!-- TODO empty template, script, noscript tests -->

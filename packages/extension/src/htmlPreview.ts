@@ -47,21 +47,33 @@ const hydrate = (node, $node) => {
         console.warn('hydration failed 3')
         return false
       }
-
-      if (node.children.length !== $node.childNodes.length) {
-        console.log(node)
-        console.log($node)
-        console.warn('hydration failed 4')
-        return false
-      }
-
-      $node.removeAttribute('data-id')
-      for (let i = 0; i < node.children.length; i++) {
-        if (!hydrate(node.children[i], $node.childNodes[i])) {
+      if(node.tag === "template") {
+        let nodeText = ''
+        if(node.children.length){
+          nodeText = node.children[0].text
+          $nodeMap[node.children[0].id] = $node
+        }
+        if(nodeText !== $node.innerHTML){
+          console.log(node)
+          console.log($node)
+          console.warn('hydration failed 4')
           return false
         }
+      } else {
+        if (node.children.length !== $node.childNodes.length) {
+          console.log(node)
+          console.log($node)
+          console.warn('hydration failed 5')
+          return false
+        }
+  
+        $node.removeAttribute('data-id')
+        for (let i = 0; i < node.children.length; i++) {
+          if (!hydrate(node.children[i], $node.childNodes[i])) {
+            return false
+          }
+        }
       }
-
       break
     }
 
@@ -71,7 +83,16 @@ const hydrate = (node, $node) => {
           if(parseEntities(node.text).trimStart() !== $node.textContent.trimStart()){
             console.log(node)
             console.log($node)
-            console.warn('hydration failed 5')
+            console.warn('hydration failed 6')
+            return false
+          }
+          break
+        }
+        case "TEMPLATE": {
+          if(node.text !== $node.innerHTML){
+            console.log(node)
+            console.log($node)
+            console.warn('hydration failed 7')
             return false
           }
           break
@@ -80,7 +101,7 @@ const hydrate = (node, $node) => {
           if(parseEntities(node.text).replace(/^\\n+/, '') !== $node.textContent){
             console.log(node)
             console.log($node)
-            console.warn('hydration failed 6')
+            console.warn('hydration failed 8')
             return false
           }
           break
@@ -90,7 +111,7 @@ const hydrate = (node, $node) => {
           if(node.text !== $node.textContent){
             console.log(node)
             console.log($node)
-            console.warn('hydration failed 7')
+            console.warn('hydration failed 9')
             return false
           }
           break
@@ -99,7 +120,7 @@ const hydrate = (node, $node) => {
           if (parseEntities(node.text) !== $node.textContent){
             console.log(node)
             console.log($node)
-            console.warn('hydration failed 8')
+            console.warn('hydration failed 10')
             return false
           }
         }
@@ -138,6 +159,10 @@ const hydrate = (node, $node) => {
       switch (command) {
         case 'textReplace': {
           const $node = $nodeMap[payload.id]
+          if($node && nodeTypeMap[$node.nodeType] === "ElementNode" && $node.tagName === "TEMPLATE") {
+            $node.innerHTML = payload.text
+            return
+          }
           if (!$node || nodeTypeMap[$node.nodeType] !== 'TextNode') {
             console.log({ command, payload })
             console.warn('failed to update text node')
