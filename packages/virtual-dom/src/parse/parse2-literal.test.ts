@@ -835,3 +835,11 @@ test('noscript', () => {
   </noscript>
 </body></html>`)
 })
+
+test('text after meta', () => {
+  expectParse(`<meta charset="utf-8" />
+let
+<h1>hello</h1>`).toEqual(`<html><head><meta charset=\"utf-8\">
+</head><body>let
+<h1>hello</h1></body></html>`)
+})

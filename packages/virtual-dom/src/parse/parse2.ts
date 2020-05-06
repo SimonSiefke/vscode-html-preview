@@ -171,16 +171,67 @@ export const parse: (
             break
           }
           case 'insideHead': {
-            if (parent === head && token.text.trim()) {
-              return {
-                status: 'invalid',
-                index: findErrorIndex(i),
-                reason: `invalid text inside head ${text.slice(
-                  findErrorIndex(i),
-                  findErrorIndex(i) + 10
-                )}`,
+            if (parent === head) {
+              if (token.text.trim()) {
+                if (implicitHead) {
+                  const whitespaceMatch = token.text.match(/^\s+/)
+                  if (whitespaceMatch) {
+                    const whitespaceText = whitespaceMatch[0]
+                    // whitespace, implicit body, node
+                    parent.children.push(
+                      createTextNode(whitespaceText, getId(offset, whitespaceText.length))
+                    )
+                    implicitBody = createElementNode('body', 'body')
+                    html!.children.push(implicitBody)
+                    parent = implicitBody
+                    body = implicitBody
+                    parent.children.push(
+                      createTextNode(
+                        token.text.slice(whitespaceText.length),
+                        getId(
+                          offset + whitespaceText.length,
+                          token.text.length - whitespaceText.length
+                        )
+                      )
+                    )
+                  } else {
+                    // implicit body, node
+                    implicitBody = createElementNode('body', 'body')
+                    html!.children.push(implicitBody)
+                    parent = implicitBody
+                    body = implicitBody
+                    parent.children.push(
+                      createTextNode(token.text, getId(offset, token.text.length))
+                    )
+                  }
+                  state = 'insideBody'
+                } else {
+                  return {
+                    status: 'invalid',
+                    index: findErrorIndex(i),
+                    reason: `invalid text inside head ${text.slice(
+                      findErrorIndex(i),
+                      findErrorIndex(i) + 10
+                    )}`,
+                  }
+                }
+              } else {
+                parent.children.push(createTextNode(token.text, getId(offset, token.text.length)))
               }
+              break
             }
+            // if (parent === implicitHead && token.text.trim()) {
+            // }
+            // if (parent === head && token.text.trim()) {
+            //   return {
+            //     status: 'invalid',
+            //     index: findErrorIndex(i),
+            //     reason: `invalid text inside head ${text.slice(
+            //       findErrorIndex(i),
+            //       findErrorIndex(i) + 10
+            //     )}`,
+            //   }
+            // }
             if (parent === htmlDocument) {
               parent = head as ElementNode
             }
@@ -730,9 +781,9 @@ const stringify = nodes => {
 // )
 
 const doc = parse(
-  `<body><noscript>
-  <input type=submit value="Calculate Square">
-</noscript></body>`,
+  `<meta charset="utf-8" />
+let
+<h1>hello</h1>`,
   (() => {
     let i = 0
     return () => i++

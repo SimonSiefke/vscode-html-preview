@@ -14,12 +14,13 @@ import {
 import * as vscode from 'vscode'
 import * as WebSocket from 'ws'
 import { HTML_PREVIEW_JS, ERROR_HTML } from './htmlPreview'
+import * as open from 'open'
 
 let state: 'uninitialized' | 'starting-server' | 'started-server' = 'uninitialized'
 
 interface Preview {
   readonly dispose: () => void
-  readonly start: () => void
+  readonly start: () => Promise<void>
   readonly update: (message: string) => void
 }
 
@@ -41,9 +42,19 @@ const cachedValues: {
 
 const workspaceFolder = vscode.workspace.workspaceFolders[0].uri.fsPath
 
+const fixPathName = (pathname: string) => {
+  if (pathname === '/') {
+    return '/index.html'
+  }
+  return pathname
+}
+
+const getPathFromDocument = (document: vscode.TextDocument) =>
+  document.uri.fsPath.slice(workspaceFolder.length)
+
 const findDocument = (relativePath: string) => {
   return vscode.workspace.textDocuments.find(
-    document => document.uri.fsPath.slice(workspaceFolder.length) === relativePath
+    document => getPathFromDocument(document) === relativePath
   )
 }
 
@@ -57,15 +68,16 @@ const createPreview: () => Preview = () => {
       return
     }
     const parsedUrl = url.parse(request.url)
+    let pathName = fixPathName(parsedUrl.pathname)
     if (parsedUrl.pathname === '/html-preview.js') {
       response.writeHead(200, { 'Content-Type': 'text/javascript' })
       return response.end(HTML_PREVIEW_JS)
     }
-    if (parsedUrl.pathname === '/result.json') {
+    if (pathName === '/result.json') {
       const query = querystring.parse(parsedUrl.query)
-      const pathname = query.pathname as string
-      if (pathname in cachedValues) {
-        const { result } = cachedValues[pathname]
+      pathName = fixPathName(query.pathname as string)
+      if (pathName in cachedValues) {
+        const { result } = cachedValues[pathName]
         response.writeHead(200, { 'Content-Type': 'text/json' })
         return response.end(JSON.stringify(result, null, 2))
       } else {
@@ -74,11 +86,11 @@ const createPreview: () => Preview = () => {
         return response.end()
       }
     }
-    if (parsedUrl.pathname in cachedValues) {
-      const { result, previousText } = cachedValues[parsedUrl.pathname]
+    if (pathName in cachedValues) {
+      const { result, previousText } = cachedValues[pathName]
       if (result.status === 'invalid') {
-        cachedValues[parsedUrl.pathname] = {
-          ...cachedValues[parsedUrl.pathname],
+        cachedValues[pathName] = {
+          ...cachedValues[pathName],
           lastSuccessResult: undefined,
         }
         response.writeHead(200, { 'Content-Type': 'text/html' })
@@ -88,9 +100,9 @@ const createPreview: () => Preview = () => {
         return response.end(generateDom(result))
       }
     } else {
-      const document = findDocument(parsedUrl.pathname)
+      const document = findDocument(pathName)
       if (!document) {
-        const stream = send(request, parsedUrl.pathname, {
+        const stream = send(request, pathName, {
           root: workspaceFolder,
           cacheControl: false,
           etag: false,
@@ -108,7 +120,7 @@ const createPreview: () => Preview = () => {
         return nextId
       })
       if (result.status === 'invalid') {
-        cachedValues[parsedUrl.pathname] = {
+        cachedValues[pathName] = {
           id,
           offsetMap,
           previousText,
@@ -121,7 +133,7 @@ const createPreview: () => Preview = () => {
         return response.end(ERROR_HTML(previousText, result))
       }
       const generatedDom = generateDom(result)
-      cachedValues[parsedUrl.pathname] = {
+      cachedValues[pathName] = {
         id,
         offsetMap,
         result,
@@ -149,10 +161,7 @@ const createPreview: () => Preview = () => {
       server.removeAllListeners()
       server.close()
     },
-    start: () =>
-      new Promise(resolve => {
-        server.listen(3000, () => resolve())
-      }),
+    start: () => new Promise(resolve => server.listen(3000, () => resolve())),
     update: message => {
       for (const webSocket of webSocketServer.clients) {
         webSocket.send(message)
@@ -163,10 +172,13 @@ const createPreview: () => Preview = () => {
 
 export const activate = (context: vscode.ExtensionContext) => {
   context.subscriptions.push(
-    vscode.commands.registerTextEditorCommand('htmlPreview.openPreview', async () => {
+    vscode.commands.registerTextEditorCommand('htmlPreview.openPreview', async textEditor => {
       if (!preview) {
         preview = createPreview()
-        preview.start()
+        await preview.start()
+        if (process.env.NODE_ENV !== 'test') {
+          open(`http://localhost:3000${getPathFromDocument(textEditor.document)}`)
+        }
       }
     })
   )
