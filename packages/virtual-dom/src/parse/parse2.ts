@@ -171,6 +171,9 @@ export const parse: (
             break
           }
           case 'insideHead': {
+            if (parent === htmlDocument) {
+              parent = head as ElementNode
+            }
             if (parent === head) {
               if (token.text.trim()) {
                 if (implicitHead) {
@@ -781,9 +784,9 @@ const stringify = nodes => {
 // )
 
 const doc = parse(
-  `<meta charset="utf-8" />
-let
-<h1>hello</h1>`,
+  `<style></style>
+
+  hello world`,
   (() => {
     let i = 0
     return () => i++

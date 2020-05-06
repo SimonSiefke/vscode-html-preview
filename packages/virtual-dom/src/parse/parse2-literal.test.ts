@@ -843,3 +843,11 @@ let
 </head><body>let
 <h1>hello</h1></body></html>`)
 })
+
+test('text after style', () => {
+  expectParse(`<style></style>
+
+  hello world`).toEqual(`<html><head><style></style>
+
+  </head><body>hello world</body></html>`)
+})

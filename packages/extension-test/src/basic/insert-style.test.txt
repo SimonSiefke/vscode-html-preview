@@ -1,0 +1,23 @@
+previousText:
+style
+
+hello world
+
+edits:
+[
+  {
+    rangeOffset: 0
+    rangeLength: 5
+    text: "<style></style>"
+  }
+]
+
+nextText:
+<style></style>
+
+hello world
+
+expectedDom:
+<html><head><style></style>
+
+</head><body>hello world</body></html>
