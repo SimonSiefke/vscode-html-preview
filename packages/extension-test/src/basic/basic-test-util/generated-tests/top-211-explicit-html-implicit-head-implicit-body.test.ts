@@ -27,7 +27,7 @@ function waitForUpdateEnd(page){
 	return new Promise((resolve, reject)=>{
 		setTimeout(() => {
 			reject(new Error('no update received'));
-		}, 50);
+		}, 100);
 		if(received){
 			resolve()
 		} else{
