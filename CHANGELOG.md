@@ -2,6 +2,7 @@
 
 | Version | Date     | Changelog                                                                                                                                                                                           |
 | ------- | -------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 2.0.4   | 06.05.20 | &mdash; **_[Fix]_** Updating CSS                                                                                                                                                                    |
 | 2.0.3   | 06.05.20 | &mdash; **_[Fix]_** Parsing error when `<style>` is before text                                                                                                                                     |
 | 2.0.2   | 06.05.20 | &mdash; **_[Fix]_** Reload only once after html was invalid                                                                                                                                         |
 | 2.0.1   | 06.05.20 | &mdash; **_[Breaking Change]_** New HTML Parser                                                                                                                                                     |

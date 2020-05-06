@@ -20,6 +20,21 @@ const parseEntities = text => {
   return entityParsingNode.textContent
 }
 
+const updateLink = $link => new Promise(resolve => {
+  const $newLink = $link.cloneNode()
+  $newLink.onload = () => {
+    $link.remove()
+    resolve()
+  }
+  $newLink.href = $link.href.split('?')[0] + '?' + Date.now()
+  $link.parentNode.insertBefore($newLink, $link.nextSibling)
+})
+
+const updateCss = async () => {
+  const $$links = Array.from(document.querySelectorAll('link[rel="stylesheet"][href]'))
+  await Promise.all($$links.map(updateLink))
+}
+
 const $nodeMap = Object.create(null)
 
 $nodeMap[-1] = document
@@ -157,6 +172,10 @@ const hydrate = (node, $node) => {
     const movedIds = new Set()
     for (const { command, payload } of messages) {
       switch (command) {
+        case 'updateCss': {
+          updateCss()
+          break
+        }
         case 'textReplace': {
           const $node = $nodeMap[payload.id]
           if($node && nodeTypeMap[$node.nodeType] === "ElementNode" && $node.tagName === "TEMPLATE") {

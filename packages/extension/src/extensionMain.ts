@@ -115,39 +115,51 @@ const createPreview: () => Preview = () => {
         stream.pipe(response)
         return
       }
-      let id = 0
-      let offsetMap = Object.create(null)
-      const previousText = document.getText()
-      const result = parse2(previousText, offset => {
-        const nextId = id++
-        offsetMap[offset] = nextId
-        return nextId
-      })
-      if (result.status === 'invalid') {
-        cachedValues[pathName] = {
-          id,
-          offsetMap,
-          previousText,
-          result,
-          generatedDom: undefined,
-          lastSuccessResult: undefined,
-          hasInvalidRequest: true,
+      switch (document.languageId) {
+        case 'css': {
+          response.writeHead(200, { 'Content-Type': 'text/css' })
+          return response.end(document.getText())
         }
-        response.writeHead(200, { 'Content-Type': 'text/html' })
-        return response.end(ERROR_HTML(previousText, result))
+        case 'html': {
+          let id = 0
+          let offsetMap = Object.create(null)
+          const previousText = document.getText()
+          const result = parse2(previousText, offset => {
+            const nextId = id++
+            offsetMap[offset] = nextId
+            return nextId
+          })
+          if (result.status === 'invalid') {
+            cachedValues[pathName] = {
+              id,
+              offsetMap,
+              previousText,
+              result,
+              generatedDom: undefined,
+              lastSuccessResult: undefined,
+              hasInvalidRequest: true,
+            }
+            response.writeHead(200, { 'Content-Type': 'text/html' })
+            return response.end(ERROR_HTML(previousText, result))
+          }
+          const generatedDom = generateDom(result)
+          cachedValues[pathName] = {
+            id,
+            offsetMap,
+            result,
+            generatedDom,
+            previousText,
+            lastSuccessResult: result,
+            hasInvalidRequest: false,
+          }
+          response.writeHead(200, { 'Content-Type': 'text/html' })
+          return response.end(generatedDom)
+        }
+        default: {
+          response.writeHead(200)
+          return response.end(document.getText())
+        }
       }
-      const generatedDom = generateDom(result)
-      cachedValues[pathName] = {
-        id,
-        offsetMap,
-        result,
-        generatedDom,
-        previousText,
-        lastSuccessResult: result,
-        hasInvalidRequest: false,
-      }
-      response.writeHead(200, { 'Content-Type': 'text/html' })
-      return response.end(generatedDom)
     }
   })
   const webSocketServer = new WebSocket.Server({
@@ -191,73 +203,84 @@ export const activate = (context: vscode.ExtensionContext) => {
       if (event.contentChanges.length === 0) {
         return
       }
-      const pathname = event.document.uri.fsPath.slice(workspaceFolder.length)
-      if (!(pathname in cachedValues)) {
-        console.log(Object.keys(cachedValues))
-        console.log(pathname)
-        console.log('return')
-        return
-      }
-      const {
-        result,
-        offsetMap,
-        previousText,
-        id,
-        lastSuccessResult,
-        hasInvalidRequest,
-      } = cachedValues[pathname]
-      const updatedOffsetMap = updateOffsetMap(
-        offsetMap,
-        minimizeEdits(previousText, event.contentChanges)
-      )
-      let newOffsetMap = Object.create(null)
-      const newText = event.document.getText()
-      let currentId = id
-      const newResult = parse2(newText, (offset, tokenLength) => {
-        let nextId: number
-        nextId: if (offset in updatedOffsetMap) {
-          nextId = updatedOffsetMap[offset]
-        } else {
-          for (let i = offset + 1; i < offset + tokenLength; i++) {
-            if (i in updatedOffsetMap) {
-              nextId = updatedOffsetMap[i]
-              break nextId
-            }
+      switch (event.document.languageId) {
+        case 'css': {
+          preview.update(JSON.stringify([{ command: 'updateCss', payload: {} }]))
+          break
+        }
+        case 'html': {
+          const pathname = event.document.uri.fsPath.slice(workspaceFolder.length)
+          if (!(pathname in cachedValues)) {
+            console.log(Object.keys(cachedValues))
+            console.log(pathname)
+            console.log('return')
+            return
           }
-          nextId = currentId++
+          const {
+            offsetMap,
+            previousText,
+            id,
+            lastSuccessResult,
+            hasInvalidRequest,
+          } = cachedValues[pathname]
+          const updatedOffsetMap = updateOffsetMap(
+            offsetMap,
+            minimizeEdits(previousText, event.contentChanges)
+          )
+          let newOffsetMap = Object.create(null)
+          const newText = event.document.getText()
+          let currentId = id
+          const newResult = parse2(newText, (offset, tokenLength) => {
+            let nextId: number
+            nextId: if (offset in updatedOffsetMap) {
+              nextId = updatedOffsetMap[offset]
+            } else {
+              for (let i = offset + 1; i < offset + tokenLength; i++) {
+                if (i in updatedOffsetMap) {
+                  nextId = updatedOffsetMap[i]
+                  break nextId
+                }
+              }
+              nextId = currentId++
+            }
+            newOffsetMap[offset] = nextId
+            return nextId
+          })
+          if (newResult.status === 'invalid') {
+            cachedValues[pathname] = {
+              id,
+              offsetMap: updatedOffsetMap,
+              previousText: newText,
+              result: newResult,
+              generatedDom: undefined,
+              lastSuccessResult,
+              hasInvalidRequest,
+            }
+            return
+          }
+          cachedValues[pathname] = {
+            id: currentId,
+            offsetMap: newOffsetMap,
+            previousText: newText,
+            result: newResult,
+            generatedDom: undefined,
+            lastSuccessResult: newResult,
+            hasInvalidRequest,
+          }
+          if (hasInvalidRequest) {
+            console.log('HAS INVALID')
+            preview.update(JSON.stringify([{ command: 'reload', payload: {} }]))
+            return
+          }
+          const edits = diff2(lastSuccessResult, newResult)
+          console.log(JSON.stringify(edits, null, 2))
+          preview.update(JSON.stringify(edits))
+          break
         }
-        newOffsetMap[offset] = nextId
-        return nextId
-      })
-      if (newResult.status === 'invalid') {
-        cachedValues[pathname] = {
-          id,
-          offsetMap: updatedOffsetMap,
-          previousText: newText,
-          result: newResult,
-          generatedDom: undefined,
-          lastSuccessResult,
-          hasInvalidRequest,
+        default: {
+          break
         }
-        return
       }
-      cachedValues[pathname] = {
-        id: currentId,
-        offsetMap: newOffsetMap,
-        previousText: newText,
-        result: newResult,
-        generatedDom: undefined,
-        lastSuccessResult: newResult,
-        hasInvalidRequest,
-      }
-      if (hasInvalidRequest) {
-        console.log('HAS INVALID')
-        preview.update(JSON.stringify([{ command: 'reload', payload: {} }]))
-        return
-      }
-      const edits = diff2(lastSuccessResult, newResult)
-      console.log(JSON.stringify(edits, null, 2))
-      preview.update(JSON.stringify(edits))
     })
   )
 }
