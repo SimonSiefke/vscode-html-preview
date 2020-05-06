@@ -8,11 +8,6 @@
 
 <!-- TODO demo gif -->
 
-## Features
-
-- Live editing of HTML and CSS
-- Highlighting of html elements inside the browser
-
 <!-- ## TODO
 
 - reload page when external resources (e.g. images, javascript) change -->
@@ -23,13 +18,6 @@
 | ---------------------------------- | ------------ |
 | Html Preview: Open                 | `ctrl+alt+p` |
 | Html Preview: Close Preview Server | none         |
-
-## Settings
-
-| Property              | Description                                                         | Default     |
-| --------------------- | ------------------------------------------------------------------- | ----------- |
-| htmlPreview.openWith  | Opens the preview with the specified application.                   | `"browser"` |
-| htmlPreview.highlight | Highlight elements in the browser when they are selected in VSCode. | `true`      |
 
 <!-- TODO use child process for efficiency -->
 <!-- TODO implicit head body tbody tags -->

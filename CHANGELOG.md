@@ -2,6 +2,7 @@
 
 | Version | Date     | Changelog                                                                                                                                                                                           |
 | ------- | -------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 2.0.2   | 06.05.20 | &mdash; **_[Fix]_** Reload only once after html was invalid                                                                                                                                         |
 | 2.0.1   | 06.05.20 | &mdash; **_[Breaking Change]_** New HTML Parser                                                                                                                                                     |
 | 1.21.7  | 27.04.20 | &mdash; **_[Fix]_** Not working with `base` tag tags                                                                                                                                                |
 | 1.21.4  | 03.04.20 | &mdash; **_[Fix]_** Bug with too many tags                                                                                                                                                          |

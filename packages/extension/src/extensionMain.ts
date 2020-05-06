@@ -96,6 +96,10 @@ const createPreview: () => Preview = () => {
         response.writeHead(200, { 'Content-Type': 'text/html' })
         return response.end(ERROR_HTML(previousText, result))
       } else {
+        cachedValues[pathName] = {
+          ...cachedValues[pathName],
+          hasInvalidRequest: false,
+        }
         response.writeHead(200, { 'Content-Type': 'text/html' })
         return response.end(generateDom(result))
       }
@@ -247,6 +251,7 @@ export const activate = (context: vscode.ExtensionContext) => {
         hasInvalidRequest,
       }
       if (hasInvalidRequest) {
+        console.log('HAS INVALID')
         preview.update(JSON.stringify([{ command: 'reload', payload: {} }]))
         return
       }
