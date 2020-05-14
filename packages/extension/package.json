@@ -118,15 +118,15 @@
     "send": "^0.17.1",
     "virtual-dom": "^0.0.0-development",
     "vsls": "^1.0.1830",
-    "ws": "^7.2.5"
+    "ws": "^7.3.0"
   },
   "devDependencies": {
     "@types/escape-html": "0.0.20",
     "@types/send": "^0.14.5",
-    "@types/vscode": "^1.43.0",
+    "@types/vscode": "^1.45.0",
     "@types/ws": "^7.2.4",
     "cross-env": "^7.0.2",
     "fs-extra": "^9.0.0",
-    "typescript": "^3.8.3"
+    "typescript": "^3.9.2"
   }
 }
