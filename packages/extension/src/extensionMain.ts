@@ -14,7 +14,6 @@ import {
 import * as vscode from 'vscode'
 import * as WebSocket from 'ws'
 import { HTML_PREVIEW_JS, ERROR_HTML } from './htmlPreview'
-import * as open from 'open'
 
 let state: 'uninitialized' | 'starting-server' | 'started-server' = 'uninitialized'
 
@@ -192,9 +191,11 @@ export const activate = (context: vscode.ExtensionContext) => {
       if (!preview) {
         preview = createPreview()
         await preview.start()
-        if (process.env.NODE_ENV !== 'test') {
-          open(`http://localhost:3000${getPathFromDocument(textEditor.document)}`)
-        }
+      }
+      if (process.env.NODE_ENV !== 'test') {
+        vscode.env.openExternal(
+          vscode.Uri.parse(`http://localhost:3000${getPathFromDocument(textEditor.document)}`)
+        )
       }
     })
   )
