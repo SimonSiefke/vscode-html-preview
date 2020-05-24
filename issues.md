@@ -316,3 +316,40 @@ https://github.com/adobe/brackets/issues/4711
 <!-- TODO multiple sites at the same time -->
 
 <!-- TODO bug update comment -->
+
+<!-- TODO bug
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <input
+      type="text"
+      aria-haspopup="true"
+      aria-autocomplete="list"
+      aria-activedescendant="JavaScript"
+    />
+    <ul id="completions" role="listbox" aria-expanded="true">
+      <li role="option" aria-selected="true" id="JavaScript">JavaScript</li>
+      <li role="option" id="TypeScript">TypeScript</li>
+    </ul>
+    <!-- <script>
+      const completions = ['JavaScript', 'TypeScript']
+      const $completions = document.getElementById('completions')
+      const create$Completion = (completion) => {
+        const $completion = document.createElement('li')
+        $completion.textContent = completion
+        return $completion
+      }
+      for (const completion of completions) {
+        $completions.append(create$Completion(completion))
+      }
+    </script> -->
+  </body>
+</html>
+
+-->
