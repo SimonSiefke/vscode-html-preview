@@ -123,7 +123,7 @@ const hydrate = (node, $node) => {
         }
         case "SCRIPT":
         case "NOSCRIPT": {
-          if(node.text !== $node.textContent){
+          if(parseEntities(node.text) !== $node.textContent){
             console.log(node)
             console.log($node)
             console.warn('hydration failed 9')
