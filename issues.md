@@ -421,3 +421,572 @@ https://github.com/adobe/brackets/issues/4711
   </body>
 </html>
  -->
+
+<!-- TODO bug <!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="eve is a complete event management software solution to allow your entire team to plan, execute and review your events, all in one place."
+    />
+    <link rel="canonical" href="https://eve.io" />
+    <meta name="google" content="nositelinkssearchbox" />
+    <meta name="robots" content="index, follow" />
+    <title>
+      eve: Events made cool
+    </title>
+
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="/images/favicon/apple-touch-icon.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="/images/favicon/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="/images/favicon/favicon-16x16.png"
+    />
+    <link rel="manifest" href="/images/favicon/manifest.json" />
+    <link
+      rel="mask-icon"
+      href="/images/favicon/safari-pinned-tab.svg"
+      color="#5bbad5"
+    />
+    <link rel="shortcut icon" href="/images/favicon/favicon.ico" />
+    <meta
+      name="msapplication-config"
+      content="/images/favicon/browserconfig.xml"
+    />
+    <meta name="theme-color" content="#ffffff" />
+
+    <link rel="stylesheet" href="https://use.typekit.net/wxr1nmp.css" />
+    <link href="https://eve.io/css/app.css" rel="stylesheet" />
+    <link href="https://eve.io/css/footer.css" rel="stylesheet" />
+    <link href="https://eve.io/css/home.css" rel="stylesheet" />
+  </head>
+  <body>
+    <header id="header">
+      <div class="header-bar">
+        <div class="logo">
+          <img
+            alt="logo"
+            src="https://static.eve.io/website/images/logo-white.png"
+          />
+          <div>#EventsMadeEasy</div>
+        </div>
+        <nav>
+          <a href="#pricing">Pricing</a>
+          <a href="https://blog.eve.io" target="_blank">Blog</a>
+          <a href="https://app.eve.io/login">Login</a>
+        </nav>
+        <div class="login">
+          <a class="wrapper" href="https://app.eve.io/registration">
+            <div><span>Get started</span></div>
+          </a>
+        </div>
+      </div>
+
+      <div class="header-content">
+        <h1>The easier way to plan events.</h1>
+        <h4>
+          eve allows your entire team to plan, execute and review your events,
+          all in one place - without changing your existing workflow.
+        </h4>
+        <form method="post" action="/get-started">
+          <input
+            type="hidden"
+            name="_token"
+            value="HYEelkRXrgcZRJlhrdyephQqCY1QIgqgYUeWA8kr"
+          />
+          <input type="hidden" name="section" value="header" />
+          <div class="email noselect">
+            <input
+              type="email"
+              name="email"
+              placeholder="Enter your email address"
+              value=""
+            />
+            <label class="submit noselect">
+              Get started
+              <input type="submit" />
+            </label>
+          </div>
+        </form>
+      </div>
+    </header>
+
+    <main>
+      <section id="hiring">
+        <h1>We're hiring!</h1>
+        <h3>
+          Want to work at a high-growth entertainment startup?
+          <a href="https://angel.co/company/eve-io/jobs" target="_blank">
+            View our openings here
+          </a>
+        </h3>
+      </section>
+      <section id="explainer">
+        <h1>Easy software to end event stress</h1>
+
+        <article>
+          <div class="lion">
+            <img
+              alt="lion"
+              src="https://static.eve.io/website/images/lion.png"
+            />
+          </div>
+          <h3>
+            eve is the first event management software that works the way you
+            do. With eve, your existing workflows and processes can be easily
+            replicated and executed - only now, in a single place for easy
+            access inside the office, and out.
+          </h3>
+          <iframe
+            src="https://player.vimeo.com/video/230912368"
+            frameborder="0"
+            webkitallowfullscreen
+            mozallowfullscreen
+            allowfullscreen
+          ></iframe>
+        </article>
+      </section>
+
+      <section id="benefits">
+        <article class="benefit-left" id="collaboration">
+          <div class="benefit-text">
+            <div class="benefit-header">
+              <h4>COLLABORATE</h4>
+              <div></div>
+            </div>
+            <h1>Effortless team communication</h1>
+            <div class="benefit-body">
+              Communicate with every member of your team in one convenient
+              place, instead of sorting through email threads. Eve allows you to
+              delegate tasks, problem solve as a team, and eliminate
+              miscommunication.
+            </div>
+          </div>
+          <div class="benefit-image">
+            <img
+              alt="Collaboration parrot"
+              class="default"
+              src="https://static.eve.io/website/images/collaboration.png"
+            />
+            <img
+              alt="Smaller collaboration parrot"
+              class="alternate"
+              src="https://static.eve.io/website/images/communication-solo.png"
+            />
+          </div>
+        </article>
+        <article class="benefit-right" id="productivity">
+          <div class="benefit-image">
+            <img
+              alt="Automation"
+              class="default alternate"
+              src="https://static.eve.io/website/images/automate-wide.png"
+            />
+          </div>
+          <div class="benefit-text">
+            <div class="benefit-header">
+              <h4>INTELLIGENT</h4>
+              <div></div>
+            </div>
+            <h1>Automate the boring stuff</h1>
+            <div class="benefit-body">
+              eve takes care of automation for your boring and repetitive tasks,
+              allowing you to get back to the important stuff without missing a
+              single detail. eve also learns from your experiences to help you
+              save time, reduce errors, and simplify your workflow.
+            </div>
+          </div>
+        </article>
+        <article class="benefit-left" id="auditing">
+          <div class="benefit-text">
+            <div class="benefit-header">
+              <h4>OVERVIEW</h4>
+              <div></div>
+            </div>
+            <h1>End Micromanagement</h1>
+            <div class="benefit-body">
+              eve provides 24/7 access to team workflows and tasks so you always
+              know what you’ve accomplished, and what needs to be done next.
+              With the ability to view the entire team’s tasks and projects, eve
+              improves staff management and delivers peace of mind.
+            </div>
+          </div>
+          <div class="benefit-image">
+            <img
+              alt="Productivity"
+              class="default alternate"
+              src="https://static.eve.io/website/images/productivity.png"
+            />
+          </div>
+        </article>
+      </section>
+
+      <section id="pricing" class="pricing">
+        <h1>
+          <span>One price.</span>
+          <span>Unlimited potential.</span>
+        </h1>
+        <h2>eve comes at one simple price, for the entire experience.</h2>
+        <h2>No complicated packages, just easier events.</h2>
+        <div class="pricing__wrapper">
+          <div class="pricing__wrapper__left">
+            <div class="pricing__wrapper__left__header">
+              <h1>Earlybird</h1>
+              <h2>
+                <span>$</span>
+                199
+              </h2>
+              <div class="pricing__wrapper__left__header__per">
+                per month, billed annually
+              </div>
+              <div class="pricing__wrapper__left__header__per">
+                $249 per month billed monthly
+              </div>
+            </div>
+            <ul class="pricing__wrapper__left__included">
+              <li><span>Unlimited events</span></li>
+              <li><span>Unlimited users</span></li>
+              <li><span>No commitment</span></li>
+              <li><span>Easier events</span></li>
+            </ul>
+            <div
+              class="pricing__wrapper__left__start pricing__wrapper__left__start--large"
+            >
+              <a href="https://app.eve.io/registration">
+                Start your free 7-day trial
+                <span>No credit card required</span>
+              </a>
+            </div>
+          </div>
+          <div class="pricing__wrapper__promo">
+            <img src="https://static.eve.io/website/images/owl_bare.png" />
+          </div>
+        </div>
+        <h3>
+          Earlybird is a limited time offer and includes access to all future
+          updates and full support. You can learn more about earlybird
+          <a
+            target="_blank"
+            href="https://help.eve.io/all-about-eve/what-is-included-in-my-earlybird-subscription"
+          >
+            here
+          </a>
+        </h3>
+      </section>
+
+      <section id="turnkey">
+        <h1>Manage your workflow from start to finish</h1>
+        <hr />
+        <div class="wrapper">
+          <h1>Plan</h1>
+          <div class="icon">
+            <h4>Structured workflow</h4>
+            <img
+              alt="Calendar"
+              src="https://static.eve.io/website/images/calendar.png"
+            />
+          </div>
+          <div class="icon">
+            <h4>Automate tasks</h4>
+            <img
+              alt="Calculator"
+              src="https://static.eve.io/website/images/calculator.png"
+            />
+          </div>
+          <h1>Review</h1>
+          <div class="icon">
+            <h4>Clear performance summaries</h4>
+            <img
+              alt="Pie Chart"
+              src="https://static.eve.io/website/images/pie.png"
+            />
+          </div>
+          <div class="icon">
+            <h4>In-depth analysis</h4>
+            <img
+              alt="Graph"
+              src="https://static.eve.io/website/images/graph.png"
+            />
+          </div>
+
+          <div class="arrow down"></div>
+          <div class="arrow down"></div>
+
+          <img
+            alt="Banner"
+            id="turnkey-banner"
+            src="https://static.eve.io/website/images/turnkey-banner.png"
+          />
+
+          <div class="arrow up"></div>
+
+          <h1>Execute</h1>
+          <div class="icon">
+            <h4>Problem Solve</h4>
+            <img
+              alt="Clipboard"
+              src="https://static.eve.io/website/images/clipboard.png"
+            />
+          </div>
+          <div class="icon">
+            <h4>Secure your venue</h4>
+            <img
+              alt="Ticket"
+              src="https://static.eve.io/website/images/ticket.png"
+            />
+          </div>
+        </div>
+      </section>
+
+      <section id="features">
+        <h1>Earlybird features</h1>
+        <hr />
+        <article class="features">
+          <div class="feature">
+            <div>
+              <img
+                alt="Accreditation"
+                src="https://static.eve.io/website/images/accreditation.png"
+              />
+            </div>
+            <h1>Accreditation</h1>
+            <h4>Secure your event</h4>
+            <h3>
+              Control who enters and exits your event digitally, and in
+              real-time.
+            </h3>
+          </div>
+          <div class="feature">
+            <div>
+              <img
+                alt="Log book"
+                src="https://static.eve.io/website/images/eventlogs.png"
+              />
+            </div>
+            <h1>Event Control</h1>
+            <h4>Document and solve problems together</h4>
+            <h3>
+              Track and discuss last-minute issues on event day in real-time for
+              efficient problem solving.
+            </h3>
+          </div>
+          <div class="feature">
+            <div>
+              <img
+                alt="Location Scout"
+                src="https://static.eve.io/website/images/scout.png"
+              />
+            </div>
+            <h1>Location Scout</h1>
+            <h4>Scout locations in seconds</h4>
+            <h3>
+              See the potential an event has at a location immediately, less
+              time spent researching.
+            </h3>
+          </div>
+        </article>
+
+        <hr />
+        <h1>Coming soon...</h1>
+        <article class="features">
+          <div class="feature">
+            <div>
+              <img
+                alt="Visitor Information"
+                src="https://static.eve.io/website/images/visitors.png"
+              />
+            </div>
+            <h1>Visitor Management</h1>
+            <h4>Easier emergency handling</h4>
+            <h3>
+              Improve safety and communication by keeping track of contractors
+              and staff that exit and enter your event.
+            </h3>
+          </div>
+          <div class="feature">
+            <div>
+              <img
+                alt="Contractor Marketplace"
+                src="https://static.eve.io/website/images/contractors.png"
+              />
+            </div>
+            <h1>Contractor Marketplace</h1>
+            <h4>Easily find trusted, local suppliers</h4>
+            <h3>
+              Browse and procure trusted suppliers, and easily integrate them
+              into your event.
+            </h3>
+          </div>
+        </article>
+        <h3>
+          We are working hard to add new features for our Earlybird customers.
+          Learn more about the exciting things we're working on
+          <a
+            target="_blank"
+            href="https://help.eve.io/all-about-eve/what-other-features-are-in-development"
+          >
+            here
+          </a>
+        </h3>
+      </section>
+
+      <section id="getstarted">
+        <h1>Get Started Today</h1>
+        <form action="/get-started" method="post">
+          <input
+            type="hidden"
+            name="_token"
+            value="HYEelkRXrgcZRJlhrdyephQqCY1QIgqgYUeWA8kr"
+          />
+          <input type="hidden" name="section" value="getstarted" />
+          <div class="email noselect">
+            <input
+              type="email"
+              name="email"
+              placeholder="Enter your email address"
+              value=""
+            />
+            <label class="submit noselect">
+              Get started
+              <input type="submit" />
+            </label>
+          </div>
+        </form>
+      </section>
+    </main>
+
+    <footer>
+      <div class="links">
+        <a href="/contact">Contact</a>
+        <!--<a href="https://blog.eve.io" target="_blank">Blog</a>-->
+
+        <!--<a href="https://help.eve.io" target="_blank">Support</a>-->
+        <a href="http://status.eve.io" target="_blank">Service Status</a>
+        <!--<a href="https://help.eve.io/all-about-eve" target="_blank">FAQ</a>-->
+        <!--<a href="https://help.eve.io/the-legal-stuff/" target="_blank">Privacy &amp; Terms</a>-->
+      </div>
+      <div class="social">
+        <a href="https://twitter.com/tryeve" target="_blank" class="twitter">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"
+            />
+          </svg>
+        </a>
+        <a href="https://facebook.com/tryeve" target="_blank" class="facebook">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z"
+            />
+          </svg>
+        </a>
+        <a
+          href="https://instagram.com/tryeve.io"
+          target="_blank"
+          class="instagram"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"
+            />
+          </svg>
+        </a>
+      </div>
+    </footer>
+
+    <script>
+      ;(function (i, s, o, g, r, a, m) {
+        i['GoogleAnalyticsObject'] = r
+        ;(i[r] =
+          i[r] ||
+          function () {
+            ;(i[r].q = i[r].q || []).push(arguments)
+          }),
+          (i[r].l = 1 * new Date())
+        ;(a = s.createElement(o)), (m = s.getElementsByTagName(o)[0])
+        a.async = 1
+        a.src = g
+        m.parentNode.insertBefore(a, m)
+      })(
+        window,
+        document,
+        'script',
+        'https://www.google-analytics.com/analytics.js',
+        'ga',
+      )
+
+      ga('create', 'UA-106398094-1', 'auto')
+      ga('send', 'pageview')
+    </script>
+
+    <script>
+      window.intercomSettings = {
+        app_id: 'n8cwbba7',
+      }
+    </script>
+    <script>
+      ;(function () {
+        var w = window
+        var ic = w.Intercom
+        if (typeof ic === 'function') {
+          ic('reattach_activator')
+          ic('update', intercomSettings)
+        } else {
+          var d = document
+          var i = function () {
+            i.c(arguments)
+          }
+          i.q = []
+          i.c = function (args) {
+            i.q.push(args)
+          }
+          w.Intercom = i
+          function l() {
+            var s = d.createElement('script')
+            s.type = 'text/javascript'
+            s.async = true
+            s.src = 'https://widget.intercom.io/widget/n8cwbba7'
+            var x = d.getElementsByTagName('script')[0]
+            x.parentNode.insertBefore(s, x)
+          }
+          if (w.attachEvent) {
+            w.attachEvent('onload', l)
+          } else {
+            w.addEventListener('load', l, false)
+          }
+        }
+      })()
+    </script>
+
+  </body>
+</html>
+ -->
