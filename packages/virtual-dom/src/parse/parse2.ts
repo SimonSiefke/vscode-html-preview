@@ -1,5 +1,5 @@
 import { scan, TokenType, Token } from './scanner2'
-import * as assert from 'assert'
+import assert from 'assert'
 import { updateOffsetMap } from './updateOffsetMap'
 import {
   isHeadTag,
@@ -784,9 +784,39 @@ const stringify = nodes => {
 // )
 
 const doc = parse(
-  `<style></style>
-
-  hello world`,
+  `<!DOCTYPE html>
+  <html lang="en">
+    <head>
+      <meta charset="UTF-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <title>Document</title>
+    </head>
+    <body>
+      <input
+        type="text"
+        aria-haspopup="true"
+        aria-autocomplete="list"
+        aria-activedescendant="JavaScript"
+      />
+      <ul id="completions" role="listbox" aria-expanded="true">
+        <li role="option" aria-selected="true" id="JavaScript">JavaScript</li>
+        <li role="option" id="TypeScript">TypeScript</li>
+      </ul>
+      <!-- <script>
+        const completions = ['JavaScript', 'TypeScript']
+        const $completions = document.getElementById('completions')
+        const create$Completion = (completion) => {
+          const $completion = document.createElement('li')
+          $completion.textContent = completion
+          return $completion
+        }
+        for (const completion of completions) {
+          $completions.append(create$Completion(completion))
+        }
+      </script> -->
+    </body>
+  </html>
+  `,
   (() => {
     let i = 0
     return () => i++

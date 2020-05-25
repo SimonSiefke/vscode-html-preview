@@ -1,9 +1,11 @@
 {
   "extends": "../../tsconfig-base",
+
   "compilerOptions": {
     "outDir": "dist",
     "rootDir": "src",
-    "module": "commonjs"
+    "module": "commonjs",
+    "esModuleInterop": true
   },
   "include": ["src"],
   "references": []

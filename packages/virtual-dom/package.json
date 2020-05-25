@@ -12,12 +12,16 @@
   },
   "devDependencies": {
     "@babel/node": "^7.8.7",
-    "@types/jest": "^25.2.1",
+    "@types/escape-html": "^1.0.0",
+    "@types/jest": "^25.2.3",
     "jest": "^26.0.1",
-    "ts-jest": "^25.5.1",
+    "ts-jest": "^26.0.0",
     "ts-node": "^8.10.1"
   },
   "quokka": {
     "ignoreExternalFileChanges": true
+  },
+  "dependencies": {
+    "escape-html": "^1.0.3"
   }
 }
