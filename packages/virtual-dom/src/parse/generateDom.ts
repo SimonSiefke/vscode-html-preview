@@ -1,7 +1,8 @@
 import { SuccessResult, parse } from './parse2'
 import { ElementNode, TextNode, CommentNode, DoctypeNode } from '../diff/diff2'
 import { isSelfClosingTag } from './utils'
-import escapeHtml from 'escape-html'
+
+const escapeHtml = (text: string) => text.replace(/</g, '&lt;').replace(/>/g, '&gt;')
 
 const stringify = (x: any) =>
   JSON.stringify(x, (key, value) => {
