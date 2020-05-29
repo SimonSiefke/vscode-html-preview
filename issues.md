@@ -885,3 +885,110 @@ https://github.com/adobe/brackets/issues/4711
   </body>
 </html>
  -->
+
+<!-- TODO bug <!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      body {
+        margin: 0;
+        display: flex;
+        --leftWidth: 300px;
+        /* cursor: ew-resize; */
+      }
+      #Left,
+      #Right {
+        height: 200px;
+      }
+      #Left {
+        background: orange;
+        width: var(--leftWidth);
+      }
+      #Right {
+        --width: calc(100% - 300px);
+        background: peru;
+        width: calc(100% - var(--leftWidth));
+      }
+      #Sash {
+        width: 10px;
+        height: 200px;
+        background: #000;
+        cursor: ew-resize;
+      }
+    </style>
+    <style id="tmp-style"></style>
+  </head>
+  <body>
+    <div id="Left"></div>
+    <div id="Sash"></div>
+    <div id="Right"></div>
+    <script>
+      window.fns = Object.create(null)
+      const addEventListener = (original) =>
+        function (event, fn) {
+          window.fns[event] = window.fns[event] || []
+          window.fns[event].push(fn)
+          original.bind(this)(event, fn)
+        }
+      const removeEventListener = (original) =>
+        function (event, fn) {
+          if (!window.fns[event]) {
+            throw new Error('cannot remove listener')
+          }
+          if (!window.fns[event].includes(fn)) {
+            throw new Error('cannot remove listener')
+          }
+          window.fns[event] = window.fns[event].filter((f) => fn !== f)
+          if (window.fns[event].length === 0) {
+            delete window.fns[event]
+          }
+          original.bind(this)(event, fn)
+        }
+      Node.prototype.addEventListener = addEventListener(
+        Node.prototype.addEventListener,
+      )
+      Node.prototype.removeEventListener = removeEventListener(
+        Node.prototype.removeEventListener,
+      )
+
+      window.addEventListener = addEventListener(window.addEventListener)
+      window.removeEventListener = removeEventListener(
+        window.removeEventListener,
+      )
+
+      // setInterval(() => {
+      // console.log(window.fns)
+      // }, 1000)
+    </script>
+    <script>
+      const $left = document.getElementById('Left')
+      const $right = document.getElementById('Right')
+      const $sash = document.getElementById('Sash')
+      const $tmpStyle = document.getElementById('tmp-style')
+      const width = document.body.clientWidth
+
+      const handlePointerMove = (event) => {
+        const x = Math.max(event.clientX, 0)
+        document.body.style.setProperty('--leftWidth', `${x}px`)
+      }
+      const handlePointerUp = (event) => {
+        window.removeEventListener('pointermove', handlePointerMove)
+        window.removeEventListener('pointerup', handlePointerUp)
+        $tmpStyle.textContent = ``
+      }
+      const handleMouseDown = (event) => {
+        $tmpStyle.textContent = `html { cursor: ew-resize !important; }`
+        window.addEventListener('pointermove', handlePointerMove, {
+          passive: true,
+        })
+        window.addEventListener('pointerup', handlePointerUp)
+      }
+      $sash.addEventListener('mousedown', handleMouseDown)
+    </script>
+    <!-- stats 2.03, 2.56, 1.63, 1.31, 1.88, 1.43, 1.28, 2.05, 1.76 -->
+  </body>
+</html>
+ -->
