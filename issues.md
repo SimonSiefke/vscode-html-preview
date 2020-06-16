@@ -992,3 +992,14 @@ https://github.com/adobe/brackets/issues/4711
   </body>
 </html>
  -->
+
+<!-- TODO bug with renameing multiple li elements -->
+
+<!-- TODO bug
+1. hello world
+2. <h1>hello world
+3. <h1></h1>hello world
+4. <h1>hello world
+5. <h1>hello world</h1>
+
+ -->
