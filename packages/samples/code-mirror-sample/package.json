@@ -15,7 +15,7 @@
     "html-preview-web": "^0.0.0-development"
   },
   "devDependencies": {
-    "@types/codemirror": "0.0.80",
+    "@types/codemirror": "0.0.97",
     "concurrently": "^5.0.0",
     "cypress": "^3.6.1",
     "http-server": "^0.11.1",
