@@ -1,6 +1,6 @@
 import * as fs from 'fs-extra'
 import * as path from 'path'
-import { downloadAndUnzipVSCode, runTests } from 'vscode-test'
+import { downloadAndUnzipVSCode, runTests } from '@vscode/test-electron'
 
 const root = path.join(__dirname, '../../../')
 const vscodeVersion = '1.45.0'

@@ -12,12 +12,14 @@
   "dependencies": {
     "@emmetio/codemirror-plugin": "^0.5.4",
     "codemirror": "^5.49.2",
-    "html-preview-web": "^0.0.0-development"
+    "html-preview-web": "file:../../html-preview-web",
+    "html-preview-service": "file:../../html-preview-service",
+    "virtual-dom": "file:../../virtual-dom"
   },
   "devDependencies": {
     "@types/codemirror": "0.0.80",
     "concurrently": "^5.0.0",
-    "cypress": "^3.6.1",
+    "cypress": "^12.2.0",
     "http-server": "^0.11.1",
     "rollup": "^1.26.5",
     "rollup-plugin-commonjs": "^10.1.0",
@@ -26,6 +28,6 @@
     "rollup-plugin-terser": "^5.1.2",
     "rollup-plugin-typescript2": "^0.25.2",
     "start-server-and-test": "^1.10.6",
-    "typescript": "^3.7.2"
+    "typescript": "^4.9.4"
   }
 }

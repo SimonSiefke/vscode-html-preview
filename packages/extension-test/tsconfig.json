@@ -10,7 +10,8 @@
     "noImplicitAny": false,
     "strict": false,
     "strictNullChecks": false,
-    "strictPropertyInitialization": false
+    "strictPropertyInitialization": false,
+    "skipLibCheck": true
   },
   "include": ["src"],
   "references": []
