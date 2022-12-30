@@ -1,5 +1,5 @@
 {
-  "name": "code-mirror-sample",
+  "name": "sample-code-mirror",
   "version": "0.0.0-development",
   "license": "MIT",
   "scripts": {
@@ -12,9 +12,9 @@
   "dependencies": {
     "@emmetio/codemirror-plugin": "^0.5.4",
     "codemirror": "^5.49.2",
-    "html-preview-web": "file:../../html-preview-web",
-    "html-preview-service": "file:../../html-preview-service",
-    "virtual-dom": "file:../../virtual-dom"
+    "html-preview-web": "file:../html-preview-web",
+    "html-preview-service": "file:../html-preview-service",
+    "virtual-dom": "file:../virtual-dom"
   },
   "devDependencies": {
     "@types/codemirror": "0.0.80",
