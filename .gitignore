@@ -1,3 +1,4 @@
+.rollup.cache
 dist
 .vscode-test
 .rpt2_cache
