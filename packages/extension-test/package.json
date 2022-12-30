@@ -13,7 +13,7 @@
     "@types/vscode": "^1.74.0",
     "fs-extra": "^11.1.0",
     "mocha": "^10.2.0",
-    "puppeteer": "^3.3.0",
+    "puppeteer": "^19.4.1",
     "rimraf": "^3.0.2",
     "@vscode/test-electron": "^2.2.1"
   }
