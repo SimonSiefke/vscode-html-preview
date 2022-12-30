@@ -11,7 +11,5 @@
     "virtual-dom": "file:../virtual-dom"
   },
   "license": "MIT",
-  "devDependencies": {
-    "typescript": "^4.9.4"
-  }
+  "devDependencies": {}
 }
