@@ -1,9 +1,11 @@
+import babel from '@rollup/plugin-babel'
+import commonjs from '@rollup/plugin-commonjs'
+import resolve from '@rollup/plugin-node-resolve'
+import { dirname } from 'node:path'
+import { fileURLToPath } from 'node:url'
 import * as path from 'path'
-import resolve from 'rollup-plugin-node-resolve'
-import typescript from 'rollup-plugin-typescript2'
-import { terser } from 'rollup-plugin-terser'
-import sourcemaps from 'rollup-plugin-sourcemaps'
-import commonjs from 'rollup-plugin-commonjs'
+
+const __dirname = dirname(fileURLToPath(import.meta.url))
 
 const root = __dirname
 
@@ -20,17 +22,13 @@ const withDefaults = ({ folder }) => ({
     },
   ],
   plugins: [
-    typescript({
-      typescript: require('typescript'),
-      tsconfig: path.join(root, `src/${folder}/tsconfig.json`),
+    babel({
+      extensions: ['.js', '.ts'],
     }),
-    terser({
-      mangle: false,
+    resolve({
+      extensions: ['.js', '.ts'],
     }),
-    resolve(),
     commonjs(),
-    // @ts-ignore
-    sourcemaps(),
   ],
 })
 

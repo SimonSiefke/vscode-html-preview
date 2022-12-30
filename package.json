@@ -16,8 +16,8 @@
     "autoreload": "nodemon --watch **/dist/** --exec node scripts/update-extension-new.js",
     "kill-whatever-is-on-port-3000": "fuser -k -TERM -n tcp 3000",
     "generate:website": "node scripts/generate-website",
-    "test:samples": "cd packages/samples && cd code-mirror-sample && npm run e2e && cd .. && cd minimal-sample && npm run e2e && cd .. && cd web-worker-sample && npm run e2e && cd .. && cd monaco-sample && npm run e2e",
-    "build:samples": "cd packages/samples && cd code-mirror-sample && npm run build && cd .. && cd minimal-sample && npm run build && cd .. && cd web-worker-sample && npm run build && cd .. && cd monaco-sample && npm run build"
+    "test:samples": "cd packages && cd sample-code-mirror && npm run e2e && cd .. && cd sample-minimal && npm run e2e && cd .. && cd sample-web-worker && npm run e2e && cd .. && cd sample-monaco && npm run e2e",
+    "build:samples": "cd packages && cd sample-code-mirror && npm run build && cd .. && cd sample-minimal && npm run build && cd .. && cd sample-web-worker && npm run build && cd .. && cd sample-monaco && npm run build"
   },
   "devDependencies": {
     "@babel/core": "^7.20.7",

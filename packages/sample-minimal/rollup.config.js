@@ -1,7 +1,7 @@
 import * as path from 'path'
 import resolve from '@rollup/plugin-node-resolve'
-import typescript from '@rollup/plugin-typescript2'
-import { terser } from '@rollup/plugin-terser'
+import typescript from '@rollup/plugin-babel'
+import terser from '@rollup/plugin-terser'
 import sourcemaps from 'rollup-plugin-sourcemaps'
 import commonjs from '@rollup/plugin-commonjs'
 const root = __dirname
@@ -28,8 +28,6 @@ const withDefaults = ({ folder }) => ({
     }),
     resolve(),
     commonjs(),
-    // @ts-ignore
-    sourcemaps(),
   ],
 })
 

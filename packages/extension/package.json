@@ -116,7 +116,7 @@
   "dependencies": {
     "escape-html": "^1.0.3",
     "send": "^0.18.0",
-    "virtual-dom": "^0.0.0-development",
+    "virtual-dom": "file:../virtual-dom",
     "vsls": "^1.0.4753",
     "ws": "^8.11.0"
   },
