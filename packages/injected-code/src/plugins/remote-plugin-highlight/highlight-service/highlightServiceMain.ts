@@ -115,6 +115,7 @@ export function applyStyle(
   >
 ) {
   for (const [key, value] of Object.entries(styleObject)) {
+    // @ts-ignore
     $element.style.setProperty(dashCase(key), value)
   }
 }
