@@ -1,6 +1,6 @@
 import { parse } from '../parse/parse2'
 import { updateOffsetMap } from '../parse/updateOffsetMap'
-import * as NodeType from '../NodeType/NodeType.js'
+import * as NodeType from '../NodeType/NodeType'
 
 export interface TextNode {
   readonly nodeType: 'TextNode'

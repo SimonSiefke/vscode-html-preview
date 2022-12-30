@@ -1,5 +1,5 @@
 import { createParser } from '../parse/parse'
-import * as NodeType from '../NodeType/NodeType.js'
+import * as NodeType from '../NodeType/NodeType'
 // TODO optimize all this spaghetti code
 
 /**

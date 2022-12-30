@@ -1,7 +1,7 @@
 import { SuccessResult, parse } from './parse2'
 import { ElementNode, TextNode, CommentNode, DoctypeNode } from '../diff/diff2'
 import { isSelfClosingTag } from './utils'
-import * as NodeType from '../NodeType/NodeType.js'
+import * as NodeType from '../NodeType/NodeType'
 
 const escapeHtml = (text: string) => text.replace(/</g, '&lt;').replace(/>/g, '&gt;')
 

@@ -7,7 +7,7 @@
 /* eslint-disable complexity */
 import { createScanner } from './scanner'
 import { hash } from '../hash/hash'
-import * as NodeType from '../NodeType/NodeType.js'
+import * as NodeType from '../NodeType/NodeType'
 
 /**
  * @return{any}

@@ -1,4 +1,4 @@
-import * as NodeType from '../NodeType/NodeType.js'
+import * as NodeType from '../NodeType/NodeType'
 import { parse, SuccessResult } from '../parse/parse2'
 import { updateOffsetMap } from '../parse/updateOffsetMap'
 import { diff, State } from './diff2'
