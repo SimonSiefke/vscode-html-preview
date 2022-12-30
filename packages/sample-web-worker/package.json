@@ -1,5 +1,5 @@
 {
-  "name": "web-worker-sample",
+  "name": "sample-web-worker",
   "version": "0.0.0-development",
   "license": "MIT",
   "scripts": {
@@ -10,9 +10,9 @@
     "watch": "npm run build -- --watch"
   },
   "dependencies": {
-    "html-preview-web": "file:../../html-preview-web",
-    "html-preview-service": "file:../../html-preview-service",
-    "virtual-dom": "file:../../virtual-dom"
+    "html-preview-web": "file:../html-preview-web",
+    "html-preview-service": "file:../html-preview-service",
+    "virtual-dom": "file:../virtual-dom"
   },
   "devDependencies": {
     "concurrently": "^5.0.0",

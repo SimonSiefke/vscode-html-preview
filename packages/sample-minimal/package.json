@@ -1,5 +1,5 @@
 {
-  "name": "minimal-sample",
+  "name": "sample-minimal",
   "version": "0.0.0-development",
   "license": "MIT",
   "scripts": {
@@ -23,8 +23,8 @@
     "typescript": "^4.9.4"
   },
   "dependencies": {
-    "html-preview-web": "file:../../html-preview-web",
-    "html-preview-service": "file:../../html-preview-service",
-    "virtual-dom": "file:../../virtual-dom"
+    "html-preview-web": "file:../html-preview-web",
+    "html-preview-service": "file:../html-preview-service",
+    "virtual-dom": "file:../virtual-dom"
   }
 }
