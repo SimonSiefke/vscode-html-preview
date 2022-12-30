@@ -22,7 +22,7 @@
   "devDependencies": {
     "@babel/core": "^7.20.7",
     "@babel/node": "^7.20.7",
-    "@types/fs-extra": "^8.1.0",
+    "@types/fs-extra": "^9.0.13",
     "@types/lodash": "^4.14.191",
     "@types/webpack": "^5.28.0",
     "autoprefixer": "^10.4.13",
@@ -31,22 +31,18 @@
     "circular-dependency-plugin": "^5.2.2",
     "copy-webpack-plugin": "^11.0.0",
     "cssnano": "^5.1.14",
-    "eslint": "^6.8.0",
-    "eslint-config-prettier": "^6.11.0",
-    "eslint-config-xo": "^0.29.1",
-    "eslint-plugin-jest": "^23.8.2",
     "fs-extra": "^11.1.0",
-    "jsonschema": "^1.2.6",
+    "jsonschema": "^1.4.1",
     "lerna": "^6.3.0",
     "lodash": "^4.17.21",
     "postcss": "^8.4.20",
     "postcss-cli": "^10.1.0",
-    "prettier": "^2.0.5",
-    "really-relaxed-json": "^0.2.24",
+    "prettier": "^2.8.1",
+    "really-relaxed-json": "^0.3.2",
     "rimraf": "^3.0.2",
-    "semantic-release": "^17.0.7",
-    "semantic-release-vsce": "^3.0.1",
-    "start-server-and-test": "^1.11.0",
+    "semantic-release": "^19.0.5",
+    "semantic-release-vsce": "^5.5.2",
+    "start-server-and-test": "^1.15.2",
     "ts-jest": "^29.0.3",
     "ts-loader": "^9.4.2",
     "ts-node": "^10.9.1",
@@ -54,44 +50,6 @@
     "webpack": "^5.75.0",
     "webpack-cli": "^5.0.1"
   },
-  "eslintConfig": {
-    "extends": [
-      "xo/esnext",
-      "prettier"
-    ],
-    "rules": {
-      "capitalized-comments": "off"
-    },
-    "overrides": [
-      {
-        "files": [
-          "src/**/*.test.js"
-        ],
-        "env": {
-          "jest": true
-        },
-        "plugins": [
-          "jest"
-        ],
-        "rules": {
-          "jest/no-disabled-tests": "warn",
-          "jest/no-focused-tests": "error",
-          "jest/no-identical-title": "error",
-          "jest/prefer-to-have-length": "warn",
-          "jest/valid-expect": "error"
-        }
-      }
-    ]
-  },
-  "eslintIgnore": [
-    "*.ts",
-    "*.html",
-    "*.md",
-    "*.generated.test.js",
-    "serveStaticOriginal.js",
-    "dist",
-    "e2e"
-  ],
   "prettier": {
     "semi": false,
     "singleQuote": true,
