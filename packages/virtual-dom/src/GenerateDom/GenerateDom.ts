@@ -1,7 +1,7 @@
 import { CommentNode, DoctypeNode, ElementNode, TextNode } from '../diff/diff2'
 import * as NodeType from '../NodeType/NodeType'
 import type { SuccessResult } from '../parse/parse2'
-import * as IsSelfClosingTag from '../IsSelfClosingTag/IsSelfClosingTag.js'
+import * as IsSelfClosingTag from '../IsSelfClosingTag/IsSelfClosingTag'
 import * as EscapeHtml from '../EscapeHtml/EscapeHtml'
 
 const stringify = (x: any) => {
