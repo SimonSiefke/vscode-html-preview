@@ -1,5 +1,5 @@
 import { createParser } from '../parse/parse'
-
+import * as NodeType from '../NodeType/NodeType'
 // TODO optimize all this spaghetti code
 
 /**
@@ -99,7 +99,7 @@ function elementInsert(
 ) {
   const beforeElement = nodeMap[parentId].children[index - 1]
   const beforeElementId = (beforeElement && beforeElement.id) || 0
-  if (node.nodeType === 'ElementNode') {
+  if (node.nodeType === NodeType.ElementNode) {
     return [
       {
         command: 'elementInsert',
@@ -205,7 +205,7 @@ export function diff(
     oldNode.subtreeSignature // ?
     newNode.subtreeSignature // ?
 
-    if (newNode.nodeType === 'ElementNode' && oldNode.nodeType === 'ElementNode') {
+    if (newNode.nodeType === NodeType.ElementNode && oldNode.nodeType === NodeType.ElementNode) {
       if (newNode.id === oldNode.id) {
         if (oldNode.tag === newNode.tag) {
           if (newNode.attributeSignature !== oldNode.attributeSignature) {
@@ -254,22 +254,9 @@ export function diff(
         // newNode;
         throw new Error('cannot determine diff')
       }
-      // Const newAttributeSignature = newNode.attributeSignature
-
-      // if (newNode.attributeSignature === oldNode.attributeSignature) {
-      // 	oldIndex++;
-      // 	newIndex++;
-      // 	continue;
-      // }
-
-      // if (newNode.subtreeSignature === oldNode.subtreeSignature) {
-      // }
-
-      oldIndex++
-      newIndex++
     }
 
-    if (newNode.nodeType === 'ElementNode' && oldNode.nodeType !== 'ElementNode') {
+    if (newNode.nodeType === NodeType.ElementNode && oldNode.nodeType !== NodeType.ElementNode) {
       if (!newNodeMap[oldNode.id]) {
         edits = [elementDelete(oldNode), ...edits]
         oldIndex++
@@ -302,7 +289,7 @@ export function diff(
       continue
     }
 
-    if (newNode.nodeType !== 'ElementNode' && oldNode.nodeType === 'ElementNode') {
+    if (newNode.nodeType !== NodeType.ElementNode && oldNode.nodeType === NodeType.ElementNode) {
       if (newNodeMap[oldNode.id]) {
         edits = [...edits, ...elementInsert(newNode, parentId, newIndex, newNodeMap)]
         newIndex++
@@ -312,8 +299,6 @@ export function diff(
         oldIndex++
         continue
       }
-
-      continue
     }
 
     if (newNode.nodeType !== oldNode.nodeType) {
@@ -419,9 +404,7 @@ const pretty = (node: {
   tag: any
   children: {
     map: (
-      arg0: (
-        node: any
-      ) =>
+      arg0: (node: any) =>
         | {
             tag: any
             children: any
@@ -444,7 +427,7 @@ const pretty = (node: {
   attributes: any
   text: any
 }) => {
-  if (node.nodeType === 'ElementNode') {
+  if (node.nodeType === NodeType.ElementNode) {
     return {
       tag: node.tag,
       children: node.children.map(pretty),
@@ -461,7 +444,7 @@ const pretty = (node: {
 }
 
 // @ts-ignore
-Array.prototype.pretty = function() {
+Array.prototype.pretty = function () {
   return JSON.stringify(
     this.map(pretty),
     (k, v) => {

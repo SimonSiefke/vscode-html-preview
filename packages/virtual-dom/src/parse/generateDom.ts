@@ -1,6 +1,7 @@
 import { SuccessResult, parse } from './parse2'
 import { ElementNode, TextNode, CommentNode, DoctypeNode } from '../diff/diff2'
 import { isSelfClosingTag } from './utils'
+import * as NodeType from '../NodeType/NodeType'
 
 const escapeHtml = (text: string) => text.replace(/</g, '&lt;').replace(/>/g, '&gt;')
 
@@ -17,7 +18,7 @@ const generateNode = (
   result: SuccessResult
 ) => {
   switch (node.nodeType) {
-    case 'ElementNode': {
+    case NodeType.ElementNode: {
       return `<${node.tag}${Object.entries(node.attributes)
         .map(([key, value]) => (value === null ? ` ${key}` : ` ${key}="${value}"`))
         .join('')} data-id="${node.id}">${generateNodes(node.children, result)}${
@@ -28,11 +29,11 @@ const generateNode = (
           : ''
       }${isSelfClosingTag(node.tag) ? '' : `</${node.tag}>`}`
     }
-    case 'TextNode':
+    case NodeType.TextNode:
       return node.text
-    case 'Doctype':
+    case NodeType.DocType:
       return `<!DOCTYPE html>`
-    case 'CommentNode':
+    case NodeType.CommentNode:
       return `<!--${node.text}-->`
   }
 }

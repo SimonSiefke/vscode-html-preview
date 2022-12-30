@@ -7,6 +7,7 @@
 /* eslint-disable complexity */
 import { createScanner } from './scanner'
 import { hash } from '../hash/hash'
+import * as NodeType from '../NodeType/NodeType'
 
 /**
  * @return{any}
@@ -15,7 +16,7 @@ function createElementNode() {
   return {
     attributes: {},
     children: [] as any,
-    nodeType: 'ElementNode',
+    nodeType: NodeType.ElementNode,
     parent: undefined,
   }
 }
@@ -26,7 +27,7 @@ function createElementNode() {
 function createCommentNode() {
   return {
     text: '',
-    nodeType: 'CommentNode',
+    nodeType: NodeType.CommentNode,
     parent: undefined,
   }
 }
@@ -37,7 +38,7 @@ function createCommentNode() {
  */
 function createTextNode(text) {
   return {
-    nodeType: 'TextNode',
+    nodeType: NodeType.TextNode,
     text,
     parent: undefined,
   }
