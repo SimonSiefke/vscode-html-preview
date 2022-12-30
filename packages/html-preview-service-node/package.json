@@ -9,10 +9,10 @@
   },
   "dependencies": {
     "event-stream": "^4.0.1",
-    "html-preview-service": "^0.0.0-development",
+    "html-preview-service": "file:../html-preview-service",
     "open": "^7.0.0",
     "send": "^0.17.1",
-    "virtual-dom": "^0.0.0-development",
+    "virtual-dom": "file:../virtual-dom",
     "ws": "^7.1.2"
   },
   "devDependencies": {

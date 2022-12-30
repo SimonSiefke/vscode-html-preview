@@ -10,6 +10,6 @@
     "generate:watch:genDomTests": "nodemon --watch src/genDom/genDom.test.txt --exec npm run generate:genDomTests"
   },
   "dependencies": {
-    "virtual-dom": "^0.0.0-development"
+    "virtual-dom": "file:../virtual-dom"
   }
 }
