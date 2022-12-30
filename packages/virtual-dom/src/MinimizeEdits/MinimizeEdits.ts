@@ -35,27 +35,3 @@ export const minimizeEdits: (previousText: string, edits: readonly Edit[]) => re
   }
   return newEdits
 }
-
-minimizeEdits(`<h1>hello world</h1>`, [
-  {
-    rangeOffset: 0,
-    rangeLength: 20,
-    text: `<style>
-
-p{
-color:red;
-padding: 0.5rem;
-
-border: 1px solid;
-transform: rotate(-10deg)
-
-}
-
-p:nth-child(even){
-  transform: rotate(10deg)
-
-
-}
-</style>`,
-  },
-]) //?

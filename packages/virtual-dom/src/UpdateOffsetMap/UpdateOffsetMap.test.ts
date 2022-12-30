@@ -1,4 +1,4 @@
-import { updateOffsetMap } from './updateOffsetMap'
+import { updateOffsetMap } from './UpdateOffsetMap'
 
 test('empty map, no edits', () => {
   expect(updateOffsetMap({}, [])).toEqual({})

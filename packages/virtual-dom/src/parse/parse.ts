@@ -6,7 +6,7 @@
 /* eslint-disable no-case-declarations */
 /* eslint-disable complexity */
 import { createScanner } from './scanner'
-import { hash } from '../hash/hash'
+import * as Hash from '../Hash/Hash'
 import * as NodeType from '../NodeType/NodeType'
 
 /**
@@ -376,7 +376,7 @@ function walk(dom, fn, childrenFirst = false) {
 function updateSignature(node) {
   if (node.nodeType === 'ElementNode') {
     node.attributes // ?
-    node.attributeSignature = hash(
+    node.attributeSignature = Hash.hash(
       JSON.stringify(node.attributes, (key, value) => (value === undefined ? null : value))
     ) // ?
 
@@ -393,10 +393,10 @@ function updateSignature(node) {
       }
     }
 
-    node.childSignature = hash(childSignatures)
-    node.subtreeSignature = hash(subtreeSignature)
+    node.childSignature = Hash.hash(childSignatures)
+    node.subtreeSignature = Hash.hash(subtreeSignature)
   } else if (node.nodeType === 'CommentNode' || node.nodeType === 'TextNode') {
-    node.textSignature = hash(node.text)
+    node.textSignature = Hash.hash(node.text)
   }
 }
 

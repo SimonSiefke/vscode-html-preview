@@ -1,4 +1,4 @@
-import { minimizeEdits } from './minimizeEdits'
+import { minimizeEdits } from './MinimizeEdits'
 
 test('empty', () => {
   expect(minimizeEdits('', [])).toEqual([])

@@ -1,13 +1,12 @@
-import { scan, TokenType, Token } from './scanner2'
 import assert from 'assert'
-import { updateOffsetMap } from './updateOffsetMap'
+import { scan, TokenType } from './scanner2'
 import {
-  isHeadTag,
   isAllowedSelfClosingTag,
-  isSelfClosingTag,
-  isBodyTag,
   isAutoClosed,
   isAutoClosedAtEnd,
+  isBodyTag,
+  isHeadTag,
+  isSelfClosingTag,
 } from './utils'
 
 interface ElementNode {
