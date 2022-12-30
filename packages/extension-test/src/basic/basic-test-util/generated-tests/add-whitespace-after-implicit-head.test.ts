@@ -29,10 +29,10 @@ function waitForUpdateEnd(page){
 			reject(new Error('no update received'));
 		}, 100);
 		if(received){
-			resolve()
+			resolve(undefined)
 		} else{
 			page._client.on('Network.webSocketFrameReceived', ({requestId, timestamp, response}) => {
-				resolve()
+				resolve(undefined)
 			})
 		}
 	})
