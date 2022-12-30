@@ -4,6 +4,7 @@
     "declaration": false,
     "declarationMap": false,
     "composite": false,
-    "incremental": true
+    "incremental": true,
+    "esModuleInterop": true
   }
 }

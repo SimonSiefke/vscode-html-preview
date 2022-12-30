@@ -1,5 +1,5 @@
 import { ErrorResult } from 'virtual-dom'
-import * as escapeHtml from 'escape-html'
+import escapeHtml from 'escape-html'
 import { CachedValue } from './extensionMain'
 
 export const HTML_PREVIEW_JS = `const nodeTypeMap = {
