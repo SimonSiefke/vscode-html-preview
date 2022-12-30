@@ -34,14 +34,8 @@ export interface TestCase {
   undoStops?: boolean
 }
 
-export async function createTestFile(
-  fileName: string,
-  content: string = ''
-): Promise<void> {
-  const filePath = path.join(
-    vscode.workspace.workspaceFolders![0].uri.fsPath,
-    fileName
-  )
+export async function createTestFile(fileName: string, content: string = ''): Promise<void> {
+  const filePath = path.join(vscode.workspace.workspaceFolders![0].uri.fsPath, fileName)
   const uri = vscode.Uri.file(filePath)
   await vscode.workspace.fs.writeFile(uri, Buffer.from(content))
   await vscode.window.showTextDocument(uri)
@@ -59,18 +53,14 @@ export async function setText(text: string): Promise<void> {
     document.positionAt(0),
     document.positionAt(document.getText().length)
   )
-  await vscode.window.activeTextEditor!.edit(editBuilder =>
-    editBuilder.replace(all, text)
-  )
+  await vscode.window.activeTextEditor!.edit(editBuilder => editBuilder.replace(all, text))
 }
 
 function setCursorPositions(offsets: number[]): void {
   const positions = offsets.map(offset =>
     vscode.window.activeTextEditor!.document.positionAt(offset)
   )
-  const selections = positions.map(
-    position => new vscode.Selection(position, position)
-  )
+  const selections = positions.map(position => new vscode.Selection(position, position))
   vscode.window.activeTextEditor!.selections = selections
 }
 
@@ -100,14 +90,10 @@ async function typeDelete(times: number = 1): Promise<void> {
         )
       }
     })
-    resolve()
+    resolve(undefined)
   })
 }
-async function type(
-  text: string,
-  speed = 150,
-  undoStops = false
-): Promise<void> {
+async function type(text: string, speed = 150, undoStops = false): Promise<void> {
   for (let i = 0; i < text.length; i++) {
     if (i === 0) {
       await new Promise(resolve => setTimeout(resolve, speed / 2))
@@ -145,7 +131,7 @@ async function waitForAutoComplete(timeout: 'never' | number) {
   return new Promise(resolve => {
     const disposable = vscode.workspace.onDidChangeTextDocument(() => {
       disposable.dispose()
-      resolve()
+      resolve(undefined)
     })
     if (timeout !== 'never') {
       setTimeout(resolve, timeout)
@@ -195,11 +181,7 @@ export async function run(
       )
     }
     if (testCase.type) {
-      await type(
-        testCase.type,
-        testCase.speed || speed,
-        testCase.undoStops || false
-      )
+      await type(testCase.type, testCase.speed || speed, testCase.undoStops || false)
       const autoCompleteTimeout = testCase.timeout || timeout
       await waitForAutoComplete(autoCompleteTimeout)
     }
@@ -223,16 +205,12 @@ export async function run(
       assert.equal(result, testCase.expect)
     }
     if (testCase.expectOtherFiles) {
-      for (const [relativePath, expectedContent] of Object.entries(
-        testCase.expectOtherFiles
-      )) {
+      for (const [relativePath, expectedContent] of Object.entries(testCase.expectOtherFiles)) {
         const absolutePath = path.join(
           vscode.workspace.workspaceFolders[0].uri.fsPath,
           relativePath
         )
-        const document = await vscode.workspace.openTextDocument(
-          vscode.Uri.file(absolutePath)
-        )
+        const document = await vscode.workspace.openTextDocument(vscode.Uri.file(absolutePath))
         const actualContent = document.getText()
         assert.equal(actualContent, expectedContent)
       }
@@ -244,20 +222,16 @@ export const slowSpeed = 110
 
 export const slowTimeout = 5100
 
-export const createRunner: (
-  dirname: string
-) => () => Promise<void> = dirname => () => {
+export const createRunner: (dirname: string) => () => Promise<void> = dirname => () => {
   const mocha = new Mocha({
     ui: 'tdd',
     timeout: 1000000,
+    color: true,
   })
-  mocha.useColors(true)
   mocha.bail(true)
 
   return new Promise((resolve, reject) => {
-    const fileNames = fs
-      .readdirSync(dirname)
-      .filter(fileName => fileName.endsWith('.test.js'))
+    const fileNames = fs.readdirSync(dirname).filter(fileName => fileName.endsWith('.test.js'))
     for (const fileName of fileNames) {
       mocha.addFile(path.join(dirname, fileName))
     }
