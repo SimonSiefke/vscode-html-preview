@@ -10,14 +10,14 @@
   "dependencies": {
     "event-stream": "^4.0.1",
     "html-preview-service": "file:../html-preview-service",
-    "open": "^7.0.0",
-    "send": "^0.17.1",
+    "open": "^8.4.0",
+    "send": "^0.18.0",
     "virtual-dom": "file:../virtual-dom",
-    "ws": "^7.1.2"
+    "ws": "^8.11.0"
   },
   "devDependencies": {
-    "@types/event-stream": "^3.3.34",
-    "@types/send": "^0.14.5",
-    "@types/ws": "^6.0.3"
+    "@types/event-stream": "^4.0.0",
+    "@types/send": "^0.17.1",
+    "@types/ws": "^8.5.4"
   }
 }
