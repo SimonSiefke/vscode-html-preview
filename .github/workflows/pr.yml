@@ -21,4 +21,8 @@ jobs:
       - name: npm ci
         run: npm ci
         if: steps.npm-cache.outputs.cache-hit != 'true'
+      - name: build
+        run: cd packages/injected-code && npm run build && cd ../../
       - run: npm test
+      - name: e2e
+        run: npm run e2e
