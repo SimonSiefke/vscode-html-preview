@@ -31,7 +31,7 @@ export const run = () => {
           if (failures > 0) {
             reject(new Error(`${failures} tests failed.`))
           } else {
-            resolve()
+            resolve(undefined)
           }
         })
       } catch (err) {
