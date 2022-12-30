@@ -36,10 +36,14 @@ export interface Token {
   readonly text: string
 }
 
-const DOCTYPE_XHTML_STRICT_RE = /^!DOCTYPE\s+html\s+PUBLIC\s+"-\/\/W3C\/\/DTD XHTML 1.0 Strict\/\/EN"\s+"http:\/\/www.w3.org\/TR\/xhtml1\/DTD\/xhtml1-strict.dtd"/i
-const DOCTYPE_HTML4_STRICT_RE = /!DOCTYPE\s+HTML\s+PUBLIC\s+"-\/\/W3C\/\/DTD HTML 4.01\/\/EN"\s+"http:\/\/www.w3.org\/TR\/html4\/strict.dtd"/i
-const DOCTYPE_HTML4_TRANSITIONAL_RE = /!DOCTYPE\s+HTML\s+PUBLIC\s+"-\/\/W3C\/\/DTD HTML 4.01 Transitional\/\/EN"\s+"http:\/\/www.w3.org\/TR\/html4\/loose.dtd"/i
-const DOCTYPE_HTML4_FRAMESET_RE = /!DOCTYPE\s+HTML\s+PUBLIC\s+"-\/\/W3C\/\/DTD HTML 4.01 Frameset\/\/EN"\s+"http:\/\/www.w3.org\/TR\/html4\/frameset.dtd"/i
+const DOCTYPE_XHTML_STRICT_RE =
+  /^!DOCTYPE\s+html\s+PUBLIC\s+"-\/\/W3C\/\/DTD XHTML 1.0 Strict\/\/EN"\s+"http:\/\/www.w3.org\/TR\/xhtml1\/DTD\/xhtml1-strict.dtd"/i
+const DOCTYPE_HTML4_STRICT_RE =
+  /!DOCTYPE\s+HTML\s+PUBLIC\s+"-\/\/W3C\/\/DTD HTML 4.01\/\/EN"\s+"http:\/\/www.w3.org\/TR\/html4\/strict.dtd"/i
+const DOCTYPE_HTML4_TRANSITIONAL_RE =
+  /!DOCTYPE\s+HTML\s+PUBLIC\s+"-\/\/W3C\/\/DTD HTML 4.01 Transitional\/\/EN"\s+"http:\/\/www.w3.org\/TR\/html4\/loose.dtd"/i
+const DOCTYPE_HTML4_FRAMESET_RE =
+  /!DOCTYPE\s+HTML\s+PUBLIC\s+"-\/\/W3C\/\/DTD HTML 4.01 Frameset\/\/EN"\s+"http:\/\/www.w3.org\/TR\/html4\/frameset.dtd"/i
 const DOCTYPE_RE_5 = /!DOCTYPE\s+html/i
 const TAG_NAME_RE = /^[a-zÀ-ž][a-zÀ-ž\d\-]*/i
 const ATTRIBUTE_NAME_RE = /^[a-zÀ-ž:][a-zÀ-ž\d\-:_]*/i
@@ -493,21 +497,3 @@ export const scan: (text: string) => SuccessResult | ErrorResult = text => {
     tokens,
   }
 }
-
-// const fs = require('fs')
-// const doc = scan(fs.readFileSync(`${__dirname}/fixture.txt`).toString())
-
-// // const doc = scan(`<todo-item :key="item.id"></todo-item>`)
-// if (doc.status !== 'invalid') {
-//   // @ts-ignore
-//   JSON.stringify(doc, null, 2) //?
-// } else {
-//   doc.index //?
-//   console.log('an error')
-// }
-
-scan(`<body>
-<template id="template">
-  <p>Smile</p>
-</template>
-</body>`) //?

@@ -1,13 +1,10 @@
 import assert from 'assert'
+import { isAllowedSelfClosingTag } from '../IsAllowedSelfClosingTag/IsAllowedSelfClosingTag'
+import { isBodyTag } from '../IsBodyTag/IsBodyTag'
+import { isHeadTag } from '../IsHeadTag/IsHeadTag'
+import { isSelfClosingTag } from '../IsSelfClosingTag/IsSelfClosingTag'
 import { scan, TokenType } from './scanner2'
-import {
-  isAllowedSelfClosingTag,
-  isAutoClosed,
-  isAutoClosedAtEnd,
-  isBodyTag,
-  isHeadTag,
-  isSelfClosingTag,
-} from './utils'
+import { isAutoClosed, isAutoClosedAtEnd } from './utils'
 
 interface ElementNode {
   attributes: {
