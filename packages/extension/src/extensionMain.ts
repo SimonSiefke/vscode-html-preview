@@ -1,6 +1,6 @@
 import * as http from 'http'
 import * as querystring from 'querystring'
-import * as send from 'send'
+import send from 'send'
 import * as url from 'url'
 import {
   diff2,
@@ -217,13 +217,8 @@ export const activate = (context: vscode.ExtensionContext) => {
             console.log('return')
             return
           }
-          const {
-            offsetMap,
-            previousText,
-            id,
-            lastSuccessResult,
-            hasInvalidRequest,
-          } = cachedValues[pathname]
+          const { offsetMap, previousText, id, lastSuccessResult, hasInvalidRequest } =
+            cachedValues[pathname]
           const updatedOffsetMap = updateOffsetMap(
             offsetMap,
             minimizeEdits(previousText, event.contentChanges)
