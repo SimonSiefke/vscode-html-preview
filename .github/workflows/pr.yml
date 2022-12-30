@@ -1,0 +1,24 @@
+name: PR
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  ci:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-22.04]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version-file: '.nvmrc'
+      - name: npm ci
+        run: npm ci
+        if: steps.npm-cache.outputs.cache-hit != 'true'
+      - run: npm test
