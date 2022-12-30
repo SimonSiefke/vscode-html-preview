@@ -19,7 +19,7 @@ let received = false
 
 function waitForUpdateStart(page){
 	received = false
-	page._client.on('Network.webSocketFrameReceived', ({requestId, timestamp, response}) => {
+	page._client().on('Network.webSocketFrameReceived', ({requestId, timestamp, response}) => {
 		received = true
 	})
 }
@@ -31,7 +31,7 @@ function waitForUpdateEnd(page){
 		if(received){
 			resolve(undefined)
 		} else{
-			page._client.on('Network.webSocketFrameReceived', ({requestId, timestamp, response}) => {
+			page._client().on('Network.webSocketFrameReceived', ({requestId, timestamp, response}) => {
 				resolve(undefined)
 			})
 		}
