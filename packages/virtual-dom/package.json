@@ -11,12 +11,12 @@
     "test": "jest"
   },
   "devDependencies": {
-    "@babel/node": "^7.8.7",
-    "@types/escape-html": "^1.0.0",
-    "@types/jest": "^25.2.3",
-    "jest": "^26.0.1",
-    "ts-jest": "^26.0.0",
-    "ts-node": "^8.10.1"
+    "@babel/node": "^7.20.7",
+    "@types/escape-html": "^1.0.2",
+    "@types/jest": "^29.2.4",
+    "jest": "^29.3.1",
+    "ts-jest": "^29.0.3",
+    "ts-node": "^10.9.1"
   },
   "quokka": {
     "ignoreExternalFileChanges": true

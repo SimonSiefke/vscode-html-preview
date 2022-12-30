@@ -1,7 +1,8 @@
-import typescript from 'rollup-plugin-typescript2';
-import {terser} from 'rollup-plugin-terser';
+import pluginTypescript from '@rollup/plugin-typescript';
+import terser from '@rollup/plugin-terser';
 // @ts-ignore
-import pkg from './package.json';
+import pkg from './package.json' assert {type:'json'}
+import typescript from 'typescript'
 
 export default {
 	input: 'src/injectedCodeMain.ts',
@@ -13,10 +14,9 @@ export default {
 		}
 	],
 	external: [...Object.keys(pkg.dependencies || {}), ...Object.keys(pkg.peerDependencies || {})],
-
 	plugins: [
-		typescript({
-			typescript: require('typescript')
+		pluginTypescript({
+			typescript
 		}),
 		terser({
 			mangle: false // keep output readable for debugging, even in production

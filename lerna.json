@@ -1,9 +1,4 @@
 {
-  "packages": [
-    "packages/extension",
-    "packages/extension-test",
-    "packages/virtual-dom",
-    "packages/injected-code"
-  ],
-  "version": "0.0.0"
+  "packages": ["packages/*"],
+  "version": "0.0.0-dev"
 }
