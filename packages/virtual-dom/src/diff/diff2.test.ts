@@ -1,7 +1,7 @@
-import { diff, ElementNode, State, TextNode } from './diff2'
+import * as NodeType from '../NodeType/NodeType.js'
 import { parse, SuccessResult } from '../parse/parse2'
 import { updateOffsetMap } from '../parse/updateOffsetMap'
-import { generateDom } from '../parse/generateDom'
+import { diff, State } from './diff2'
 
 const expectDiff = (oldState: State, newState: State) => ({
   toEqual: expectedDiff => {
@@ -12,14 +12,14 @@ const expectDiff = (oldState: State, newState: State) => ({
 test('delete element node at start', () => {
   const oldNodes = [
     {
-      nodeType: 'ElementNode',
+      nodeType: NodeType.ElementNode,
       tag: 'h1',
       id: 0,
       attributes: {},
       children: [],
     },
     {
-      nodeType: 'ElementNode',
+      nodeType: NodeType.ElementNode,
       tag: 'h2',
       id: 1,
       attributes: {},
@@ -28,7 +28,7 @@ test('delete element node at start', () => {
   ] as const
   const newNodes = [
     {
-      nodeType: 'ElementNode',
+      nodeType: NodeType.ElementNode,
       tag: 'h2',
       id: 1,
       attributes: {},
@@ -58,14 +58,14 @@ test('delete element node at start', () => {
 test('delete element node at end', () => {
   const oldNodes = [
     {
-      nodeType: 'ElementNode',
+      nodeType: NodeType.ElementNode,
       tag: 'h1',
       id: 0,
       attributes: {},
       children: [],
     },
     {
-      nodeType: 'ElementNode',
+      nodeType: NodeType.ElementNode,
       tag: 'h2',
       id: 1,
       attributes: {},
@@ -74,7 +74,7 @@ test('delete element node at end', () => {
   ] as const
   const newNodes = [
     {
-      nodeType: 'ElementNode',
+      nodeType: NodeType.ElementNode,
       tag: 'h1',
       id: 0,
       attributes: {},
@@ -104,7 +104,7 @@ test('delete element node at end', () => {
 test('attribute changes', () => {
   const oldNodes = [
     {
-      nodeType: 'ElementNode',
+      nodeType: NodeType.ElementNode,
       children: [],
       id: 0,
       tag: 'h1',
@@ -116,7 +116,7 @@ test('attribute changes', () => {
   ] as const
   const newNodes = [
     {
-      nodeType: 'ElementNode',
+      nodeType: NodeType.ElementNode,
       children: [],
       id: 0,
       tag: 'h1',
@@ -154,14 +154,14 @@ test('attribute changes', () => {
 test('text change', () => {
   const oldNodes = [
     {
-      nodeType: 'ElementNode',
+      nodeType: NodeType.ElementNode,
       tag: 'h1',
       attributes: {},
       id: 0,
       children: [
         {
           id: 1,
-          nodeType: 'TextNode',
+          nodeType: NodeType.TextNode,
           text: 'hello world',
         },
       ],
@@ -169,14 +169,14 @@ test('text change', () => {
   ] as const
   const newNodes = [
     {
-      nodeType: 'ElementNode',
+      nodeType: NodeType.ElementNode,
       tag: 'h1',
       attributes: {},
       id: 0,
       children: [
         {
           id: 1,
-          nodeType: 'TextNode',
+          nodeType: NodeType.TextNode,
           text: 'hello world!',
         },
       ],
@@ -198,13 +198,13 @@ test('text change', () => {
 test('add two tags at once', () => {
   const oldNodes = [
     {
-      nodeType: 'ElementNode',
+      nodeType: NodeType.ElementNode,
       tag: 'body',
       attributes: {},
       id: 0,
       children: [
         {
-          nodeType: 'ElementNode',
+          nodeType: NodeType.ElementNode,
           tag: 'main',
           attributes: {},
           children: [],
@@ -215,37 +215,37 @@ test('add two tags at once', () => {
   ] as const
   const newNodes = [
     {
-      nodeType: 'ElementNode',
+      nodeType: NodeType.ElementNode,
       tag: 'body',
       attributes: {},
       id: 0,
       children: [
         {
-          nodeType: 'ElementNode',
+          nodeType: NodeType.ElementNode,
           tag: 'main',
           attributes: {},
           id: 1,
           children: [
             {
-              nodeType: 'ElementNode',
+              nodeType: NodeType.ElementNode,
               tag: 'div',
               attributes: {},
               id: 2,
               children: [
                 {
-                  nodeType: 'TextNode',
+                  nodeType: NodeType.TextNode,
                   text: 'New Content',
                   id: 3,
                 },
               ],
             },
             {
-              nodeType: 'ElementNode',
+              nodeType: NodeType.ElementNode,
               tag: 'div',
               attributes: {},
               children: [
                 {
-                  nodeType: 'TextNode',
+                  nodeType: NodeType.TextNode,
                   id: 5,
                   text: 'More new Content',
                 },
@@ -280,14 +280,14 @@ test('add two tags at once', () => {
         id: 2,
         parentId: 1,
         index: 0,
-        nodeType: 'ElementNode',
+        nodeType: NodeType.ElementNode,
         tag: 'div',
         attributes: {},
       },
     },
     {
       command: 'elementInsert',
-      payload: { id: 3, parentId: 2, index: 0, nodeType: 'TextNode', text: 'New Content' },
+      payload: { id: 3, parentId: 2, index: 0, nodeType: NodeType.TextNode, text: 'New Content' },
     },
     {
       command: 'elementInsert',
@@ -295,14 +295,20 @@ test('add two tags at once', () => {
         id: 4,
         parentId: 1,
         index: 1,
-        nodeType: 'ElementNode',
+        nodeType: NodeType.ElementNode,
         tag: 'div',
         attributes: {},
       },
     },
     {
       command: 'elementInsert',
-      payload: { id: 5, parentId: 4, index: 0, nodeType: 'TextNode', text: 'More new Content' },
+      payload: {
+        id: 5,
+        parentId: 4,
+        index: 0,
+        nodeType: NodeType.TextNode,
+        text: 'More new Content',
+      },
     },
   ])
 })
@@ -311,12 +317,12 @@ test('delete across tags', () => {
   const oldNodes = [
     {
       tag: 'p',
-      nodeType: 'ElementNode',
+      nodeType: NodeType.ElementNode,
       id: 0,
       attributes: {},
       children: [
         {
-          nodeType: 'TextNode',
+          nodeType: NodeType.TextNode,
           text: '\n  Hello\n',
           id: 1,
         },
@@ -324,35 +330,35 @@ test('delete across tags', () => {
     },
     {
       text: '\n',
-      nodeType: 'TextNode',
+      nodeType: NodeType.TextNode,
       id: 2,
     },
     {
-      nodeType: 'ElementNode',
+      nodeType: NodeType.ElementNode,
       attributes: {},
       id: 3,
       tag: 'p',
       children: [
         {
-          nodeType: 'TextNode',
+          nodeType: NodeType.TextNode,
           text: '\n  ',
           id: 4,
         },
         {
-          nodeType: 'ElementNode',
+          nodeType: NodeType.ElementNode,
           tag: 'em',
           id: 5,
           attributes: {},
           children: [
             {
-              nodeType: 'TextNode',
+              nodeType: NodeType.TextNode,
               text: 'World',
               id: 6,
             },
           ],
         },
         {
-          nodeType: 'TextNode',
+          nodeType: NodeType.TextNode,
           text: '\n\n',
           id: 7,
         },
@@ -363,30 +369,30 @@ test('delete across tags', () => {
   const newNodes = [
     {
       tag: 'p',
-      nodeType: 'ElementNode',
+      nodeType: NodeType.ElementNode,
       id: 0,
       attributes: {},
       children: [
         {
-          nodeType: 'TextNode',
+          nodeType: NodeType.TextNode,
           text: '\n  Hello\n\n    ',
           id: 1,
         },
         {
-          nodeType: 'ElementNode',
+          nodeType: NodeType.ElementNode,
           tag: 'em',
           id: 5,
           attributes: {},
           children: [
             {
-              nodeType: 'TextNode',
+              nodeType: NodeType.TextNode,
               text: 'World',
               id: 6,
             },
           ],
         },
         {
-          nodeType: 'TextNode',
+          nodeType: NodeType.TextNode,
           text: '\n\n',
           id: 7,
         },
@@ -471,7 +477,7 @@ p`,
     {
       command: 'elementInsert',
       payload: {
-        nodeType: 'ElementNode',
+        nodeType: NodeType.ElementNode,
         tag: 'p',
         id: 3,
         attributes: {},
