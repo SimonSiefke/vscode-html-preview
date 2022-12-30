@@ -11,9 +11,9 @@
     "@types/mocha": "^10.0.1",
     "@types/node": "^18.11.18",
     "@types/vscode": "^1.74.0",
-    "fs-extra": "^9.0.0",
+    "fs-extra": "^11.1.0",
     "mocha": "^10.2.0",
-    "puppeteer": "^3.0.4",
+    "puppeteer": "^3.3.0",
     "rimraf": "^3.0.2",
     "@vscode/test-electron": "^2.2.1"
   }
