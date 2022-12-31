@@ -110,7 +110,8 @@
   },
   "scripts": {
     "dev": "cd ../../ && npm run dev",
-    "e2e": "rm -rf dist tsconfig.tsbuildinfo && tsc -b && cross-env NODE_ENV=test node ./dist/test/runTest.js"
+    "e2e": "rm -rf dist tsconfig.tsbuildinfo && tsc -b && cross-env NODE_ENV=test node ./dist/test/runTest.js",
+    "build": "rollup -c rollup.config.js"
   },
   "main": "dist/extensionMain.js",
   "dependencies": {
@@ -125,7 +126,6 @@
     "@types/send": "^0.17.1",
     "@types/vscode": "^1.74.0",
     "@types/ws": "^8.5.4",
-    "cross-env": "^7.0.3",
-    "fs-extra": "^11.1.0"
+    "cross-env": "^7.0.3"
   }
 }

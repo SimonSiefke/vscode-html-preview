@@ -4,7 +4,7 @@
   "scripts": {
     "dev": "tsc -b -w",
     "clean": "rimraf dist",
-    "package": "npm run clean && cd packages/injected-code && npm run build && cd ../../ && webpack --mode production --config ./webpack/extension.webpack.config.js && node scripts/package.js && npm run bundlesize",
+    "package": "npm run clean && cd packages/injected-code && npm run build && cd ../../ && cd packages/extension && npm run build && cd ../../ && node scripts/package.js && npm run bundlesize",
     "postinstall": "lerna bootstrap --ci",
     "generate:diffTests": "cd packages/virtual-dom && npm run generate:diffTests",
     "generate:watch:diffTests": "cd packages/virtual-dom && npm run generate:watch:diffTests",
@@ -22,9 +22,12 @@
   "devDependencies": {
     "@babel/core": "^7.20.7",
     "@babel/node": "^7.20.7",
+    "@rollup/plugin-commonjs": "^24.0.0",
+    "@rollup/plugin-json": "^6.0.0",
+    "@rollup/plugin-node-resolve": "^15.0.1",
+    "@rollup/plugin-typescript": "^10.0.1",
     "@types/fs-extra": "^8.1.0",
     "@types/lodash": "^4.14.191",
-    "@types/webpack": "^5.28.0",
     "autoprefixer": "^10.4.13",
     "babel-preset-latest-node": "^5.5.1",
     "bundlesize": "^0.18.1",
@@ -40,13 +43,12 @@
     "prettier": "^2.0.5",
     "really-relaxed-json": "^0.2.24",
     "rimraf": "^3.0.2",
+    "rollup": "^3.9.0",
     "start-server-and-test": "^1.11.0",
     "ts-jest": "^29.0.3",
     "ts-loader": "^9.4.2",
     "ts-node": "^10.9.1",
-    "typescript": "^4.9.4",
-    "webpack": "^5.75.0",
-    "webpack-cli": "^5.0.1"
+    "typescript": "^4.9.4"
   },
   "eslintIgnore": [
     "*.ts",
@@ -95,7 +97,7 @@
   "bundlesize": [
     {
       "path": "./dist/packages/extension/dist/extensionMain.js",
-      "maxSize": "145.0 kB",
+      "maxSize": "350.0 kB",
       "compression": "none"
     },
     {
