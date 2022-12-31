@@ -1,7 +1,7 @@
 import * as assert from 'assert'
-import { CommentNode, DoctypeNode, ElementNode, TextNode } from '../Diff/Diff'
 import { isSelfClosingTag } from '../IsSelfClosingTag/IsSelfClosingTag'
 import * as NodeType from '../NodeType/NodeType'
+import type { CommentNode, DoctypeNode, ElementNode, TextNode } from '../ParseResult/ParseResult'
 import { parse as _parse } from './Parse'
 
 const stringifyNode = (node: ElementNode | TextNode | CommentNode | DoctypeNode) => {
