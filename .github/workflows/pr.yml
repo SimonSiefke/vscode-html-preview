@@ -22,7 +22,7 @@ jobs:
         run: npm ci
         if: steps.npm-cache.outputs.cache-hit != 'true'
       - name: build
-        run: cd packages/injected-code && npm run build && cd ../../
+        run: npx tsc -b && cd packages/injected-code && npm run build && cd ../../
       - run: npm test
       - name: e2e
         run: xvfb-run -a npm run e2e
