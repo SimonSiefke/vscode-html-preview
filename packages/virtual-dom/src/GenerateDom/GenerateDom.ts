@@ -1,6 +1,11 @@
-import { CommentNode, DoctypeNode, ElementNode, TextNode } from '../Diff/Diff'
 import * as NodeType from '../NodeType/NodeType'
-import type { SuccessResult } from '../parse/parse2'
+import type {
+  CommentNode,
+  DoctypeNode,
+  ElementNode,
+  SuccessResult,
+  TextNode,
+} from '../ParseResult/ParseResult'
 import * as IsSelfClosingTag from '../IsSelfClosingTag/IsSelfClosingTag'
 import * as EscapeHtml from '../EscapeHtml/EscapeHtml'
 

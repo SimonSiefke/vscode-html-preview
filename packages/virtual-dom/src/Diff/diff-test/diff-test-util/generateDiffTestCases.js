@@ -292,8 +292,8 @@ function generateTest(fileName) {
 
   const importCode = [
     "import { diff } from '../../../Diff'",
-    "import { parse } from '../../../../parse/parse2'",
-    "import { updateOffsetMap } from '../../../../parse/updateOffsetMap'",
+    "import { parse } from '../../../../Parse/Parse'",
+    "import { updateOffsetMap } from '../../../../UpdateOffsetMap/UpdateOffsetMap'",
   ].join('\n')
   const functionCode = [
     `function adjustEdits(edits){

@@ -1,33 +1,7 @@
-import { parse } from '../parse/parse2'
-import { updateOffsetMap } from '../parse/updateOffsetMap'
 import * as NodeType from '../NodeType/NodeType'
-
-export interface TextNode {
-  readonly nodeType: 'TextNode'
-  readonly text: string
-  readonly id: string | number
-}
-
-export interface ElementNode {
-  readonly nodeType: 'ElementNode'
-  readonly id: string | number
-  readonly tag: string
-  readonly children: readonly (ElementNode | TextNode | CommentNode)[]
-  readonly attributes: {
-    readonly [key: string]: string | null
-  }
-}
-
-export interface CommentNode {
-  readonly nodeType: 'CommentNode'
-  readonly id: string | number
-  readonly text: string
-}
-
-export interface DoctypeNode {
-  readonly nodeType: 'Doctype'
-  readonly id: number | string
-}
+import { parse } from '../Parse/Parse'
+import type { CommentNode, ElementNode, Node, NodeMap, TextNode } from '../ParseResult/ParseResult'
+import { updateOffsetMap } from '../UpdateOffsetMap/UpdateOffsetMap'
 
 type Operation =
   | {
@@ -108,11 +82,11 @@ type Operation =
       }
     }
 
-const elementDelete: (
-  edits: Operation[],
-  node: CommentNode | DoctypeNode | ElementNode | TextNode,
-  prepend: boolean
-) => void = (edits, node, prepend) => {
+const elementDelete: (edits: Operation[], node: Node, prepend: boolean) => void = (
+  edits,
+  node,
+  prepend
+) => {
   if (prepend) {
     edits.unshift({
       command: 'elementDelete',
@@ -132,7 +106,7 @@ const elementDelete: (
 
 const elementMove: (
   edits: Operation[],
-  node: CommentNode | ElementNode | TextNode | DoctypeNode,
+  node: Node,
   parentId: number | string,
   index: number
 ) => void = (edits, node, parentId, index) => {
@@ -148,7 +122,7 @@ const elementMove: (
 
 const elementInsert: (
   edits: Operation[],
-  node: CommentNode | DoctypeNode | ElementNode | TextNode,
+  node: Node,
   parentId: number | string,
   index: number,
   children: boolean
@@ -295,19 +269,15 @@ const attributeEdits: (edits: Operation[], oldNode: ElementNode, newNode: Elemen
   }
 }
 
-interface NodeMap {
-  readonly [id: number]: CommentNode | DoctypeNode | ElementNode | TextNode
-}
-
 export interface State {
-  readonly nodes: readonly (CommentNode | DoctypeNode | ElementNode | TextNode)[]
+  readonly nodes: readonly Node[]
   readonly nodeMap: NodeMap
 }
 
 const childEdits: (
   edits: Operation[],
-  oldNodes: readonly (CommentNode | DoctypeNode | ElementNode | TextNode)[],
-  newNodes: readonly (CommentNode | DoctypeNode | ElementNode | TextNode)[],
+  oldNodes: readonly Node[],
+  newNodes: readonly Node[],
   oldNodeMap: any,
   newNodeMap: any,
   parentId: number | string

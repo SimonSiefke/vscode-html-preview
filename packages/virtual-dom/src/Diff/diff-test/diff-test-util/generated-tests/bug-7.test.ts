@@ -1,6 +1,6 @@
 import { diff } from '../../../Diff'
-import { parse } from '../../../../parse/parse2'
-import { updateOffsetMap } from '../../../../parse/updateOffsetMap'
+import { parse } from '../../../../Parse/Parse'
+import { updateOffsetMap } from '../../../../UpdateOffsetMap/UpdateOffsetMap'
 
 function adjustEdits(edits) {
   for (const edit of edits) {
