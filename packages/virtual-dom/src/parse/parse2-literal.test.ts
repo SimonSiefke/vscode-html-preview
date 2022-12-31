@@ -1,19 +1,20 @@
 import * as assert from 'assert'
-import { CommentNode, ElementNode, TextNode, DoctypeNode } from '../diff/diff2'
+import { CommentNode, DoctypeNode, ElementNode, TextNode } from '../diff/diff2'
+import { isSelfClosingTag } from '../IsSelfClosingTag/IsSelfClosingTag'
+import * as NodeType from '../NodeType/NodeType'
 import { parse as _parse } from './parse2'
-import { isSelfClosingTag } from './utils'
 
 const stringifyNode = (node: ElementNode | TextNode | CommentNode | DoctypeNode) => {
   switch (node.nodeType) {
-    case 'ElementNode':
+    case NodeType.ElementNode:
       return `<${node.tag}${Object.entries(node.attributes)
         .map(([key, value]) => (value === null ? ` ${key}` : ` ${key}="${value}"`))
         .join('')}>${stringify(node.children)}${isSelfClosingTag(node.tag) ? '' : `</${node.tag}>`}`
-    case 'TextNode':
+    case NodeType.TextNode:
       return node.text
-    case 'Doctype':
+    case NodeType.DocType:
       return `<!DOCTYPE html>`
-    case 'CommentNode':
+    case NodeType.CommentNode:
       return `<!--${node.text}-->`
   }
 }

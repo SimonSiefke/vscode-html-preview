@@ -1,14 +1,10 @@
-import { scan, TokenType, Token } from './scanner2'
 import assert from 'assert'
-import { updateOffsetMap } from './updateOffsetMap'
-import {
-  isHeadTag,
-  isAllowedSelfClosingTag,
-  isSelfClosingTag,
-  isBodyTag,
-  isAutoClosed,
-  isAutoClosedAtEnd,
-} from './utils'
+import { isAllowedSelfClosingTag } from '../IsAllowedSelfClosingTag/IsAllowedSelfClosingTag'
+import { isBodyTag } from '../IsBodyTag/IsBodyTag'
+import { isHeadTag } from '../IsHeadTag/IsHeadTag'
+import { isSelfClosingTag } from '../IsSelfClosingTag/IsSelfClosingTag'
+import { scan, TokenType } from './scanner2'
+import { isAutoClosed, isAutoClosedAtEnd } from './utils'
 
 interface ElementNode {
   attributes: {

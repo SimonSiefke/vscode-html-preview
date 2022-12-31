@@ -1,5 +1,6 @@
 import { parse } from '../parse/parse2'
 import { updateOffsetMap } from '../parse/updateOffsetMap'
+import * as NodeType from '../NodeType/NodeType'
 
 export interface TextNode {
   readonly nodeType: 'TextNode'
@@ -156,7 +157,7 @@ const elementInsert: (
     case 'Doctype': {
       break
     }
-    case 'ElementNode': {
+    case NodeType.ElementNode: {
       if (children) {
         edits.push({
           command: 'elementInsert',
@@ -326,7 +327,6 @@ const childEdits: (
       newNodes[newIndex] //?
       console.log('force')
       throw new Error('force')
-      break
     }
     const oldNode = oldNodes[oldIndex]
     const newNode = newNodes[newIndex]
@@ -341,8 +341,8 @@ const childEdits: (
       oldIndex++
       newIndex++
     } else if (
-      oldNode.nodeType === 'ElementNode' &&
-      newNode.nodeType === 'ElementNode' &&
+      oldNode.nodeType === NodeType.ElementNode &&
+      newNode.nodeType === NodeType.ElementNode &&
       oldNode.id === newNode.id
     ) {
       if (oldNode.tag === newNode.tag) {
@@ -397,7 +397,7 @@ const childEdits: (
               }
               break
             }
-            case 'ElementNode': {
+            case NodeType.ElementNode: {
               oldIndex++
               break
             }
@@ -432,20 +432,18 @@ const childEdits: (
     const newNode = newNodes[newIndex]
     if (newNode.id in oldNodeMap) {
       const oldNode = oldNodeMap[newNode.id]
-      if (newNode.nodeType === 'ElementNode') {
+      if (newNode.nodeType === NodeType.ElementNode) {
         childEdits(edits, oldNode.children, newNode.children, oldNodeMap, newNode, newNode.id)
       }
       if (newNode.id !== 'html') {
         if (newNode.nodeType === oldNode.nodeType) {
-          if (newNode.nodeType === 'ElementNode' && oldNode.tag !== newNode.tag) {
+          if (newNode.nodeType === NodeType.ElementNode && oldNode.tag !== newNode.tag) {
             elementInsert(edits, newNode, parentId, newIndex, false)
           } else {
             elementMove(edits, newNode, parentId, newIndex)
           }
         } else {
           throw new Error('no')
-          newNode
-          oldNodeMap[newNode.id] //?
         }
       }
     } else {
@@ -479,8 +477,7 @@ offsetMap = updateOffsetMap(offsetMap, [
   {
     rangeOffset: 1,
     rangeLength: 19,
-    text:
-      'style>\n\n  p{\n    color:red;\n    padding: 0.5rem;\n\n  border: 1px solid;\n    transform: rotate(-10deg)\n\n  }\n\n  p:nth-child(even){\n      transform: rotate(10deg)\n\n\n  }\n</style>',
+    text: 'style>\n\n  p{\n    color:red;\n    padding: 0.5rem;\n\n  border: 1px solid;\n    transform: rotate(-10deg)\n\n  }\n\n  p:nth-child(even){\n      transform: rotate(10deg)\n\n\n  }\n</style>',
   },
 ])
 

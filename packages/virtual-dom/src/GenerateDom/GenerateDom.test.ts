@@ -1,6 +1,6 @@
 import * as assert from 'assert'
-import { generateDom } from './generateDom'
-import { parse, SuccessResult } from './parse2'
+import { generateDom } from './GenerateDom'
+import { parse, SuccessResult } from '../parse/parse2'
 
 const expectGenerateDom = (text: string) => ({
   toEqual: (expectedDom: string) => {
