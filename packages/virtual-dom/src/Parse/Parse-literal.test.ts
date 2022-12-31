@@ -2,7 +2,7 @@ import * as assert from 'assert'
 import { CommentNode, DoctypeNode, ElementNode, TextNode } from '../Diff/Diff'
 import { isSelfClosingTag } from '../IsSelfClosingTag/IsSelfClosingTag'
 import * as NodeType from '../NodeType/NodeType'
-import { parse as _parse } from './parse2'
+import { parse as _parse } from './Parse'
 
 const stringifyNode = (node: ElementNode | TextNode | CommentNode | DoctypeNode) => {
   switch (node.nodeType) {

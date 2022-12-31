@@ -1,8 +1,6 @@
-// export { createParser, Parser, parseHtml, HtmlDocument, ParsingResult } from './parse/parse'
-// export { diff } from './diff/diff'
-
 export { minimizeEdits } from './MinimizeEdits/MinimizeEdits'
 export { diff as diff2 } from './Diff/Diff'
-export { parse as parse2, SuccessResult, ErrorResult } from './parse/parse2'
-export { generateDom } from './parse/generateDom'
-export { updateOffsetMap } from './parse/updateOffsetMap'
+export { parse as parse2 } from './Parse/Parse'
+export { generateDom } from './GenerateDom/GenerateDom'
+export { updateOffsetMap } from './UpdateOffsetMap/UpdateOffsetMap'
+export type { SuccessResult, ErrorResult } from './ParseResult/ParseResult'

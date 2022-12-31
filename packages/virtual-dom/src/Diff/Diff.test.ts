@@ -1,6 +1,8 @@
 import * as NodeType from '../NodeType/NodeType'
-import { parse, SuccessResult } from '../parse/parse2'
-import { updateOffsetMap } from '../parse/updateOffsetMap'
+import { parse } from '../Parse/Parse'
+import type { Node, NodeMap } from '../ParseResult/ParseResult'
+import { updateOffsetMap } from '../UpdateOffsetMap/UpdateOffsetMap'
+import type { SuccessResult } from '../virtualDomMain'
 import { diff, State } from './Diff'
 
 const expectDiff = (oldState: State, newState: State) => ({
@@ -9,8 +11,33 @@ const expectDiff = (oldState: State, newState: State) => ({
   },
 })
 
+type Mutable<T> = { -readonly [P in keyof T]: T[P] }
+
+const createNodeMapInternal = (nodeMap: Mutable<NodeMap>, nodes: readonly Node[]) => {
+  for (const node of nodes) {
+    switch (node.nodeType) {
+      case 'CommentNode':
+      case 'TextNode':
+      case 'Doctype':
+        nodeMap[node.id] = node
+        break
+      case 'ElementNode':
+        nodeMap[node.id] = node
+        createNodeMapInternal(nodeMap, node.children)
+      default:
+        break
+    }
+  }
+}
+
+const createNodeMap = (nodes: readonly Node[]): NodeMap => {
+  const nodeMap: Mutable<NodeMap> = Object.create(null)
+  createNodeMapInternal(nodeMap, nodes)
+  return nodeMap
+}
+
 test('delete element node at start', () => {
-  const oldNodes = [
+  const oldNodes: readonly Node[] = [
     {
       nodeType: NodeType.ElementNode,
       tag: 'h1',
@@ -25,8 +52,8 @@ test('delete element node at start', () => {
       attributes: {},
       children: [],
     },
-  ] as const
-  const newNodes = [
+  ]
+  const newNodes: readonly Node[] = [
     {
       nodeType: NodeType.ElementNode,
       tag: 'h2',
@@ -34,15 +61,10 @@ test('delete element node at start', () => {
       attributes: {},
       children: [],
     },
-  ] as const
+  ]
 
-  const oldNodeMap = {
-    0: oldNodes[0],
-    1: oldNodes[1],
-  }
-  const newNodeMap = {
-    1: newNodes[0],
-  }
+  const oldNodeMap: NodeMap = createNodeMap(oldNodes)
+  const newNodeMap: NodeMap = createNodeMap(newNodes)
   expectDiff(
     {
       nodes: oldNodes,
@@ -56,7 +78,7 @@ test('delete element node at start', () => {
 })
 
 test('delete element node at end', () => {
-  const oldNodes = [
+  const oldNodes: readonly Node[] = [
     {
       nodeType: NodeType.ElementNode,
       tag: 'h1',
@@ -71,8 +93,8 @@ test('delete element node at end', () => {
       attributes: {},
       children: [],
     },
-  ] as const
-  const newNodes = [
+  ]
+  const newNodes: readonly Node[] = [
     {
       nodeType: NodeType.ElementNode,
       tag: 'h1',
@@ -80,15 +102,10 @@ test('delete element node at end', () => {
       attributes: {},
       children: [],
     },
-  ] as const
+  ]
 
-  const oldNodeMap = {
-    0: oldNodes[0],
-    1: oldNodes[1],
-  }
-  const newNodeMap = {
-    0: newNodes[0],
-  }
+  const oldNodeMap: NodeMap = createNodeMap(oldNodes)
+  const newNodeMap: NodeMap = createNodeMap(newNodes)
   expectDiff(
     {
       nodes: oldNodes,
@@ -102,7 +119,7 @@ test('delete element node at end', () => {
 })
 
 test('attribute changes', () => {
-  const oldNodes = [
+  const oldNodes: readonly Node[] = [
     {
       nodeType: NodeType.ElementNode,
       children: [],
@@ -113,8 +130,8 @@ test('attribute changes', () => {
         class: 'big',
       },
     },
-  ] as const
-  const newNodes = [
+  ]
+  const newNodes: readonly Node[] = [
     {
       nodeType: NodeType.ElementNode,
       children: [],
@@ -125,14 +142,10 @@ test('attribute changes', () => {
         a: '2',
       },
     },
-  ] as const
+  ]
 
-  const oldNodeMap = {
-    0: oldNodes[0],
-  }
-  const newNodeMap = {
-    0: newNodes[0],
-  }
+  const oldNodeMap: NodeMap = createNodeMap(oldNodes)
+  const newNodeMap: NodeMap = createNodeMap(newNodes)
 
   expectDiff(
     { nodes: oldNodes, nodeMap: oldNodeMap },
@@ -152,7 +165,7 @@ test('attribute changes', () => {
 })
 
 test('text change', () => {
-  const oldNodes = [
+  const oldNodes: readonly Node[] = [
     {
       nodeType: NodeType.ElementNode,
       tag: 'h1',
@@ -166,8 +179,8 @@ test('text change', () => {
         },
       ],
     },
-  ] as const
-  const newNodes = [
+  ]
+  const newNodes: readonly Node[] = [
     {
       nodeType: NodeType.ElementNode,
       tag: 'h1',
@@ -181,14 +194,10 @@ test('text change', () => {
         },
       ],
     },
-  ] as const
+  ]
 
-  const oldNodeMap = {
-    0: oldNodes[0],
-  }
-  const newNodeMap = {
-    0: newNodes[0],
-  }
+  const oldNodeMap: NodeMap = createNodeMap(oldNodes)
+  const newNodeMap: NodeMap = createNodeMap(newNodes)
   expectDiff(
     { nodes: oldNodes, nodeMap: oldNodeMap },
     { nodes: newNodes, nodeMap: newNodeMap }
@@ -196,7 +205,7 @@ test('text change', () => {
 })
 
 test('add two tags at once', () => {
-  const oldNodes = [
+  const oldNodes: readonly Node[] = [
     {
       nodeType: NodeType.ElementNode,
       tag: 'body',
@@ -212,8 +221,8 @@ test('add two tags at once', () => {
         },
       ],
     },
-  ] as const
-  const newNodes = [
+  ]
+  const newNodes: readonly Node[] = [
     {
       nodeType: NodeType.ElementNode,
       tag: 'body',
@@ -256,20 +265,10 @@ test('add two tags at once', () => {
         },
       ],
     },
-  ] as const
+  ]
 
-  const oldNodeMap = {
-    0: oldNodes[0],
-    1: oldNodes[0].children[0],
-  }
-  const newNodeMap = {
-    0: newNodes[0],
-    1: newNodes[0].children[0],
-    2: newNodes[0].children[0].children[0],
-    3: newNodes[0].children[0].children[0].children[0],
-    4: newNodes[0].children[0].children[1],
-    5: newNodes[0].children[0].children[1].children[0],
-  }
+  const oldNodeMap: NodeMap = createNodeMap(oldNodes)
+  const newNodeMap: NodeMap = createNodeMap(newNodes)
   expectDiff(
     { nodes: oldNodes, nodeMap: oldNodeMap },
     { nodes: newNodes, nodeMap: newNodeMap }
@@ -314,7 +313,7 @@ test('add two tags at once', () => {
 })
 
 test('delete across tags', () => {
-  const oldNodes = [
+  const oldNodes: readonly Node[] = [
     {
       tag: 'p',
       nodeType: NodeType.ElementNode,
@@ -364,9 +363,9 @@ test('delete across tags', () => {
         },
       ],
     },
-  ] as const
+  ]
 
-  const newNodes = [
+  const newNodes: readonly Node[] = [
     {
       tag: 'p',
       nodeType: NodeType.ElementNode,
@@ -398,24 +397,9 @@ test('delete across tags', () => {
         },
       ],
     },
-  ] as const
-  const oldNodeMap = {
-    0: oldNodes[0],
-    1: oldNodes[0].children[0],
-    2: oldNodes[1],
-    3: oldNodes[2],
-    4: oldNodes[2].children[0],
-    5: oldNodes[2].children[1],
-    6: oldNodes[2].children[1].children[0],
-    7: oldNodes[2].children[2],
-  }
-  const newNodeMap = {
-    0: newNodes[0],
-    1: newNodes[0].children[0],
-    5: newNodes[0].children[1],
-    6: newNodes[0].children[1].children[0],
-    7: newNodes[0].children[2],
-  }
+  ]
+  const oldNodeMap: NodeMap = createNodeMap(oldNodes)
+  const newNodeMap: NodeMap = createNodeMap(newNodes)
   expectDiff(
     { nodes: oldNodes, nodeMap: oldNodeMap },
     { nodes: newNodes, nodeMap: newNodeMap }

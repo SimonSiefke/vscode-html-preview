@@ -1,5 +1,5 @@
 test.skip('', () => {})
-import { parse as _parse } from './parse2'
+import { parse as _parse } from './Parse'
 
 const parse = (text: string) =>
   _parse(

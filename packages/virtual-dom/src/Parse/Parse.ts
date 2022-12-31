@@ -1,32 +1,17 @@
 import assert from 'assert'
 import { isAllowedSelfClosingTag } from '../IsAllowedSelfClosingTag/IsAllowedSelfClosingTag'
+import { isAutoClosed, isAutoClosedAtEnd } from '../IsAutoClosed/IsAutoClosed'
 import { isBodyTag } from '../IsBodyTag/IsBodyTag'
 import { isHeadTag } from '../IsHeadTag/IsHeadTag'
 import { isSelfClosingTag } from '../IsSelfClosingTag/IsSelfClosingTag'
+import type {
+  CommentNode,
+  ElementNode,
+  ErrorResult,
+  SuccessResult,
+  TextNode,
+} from '../ParseResult/ParseResult'
 import { scan, TokenType } from '../Scanner/Scanner'
-import { isAutoClosed, isAutoClosedAtEnd } from './utils'
-
-interface ElementNode {
-  attributes: {
-    [key: string]: string
-  }
-  children: (ElementNode | CommentNode | TextNode)[]
-  readonly tag: string
-  readonly id: string | number
-  readonly nodeType: 'ElementNode'
-}
-
-interface CommentNode {
-  readonly nodeType: 'CommentNode'
-  readonly text: string
-  readonly id: number
-}
-
-interface TextNode {
-  readonly nodeType: 'TextNode'
-  readonly text: string
-  readonly id: number
-}
 
 const createElementNode: (tag: string, id: string | number) => ElementNode = (tag, id) => ({
   attributes: Object.create(null),
@@ -54,20 +39,6 @@ interface DoctypeNode {
 }
 
 const createDoctypeNode: () => DoctypeNode = () => ({ nodeType: 'Doctype', tag: '!DOCTYPE' })
-
-export type SuccessResult = {
-  readonly status: 'success'
-  readonly nodes: readonly (ElementNode | CommentNode | TextNode)[]
-  readonly nodeMap: {
-    readonly [id: number]: ElementNode | CommentNode | TextNode
-  }
-}
-
-export type ErrorResult = {
-  readonly status: 'invalid'
-  readonly index: number
-  readonly reason?: string
-}
 
 const walk: (
   node: ElementNode | CommentNode | TextNode,
