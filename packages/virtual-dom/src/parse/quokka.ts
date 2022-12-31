@@ -1,6 +1,4 @@
 import * as fs from 'fs'
-import { scan } from './scanner2'
-import { parse } from './parse2'
 
 const fixture = fs.readFileSync(`${__dirname}/fixture.txt`).toString()
 

@@ -3,7 +3,7 @@ import { isAllowedSelfClosingTag } from '../IsAllowedSelfClosingTag/IsAllowedSel
 import { isBodyTag } from '../IsBodyTag/IsBodyTag'
 import { isHeadTag } from '../IsHeadTag/IsHeadTag'
 import { isSelfClosingTag } from '../IsSelfClosingTag/IsSelfClosingTag'
-import { scan, TokenType } from './scanner2'
+import { scan, TokenType } from '../Scanner/Scanner'
 import { isAutoClosed, isAutoClosedAtEnd } from './utils'
 
 interface ElementNode {
