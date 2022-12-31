@@ -51,6 +51,17 @@ const ATTRIBUTE_VALUE_SINGLE_QUOTE_RE = /^'[^']*'/
 const ATTRIBUTE_VALUE_DOUBLE_QUOTE_RE = /^"[^"]*"/
 const ATTRIBUTE_VALUE_RE = /^[^<>\s]*/
 const WHITESPACE_RE = /^\s+/
+const RE_STYLE_CONTENT = /^((?:.|\s)*?)(?:<\/style>)/
+const RE_SCRIPT_CONTENT = /^((?:.|\s)*?)(?:<\/script>)/
+const RE_NOSCRIPT_CONTENT = /^((?:.|\s)*?)(?:<\/noscript>)/
+const RE_TEMPLATE_CONTENT = /^((?:.|\s)*?)(?:<\/template>)/
+const RE_BLOCK_COMMENT_START = /^<!--(.|\s)*?--/
+const RE_CLOSING_TAG_START = /^<\//
+const RE_TAG_START = /^</
+const RE_NOT_OPENING_ANGLE_BRACKET = /^[^<]+/
+const RE_CLOSING_ANGLE_BRACKET = /^>/
+const RE_SELF_CLOSING_BRACKETS = /^\/>/
+const RE_EQUAL_SIGN = /^=/
 
 type SuccessResult = {
   readonly status: 'success'
@@ -83,7 +94,7 @@ export const scan: (text: string) => SuccessResult | ErrorResult = text => {
       case State.Content: {
         switch (special) {
           case 'style': {
-            if ((next = text.slice(index).match(/^((?:.|\s)*?)(?:<\/style>)/))) {
+            if ((next = text.slice(index).match(RE_STYLE_CONTENT))) {
               const tokenText = next[1]
               index += tokenText.length
               tokens.push({
@@ -101,7 +112,7 @@ export const scan: (text: string) => SuccessResult | ErrorResult = text => {
             break
           }
           case 'script': {
-            if ((next = text.slice(index).match(/^((?:.|\s)*?)(?:<\/script>)/))) {
+            if ((next = text.slice(index).match(RE_SCRIPT_CONTENT))) {
               const tokenText = next[1]
               if (tokenText) {
                 index += tokenText.length
@@ -121,7 +132,7 @@ export const scan: (text: string) => SuccessResult | ErrorResult = text => {
             break
           }
           case 'noscript': {
-            if ((next = text.slice(index).match(/^((?:.|\s)*?)(?:<\/noscript>)/))) {
+            if ((next = text.slice(index).match(RE_NOSCRIPT_CONTENT))) {
               const tokenText = next[1]
               if (tokenText) {
                 index += tokenText.length
@@ -141,7 +152,7 @@ export const scan: (text: string) => SuccessResult | ErrorResult = text => {
             break
           }
           case 'template': {
-            if ((next = text.slice(index).match(/^((?:.|\s)*?)(?:<\/template>)/))) {
+            if ((next = text.slice(index).match(RE_TEMPLATE_CONTENT))) {
               const tokenText = next[1]
               if (tokenText) {
                 index += tokenText.length
@@ -161,7 +172,7 @@ export const scan: (text: string) => SuccessResult | ErrorResult = text => {
             break
           }
           case undefined: {
-            if ((next = text.slice(index).match(/^<!--(.|\s)*?--/))) {
+            if ((next = text.slice(index).match(RE_BLOCK_COMMENT_START))) {
               const tokenText = next[0]
               index += tokenText.length
               if (text[index++] === '>') {
@@ -176,7 +187,7 @@ export const scan: (text: string) => SuccessResult | ErrorResult = text => {
                   index,
                 }
               }
-            } else if ((next = text.slice(index).match(/^<\//))) {
+            } else if ((next = text.slice(index).match(RE_CLOSING_TAG_START))) {
               const tokenText = next[0]
               index += tokenText.length
               tokens.push({
@@ -184,7 +195,7 @@ export const scan: (text: string) => SuccessResult | ErrorResult = text => {
                 text: tokenText,
               })
               state = State.AfterEndTagOpeningBracket
-            } else if ((next = text.slice(index).match(/^</))) {
+            } else if ((next = text.slice(index).match(RE_TAG_START))) {
               const tokenText = next[0]
               index += tokenText.length
               tokens.push({
@@ -192,7 +203,7 @@ export const scan: (text: string) => SuccessResult | ErrorResult = text => {
                 text: tokenText,
               })
               state = State.AfterStartTagOpeningBracket
-            } else if ((next = text.slice(index).match(/^[^<]+/))) {
+            } else if ((next = text.slice(index).match(RE_NOT_OPENING_ANGLE_BRACKET))) {
               const tokenText = next[0]
               index += tokenText.length
               tokens.push({
@@ -262,7 +273,7 @@ export const scan: (text: string) => SuccessResult | ErrorResult = text => {
             text: tokenText,
           })
           state = State.InsideStartTagAndHasSeenWhitespace
-        } else if ((next = text.slice(index).match(/^>/))) {
+        } else if ((next = text.slice(index).match(RE_CLOSING_ANGLE_BRACKET))) {
           const tokenText = next[0]
           index += tokenText.length
           tokens.push({
@@ -270,7 +281,7 @@ export const scan: (text: string) => SuccessResult | ErrorResult = text => {
             text: tokenText,
           })
           state = State.Content
-        } else if ((next = text.slice(index).match(/^\/>/))) {
+        } else if ((next = text.slice(index).match(RE_SELF_CLOSING_BRACKETS))) {
           const tokenText = next[0]
           index += tokenText.length
           tokens.push({
@@ -304,7 +315,7 @@ export const scan: (text: string) => SuccessResult | ErrorResult = text => {
         break
       }
       case State.AfterEndTagName: {
-        if ((next = text.slice(index).match(/^>/))) {
+        if ((next = text.slice(index).match(RE_CLOSING_ANGLE_BRACKET))) {
           const tokenText = next[0]
           index += tokenText.length
           tokens.push({
@@ -328,7 +339,7 @@ export const scan: (text: string) => SuccessResult | ErrorResult = text => {
         break
       }
       case State.InsideStartTagAndHasSeenWhitespace: {
-        if ((next = text.slice(index).match(/^\/>/))) {
+        if ((next = text.slice(index).match(RE_SELF_CLOSING_BRACKETS))) {
           const tokenText = next[0]
           index += tokenText.length
           tokens.push({
@@ -336,7 +347,7 @@ export const scan: (text: string) => SuccessResult | ErrorResult = text => {
             text: tokenText,
           })
           state = State.Content
-        } else if ((next = text.slice(index).match(/^>/))) {
+        } else if ((next = text.slice(index).match(RE_CLOSING_ANGLE_BRACKET))) {
           const tokenText = next[0]
           index += tokenText.length
           tokens.push({
@@ -361,7 +372,7 @@ export const scan: (text: string) => SuccessResult | ErrorResult = text => {
         break
       }
       case State.AfterAttributeName: {
-        if ((next = text.slice(index).match(/^=/))) {
+        if ((next = text.slice(index).match(RE_EQUAL_SIGN))) {
           const tokenText = next[0]
           index += tokenText.length
           tokens.push({
@@ -377,7 +388,7 @@ export const scan: (text: string) => SuccessResult | ErrorResult = text => {
             text: tokenText,
           })
           state = State.AfterAttributeNameAndHasSeenWhitespace
-        } else if ((next = text.slice(index).match(/^>/))) {
+        } else if ((next = text.slice(index).match(RE_CLOSING_ANGLE_BRACKET))) {
           const tokenText = next[0]
           index += tokenText.length
           tokens.push({
@@ -385,7 +396,7 @@ export const scan: (text: string) => SuccessResult | ErrorResult = text => {
             text: tokenText,
           })
           state = State.Content
-        } else if ((next = text.slice(index).match(/^\/>/))) {
+        } else if ((next = text.slice(index).match(RE_SELF_CLOSING_BRACKETS))) {
           const tokenText = next[0]
           index += tokenText.length
           tokens.push({
@@ -402,7 +413,7 @@ export const scan: (text: string) => SuccessResult | ErrorResult = text => {
         break
       }
       case State.AfterAttributeNameAndHasSeenWhitespace: {
-        if ((next = text.slice(index).match(/^=/))) {
+        if ((next = text.slice(index).match(RE_EQUAL_SIGN))) {
           const tokenText = next[0]
           index += tokenText.length
           tokens.push({
@@ -418,7 +429,7 @@ export const scan: (text: string) => SuccessResult | ErrorResult = text => {
             text: tokenText,
           })
           state = State.AfterAttributeName
-        } else if ((next = text.slice(index).match(/^>/))) {
+        } else if ((next = text.slice(index).match(RE_CLOSING_ANGLE_BRACKET))) {
           const tokenText = next[0]
           index += tokenText.length
           tokens.push({
@@ -426,7 +437,7 @@ export const scan: (text: string) => SuccessResult | ErrorResult = text => {
             text: tokenText,
           })
           state = State.Content
-        } else if ((next = text.slice(index).match(/^\/>/))) {
+        } else if ((next = text.slice(index).match(RE_SELF_CLOSING_BRACKETS))) {
           const tokenText = next[0]
           index += tokenText.length
           tokens.push({
