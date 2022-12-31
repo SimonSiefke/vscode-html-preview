@@ -1,4 +1,4 @@
-import { CommentNode, DoctypeNode, ElementNode, TextNode } from '../diff/diff2'
+import { CommentNode, DoctypeNode, ElementNode, TextNode } from '../Diff/Diff'
 import * as NodeType from '../NodeType/NodeType'
 import type { SuccessResult } from '../parse/parse2'
 import * as IsSelfClosingTag from '../IsSelfClosingTag/IsSelfClosingTag'
