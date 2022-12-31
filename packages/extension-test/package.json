@@ -7,11 +7,9 @@
     "e2e": "rimraf dist tsconfig.tsbuildinfo && npm run build && node dist/extensionTestMain"
   },
   "devDependencies": {
-    "@types/fs-extra": "^9.0.13",
     "@types/mocha": "^10.0.1",
     "@types/node": "^18.11.18",
     "@types/vscode": "^1.74.0",
-    "fs-extra": "^11.1.0",
     "mocha": "^10.2.0",
     "puppeteer": "^19.4.1",
     "rimraf": "^3.0.2",

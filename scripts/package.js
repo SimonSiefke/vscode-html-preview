@@ -51,3 +51,7 @@ fs.copySync(
   path.join(root, 'packages/injected-code/dist'),
   path.join(root, 'dist/packages/injected-code/dist')
 )
+fs.copySync(
+  path.join(root, 'packages/extension/dist'),
+  path.join(root, 'dist/packages/extension/dist')
+)
