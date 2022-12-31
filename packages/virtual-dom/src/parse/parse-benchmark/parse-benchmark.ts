@@ -2,7 +2,7 @@ import * as assert from 'assert'
 import * as fs from 'fs'
 import * as path from 'path'
 import { parse } from '../parse2'
-import { scan } from '../scanner2'
+import { scan } from '../../Scanner/Scanner'
 import { measureEnd, measureStart } from './measure'
 
 const fixtures = [
