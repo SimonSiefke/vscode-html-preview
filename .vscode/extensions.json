@@ -1,7 +1,3 @@
 {
-  "recommendations": [
-    "esbenp.prettier-vscode",
-    "dbaeumer.vscode-eslint",
-    "eamodio.toggle-excluded-files"
-  ]
+  "recommendations": ["esbenp.prettier-vscode"]
 }
